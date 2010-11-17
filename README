@@ -1,0 +1,20 @@
+If your looking for a flash to html5 library - look at Jeash, its awesome - https://launchpad.net/jeash
+
+NOTES
+-----
+This project started just because I've never really had to use javascript for work so I've never used jQuery / Raphael.
+Andy_li created extern classes for both jQuery and Raphael - so they are/will be used alot through out this code.
+
+jQuery extern library - https://github.com/andyli/jQueryExternForHaxe
+Raphaeljs extern library - https://github.com/andyli/raphaelExternForHaxe
+
+So cheers to him - as I think coding a substantial amount of code in normal js would drive me mad.
+
+This project (at the moment) is just for me to play around with the js target. I've already re-written the little code
+there is about 3 times and I've started again on the vector part. As I learn more about the js target I normally find
+a better way to code what I've already coded.
+
+It was originally called jshx - couldnt think of a better name than that - then when I was watching Adobe MAX
+a preview of edge - Adobes html5 prototype was shown - so I had to rename this to hedge.
+
+I've only really tested the little code there is in Chrome - trying to replicate the SWF output as I go along.

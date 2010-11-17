@@ -1,0 +1,1 @@
+java -jar "C:\Documents and Settings\Administrator\My Documents\My Dropbox\dev\hedge\bin\yuicompressor-2.4.2.jar" --type js -o "C:\Documents and Settings\Administrator\My Documents\My Dropbox\dev\hedge\bin\hedge.min.yahoo.js" "C:\Documents and Settings\Administrator\My Documents\My Dropbox\dev\hedge\bin\hedge.js"
