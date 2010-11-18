@@ -23,6 +23,7 @@ class Graphics extends Object {
 		super();
 		
 		this.parent = parent;
+		this.path = '';
 		
 		parent.__jq__.append(__jq__ = new JQuery('<div>'));
 		__jq__.attr('id', parent.__originalName__ + '-graphics').css( Setup.__attr__( { width:'100%', height:'100%' } ) ).css('background-color', 'transparent');
@@ -93,7 +94,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:parent } ]);
+		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
@@ -111,7 +112,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:parent } ]);
+		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
@@ -119,7 +120,14 @@ class Graphics extends Object {
 	}
 	
 	public function endFill() {
-		
+		if (this.path != '' || this.path == null) {
+			__element__ = __raphael__.path(path += ' z');
+			
+			this.checkFill();
+			this.checkLineStyle();
+			
+			parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
+		}
 	}
 	
 	public var lineType:String;

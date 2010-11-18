@@ -3389,6 +3389,7 @@ hedge.display.Shape = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.display.Shape::new");
 	var $spos = $s.length;
 	hedge.display.DisplayObject.apply(this,[]);
+	this.__jq__.bind(hedge.Setup.RESIZE_ELEMENT,{ },{ });
 	this._g = new hedge.display.Graphics(this);
 	$s.pop();
 }}
@@ -3853,6 +3854,7 @@ hedge.display.Graphics = function(parent) { if( parent === $_ ) return; {
 	var $spos = $s.length;
 	hedge.Object.apply(this,[]);
 	this.parent = parent;
+	this.path = "";
 	parent.__jq__.append(this.__jq__ = new $("<div>"));
 	this.__jq__.attr("id",parent.__originalName__ + "-graphics").css(hedge.Setup.__attr__({ width : "100%", height : "100%"})).css("background-color","transparent");
 	this.__raphael__ = new Raphael(parent.__originalName__ + "-graphics","100%","100%");
@@ -3987,7 +3989,12 @@ hedge.display.Graphics.prototype.drawRoundRect = function(x,y,width,height,radiu
 hedge.display.Graphics.prototype.endFill = function() {
 	$s.push("hedge.display.Graphics::endFill");
 	var $spos = $s.length;
-	null;
+	if(this.path != "" || this.path == null) {
+		this.__element__ = this.__raphael__.path(this.path += " z");
+		this.checkFill();
+		this.checkLineStyle();
+		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
+	}
 	$s.pop();
 }
 hedge.display.Graphics.prototype.fillType = null;
@@ -4465,6 +4472,23 @@ Main.launch = function() {
 	haxe.Log.trace("Stage Width: " + hedge.Setup.__stage__.getWidth(),{ fileName : "Main.hx", lineNumber : 53, className : "Main", methodName : "launch"});
 	haxe.Log.trace("Stage Height: " + hedge.Setup.__stage__.getHeight(),{ fileName : "Main.hx", lineNumber : 54, className : "Main", methodName : "launch"});
 	haxe.Log.trace("Stage Name: " + hedge.Setup.__stage__.getName(),{ fileName : "Main.hx", lineNumber : 55, className : "Main", methodName : "launch"});
+	haxe.Log.trace("created tri",{ fileName : "Main.hx", lineNumber : 62, className : "Main", methodName : "launch"});
+	var tri = new hedge.display.Shape();
+	tri.setName("tri");
+	tri.getGraphics().beginFill(16711808);
+	tri.getGraphics().moveTo(0,0);
+	tri.getGraphics().lineTo(100,0);
+	tri.getGraphics().lineTo(50,100);
+	tri.getGraphics().lineTo(0,0);
+	tri.getGraphics().endFill();
+	tri.setX(400);
+	tri.setY(75);
+	haxe.Log.trace("created ball",{ fileName : "Main.hx", lineNumber : 74, className : "Main", methodName : "launch"});
+	var ball = new hedge.display.Sprite();
+	ball.getGraphics().beginFill(65344);
+	ball.getGraphics().drawCircle(200,200,100);
+	ball.getGraphics().endFill();
+	ball.setName("ball");
 	var bmd1 = new hedge.display.BitmapData(100,100,true,16711808);
 	var bmd2 = new hedge.display.BitmapData(100,100,true,33023);
 	haxe.Log.trace("created sp3",{ fileName : "Main.hx", lineNumber : 84, className : "Main", methodName : "launch"});
@@ -4477,6 +4501,8 @@ Main.launch = function() {
 	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 93, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
+	hedge.Lib.attachToStage(tri);
+	hedge.Lib.attachToStage(ball);
 	hedge.Lib.attachToStage(sp3);
 	$s.pop();
 }

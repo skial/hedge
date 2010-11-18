@@ -4,6 +4,7 @@
  */
 
 package hedge.display;
+import hedge.Setup;
 
 class Shape extends DisplayObject {
 	
@@ -16,6 +17,7 @@ class Shape extends DisplayObject {
 	public function new() {
 		super();
 		
+		__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
 		_g = new Graphics(this);
 	}
 	

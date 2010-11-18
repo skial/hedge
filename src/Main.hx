@@ -59,8 +59,9 @@ class Main {
 		trace('Stage Name: ' + Lib.current.stage.name);
 		#end
 		
-		/*trace('created tri');
+		trace('created tri');
 		var tri:Shape = new Shape();
+		tri.name = 'tri';
 		tri.graphics.beginFill(0xFF0080);
 		tri.graphics.moveTo(0, 0);
 		tri.graphics.lineTo(100, 0);
@@ -69,14 +70,13 @@ class Main {
 		tri.graphics.endFill();
 		tri.x = 400;
 		tri.y = 75;
-		tri.name = 'tri';*/
 		
-		/*trace('created ball');
+		trace('created ball');
 		var ball:Sprite = new Sprite();
 		ball.graphics.beginFill(0x00FF40);
 		ball.graphics.drawCircle(200, 200, 100);
 		ball.graphics.endFill();
-		ball.name = 'ball';*/
+		ball.name = 'ball';
 		
 		var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
 		var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
@@ -100,14 +100,14 @@ class Main {
 		var testSprite:Sprite = new Sprite();*/
 		
 		#if js
-		/*hedge.Lib.attachToStage(tri);
+		hedge.Lib.attachToStage(tri);
 		hedge.Lib.attachToStage(ball);
-		hedge.Lib.attachToStage(testSprite);*/
+		//hedge.Lib.attachToStage(testSprite);
 		hedge.Lib.attachToStage(sp3);
 		#elseif flash9
-		/*Lib.current.addChild(tri);
+		Lib.current.addChild(tri);
 		Lib.current.addChild(ball);
-		Lib.current.addChild(testSprite);*/
+		//Lib.current.addChild(testSprite);
 		Lib.current.addChild(sp3);
 		#end
 		
