@@ -2402,6 +2402,12 @@ hedge.display.Sprite.prototype.stopDrag = function() {
 }
 hedge.display.Sprite.prototype.useHandCursor = null;
 hedge.display.Sprite.prototype.__class__ = hedge.display.Sprite;
+hedge.display.FillType = function() { }
+hedge.display.FillType.__name__ = ["hedge","display","FillType"];
+hedge.display.FillType.prototype.__class__ = hedge.display.FillType;
+hedge.display.CapsStyle = function() { }
+hedge.display.CapsStyle.__name__ = ["hedge","display","CapsStyle"];
+hedge.display.CapsStyle.prototype.__class__ = hedge.display.CapsStyle;
 Std = function() { }
 Std.__name__ = ["Std"];
 Std["is"] = function(v,t) {
@@ -3832,13 +3838,16 @@ haxe.rtti.Meta.getFields = function(t) {
 	$s.pop();
 }
 haxe.rtti.Meta.prototype.__class__ = haxe.rtti.Meta;
+hedge.display.LineType = function() { }
+hedge.display.LineType.__name__ = ["hedge","display","LineType"];
+hedge.display.LineType.prototype.__class__ = hedge.display.LineType;
 hedge.display.Graphics = function(parent) { if( parent === $_ ) return; {
 	$s.push("hedge.display.Graphics::new");
 	var $spos = $s.length;
 	hedge.Object.apply(this,[]);
 	this.parent = parent;
 	parent.__jq__.append(this.__jq__ = new $("<div>"));
-	this.__jq__.attr("id",parent.__originalName__ + "-graphics").css({ width : "100%", height : "100%"}).css("background-color","transparent");
+	this.__jq__.attr("id",parent.__originalName__ + "-graphics").css(hedge.Setup.__attr__({ width : "100%", height : "100%"})).css("background-color","transparent");
 	this.__raphael__ = new Raphael(parent.__originalName__ + "-graphics","100%","100%");
 	$s.pop();
 }}
@@ -3847,20 +3856,21 @@ hedge.display.Graphics.__super__ = hedge.Object;
 for(var k in hedge.Object.prototype ) hedge.display.Graphics.prototype[k] = hedge.Object.prototype[k];
 hedge.display.Graphics.prototype.__element__ = null;
 hedge.display.Graphics.prototype.__raphael__ = null;
-hedge.display.Graphics.prototype.alpha = null;
 hedge.display.Graphics.prototype.beginBitmapFill = function(bitmap,matrix,repeat,smooth) {
 	$s.push("hedge.display.Graphics::beginBitmapFill");
 	var $spos = $s.length;
 	if(smooth == null) smooth = false;
 	if(repeat == null) repeat = true;
+	this.fillType = "bitmapdata";
 	$s.pop();
 }
 hedge.display.Graphics.prototype.beginFill = function(color,alpha) {
 	$s.push("hedge.display.Graphics::beginFill");
 	var $spos = $s.length;
 	if(alpha == null) alpha = 1.0;
-	this.color = color;
-	this.alpha = alpha;
+	this.fill_color = color;
+	this.fill_alpha = alpha;
+	this.fillType = "flood";
 	$s.pop();
 }
 hedge.display.Graphics.prototype.beginGradientFill = function(type,colors,alphas,ratios,matrix,spreadMethod,interpolationMethod,focalPointRatio) {
@@ -3869,6 +3879,52 @@ hedge.display.Graphics.prototype.beginGradientFill = function(type,colors,alphas
 	if(focalPointRatio == null) focalPointRatio = 0;
 	if(interpolationMethod == null) interpolationMethod = "rgb";
 	if(spreadMethod == null) spreadMethod = "pad";
+	this.fillType = "gradient";
+	$s.pop();
+}
+hedge.display.Graphics.prototype.bitmapdata_matrix = null;
+hedge.display.Graphics.prototype.bitmapdata_repeat = null;
+hedge.display.Graphics.prototype.bitmapdata_smooth = null;
+hedge.display.Graphics.prototype.bitmapdata_source = null;
+hedge.display.Graphics.prototype.checkFill = function() {
+	$s.push("hedge.display.Graphics::checkFill");
+	var $spos = $s.length;
+	switch(this.fillType) {
+	case "bitmapdata":{
+		null;
+	}break;
+	case "flood":{
+		this.__element__.attr("fill",(this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color)));
+		this.__element__.attr("opacity",(this.fill_alpha == null?1.0:this.fill_alpha));
+	}break;
+	case "gradient":{
+		null;
+	}break;
+	default:{
+		null;
+	}break;
+	}
+	$s.pop();
+}
+hedge.display.Graphics.prototype.checkLineStyle = function() {
+	$s.push("hedge.display.Graphics::checkLineStyle");
+	var $spos = $s.length;
+	switch(this.lineType) {
+	case "gradient":{
+		null;
+	}break;
+	case "plain":{
+		this.__element__.attr("stroke-width",(this.line_thickness == null?1.0:this.line_thickness));
+		this.__element__.attr("stroke",(this.line_color == null?"none":hedge.Setup.RGB_to_String(this.line_color)));
+		this.__element__.attr("stroke-opacity",(this.line_alpha == null?1.0:this.line_alpha));
+		this.__element__.attr("stroke-linecap",(this.line_caps == null?"butt":this.line_caps = (this.line_caps == "none"?"butt":this.line_caps)));
+		this.__element__.attr("stroke-linejoin",(this.line_joints == null?"miter":this.line_joints));
+		this.__element__.attr("stroke-miterlimit",(this.line_limit == null?3.0:this.line_limit));
+	}break;
+	default:{
+		null;
+	}break;
+	}
 	$s.pop();
 }
 hedge.display.Graphics.prototype.clear = function() {
@@ -3877,7 +3933,6 @@ hedge.display.Graphics.prototype.clear = function() {
 	null;
 	$s.pop();
 }
-hedge.display.Graphics.prototype.color = null;
 hedge.display.Graphics.prototype.curveTo = function(controlX,controlY,anchorX,anchorY) {
 	$s.push("hedge.display.Graphics::curveTo");
 	var $spos = $s.length;
@@ -3903,10 +3958,11 @@ hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
 	this.lineTo(x + width,y);
 	this.lineTo(x + width,y + height);
 	this.lineTo(x,y + height);
-	this.color = (this.color == null?16777215:this.color);
 	this.__element__ = this.__raphael__.path(this.path);
-	this.__element__.attr("fill",hedge.Setup.RGB_to_String(this.color));
-	this.__element__.attr("stroke",hedge.Setup.RGB_to_String(this.color));
+	this.fillType = "flood";
+	this.lineType = "plain";
+	this.checkFill();
+	this.checkLineStyle();
 	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : width, h : height}]);
 	$s.pop();
 }
@@ -3922,24 +3978,43 @@ hedge.display.Graphics.prototype.endFill = function() {
 	null;
 	$s.pop();
 }
+hedge.display.Graphics.prototype.fillType = null;
+hedge.display.Graphics.prototype.fill_alpha = null;
+hedge.display.Graphics.prototype.fill_color = null;
+hedge.display.Graphics.prototype.gradient_alphas = null;
+hedge.display.Graphics.prototype.gradient_colors = null;
+hedge.display.Graphics.prototype.gradient_focal = null;
+hedge.display.Graphics.prototype.gradient_interpolation = null;
+hedge.display.Graphics.prototype.gradient_matrix = null;
+hedge.display.Graphics.prototype.gradient_ratios = null;
+hedge.display.Graphics.prototype.gradient_spread = null;
+hedge.display.Graphics.prototype.gradient_type = null;
 hedge.display.Graphics.prototype.lineGradientStyle = function(type,colors,alphas,ratios,matrix,spreadMethod,interpolationMethod,focusPointRatio) {
 	$s.push("hedge.display.Graphics::lineGradientStyle");
 	var $spos = $s.length;
 	if(focusPointRatio == null) focusPointRatio = 0;
 	if(interpolationMethod == null) interpolationMethod = "rgb";
 	if(spreadMethod == null) spreadMethod = "pad";
+	this.lineType = "gradient";
 	$s.pop();
 }
 hedge.display.Graphics.prototype.lineStyle = function(thickness,color,alpha,pixelHinting,scaleMode,caps,joints,miterLimit) {
 	$s.push("hedge.display.Graphics::lineStyle");
 	var $spos = $s.length;
 	if(miterLimit == null) miterLimit = 3;
-	if(joints == null) joints = "round";
-	if(caps == null) caps = "round";
+	if(joints == null) joints = "miter";
+	if(caps == null) caps = "none";
 	if(scaleMode == null) scaleMode = "normal";
 	if(pixelHinting == null) pixelHinting = false;
 	if(alpha == null) alpha = 1.0;
 	if(color == null) color = 16777215;
+	this.lineType = "plain";
+	this.line_thickness = thickness;
+	this.line_color = color;
+	this.line_alpha = alpha;
+	this.line_caps = caps;
+	this.line_joints = joints;
+	this.line_limit = miterLimit;
 	$s.pop();
 }
 hedge.display.Graphics.prototype.lineTo = function(x,y) {
@@ -3948,6 +4023,13 @@ hedge.display.Graphics.prototype.lineTo = function(x,y) {
 	this.path += (("L" + x) + " ") + y;
 	$s.pop();
 }
+hedge.display.Graphics.prototype.lineType = null;
+hedge.display.Graphics.prototype.line_alpha = null;
+hedge.display.Graphics.prototype.line_caps = null;
+hedge.display.Graphics.prototype.line_color = null;
+hedge.display.Graphics.prototype.line_joints = null;
+hedge.display.Graphics.prototype.line_limit = null;
+hedge.display.Graphics.prototype.line_thickness = null;
 hedge.display.Graphics.prototype.moveTo = function(x,y) {
 	$s.push("hedge.display.Graphics::moveTo");
 	var $spos = $s.length;
@@ -3956,6 +4038,12 @@ hedge.display.Graphics.prototype.moveTo = function(x,y) {
 }
 hedge.display.Graphics.prototype.parent = null;
 hedge.display.Graphics.prototype.path = null;
+hedge.display.Graphics.prototype.reset = function() {
+	$s.push("hedge.display.Graphics::reset");
+	var $spos = $s.length;
+	null;
+	$s.pop();
+}
 hedge.display.Graphics.prototype.__class__ = hedge.display.Graphics;
 hedge.display.Stage = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.display.Stage::new");
@@ -4337,6 +4425,9 @@ hedge.Setup.ARGB_String_to_HEX = function(color) {
 	$s.pop();
 }
 hedge.Setup.prototype.__class__ = hedge.Setup;
+hedge.display.JointStyle = function() { }
+hedge.display.JointStyle.__name__ = ["hedge","display","JointStyle"];
+hedge.display.JointStyle.prototype.__class__ = hedge.display.JointStyle;
 Main = function() { }
 Main.__name__ = ["Main"];
 Main.main = function() {
@@ -4607,6 +4698,12 @@ hedge.events.Event.TAB_CHILDREN_CHANGE = "tabChildrenChange";
 hedge.events.Event.TAB_ENABLED_CHANGE = "tabEnabledChange";
 hedge.events.Event.TAB_INDEX_CHANGE = "tabIndexChange";
 hedge.events.Event.UNLOAD = "unload";
+hedge.display.FillType.FLOOD = "flood";
+hedge.display.FillType.BITMAPDATA = "bitmapdata";
+hedge.display.FillType.GRADIENT = "gradient";
+hedge.display.CapsStyle.NONE = "none";
+hedge.display.CapsStyle.ROUND = "round";
+hedge.display.CapsStyle.SQUARE = "square";
 js.Lib.onerror = null;
 hedge.events.MouseEvent.__meta__ = { statics : { CLICK : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","commandKey","controlKey","stageX","stageY","target"]}, DOUBLE_CLICK : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","commandKey","controlKey","stageX","stageY","target"]}, MOUSE_DOWN : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","commandKey","controlKey","clickCount","stageX","stageY","target"]}, MOUSE_MOVE : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","stageX","stageY","target"]}, MOUSE_OUT : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","relatedObject","localX","localY","shiftKey","stageX","stageY","target"]}, MOUSE_OVER : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","relatedObject","localX","localY","shiftKey","stageX","stageY","target"]}, MOUSE_UP : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","commandKey","controlKey","clickCount","stageX","stageY","target"]}, MOUSE_WHEEL : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","delta","localX","localY","shiftKey","stageX","stageY","target"]}, ROLL_OUT : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","relatedObject","localX","localY","shiftKey","stageX","stageY","target"]}, ROLL_OVER : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","relatedObject","localX","localY","shiftKey","stageX","stageY","target"]}}}
 hedge.events.MouseEvent.CLICK = "click";
@@ -4620,6 +4717,11 @@ hedge.events.MouseEvent.MOUSE_WHEEL = "mouseWheel";
 hedge.events.MouseEvent.ROLL_OUT = "rollOut";
 hedge.events.MouseEvent.ROLL_OVER = "rollOver";
 haxe.Md5.inst = new haxe.Md5();
+hedge.display.LineType.PLAIN = "plain";
+hedge.display.LineType.GRADIENT = "gradient";
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
+hedge.display.JointStyle.MITER = "miter";
+hedge.display.JointStyle.ROUND = "round";
+hedge.display.JointStyle.BEVEL = "bevel";
 $Main.init = Main.main();
