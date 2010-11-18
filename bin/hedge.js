@@ -1790,9 +1790,8 @@ hedge.jquery.events.ResizeElement.__name__ = ["hedge","jquery","events","ResizeE
 hedge.jquery.events.ResizeElement.prototype.add = function(handleObj) {
 	$s.push("hedge.jquery.events.ResizeElement::add");
 	var $spos = $s.length;
-	haxe.Log.trace("add internal",{ fileName : "ResizeElement.hx", lineNumber : 26, className : "hedge.jquery.events.ResizeElement", methodName : "add"});
 	handleObj.handler = function(e,p) {
-		$s.push("hedge.jquery.events.ResizeElement::add@27");
+		$s.push("hedge.jquery.events.ResizeElement::add@26");
 		var $spos = $s.length;
 		var __jq__ = new $(e.target);
 		var nw = p.w + p.x;
@@ -3897,6 +3896,7 @@ hedge.display.Graphics.prototype.bitmapdata_source = null;
 hedge.display.Graphics.prototype.checkFill = function() {
 	$s.push("hedge.display.Graphics::checkFill");
 	var $spos = $s.length;
+	this.fillType = (this.fillType == null?"flood":this.fillType);
 	switch(this.fillType) {
 	case "bitmapdata":{
 		null;
@@ -3917,6 +3917,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 hedge.display.Graphics.prototype.checkLineStyle = function() {
 	$s.push("hedge.display.Graphics::checkLineStyle");
 	var $spos = $s.length;
+	this.lineType = (this.lineType == null?"plain":this.lineType);
 	switch(this.lineType) {
 	case "gradient":{
 		null;
@@ -3971,13 +3972,7 @@ hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
 	y = y + this.line_thickness;
 	width = width - this.line_thickness;
 	height = height - this.line_thickness;
-	this.moveTo(x,y);
-	this.lineTo(x + width,y);
-	this.lineTo(x + width,y + height);
-	this.lineTo(x,y + height);
-	this.__element__ = this.__raphael__.path(this.path += " z");
-	this.fillType = "flood";
-	this.lineType = "plain";
+	this.__element__ = this.__raphael__.rect(x,y,width,height);
 	this.checkFill();
 	this.checkLineStyle();
 	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : width + this.line_thickness, h : height + this.line_thickness, p : this.parent}]);
@@ -4477,9 +4472,9 @@ Main.launch = function() {
 	sp3.setName("skialbainn");
 	sp3.getGraphics().beginFill(16711680,1);
 	sp3.getGraphics().lineStyle(3,0,1.0);
-	sp3.getGraphics().drawCircle(350,10,10);
 	sp3.getGraphics().drawRect(0,0,300,300);
-	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 94, className : "Main", methodName : "launch"});
+	sp3.getGraphics().drawCircle(350,10,10);
+	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 93, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
 	hedge.Lib.attachToStage(sp3);
@@ -4488,7 +4483,7 @@ Main.launch = function() {
 Main.onResize = function(e) {
 	$s.push("Main::onResize");
 	var $spos = $s.length;
-	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 134, className : "Main", methodName : "onResize"});
+	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 133, className : "Main", methodName : "onResize"});
 	$s.pop();
 }
 Main.prototype.__class__ = Main;

@@ -23,7 +23,6 @@ class ResizeElement {
 	
 	@jquery
 	public function add(handleObj:HandleObj) {
-		trace('add internal');
 		handleObj.handler = function(e:Dynamic, p:ChildProperties) {
 			var __jq__:JQuery = new JQuery(e.target);
 			var nw = p.w + p.x;

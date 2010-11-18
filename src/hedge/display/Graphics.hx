@@ -62,6 +62,7 @@ class Graphics extends Object {
 	}
 	
 	private function checkFill():Void {
+		this.fillType = this.fillType == null ? FillType.FLOOD : this.fillType;
 		switch (this.fillType) {
 			case FillType.BITMAPDATA:
 				
@@ -104,14 +105,9 @@ class Graphics extends Object {
 		y = y + this.line_thickness;
 		width = width - this.line_thickness;
 		height = height - this.line_thickness;
-		this.moveTo(x, y);
-		this.lineTo(x + width, y);
-		this.lineTo(x + width, y + height);
-		this.lineTo(x, y + height);
 		
-		__element__ = __raphael__.path(path += ' z');
-		this.fillType = FillType.FLOOD;
-		this.lineType = LineType.PLAIN;
+		__element__ = __raphael__.rect(x, y, width, height);
+		
 		this.checkFill();
 		this.checkLineStyle();
 		
@@ -152,6 +148,7 @@ class Graphics extends Object {
 	}
 	
 	private function checkLineStyle():Void {
+		this.lineType = this.lineType == null ? LineType.PLAIN : this.lineType;
 		switch (this.lineType) {
 			case LineType.GRADIENT:
 				
