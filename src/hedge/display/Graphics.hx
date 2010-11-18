@@ -98,7 +98,17 @@ class Graphics extends Object {
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		width = Math.round(width/2) - this.line_thickness;
+		height = Math.round(height/2) - this.line_thickness;
 		
+		__element__ = __raphael__.ellipse(x+width, y+height, width, height);
+		
+		this.checkFill();
+		this.checkLineStyle();
+		
+		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
@@ -116,7 +126,17 @@ class Graphics extends Object {
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		width = width - this.line_thickness;
+		height = height - this.line_thickness;
 		
+		__element__ = __raphael__.rect(x, y, width, height, radius);
+		
+		this.checkFill();
+		this.checkLineStyle();
+		
+		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function endFill() {
@@ -126,7 +146,7 @@ class Graphics extends Object {
 			this.checkFill();
 			this.checkLineStyle();
 			
-			parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
+			this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
 		}
 	}
 	

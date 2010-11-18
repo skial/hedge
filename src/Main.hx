@@ -89,10 +89,10 @@ class Main {
 		sp3.graphics.lineStyle(3, 0x000000, 1.0);
 		sp3.graphics.drawRect(0, 0, 300, 300);
 		sp3.graphics.drawCircle(350, 10, 10);
+		sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
+		sp3.graphics.drawEllipse(600, 10, 60, 70);
 		//sp3.graphics.endFill();
 		trace('changed sp3 x, y, width and height');
-		/*sp3.width = 300;
-		sp3.height = 300;*/
 		sp3.x = 100;
 		sp3.y = 150;
 		

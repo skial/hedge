@@ -3964,7 +3964,14 @@ hedge.display.Graphics.prototype.drawCircle = function(x,y,radius) {
 hedge.display.Graphics.prototype.drawEllipse = function(x,y,width,height) {
 	$s.push("hedge.display.Graphics::drawEllipse");
 	var $spos = $s.length;
-	null;
+	x = x + this.line_thickness;
+	y = y + this.line_thickness;
+	width = Math.round(width / 2) - this.line_thickness;
+	height = Math.round(height / 2) - this.line_thickness;
+	this.__element__ = this.__raphael__.ellipse(x + width,y + height,width,height);
+	this.checkFill();
+	this.checkLineStyle();
+	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : (width * 2) + this.line_thickness, h : (height * 2) + this.line_thickness, p : this.parent}]);
 	$s.pop();
 }
 hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
@@ -3983,7 +3990,14 @@ hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
 hedge.display.Graphics.prototype.drawRoundRect = function(x,y,width,height,radius) {
 	$s.push("hedge.display.Graphics::drawRoundRect");
 	var $spos = $s.length;
-	null;
+	x = x + this.line_thickness;
+	y = y + this.line_thickness;
+	width = width - this.line_thickness;
+	height = height - this.line_thickness;
+	this.__element__ = this.__raphael__.rect(x,y,width,height,radius);
+	this.checkFill();
+	this.checkLineStyle();
+	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : width + this.line_thickness, h : height - this.line_thickness, p : this.parent}]);
 	$s.pop();
 }
 hedge.display.Graphics.prototype.endFill = function() {
@@ -4498,7 +4512,9 @@ Main.launch = function() {
 	sp3.getGraphics().lineStyle(3,0,1.0);
 	sp3.getGraphics().drawRect(0,0,300,300);
 	sp3.getGraphics().drawCircle(350,10,10);
-	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 93, className : "Main", methodName : "launch"});
+	sp3.getGraphics().drawRoundRect(320,75,85,100,5);
+	sp3.getGraphics().drawEllipse(600,10,60,70);
+	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 95, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
 	hedge.Lib.attachToStage(tri);
