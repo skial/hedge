@@ -25,8 +25,17 @@ class ResizeElement {
 	public function add(handleObj:HandleObj) {
 		trace('add internal');
 		handleObj.handler = function(e:Dynamic, p:ChildProperties) {
-			trace(p);
-			new JQuery(e.target).css( { width:p.w + p.x, height:p.h + p.y } );
+			var __jq__:JQuery = new JQuery(e.target);
+			var nw = p.w + p.x;
+			var nh = p.h + p.y;
+			var parent = p.p;
+			// try to find out if I can move raphael canvas to show objects in negative space
+			if (parent.width < nw) {
+				parent.width = parent.width + (nw - parent.width);
+			}
+			if (parent.height < nh) {
+				parent.height = parent.height + (nh - parent.height);
+			}
 		}
 	}
 	

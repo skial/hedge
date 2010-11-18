@@ -208,26 +208,30 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function getHeight():Float {
 		//return new JQuery('div#' + this.name).height();
-		return __jq__.height();
+		//return __jq__.height();
+		return __jq__.data('height') == null ? __jq__.height() : __jq__.data('height');
 	}
 	
 	private function setHeight(value:Float):Float {
-		height = value;
 		//new JQuery('div#' + this.name).height(value);
 		__jq__.height(value);
-		return height;
+		//height = value;
+		__jq__.data('height', value);
+		return __jq__.data('height');
 	}
 	
 	private function getWidth():Float {
 		//return new JQuery('div#' + this.name).width();
-		return __jq__.width();
+		//return __jq__.width();
+		return __jq__.data('width') == null ? __jq__.width() : __jq__.data('width');
 	}
 	
 	private function setWidth(value:Float):Float {
-		width = value;
 		//new JQuery('div#' + this.name).width(value);
 		__jq__.width(value);
-		return width;
+		//width = value;
+		__jq__.data('width', value);
+		return __jq__.data('width');
 	}
 	
 	private function getX():Float {

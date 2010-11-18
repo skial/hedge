@@ -84,7 +84,8 @@ class Graphics extends Object {
 	}
 	
 	public function drawCircle(x:Float, y:Float, radius:Float) {
-		
+		__element__ = __raphael__.circle(x, y, radius);
+		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius, h:radius, p:parent } ]);
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
@@ -92,18 +93,21 @@ class Graphics extends Object {
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		width = width - this.line_thickness;
+		height = height - this.line_thickness;
 		this.moveTo(x, y);
 		this.lineTo(x + width, y);
 		this.lineTo(x + width, y + height);
 		this.lineTo(x, y + height);
 		
-		__element__ = __raphael__.path(path);
+		__element__ = __raphael__.path(path += ' z');
 		this.fillType = FillType.FLOOD;
 		this.lineType = LineType.PLAIN;
 		this.checkFill();
 		this.checkLineStyle();
-		
-		parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width, h:height } ]);
+		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:parent } ]);
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {

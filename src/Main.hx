@@ -86,9 +86,9 @@ class Main {
 		
 		sp3.name = 'skialbainn';
 		sp3.graphics.beginFill(0xff0000, 1);
-		//sp3.graphics.drawCircle(0, 0, 0);
-		//sp3.graphics.lineStyle(3, 0x000000, 1.0);
-		sp3.graphics.drawRect(3, 3, 300, 300);
+		sp3.graphics.lineStyle(3, 0x000000, 1.0);
+		sp3.graphics.drawRect(0, 0, 300, 300);
+		sp3.graphics.drawCircle(350, 10, 10);
 		//sp3.graphics.endFill();
 		trace('changed sp3 x, y, width and height');
 		/*sp3.width = 300;

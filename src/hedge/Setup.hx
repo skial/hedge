@@ -29,6 +29,7 @@ typedef ChildProperties = {
 	var y:Float;
 	var w:Float;
 	var h:Float;
+	var p:DisplayObject;
 }
 
 class Setup {
