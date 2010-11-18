@@ -3941,7 +3941,7 @@ hedge.display.Graphics.prototype.checkLineStyle = function() {
 hedge.display.Graphics.prototype.clear = function() {
 	$s.push("hedge.display.Graphics::clear");
 	var $spos = $s.length;
-	null;
+	this.__raphael__.clear();
 	$s.pop();
 }
 hedge.display.Graphics.prototype.curveTo = function(controlX,controlY,anchorX,anchorY) {
@@ -4517,6 +4517,7 @@ Main.launch = function() {
 	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 95, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
+	sp3.getGraphics().clear();
 	hedge.Lib.attachToStage(tri);
 	hedge.Lib.attachToStage(ball);
 	hedge.Lib.attachToStage(sp3);
@@ -4525,7 +4526,7 @@ Main.launch = function() {
 Main.onResize = function(e) {
 	$s.push("Main::onResize");
 	var $spos = $s.length;
-	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 133, className : "Main", methodName : "onResize"});
+	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 134, className : "Main", methodName : "onResize"});
 	$s.pop();
 }
 Main.prototype.__class__ = Main;

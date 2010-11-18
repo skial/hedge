@@ -95,6 +95,7 @@ class Main {
 		trace('changed sp3 x, y, width and height');
 		sp3.x = 100;
 		sp3.y = 150;
+		sp3.graphics.clear();
 		
 		/*trace('created testSprite');
 		var testSprite:Sprite = new Sprite();*/

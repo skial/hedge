@@ -78,11 +78,11 @@ class Graphics extends Object {
 	}
 	
 	public function clear() {
-		
+		__raphael__.clear();
 	}
 	
 	public function curveTo(controlX:Float, controlY:Float, anchorX:Float, anchorY:Float) {
-		
+		// todo
 	}
 	
 	public function drawCircle(x:Float, y:Float, radius:Float) {
@@ -154,6 +154,7 @@ class Graphics extends Object {
 	
 	public function lineGradientStyle(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focusPointRatio:Float = 0) {
 		this.lineType = LineType.GRADIENT;
+		// todo
 	}
 	
 	public var line_thickness:Float;
