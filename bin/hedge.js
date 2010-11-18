@@ -1798,17 +1798,12 @@ hedge.jquery.events.ResizeElement.prototype.add = function(handleObj) {
 		var nw = p.w + p.x;
 		var nh = p.h + p.y;
 		var parent = p.p;
-		haxe.Log.trace(parent.getName(),{ fileName : "ResizeElement.hx", lineNumber : 32, className : "hedge.jquery.events.ResizeElement", methodName : "add"});
-		haxe.Log.trace(parent.getWidth(),{ fileName : "ResizeElement.hx", lineNumber : 33, className : "hedge.jquery.events.ResizeElement", methodName : "add"});
-		haxe.Log.trace(parent.getHeight(),{ fileName : "ResizeElement.hx", lineNumber : 34, className : "hedge.jquery.events.ResizeElement", methodName : "add"});
 		if(parent.getWidth() < nw) {
 			parent.setWidth(parent.getWidth() + (nw - parent.getWidth()));
 		}
 		if(parent.getHeight() < nh) {
 			parent.setHeight(parent.getHeight() + (nh - parent.getHeight()));
 		}
-		haxe.Log.trace(parent.getWidth(),{ fileName : "ResizeElement.hx", lineNumber : 41, className : "hedge.jquery.events.ResizeElement", methodName : "add"});
-		haxe.Log.trace(parent.getHeight(),{ fileName : "ResizeElement.hx", lineNumber : 42, className : "hedge.jquery.events.ResizeElement", methodName : "add"});
 		$s.pop();
 	}
 	$s.pop();
@@ -3955,8 +3950,12 @@ hedge.display.Graphics.prototype.curveTo = function(controlX,controlY,anchorX,an
 hedge.display.Graphics.prototype.drawCircle = function(x,y,radius) {
 	$s.push("hedge.display.Graphics::drawCircle");
 	var $spos = $s.length;
+	x = x + this.line_thickness;
+	y = y + this.line_thickness;
 	this.__element__ = this.__raphael__.circle(x,y,radius);
-	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : radius, h : radius, p : this.parent}]);
+	this.checkFill();
+	this.checkLineStyle();
+	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : radius + this.line_thickness, h : radius + this.line_thickness, p : this.parent}]);
 	$s.pop();
 }
 hedge.display.Graphics.prototype.drawEllipse = function(x,y,width,height) {
@@ -4478,9 +4477,9 @@ Main.launch = function() {
 	sp3.setName("skialbainn");
 	sp3.getGraphics().beginFill(16711680,1);
 	sp3.getGraphics().lineStyle(3,0,1.0);
-	sp3.getGraphics().drawRect(0,0,300,300);
 	sp3.getGraphics().drawCircle(350,10,10);
-	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 93, className : "Main", methodName : "launch"});
+	sp3.getGraphics().drawRect(0,0,300,300);
+	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 94, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
 	hedge.Lib.attachToStage(sp3);
@@ -4489,7 +4488,7 @@ Main.launch = function() {
 Main.onResize = function(e) {
 	$s.push("Main::onResize");
 	var $spos = $s.length;
-	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 133, className : "Main", methodName : "onResize"});
+	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 134, className : "Main", methodName : "onResize"});
 	$s.pop();
 }
 Main.prototype.__class__ = Main;
