@@ -18,16 +18,7 @@ class DisplayObjectContainer extends InteractiveObject {
 
 	public function new() {
 		super();
-		// Commented out line below is to be kept for now - just in case.
-		//Setup.__storage__.append(new JQuery('<div></div>').attr('id', this.name).css( Setup.__attr__( { width:'100%', height:'100%', left:'0px', top:'0px' } ) ));
 		__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
-	}
-	
-	public function something(e) {
-		trace('event set off');
-		trace(e);
-		trace(new JQuery(e.target).attr('id'));
-		trace(new JQuery(e.currentTarget).attr('id'));
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {

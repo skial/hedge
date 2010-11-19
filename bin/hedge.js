@@ -859,15 +859,6 @@ hedge.display.DisplayObjectContainer.prototype.setTabChildren = function(value) 
 	}
 	$s.pop();
 }
-hedge.display.DisplayObjectContainer.prototype.something = function(e) {
-	$s.push("hedge.display.DisplayObjectContainer::something");
-	var $spos = $s.length;
-	haxe.Log.trace("event set off",{ fileName : "DisplayObjectContainer.hx", lineNumber : 27, className : "hedge.display.DisplayObjectContainer", methodName : "something"});
-	haxe.Log.trace(e,{ fileName : "DisplayObjectContainer.hx", lineNumber : 28, className : "hedge.display.DisplayObjectContainer", methodName : "something"});
-	haxe.Log.trace(new $(e.target).attr("id"),{ fileName : "DisplayObjectContainer.hx", lineNumber : 29, className : "hedge.display.DisplayObjectContainer", methodName : "something"});
-	haxe.Log.trace(new $(e.currentTarget).attr("id"),{ fileName : "DisplayObjectContainer.hx", lineNumber : 30, className : "hedge.display.DisplayObjectContainer", methodName : "something"});
-	$s.pop();
-}
 hedge.display.DisplayObjectContainer.prototype.swapChildren = function(child1,child2) {
 	$s.push("hedge.display.DisplayObjectContainer::swapChildren");
 	var $spos = $s.length;
@@ -3947,7 +3938,7 @@ hedge.display.Graphics.prototype.clear = function() {
 hedge.display.Graphics.prototype.curveTo = function(controlX,controlY,anchorX,anchorY) {
 	$s.push("hedge.display.Graphics::curveTo");
 	var $spos = $s.length;
-	null;
+	this.path += (((((("Q" + controlX) + " ") + controlY) + " ") + anchorX) + " ") + anchorY;
 	$s.pop();
 }
 hedge.display.Graphics.prototype.drawCircle = function(x,y,radius) {
@@ -4005,6 +3996,8 @@ hedge.display.Graphics.prototype.endFill = function() {
 	var $spos = $s.length;
 	if(this.path != "" || this.path == null) {
 		this.__element__ = this.__raphael__.path(this.path += " z");
+		haxe.Log.trace(this.path,{ fileName : "Graphics.hx", lineNumber : 149, className : "hedge.display.Graphics", methodName : "endFill"});
+		haxe.Log.trace(this.__element__.getBBox().width,{ fileName : "Graphics.hx", lineNumber : 150, className : "hedge.display.Graphics", methodName : "endFill"});
 		this.checkFill();
 		this.checkLineStyle();
 		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
@@ -4500,12 +4493,14 @@ Main.launch = function() {
 	haxe.Log.trace("created ball",{ fileName : "Main.hx", lineNumber : 74, className : "Main", methodName : "launch"});
 	var ball = new hedge.display.Sprite();
 	ball.getGraphics().beginFill(65344);
-	ball.getGraphics().drawCircle(200,200,100);
+	ball.getGraphics().moveTo(100,100);
+	ball.getGraphics().curveTo(30,150,100,200);
+	ball.getGraphics().curveTo(50,150,100,100);
 	ball.getGraphics().endFill();
 	ball.setName("ball");
 	var bmd1 = new hedge.display.BitmapData(100,100,true,16711808);
 	var bmd2 = new hedge.display.BitmapData(100,100,true,33023);
-	haxe.Log.trace("created sp3",{ fileName : "Main.hx", lineNumber : 84, className : "Main", methodName : "launch"});
+	haxe.Log.trace("created sp3",{ fileName : "Main.hx", lineNumber : 91, className : "Main", methodName : "launch"});
 	var sp3 = new hedge.display.Sprite();
 	sp3.setName("skialbainn");
 	sp3.getGraphics().beginFill(16711680,1);
@@ -4514,19 +4509,13 @@ Main.launch = function() {
 	sp3.getGraphics().drawCircle(350,10,10);
 	sp3.getGraphics().drawRoundRect(320,75,85,100,5);
 	sp3.getGraphics().drawEllipse(600,10,60,70);
-	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 95, className : "Main", methodName : "launch"});
+	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 101, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
 	sp3.getGraphics().clear();
 	hedge.Lib.attachToStage(tri);
 	hedge.Lib.attachToStage(ball);
 	hedge.Lib.attachToStage(sp3);
-	$s.pop();
-}
-Main.onResize = function(e) {
-	$s.push("Main::onResize");
-	var $spos = $s.length;
-	haxe.Log.trace(e,{ fileName : "Main.hx", lineNumber : 134, className : "Main", methodName : "onResize"});
 	$s.pop();
 }
 Main.prototype.__class__ = Main;

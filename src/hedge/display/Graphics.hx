@@ -41,6 +41,7 @@ class Graphics extends Object {
 	public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false) {
 		// maybe use canvas...?
 		this.fillType = FillType.BITMAPDATA;
+		// todo
 	}
 	
 	public function beginFill(color:Int, alpha:Float = 1.0) {
@@ -60,6 +61,7 @@ class Graphics extends Object {
 	
 	public function beginGradientFill(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focalPointRatio:Float = 0) {
 		this.fillType = FillType.GRADIENT;
+		// todo
 	}
 	
 	private function checkFill():Void {
@@ -78,11 +80,13 @@ class Graphics extends Object {
 	}
 	
 	public function clear() {
+		// todo need to update display object size
 		__raphael__.clear();
 	}
 	
 	public function curveTo(controlX:Float, controlY:Float, anchorX:Float, anchorY:Float) {
 		// todo
+		path += 'Q' + controlX + ' ' + controlY + ' ' + anchorX + ' ' + anchorY;
 	}
 	
 	public function drawCircle(x:Float, y:Float, radius:Float) {
@@ -142,7 +146,8 @@ class Graphics extends Object {
 	public function endFill() {
 		if (this.path != '' || this.path == null) {
 			__element__ = __raphael__.path(path += ' z');
-			
+			trace(this.path);
+			trace(__element__.getBBox().width);
 			this.checkFill();
 			this.checkLineStyle();
 			

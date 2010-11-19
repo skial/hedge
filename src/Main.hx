@@ -72,10 +72,17 @@ class Main {
 		tri.y = 75;
 		
 		trace('created ball');
+		//M100,200 	C100,100 250,	100 250,200 S400,300 400,200
+		//M250,0		C300,0 	300,	50C300 100 250 100C200 0 250 0 z
 		var ball:Sprite = new Sprite();
-		ball.graphics.beginFill(0x00FF40);
+		/*ball.graphics.beginFill(0x00FF40);
 		ball.graphics.drawCircle(200, 200, 100);
-		ball.graphics.endFill();
+		ball.graphics.endFill();*/
+		ball.graphics.beginFill(0x00FF40);
+      ball.graphics.moveTo(100, 100); 
+      ball.graphics.curveTo(30, 150, 100, 200);    
+      ball.graphics.curveTo(50, 150, 100, 100);
+      ball.graphics.endFill();
 		ball.name = 'ball';
 		
 		var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
@@ -91,47 +98,29 @@ class Main {
 		sp3.graphics.drawCircle(350, 10, 10);
 		sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
 		sp3.graphics.drawEllipse(600, 10, 60, 70);
-		//sp3.graphics.endFill();
 		trace('changed sp3 x, y, width and height');
 		sp3.x = 100;
 		sp3.y = 150;
 		sp3.graphics.clear();
 		
-		/*trace('created testSprite');
-		var testSprite:Sprite = new Sprite();*/
-		
 		#if js
 		hedge.Lib.attachToStage(tri);
 		hedge.Lib.attachToStage(ball);
-		//hedge.Lib.attachToStage(testSprite);
 		hedge.Lib.attachToStage(sp3);
 		#elseif flash9
 		Lib.current.addChild(tri);
 		Lib.current.addChild(ball);
-		//Lib.current.addChild(testSprite);
 		Lib.current.addChild(sp3);
 		#end
-		
-		/*trace('added sp3 to testSprite');
-		testSprite.addChild(sp3);*/
 		
 		/*trace('stage name: ' + ball.stage);
 		trace('stage x pos: ' + ball.stage.x);
 		trace('stage y pos: ' + ball.stage.y);
 		
-		trace('testSprite x: ' + testSprite.x);
-		trace('testSprite y: ' + testSprite.y);
-		trace('testSprite width: ' + testSprite.width);
-		trace('testSprite height: ' + testSprite.height);
-		
 		trace('testSprite child sp3 x: ' + sp3.x);
 		trace('testSprite child sp3 y: ' + sp3.y);
 		trace('testSprite child sp3 width: ' + sp3.width);
 		trace('testSprite child sp3 height: ' + sp3.height);*/
-	}
-	
-	static function onResize(e) {
-		trace(e);
 	}
 	
 }
