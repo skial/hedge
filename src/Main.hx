@@ -100,7 +100,7 @@ class Main {
 		trace('changed sp3 x, y, width and height');
 		sp3.x = 100;
 		sp3.y = 150;
-		//sp3.graphics.clear();
+		sp3.graphics.clear();
 		
 		#if js
 		//hedge.Lib.attachToStage(tri);
@@ -113,10 +113,7 @@ class Main {
 		#end
 		
 		sp3.addChild(tri);
-		
-		trace(tri.alpha);
-		trace(ball.alpha);
-		trace(sp3.alpha);
+		tri.scaleX *= 2;
 	}
 	
 }
