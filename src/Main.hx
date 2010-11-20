@@ -59,7 +59,6 @@ class Main {
 		trace('Stage Name: ' + Lib.current.stage.name);
 		#end
 		
-		trace('created tri');
 		var tri:Shape = new Shape();
 		tri.name = 'tri';
 		tri.graphics.beginFill(0xFF0080);
@@ -70,8 +69,8 @@ class Main {
 		tri.graphics.endFill();
 		tri.x = 400;
 		tri.y = 75;
+		trace('created tri');
 		
-		trace('created ball');
 		var ball:Sprite = new Sprite();
 		ball.graphics.beginFill(0x00FF99);
 		ball.graphics.drawCircle(200, 200, 100);
@@ -82,13 +81,14 @@ class Main {
       ball.graphics.curveTo(200, 0, 250, 0);
       ball.graphics.endFill();
 		ball.name = 'ball';
+		trace('created ball');
 		
 		var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
 		var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
 		
-		trace('created sp3');
-		var sp3:Sprite = new Sprite();
 		
+		var sp3:Sprite = new Sprite();
+		trace('created sp3');
 		sp3.name = 'skialbainn';
 		sp3.graphics.beginFill(0xff0000, 1);
 		//sp3.graphics.beginGradientFill(GradientType.RADIAL, [0xfff,0x000], [1.0, 1.0], [90,180]);
@@ -100,26 +100,23 @@ class Main {
 		trace('changed sp3 x, y, width and height');
 		sp3.x = 100;
 		sp3.y = 150;
-		sp3.graphics.clear();
+		//sp3.graphics.clear();
 		
 		#if js
-		hedge.Lib.attachToStage(tri);
+		//hedge.Lib.attachToStage(tri);
 		hedge.Lib.attachToStage(ball);
 		hedge.Lib.attachToStage(sp3);
 		#elseif flash9
-		Lib.current.addChild(tri);
+		//Lib.current.addChild(tri);
 		Lib.current.addChild(ball);
 		Lib.current.addChild(sp3);
 		#end
 		
-		/*trace('stage name: ' + ball.stage);
-		trace('stage x pos: ' + ball.stage.x);
-		trace('stage y pos: ' + ball.stage.y);
+		sp3.addChild(tri);
 		
-		trace('testSprite child sp3 x: ' + sp3.x);
-		trace('testSprite child sp3 y: ' + sp3.y);
-		trace('testSprite child sp3 width: ' + sp3.width);
-		trace('testSprite child sp3 height: ' + sp3.height);*/
+		trace(tri.alpha);
+		trace(ball.alpha);
+		trace(sp3.alpha);
 	}
 	
 }

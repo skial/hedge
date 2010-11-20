@@ -22,9 +22,9 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
-		new JQuery ('div#' + child.name).appendTo('div#' + this.name);
+		child.__jq__.appendTo(__jq__);
 		child.parent = this;
-		__jq__.trigger(Setup.RESIZE_ELEMENT, [{x:child.x, y:child.y, w:child.width, h:child.height}]);
+		__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:child.x, y:child.y, w:child.width, h:child.height, p:this } ]);
 		return child;
 	}
 	

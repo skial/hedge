@@ -8,12 +8,12 @@ package hedge.geom;
 class Rectangle {
 	
 	public var bottom:Float;
-	//public var bottomRight:Point;
+	public var bottomRight:Point;
 	public var left:Float;
 	public var right:Float;
-	//public var size:Point;
+	public var size:Point;
 	public var top:Float;
-	//public var topLeft:Point;
+	public var topLeft:Point;
 	public var height:Float;
 	public var width:Float;
 	public var y:Float;

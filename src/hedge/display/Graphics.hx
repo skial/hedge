@@ -19,6 +19,52 @@ class Graphics extends Object {
 	public var fill_color:Int;
 	public var fill_alpha:Float;
 	
+	//	GENERAL LINE VARIABLES
+	
+	public var lineType:String;
+	
+	//	LINESTYLE
+	
+	public var line_thickness:Float;
+	public var line_color:Int;
+	public var line_alpha:Float;
+	public var line_caps:String;
+	public var line_joints:String;
+	public var line_limit:Float;
+	
+	// LINE GRADIENT
+	
+	public var line_gradient_type:String;
+	public var line_gradient_colors:Array<Int>;
+	public var line_gradient_alphas:Array<Float>;
+	public var line_gradient_ratios:Array<Int>;
+	public var line_gradient_matrix:Matrix;
+	public var line_gradient_spread:String;
+	public var line_gradient_interpolation:String;
+	public var line_gradient_focus:Float;
+	
+	//	GENERAL FILL VARIABLES
+	
+	public var fillType:String;
+	
+	//	FILL GRADIENT
+	
+	public var fill_gradient_type:String;
+	public var fill_gradient_colors:Array<Int>;
+	public var fill_gradient_alphas:Array<Float>;
+	public var fill_gradient_ratios:Array<Int>;
+	public var fill_gradient_matrix:Matrix;
+	public var fill_gradient_spread:String;
+	public var fill_gradient_interpolation:String;
+	public var fill_gradient_focal:Float;
+	
+	//	BITMAPDATA FILL
+	
+	public var bitmapdata_source:BitmapData;
+	public var bitmapdata_matrix:Matrix;
+	public var bitmapdata_repeat:Bool;
+	public var bitmapdata_smooth:Bool;
+	
 	// SVG path data at - http://www.w3.org/TR/SVG/paths.html#PathData
 	
 	public function new(parent:DisplayObject) {
@@ -32,13 +78,6 @@ class Graphics extends Object {
 		
 		__raphael__ = new Raphael(parent.__originalName__ + '-graphics', '100%', '100%');
 	}
-	
-	public var fillType:String;
-	
-	public var bitmapdata_source:BitmapData;
-	public var bitmapdata_matrix:Matrix;
-	public var bitmapdata_repeat:Bool;
-	public var bitmapdata_smooth:Bool;
 	
 	public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false) {
 		// maybe use canvas...?
@@ -56,35 +95,26 @@ class Graphics extends Object {
 		this.fillType = FillType.FLOOD;
 	}
 	
-	public var gradient_type:String;
-	public var gradient_colors:Array<Int>;
-	public var gradient_alphas:Array<Float>;
-	public var gradient_ratios:Array<Int>;
-	public var gradient_matrix:Matrix;
-	public var gradient_spread:String;
-	public var gradient_interpolation:String;
-	public var gradient_focal:Float;
-	
 	public function beginGradientFill(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, ?matrix:Matrix = null, ?spreadMethod:String = 'pad', ?interpolationMethod:String = 'rgb', ?focalPointRatio:Float = 0) {
 		this.fillType = FillType.GRADIENT;
 		// TODO - not compatible yet - needs better browser support for svg
-		this.gradient_type = type;
-		this.gradient_colors = colors;
-		this.gradient_alphas = alphas;
-		this.gradient_ratios = ratios;
-		this.gradient_matrix = matrix;
-		this.gradient_spread = spreadMethod;
-		this.gradient_interpolation = interpolationMethod;
-		this.gradient_focal = focalPointRatio;
+		this.fill_gradient_type = type;
+		this.fill_gradient_colors = colors;
+		this.fill_gradient_alphas = alphas;
+		this.fill_gradient_ratios = ratios;
+		this.fill_gradient_matrix = matrix;
+		this.fill_gradient_spread = spreadMethod;
+		this.fill_gradient_interpolation = interpolationMethod;
+		this.fill_gradient_focal = focalPointRatio;
 		
 		//	WARNING - INCOMPLETE METHOD - LACK OF BROWSER SUPPORT
 		
 		throw 'This method is not complete - not recommend to use';
 		
-		if (this.gradient_colors.length != this.gradient_alphas.length) {
+		if (this.fill_gradient_colors.length != this.fill_gradient_alphas.length) {
 			throw 'You must have an alpha value for each color value.';
 		}
-		if (this.gradient_colors.length != this.gradient_ratios.length) {
+		if (this.fill_gradient_colors.length != this.fill_gradient_ratios.length) {
 			throw 'You must have an ratio value for each color value.';
 		}
 	}
@@ -104,14 +134,14 @@ class Graphics extends Object {
 				
 				for (i in 0...this.gradient_colors.length) {
 					if (i == 0) {
-						color_alpha += Setup.RGB_to_String(this.gradient_colors[i]);
+						color_alpha += Setup.RGB_to_String(this.fill_gradient_colors[i]);
 					} else {
-						color_alpha += '-' + Setup.RGB_to_String(this.gradient_colors[i]);
+						color_alpha += '-' + Setup.RGB_to_String(this.fill_gradient_colors[i]);
 					}
-					color_alpha += ':' + ((this.gradient_ratios[i]/255)*100);
+					color_alpha += ':' + ((this.fill_gradient_ratios[i]/255)*100);
 				}
 				
-				switch (this.gradient_type) {
+				switch (this.fill_gradient_type) {
 					case GradientType.LINEAR:
 						__element__.attr('fill', '0-' + color_alpha);
 					case GradientType.RADIAL:
@@ -124,7 +154,7 @@ class Graphics extends Object {
 	}
 	
 	public function clear() {
-		// todo need to update display object size
+		// TODO need to update display object size
 		__raphael__.clear();
 	}
 	
@@ -189,8 +219,6 @@ class Graphics extends Object {
 	public function endFill() {
 		if (this.path != '' || this.path == null) {
 			__element__ = __raphael__.path(path += ' z');
-			trace(this.path);
-			trace(__element__.getBBox().width);
 			this.checkFill();
 			this.checkLineStyle();
 			
@@ -198,19 +226,18 @@ class Graphics extends Object {
 		}
 	}
 	
-	public var lineType:String;
-	
 	public function lineGradientStyle(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focusPointRatio:Float = 0) {
 		this.lineType = LineType.GRADIENT;
 		// todo
+		this.line_gradient_type = type;
+		this.line_gradient_colors = colors;
+		this.line_gradient_alphas = alphas;
+		this.line_gradient_ratios = ratios;
+		this.line_gradient_matrix = matrix;
+		this.line_gradient_spread = spreadMethod;
+		this.line_gradient_interpolation = interpolationMethod;
+		this.line_gradient_focus = focusPointRatio;
 	}
-	
-	public var line_thickness:Float;
-	public var line_color:Int;
-	public var line_alpha:Float;
-	public var line_caps:String;
-	public var line_joints:String;
-	public var line_limit:Float;
 	
 	public function lineStyle(thickness:Float = null, color:Int = 0xFFFFFF, alpha:Float = 1.0, pixelHinting:Bool = false, scaleMode:String = 'normal', caps:String = 'none', joints:String = 'miter', miterLimit:Float = 3) {
 		this.lineType = LineType.PLAIN;
@@ -249,12 +276,6 @@ class Graphics extends Object {
 	
 	public function moveTo(x:Float, y:Float) {
 		path += 'M' + x + ' ' + y;
-	}
-	
-	//	INTERNAL
-	
-	private function reset():Void {
-		
 	}
 	
 }

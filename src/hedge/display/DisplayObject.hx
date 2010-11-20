@@ -44,10 +44,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		// width and height need to be set to 0
 		__jq__.attr('id', this.name).css( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) );
 		__jq__.attr('data-originalName', __originalName__);
+		
+		parent = Setup.__default__;
 	}
 	
-	public function getBounds(targetCoordinateSpace:DisplayObject):Dynamic {
-		return 'rectangle';
+	public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle {
+		return new Rectangle();
 	}
 	
 	public function getRect(targetCoordinateSpace:DisplayObject):Dynamic {
@@ -132,15 +134,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getName():String {
-		return name;
+		return __jq__.attr('id');
 	}
 	
 	private function setName(value:String):String {
 		__jq__.attr('id', value);
-		//new JQuery('div#' + name + '-graphics').attr('id', '' + value + '-graphics');
-		//new JQuery('div#' + name + '-graphics').attr('id', '' + value + '-graphics');
-		name = value;
-		return name;
+		return value;
 	}
 	
 	private function getBackground():Dynamic {
@@ -198,60 +197,53 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getVisible():Bool {
-		return visible;
+		return __jq__.data('visible') == null ? true : __jq__.data('visible');
 	}
 	
 	private function setVisible(value:Bool):Bool {
-		visible = value;
-		return visible;
+		__jq__.css('display', value == false ? 'none' : 'block');
+		__jq__.css('visibility', value == false ? 'hidden' : 'visible');
+		__jq__.data('visible', value);
+		return __jq__.data('visible');
 	}
 	
 	private function getHeight():Float {
-		//return new JQuery('div#' + this.name).height();
-		//return __jq__.height();
 		return __jq__.data('height') == null ? __jq__.height() : __jq__.data('height');
 	}
 	
 	private function setHeight(value:Float):Float {
-		//new JQuery('div#' + this.name).height(value);
 		__jq__.height(value);
-		//height = value;
 		__jq__.data('height', value);
 		return __jq__.data('height');
 	}
 	
 	private function getWidth():Float {
-		//return new JQuery('div#' + this.name).width();
-		//return __jq__.width();
 		return __jq__.data('width') == null ? __jq__.width() : __jq__.data('width');
 	}
 	
 	private function setWidth(value:Float):Float {
-		//new JQuery('div#' + this.name).width(value);
 		__jq__.width(value);
-		//width = value;
 		__jq__.data('width', value);
 		return __jq__.data('width');
 	}
 	
 	private function getX():Float {
-		//return new JQuery('div#' + this.name).position().top;
-		return __jq__.position().top;
+		return __jq__.position().left;
 	}
 	
 	private function setX(value:Float):Float {
 		x = value;
-		new JQuery('div#' + this.name).css('left', '' + value + 'px');
+		__jq__.css('left', '' + value + 'px');
 		return x;
 	}
 	
 	private function getY():Float {
-		return new JQuery('div#' + this.name).position().left;
+		return __jq__.position().top;
 	}
 	
 	private function setY(value:Float):Float {
 		y = value;
-		new JQuery('div#' + this.name).css('top', '' + value + 'px');
+		__jq__.css('top', '' + value + 'px');
 		return y;
 	}
 	
