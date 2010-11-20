@@ -5,9 +5,9 @@ WORKING - kind of
 I will try and keep this up todate on whats completed.
 
 All graphics method are working apart from the following:
-	beginBitmapFill		-	not implemented
-	beginGradientFill		-	either due to lack of svg support in all browsers or I'm not understanding something
-	lineGradientStyle		-	not implemented - pretty sure not supported by raphaeljs - but svg spec does allow this
+beginBitmapFill     -  not implemented
+beginGradientFill   -  either due to lack of svg support in all browsers or I'm not understanding something
+lineGradientStyle   -  not implemented - pretty sure not supported by raphaeljs - but svg spec does allow this
 
 NOTES
 -----
