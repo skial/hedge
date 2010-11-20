@@ -44,6 +44,10 @@ class Graphics extends Object {
 		// maybe use canvas...?
 		this.fillType = FillType.BITMAPDATA;
 		// todo
+		this.bitmapdata_source = bitmap;
+		this.bitmapdata_matrix = matrix;
+		this.bitmapdata_repeat = repeat;
+		this.bitmapdata_smooth = smooth;
 	}
 	
 	public function beginFill(color:Int, alpha:Float = 1.0) {
@@ -63,7 +67,7 @@ class Graphics extends Object {
 	
 	public function beginGradientFill(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, ?matrix:Matrix = null, ?spreadMethod:String = 'pad', ?interpolationMethod:String = 'rgb', ?focalPointRatio:Float = 0) {
 		this.fillType = FillType.GRADIENT;
-		// TODO - not compatible
+		// TODO - not compatible yet - needs better browser support for svg
 		this.gradient_type = type;
 		this.gradient_colors = colors;
 		this.gradient_alphas = alphas;
@@ -72,6 +76,10 @@ class Graphics extends Object {
 		this.gradient_spread = spreadMethod;
 		this.gradient_interpolation = interpolationMethod;
 		this.gradient_focal = focalPointRatio;
+		
+		//	WARNING - INCOMPLETE METHOD - LACK OF BROWSER SUPPORT
+		
+		throw 'This method is not complete - not recommend to use';
 		
 		if (this.gradient_colors.length != this.gradient_alphas.length) {
 			throw 'You must have an alpha value for each color value.';
@@ -85,14 +93,14 @@ class Graphics extends Object {
 		this.fillType = this.fillType == null ? FillType.FLOOD : this.fillType;
 		switch (this.fillType) {
 			case FillType.BITMAPDATA:
-				
+				throw 'beginBitmapFill is not implemented';
 			case FillType.FLOOD:
 				__element__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color));
 				__element__.attr('opacity', this.fill_alpha == null ? 1.0 : this.fill_alpha);
 			case FillType.GRADIENT:
 				// TODO - raphael gradient incompatible with flash code & cant recreate same result
 				//	Browsers need to better support svg so raphael can advance
-				var color_alpha:String = '0-';
+				var color_alpha:String = '';
 				
 				for (i in 0...this.gradient_colors.length) {
 					if (i == 0) {
@@ -105,9 +113,10 @@ class Graphics extends Object {
 				
 				switch (this.gradient_type) {
 					case GradientType.LINEAR:
-						__element__.attr('fill', color_alpha);
+						__element__.attr('fill', '0-' + color_alpha);
 					case GradientType.RADIAL:
-						
+						throw 'Gradient.RADIAL is not supported by RaphaelJS on any thing not a circle or ellipse';
+						__element__.attr('fill', 'r' + color_alpha);
 				}
 			default:
 				

@@ -3862,6 +3862,10 @@ hedge.display.Graphics.prototype.beginBitmapFill = function(bitmap,matrix,repeat
 	if(smooth == null) smooth = false;
 	if(repeat == null) repeat = true;
 	this.fillType = "bitmapdata";
+	this.bitmapdata_source = bitmap;
+	this.bitmapdata_matrix = matrix;
+	this.bitmapdata_repeat = repeat;
+	this.bitmapdata_smooth = smooth;
 	$s.pop();
 }
 hedge.display.Graphics.prototype.beginFill = function(color,alpha) {
@@ -3888,6 +3892,7 @@ hedge.display.Graphics.prototype.beginGradientFill = function(type,colors,alphas
 	this.gradient_spread = spreadMethod;
 	this.gradient_interpolation = interpolationMethod;
 	this.gradient_focal = focalPointRatio;
+	throw "This method is not complete - not recommend to use";
 	if(this.gradient_colors.length != this.gradient_alphas.length) {
 		throw "You must have an alpha value for each color value.";
 	}
@@ -3906,14 +3911,14 @@ hedge.display.Graphics.prototype.checkFill = function() {
 	this.fillType = (this.fillType == null?"flood":this.fillType);
 	switch(this.fillType) {
 	case "bitmapdata":{
-		null;
+		throw "beginBitmapFill is not implemented";
 	}break;
 	case "flood":{
 		this.__element__.attr("fill",(this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color)));
 		this.__element__.attr("opacity",(this.fill_alpha == null?1.0:this.fill_alpha));
 	}break;
 	case "gradient":{
-		var color_alpha = "0-";
+		var color_alpha = "";
 		{
 			var _g1 = 0, _g = this.gradient_colors.length;
 			while(_g1 < _g) {
@@ -3927,13 +3932,13 @@ hedge.display.Graphics.prototype.checkFill = function() {
 				color_alpha += ":" + ((this.gradient_ratios[i] / 255) * 100);
 			}
 		}
-		haxe.Log.trace(color_alpha,{ fileName : "Graphics.hx", lineNumber : 104, className : "hedge.display.Graphics", methodName : "checkFill"});
 		switch(this.gradient_type) {
 		case hedge.display.GradientType.LINEAR:{
-			this.__element__.attr("fill",color_alpha);
+			this.__element__.attr("fill","0-" + color_alpha);
 		}break;
 		case hedge.display.GradientType.RADIAL:{
-			null;
+			throw "Gradient.RADIAL is not supported by RaphaelJS on any thing not a circle or ellipse";
+			this.__element__.attr("fill","r" + color_alpha);
 		}break;
 		}
 	}break;
@@ -4032,8 +4037,8 @@ hedge.display.Graphics.prototype.endFill = function() {
 	var $spos = $s.length;
 	if(this.path != "" || this.path == null) {
 		this.__element__ = this.__raphael__.path(this.path += " z");
-		haxe.Log.trace(this.path,{ fileName : "Graphics.hx", lineNumber : 182, className : "hedge.display.Graphics", methodName : "endFill"});
-		haxe.Log.trace(this.__element__.getBBox().width,{ fileName : "Graphics.hx", lineNumber : 183, className : "hedge.display.Graphics", methodName : "endFill"});
+		haxe.Log.trace(this.path,{ fileName : "Graphics.hx", lineNumber : 192, className : "hedge.display.Graphics", methodName : "endFill"});
+		haxe.Log.trace(this.__element__.getBBox().width,{ fileName : "Graphics.hx", lineNumber : 193, className : "hedge.display.Graphics", methodName : "endFill"});
 		this.checkFill();
 		this.checkLineStyle();
 		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
@@ -4537,15 +4542,21 @@ Main.launch = function() {
 	ball.getGraphics().curveTo(200,0,250,0);
 	ball.getGraphics().endFill();
 	ball.setName("ball");
+	var bmd1 = new hedge.display.BitmapData(100,100,true,16711808);
+	var bmd2 = new hedge.display.BitmapData(100,100,true,33023);
 	haxe.Log.trace("created sp3",{ fileName : "Main.hx", lineNumber : 89, className : "Main", methodName : "launch"});
 	var sp3 = new hedge.display.Sprite();
 	sp3.setName("skialbainn");
-	sp3.getGraphics().beginGradientFill(hedge.display.GradientType.LINEAR,[4095,0],[1.0,1.0],[90,180]);
+	sp3.getGraphics().beginFill(16711680,1);
 	sp3.getGraphics().lineStyle(3,0,1.0);
 	sp3.getGraphics().drawRect(0,0,300,300);
+	sp3.getGraphics().drawCircle(350,10,10);
+	sp3.getGraphics().drawRoundRect(320,75,85,100,5);
+	sp3.getGraphics().drawEllipse(600,10,60,70);
 	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 100, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
+	sp3.getGraphics().clear();
 	hedge.Lib.attachToStage(tri);
 	hedge.Lib.attachToStage(ball);
 	hedge.Lib.attachToStage(sp3);

@@ -83,24 +83,24 @@ class Main {
       ball.graphics.endFill();
 		ball.name = 'ball';
 		
-		//var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
-		//var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
+		var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
+		var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
 		
 		trace('created sp3');
 		var sp3:Sprite = new Sprite();
 		
 		sp3.name = 'skialbainn';
 		sp3.graphics.beginFill(0xff0000, 1);
-		//sp3.graphics.beginGradientFill(GradientType.LINEAR, [0xfff,0x000], [1.0, 1.0], [90,180]);
+		//sp3.graphics.beginGradientFill(GradientType.RADIAL, [0xfff,0x000], [1.0, 1.0], [90,180]);
 		sp3.graphics.lineStyle(3, 0x000000, 1.0);
 		sp3.graphics.drawRect(0, 0, 300, 300);
-		//sp3.graphics.drawCircle(350, 10, 10);
-		//sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
-		//sp3.graphics.drawEllipse(600, 10, 60, 70);
+		sp3.graphics.drawCircle(350, 10, 10);
+		sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
+		sp3.graphics.drawEllipse(600, 10, 60, 70);
 		trace('changed sp3 x, y, width and height');
 		sp3.x = 100;
 		sp3.y = 150;
-		//sp3.graphics.clear();
+		sp3.graphics.clear();
 		
 		#if js
 		hedge.Lib.attachToStage(tri);
