@@ -19,6 +19,8 @@ class Graphics extends Object {
 	public var fill_color:Int;
 	public var fill_alpha:Float;
 	
+	// SVG path data at - http://www.w3.org/TR/SVG/paths.html#PathData
+	
 	public function new(parent:DisplayObject) {
 		super();
 		
@@ -59,9 +61,24 @@ class Graphics extends Object {
 	public var gradient_interpolation:String;
 	public var gradient_focal:Float;
 	
-	public function beginGradientFill(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focalPointRatio:Float = 0) {
+	public function beginGradientFill(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, ?matrix:Matrix = null, ?spreadMethod:String = 'pad', ?interpolationMethod:String = 'rgb', ?focalPointRatio:Float = 0) {
 		this.fillType = FillType.GRADIENT;
-		// todo
+		// TODO - not compatible
+		this.gradient_type = type;
+		this.gradient_colors = colors;
+		this.gradient_alphas = alphas;
+		this.gradient_ratios = ratios;
+		this.gradient_matrix = matrix;
+		this.gradient_spread = spreadMethod;
+		this.gradient_interpolation = interpolationMethod;
+		this.gradient_focal = focalPointRatio;
+		
+		if (this.gradient_colors.length != this.gradient_alphas.length) {
+			throw 'You must have an alpha value for each color value.';
+		}
+		if (this.gradient_colors.length != this.gradient_ratios.length) {
+			throw 'You must have an ratio value for each color value.';
+		}
 	}
 	
 	private function checkFill():Void {
@@ -73,7 +90,25 @@ class Graphics extends Object {
 				__element__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color));
 				__element__.attr('opacity', this.fill_alpha == null ? 1.0 : this.fill_alpha);
 			case FillType.GRADIENT:
+				// TODO - raphael gradient incompatible with flash code & cant recreate same result
+				//	Browsers need to better support svg so raphael can advance
+				var color_alpha:String = '0-';
 				
+				for (i in 0...this.gradient_colors.length) {
+					if (i == 0) {
+						color_alpha += Setup.RGB_to_String(this.gradient_colors[i]);
+					} else {
+						color_alpha += '-' + Setup.RGB_to_String(this.gradient_colors[i]);
+					}
+					color_alpha += ':' + ((this.gradient_ratios[i]/255)*100);
+				}
+				
+				switch (this.gradient_type) {
+					case GradientType.LINEAR:
+						__element__.attr('fill', color_alpha);
+					case GradientType.RADIAL:
+						
+				}
 			default:
 				
 		}
@@ -85,7 +120,6 @@ class Graphics extends Object {
 	}
 	
 	public function curveTo(controlX:Float, controlY:Float, anchorX:Float, anchorY:Float) {
-		// todo
 		path += 'Q' + controlX + ' ' + controlY + ' ' + anchorX + ' ' + anchorY;
 	}
 	

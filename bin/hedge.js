@@ -3880,6 +3880,20 @@ hedge.display.Graphics.prototype.beginGradientFill = function(type,colors,alphas
 	if(interpolationMethod == null) interpolationMethod = "rgb";
 	if(spreadMethod == null) spreadMethod = "pad";
 	this.fillType = "gradient";
+	this.gradient_type = type;
+	this.gradient_colors = colors;
+	this.gradient_alphas = alphas;
+	this.gradient_ratios = ratios;
+	this.gradient_matrix = matrix;
+	this.gradient_spread = spreadMethod;
+	this.gradient_interpolation = interpolationMethod;
+	this.gradient_focal = focalPointRatio;
+	if(this.gradient_colors.length != this.gradient_alphas.length) {
+		throw "You must have an alpha value for each color value.";
+	}
+	if(this.gradient_colors.length != this.gradient_ratios.length) {
+		throw "You must have an ratio value for each color value.";
+	}
 	$s.pop();
 }
 hedge.display.Graphics.prototype.bitmapdata_matrix = null;
@@ -3899,7 +3913,29 @@ hedge.display.Graphics.prototype.checkFill = function() {
 		this.__element__.attr("opacity",(this.fill_alpha == null?1.0:this.fill_alpha));
 	}break;
 	case "gradient":{
-		null;
+		var color_alpha = "0-";
+		{
+			var _g1 = 0, _g = this.gradient_colors.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				if(i == 0) {
+					color_alpha += hedge.Setup.RGB_to_String(this.gradient_colors[i]);
+				}
+				else {
+					color_alpha += "-" + hedge.Setup.RGB_to_String(this.gradient_colors[i]);
+				}
+				color_alpha += ":" + ((this.gradient_ratios[i] / 255) * 100);
+			}
+		}
+		haxe.Log.trace(color_alpha,{ fileName : "Graphics.hx", lineNumber : 104, className : "hedge.display.Graphics", methodName : "checkFill"});
+		switch(this.gradient_type) {
+		case hedge.display.GradientType.LINEAR:{
+			this.__element__.attr("fill",color_alpha);
+		}break;
+		case hedge.display.GradientType.RADIAL:{
+			null;
+		}break;
+		}
 	}break;
 	default:{
 		null;
@@ -3996,8 +4032,8 @@ hedge.display.Graphics.prototype.endFill = function() {
 	var $spos = $s.length;
 	if(this.path != "" || this.path == null) {
 		this.__element__ = this.__raphael__.path(this.path += " z");
-		haxe.Log.trace(this.path,{ fileName : "Graphics.hx", lineNumber : 149, className : "hedge.display.Graphics", methodName : "endFill"});
-		haxe.Log.trace(this.__element__.getBBox().width,{ fileName : "Graphics.hx", lineNumber : 150, className : "hedge.display.Graphics", methodName : "endFill"});
+		haxe.Log.trace(this.path,{ fileName : "Graphics.hx", lineNumber : 182, className : "hedge.display.Graphics", methodName : "endFill"});
+		haxe.Log.trace(this.__element__.getBBox().width,{ fileName : "Graphics.hx", lineNumber : 183, className : "hedge.display.Graphics", methodName : "endFill"});
 		this.checkFill();
 		this.checkLineStyle();
 		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
@@ -4492,27 +4528,24 @@ Main.launch = function() {
 	tri.setY(75);
 	haxe.Log.trace("created ball",{ fileName : "Main.hx", lineNumber : 74, className : "Main", methodName : "launch"});
 	var ball = new hedge.display.Sprite();
-	ball.getGraphics().beginFill(65344);
-	ball.getGraphics().moveTo(100,100);
-	ball.getGraphics().curveTo(30,150,100,200);
-	ball.getGraphics().curveTo(50,150,100,100);
+	ball.getGraphics().beginFill(65433);
+	ball.getGraphics().drawCircle(200,200,100);
+	ball.getGraphics().beginFill(65280);
+	ball.getGraphics().moveTo(250,0);
+	ball.getGraphics().curveTo(300,0,300,50);
+	ball.getGraphics().curveTo(300,100,250,100);
+	ball.getGraphics().curveTo(200,0,250,0);
 	ball.getGraphics().endFill();
 	ball.setName("ball");
-	var bmd1 = new hedge.display.BitmapData(100,100,true,16711808);
-	var bmd2 = new hedge.display.BitmapData(100,100,true,33023);
-	haxe.Log.trace("created sp3",{ fileName : "Main.hx", lineNumber : 91, className : "Main", methodName : "launch"});
+	haxe.Log.trace("created sp3",{ fileName : "Main.hx", lineNumber : 89, className : "Main", methodName : "launch"});
 	var sp3 = new hedge.display.Sprite();
 	sp3.setName("skialbainn");
-	sp3.getGraphics().beginFill(16711680,1);
+	sp3.getGraphics().beginGradientFill(hedge.display.GradientType.LINEAR,[4095,0],[1.0,1.0],[90,180]);
 	sp3.getGraphics().lineStyle(3,0,1.0);
 	sp3.getGraphics().drawRect(0,0,300,300);
-	sp3.getGraphics().drawCircle(350,10,10);
-	sp3.getGraphics().drawRoundRect(320,75,85,100,5);
-	sp3.getGraphics().drawEllipse(600,10,60,70);
-	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 101, className : "Main", methodName : "launch"});
+	haxe.Log.trace("changed sp3 x, y, width and height",{ fileName : "Main.hx", lineNumber : 100, className : "Main", methodName : "launch"});
 	sp3.setX(100);
 	sp3.setY(150);
-	sp3.getGraphics().clear();
 	hedge.Lib.attachToStage(tri);
 	hedge.Lib.attachToStage(ball);
 	hedge.Lib.attachToStage(sp3);

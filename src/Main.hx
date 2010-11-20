@@ -72,36 +72,35 @@ class Main {
 		tri.y = 75;
 		
 		trace('created ball');
-		//M100,200 	C100,100 250,	100 250,200 S400,300 400,200
-		//M250,0		C300,0 	300,	50C300 100 250 100C200 0 250 0 z
 		var ball:Sprite = new Sprite();
-		/*ball.graphics.beginFill(0x00FF40);
+		ball.graphics.beginFill(0x00FF99);
 		ball.graphics.drawCircle(200, 200, 100);
-		ball.graphics.endFill();*/
-		ball.graphics.beginFill(0x00FF40);
-      ball.graphics.moveTo(100, 100); 
-      ball.graphics.curveTo(30, 150, 100, 200);    
-      ball.graphics.curveTo(50, 150, 100, 100);
+		ball.graphics.beginFill(0x00FF00);
+      ball.graphics.moveTo(250, 0);
+      ball.graphics.curveTo(300, 0, 300, 50);
+      ball.graphics.curveTo(300, 100, 250, 100);
+      ball.graphics.curveTo(200, 0, 250, 0);
       ball.graphics.endFill();
 		ball.name = 'ball';
 		
-		var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
-		var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
+		//var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
+		//var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
 		
 		trace('created sp3');
 		var sp3:Sprite = new Sprite();
 		
 		sp3.name = 'skialbainn';
 		sp3.graphics.beginFill(0xff0000, 1);
+		//sp3.graphics.beginGradientFill(GradientType.LINEAR, [0xfff,0x000], [1.0, 1.0], [90,180]);
 		sp3.graphics.lineStyle(3, 0x000000, 1.0);
 		sp3.graphics.drawRect(0, 0, 300, 300);
-		sp3.graphics.drawCircle(350, 10, 10);
-		sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
-		sp3.graphics.drawEllipse(600, 10, 60, 70);
+		//sp3.graphics.drawCircle(350, 10, 10);
+		//sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
+		//sp3.graphics.drawEllipse(600, 10, 60, 70);
 		trace('changed sp3 x, y, width and height');
 		sp3.x = 100;
 		sp3.y = 150;
-		sp3.graphics.clear();
+		//sp3.graphics.clear();
 		
 		#if js
 		hedge.Lib.attachToStage(tri);
