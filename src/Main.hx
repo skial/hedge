@@ -2,8 +2,12 @@
 
 import haxe.Firebug;
 import haxe.rtti.Meta;
+import hedge.geom.Rectangle;
 #if js
 import js.Lib;
+import hedge.display.IBitmapDrawable;
+import hedge.display.Bitmap;
+import hedge.geom.Point;
 import hedge.display.BitmapData;
 import hedge.display.GradientType;
 import hedge.display.Shape;
@@ -13,6 +17,8 @@ import hedge.events.MouseEvent;
 import hedge.events.Event;
 import hedge.Setup;
 #elseif flash9
+import flash.display.Bitmap;
+import flash.geom.Point;
 import flash.Lib;
 import flash.display.BitmapData;
 import flash.display.GradientType;
@@ -42,78 +48,99 @@ class Main {
 		#end
 	}
 	
-	public static function something(e:MouseEvent):Void {
-		trace(e.target);
-		trace(e.type);
-		trace(e.currentTarget + ' : has been clicked');
-	}
-	
 	static function launch() {
-		#if js
-		trace('Stage Width: ' + Setup.__stage__.width);
-		trace('Stage Height: ' + Setup.__stage__.height);
-		trace('Stage Name: ' + Setup.__stage__.name);
-		#elseif flash9
-		trace('Stage Width: ' + Lib.current.stage.stageWidth);
-		trace('Stage Height: ' + Lib.current.stage.stageHeight);
-		trace('Stage Name: ' + Lib.current.stage.name);
-		#end
-		
-		var tri:Shape = new Shape();
-		tri.name = 'tri';
-		tri.graphics.beginFill(0xFF0080);
-		tri.graphics.moveTo(0, 0);
-		tri.graphics.lineTo(100, 0);
-		tri.graphics.lineTo(50, 100);
-		tri.graphics.lineTo(0, 0);
-		tri.graphics.endFill();
-		tri.x = 400;
-		tri.y = 75;
-		trace('created tri');
-		
-		var ball:Sprite = new Sprite();
-		ball.graphics.beginFill(0x00FF99);
-		ball.graphics.drawCircle(200, 200, 100);
-		ball.graphics.beginFill(0x00FF00);
-      ball.graphics.moveTo(250, 0);
-      ball.graphics.curveTo(300, 0, 300, 50);
-      ball.graphics.curveTo(300, 100, 250, 100);
-      ball.graphics.curveTo(200, 0, 250, 0);
-      ball.graphics.endFill();
-		ball.name = 'ball';
-		trace('created ball');
-		
-		var bmd1:BitmapData = new BitmapData(100, 100, true, 0xFF0080);
-		var bmd2:BitmapData = new BitmapData(100, 100, true, 0x0080FF);
-		
-		
-		var sp3:Sprite = new Sprite();
-		trace('created sp3');
-		sp3.name = 'skialbainn';
-		sp3.graphics.beginFill(0xff0000, 1);
-		//sp3.graphics.beginGradientFill(GradientType.RADIAL, [0xfff,0x000], [1.0, 1.0], [90,180]);
-		sp3.graphics.lineStyle(3, 0x000000, 1.0);
-		sp3.graphics.drawRect(0, 0, 300, 300);
-		sp3.graphics.drawCircle(350, 10, 10);
-		sp3.graphics.drawRoundRect(320, 75, 85, 100, 5);
-		sp3.graphics.drawEllipse(600, 10, 60, 70);
-		trace('changed sp3 x, y, width and height');
-		sp3.x = 100;
-		sp3.y = 150;
-		sp3.graphics.clear();
-		
-		#if js
-		//hedge.Lib.attachToStage(tri);
-		hedge.Lib.attachToStage(ball);
-		hedge.Lib.attachToStage(sp3);
-		#elseif flash9
-		//Lib.current.addChild(tri);
-		Lib.current.addChild(ball);
-		Lib.current.addChild(sp3);
-		#end
-		
-		sp3.addChild(tri);
-		tri.scaleX *= 2;
+		hedge.Lib.attachToStage(new BlitTest());
 	}
 	
+}
+
+class BlitTest extends Sprite {
+	
+	public static var numBunnies:Int = 6000;
+	public static var gravity:Float = 3;
+	public var bunnies:Array<BlitBunny>;// = new Array<BlitBunny>();
+	public static var maxX:Int = 640;
+	public static var minX:Int = 0;
+	public static var maxY:Int = 480;
+	public static var minY:Int = 0;
+	public var bitmap:Bitmap;
+	
+	public function new() {
+		super();
+		
+		bunnies = new Array<BlitBunny>();
+		var bunnyAsset:BitmapData;
+		#if js
+		var htmlAsset = new JQuery('img#wabbit_alpha');
+		bunnyAsset = new BitmapData(htmlAsset.width(), htmlAsset.height());
+		bunnyAsset.draw(htmlAsset[0]);
+		#elseif flash9
+		
+		#end
+		var bunny:BlitBunny;
+		
+		for (i in 0...numBunnies) {
+			bunny = new BlitBunny();
+			bunny.position = new Point();
+			bunny.bitmapData = bunnyAsset;
+			bunny.speedX = Math.random() * 10;
+			bunny.speedY = (Math.random() * 10) - 5;
+			
+			bunnies[i] = bunny;
+		}
+		bitmap = new Bitmap(new BitmapData(maxX, maxY));
+		bitmap.name = 'bitmapSkial';
+		addChild(bitmap);
+		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+	}
+	
+	public function onEnterFrame(e):Void {
+		//bitmap.bitmapData.lock();
+		//bitmap.bitmapData.fillRect(new Rectangle(0, 0, maxX, maxY), 0);
+		bitmap.bitmapData.draw(bunnies[0].bitmapData.__canvas__[0]);
+		/*var sourceRect:Rectangle = new Rectangle(0, 0, 26, 37);
+		var bunny:BlitBunny;
+		for (i in 0...numBunnies) {
+			bunny = bunnies[i];
+			bunny.position.x += bunny.speedX;
+			bunny.position.y += bunny.speedY;
+			bunny.speedY += gravity;
+			
+			if (bunny.position.x > maxX) {
+				bunny.speedX *= -1;
+				bunny.position.x = maxX;
+			} else if (bunny.position.x < minX) {
+				bunny.speedX *= -1;
+				bunny.position.x = minX;
+			}
+			
+			if (bunny.speedY > maxY) {
+				bunny.speedY *= -0.8;
+				bunny.position.y = maxY;
+				
+				if (Math.random() > 0.5) {
+					bunny.speedY -= Math.random() * 12;
+				}
+			} else if (bunny.position.y < minY) {
+				bunny.speedY = 0;
+				bunny.position.y = minY;
+			}
+			
+			bitmap.bitmapData.copyPixels(bunny.bitmapData, sourceRect, bunny.position, null, null, true);
+		}*/
+		
+		bitmap.bitmapData.unlock();
+		//this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+	}
+	
+}
+
+class BlitBunny {
+	
+	public var speedX:Float;
+	public var speedY:Float;
+	public var bitmapData:BitmapData;
+	public var position:Point;
+	
+	public function new() {}
 }

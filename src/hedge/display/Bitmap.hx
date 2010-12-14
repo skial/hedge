@@ -5,14 +5,31 @@
 
 package hedge.display;
 
-class Bitmap {
+class Bitmap extends DisplayObject {
 	
-	public var bitmapData:BitmapData;
-	public var pixelSnapping:PixelSnapping;
+	public var bitmapData(getBitmapData, setBitmapData):BitmapData;
+	public var pixelSnapping:String;
 	public var smoothing:Bool;
 
-	public function new(?bitmapData:BitmapData, ?pixelSnapping:PixelSnapping, ?smoothing:Bool):Void {
-		
+	public function new(?bitmapData:BitmapData = null, ?pixelSnapping:String = PixelSnapping.AUTO, ?smoothing:Bool = false):Void {
+		super();
+		this.bitmapData 		= bitmapData;
+		this.pixelSnapping 	= pixelSnapping;
+		this.smoothing 		= smoothing;
+	}
+	
+	// INTERNAL METHODS
+	
+	private function getBitmapData():BitmapData {
+		return __jq__.data('bitmapdata');
+	}
+	
+	private function setBitmapData(value:BitmapData):BitmapData {
+		__jq__.width(value.width);
+		__jq__.height(value.height);
+		__jq__.append(value.__canvas__);
+		__jq__.data('bitmapdata', value);
+		return value;
 	}
 	
 }

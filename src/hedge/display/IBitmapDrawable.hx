@@ -5,6 +5,8 @@
 
 package hedge.display;
 
-interface IBitmapDrawable {
+typedef IBitmapDrawable = Dynamic;
+
+/*interface IBitmapDrawable implements Dynamic {
 	
-}
+}*/

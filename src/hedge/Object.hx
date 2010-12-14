@@ -7,7 +7,7 @@ package hedge;
 
 class Object implements Dynamic {
 	
-	public static var constructor:Object;
+	//public static var constructor:Object;
 	//public static var prototype:Object; // causes jshx to crash - todo
 	
 	public var __jq__:JQuery;

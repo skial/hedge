@@ -4,8 +4,10 @@
  */
 
 package hedge.events;
+import hedge.jquery.events.EnterFrame;
 import JQuery;
 import js.Lib;
+import haxe.Timer;
 import hedge.Object;
 import hedge.Setup;
 
@@ -19,7 +21,11 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		// jquery only supports bubbling phase - so ignore useCapture - or check if its true and throw an error
 		// event priority does not exist in javascript as far as im aware - ignore it or throw error
 		// no weak reference also - ignore or throw error
-		__jq__.bind(type, { }, listener);
+		if (type != Event.ENTER_FRAME) {
+			__jq__.bind(type, { }, listener);
+		} else {
+			EnterFrame.addListener(this.__originalName__, listener);
+		}
 	}
 	
 	public function dispatchEvent(event:Event):Bool {
@@ -37,7 +43,11 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	
 	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false) {
 		// ignore useCapture - reason above - method addEventListener
-		__jq__.unbind(type, listener);
+		if (type != Event.ENTER_FRAME) {
+			__jq__.unbind(type, listener);
+		} else {
+			EnterFrame.removeListener(this.__originalName__, listener);
+		}
 	}
 	
 	public function willTrigger(type:String):Bool {

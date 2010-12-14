@@ -5,6 +5,7 @@
 
 package hedge.display;
 import hedge.canvas.CanvasRenderingContext2D;
+import hedge.canvas.ImageData;
 import hedge.filters.BitmapFilter;
 import hedge.geom.ColorTransform;
 import hedge.geom.Matrix;
@@ -15,32 +16,31 @@ import hedge.Setup;
 
 class BitmapData implements IBitmapDrawable {
 	
-	public var height(getHeight, setHeight):Int;
-	public var rect:Rectangle;
-	public var transparent:Bool;
-	public var width(getWidth, setWidth):Int;
+	public var height(getHeight, null)	:Int;
+	public var rect			:Rectangle;
+	public var transparent	:Bool;
+	public var width(getWidth, null)		:Int;
 	
-	public var __canvas__:JQuery;
-	public var __context__:CanvasRenderingContext2D;
-	public var __id__:String;
+	public var __canvas__	:JQuery;
+	public var __context__	:CanvasRenderingContext2D;
+	public var __id__			:String;
 	public var __fillColor__:Int;
-	public var __canvasID__:String;
+	//public var __source__	:JQuery;
 
-	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0xFFFFFFFF, ?canvasID:String = null):Void {
-		this.width = width;
-		this.height = height;
-		this.transparent = transparent;
-		this.__fillColor__ = fillColor;
-		this.__canvasID__ = canvasID;
+	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0xFFFFFFFF, ?canvasID:String = null, ?sourceID:String = null):Void {
+		this.width 				= width;
+		this.height 			= height;
+		this.transparent 		= transparent 	== null ? true 								: transparent;
+		this.__fillColor__ 	= fillColor 	== null ? 0xFFFFFFFF 						: fillColor;
+		this.__id__				= canvasID 		== null ? Setup.generateInstanceName() : canvasID;
+		//this.__source__ 		= sourceID		== null ? null									: new JQuery('img#' + sourceID);
 		
-		__id__ = ((canvasID == null)) ? Setup.generateInstanceName() : __canvasID__;
-		__canvas__ = new JQuery('<canvas></canvas>').attr('id', __id__).attr('width', width).attr('height', height);
+		__canvas__ = new JQuery('<canvas></canvas>').addClass('bitmapdata').attr('id', __id__).attr('width', width).attr('height', height);
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		Setup.__storage__.append(__canvas__);
 		// untyped following line - as I could not call getContext from variable as it's type is Jquery
 		__context__ = untyped __canvas__[0].getContext('2d');
-		__context__.fillStyle = Setup.RGB_to_String(__fillColor__);
-		__context__.fillRect(0, 0, width, height);
+		this.fillRect(new Rectangle(0, 0, width, height), this.__fillColor__);
 	}
 	
 	public function applyFilter(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, filter:BitmapFilter) {
@@ -48,7 +48,9 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function clone():BitmapData {
-		return new BitmapData(this.width, this.height, this.transparent, this.__fillColor__, this.__canvasID__ + '_clone');
+		var _b = new BitmapData(this.width, this.height, this.transparent, this.__fillColor__, this.__id__ + '_clone');
+		_b.draw(this.__canvas__[0]);
+		return _b;
 	}
 	
 	public function colorTransform(rect:Rectangle, colorTransform:ColorTransform) {
@@ -64,7 +66,8 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function copyPixels(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false) {
-		
+		__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
+		__context__.putImageData(sourceBitmapData.__context__.getImageData(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height), destPoint.x, destPoint.y);
 	}
 	
 	public function dispose() {
@@ -72,11 +75,12 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function draw(source:IBitmapDrawable, matrix:Matrix = null, colorTransform:ColorTransform = null, blendMode:String = null, clipRect:Rectangle = null, smoothing:Bool = false) {
-		
+		// todo - need to check type of source - or only allow bitmapdata
+		__context__.drawImage(source, 0, 0);
 	}
 	
 	public function fillRect(rect:Rectangle, color:Int) {
-		__context__.fillStyle = Setup.RGB_to_String(color);
+		__context__.fillStyle = this.transparent == true ? Setup.canvas_RGBA_to_String(color) : Setup.RGB_to_String(color);
 		__context__.fillRect(rect.x, rect.y, rect.width, rect.height);
 	}
 	
@@ -112,7 +116,7 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function lock() {
-		
+		//__context__.save();
 	}
 	
 	public function merge(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, redMultiplier:Int, greenMultiplier:Int, blueMultiplier:Int, alphaMultiplier:Int) {
@@ -156,7 +160,7 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function unlock(changeRect:Rectangle = null) {
-		
+		//__context__.restore();
 	}
 	
 	// INTERNAL METHODS
@@ -165,17 +169,7 @@ class BitmapData implements IBitmapDrawable {
 		return height;
 	}
 	
-	private function setHeight(value:Int):Int {
-		height = value;
-		return height;
-	}
-	
 	private function getWidth():Int {
-		return width;
-	}
-	
-	private function setWidth(value:Int):Int {
-		width = value;
 		return width;
 	}
 	

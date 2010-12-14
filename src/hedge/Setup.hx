@@ -10,6 +10,7 @@ import hedge.display.BitmapData;
 import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
 import hedge.display.Stage;
+import hedge.events.Event;
 import hedge.jquery.events.ResizeElement;
 import JQuery;
 
@@ -22,6 +23,7 @@ typedef HandleObj = {
 	var handler:Dynamic;
 	var guid:Float;
 	var selector:String;
+	var origHandler:Dynamic;
 }
 
 typedef ChildProperties = {
@@ -34,7 +36,8 @@ typedef ChildProperties = {
 
 class Setup {
 	
-	private static var __events__:Array<Dynamic> = [ResizeElement];
+	private static var __events__:Array<Dynamic> = [ResizeElement,
+	];
 	
 	// PUBLIC PROPERTIES	
 	
@@ -62,7 +65,7 @@ class Setup {
 		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', backgroundColor:RGB_to_String(0xFFFFFF) } ) );
 		__jq__.css('z-index', 0);
 		
-		__jq__.attr( __data__( { version:0.1, project:'jshx', haXe:'http://www.haxe.org', frameRate:30 } ) );
+		__jq__.attr( __data__( { version:0.1, project:'jshx', haXe:'http://www.haxe.org', frameRate:10 } ) );
 		
 		// create default holder
 		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'none', width:'100%', height:'100%' } );
@@ -180,6 +183,10 @@ class Setup {
 	
 	public static function ARGB_to_String(color:Int):String {
 		return 'argb(' + (color >> 24 & 0xFF) + ', ' +  (color >> 16 & 0xFF) + ', ' + (color >> 8 & 0xFF) + ', ' + (color & 0xFF) + ')';
+	}
+	
+	public static function canvas_RGBA_to_String(color:Int):String {
+		return 'rgba(' + (color >> 16 & 0xFF) + ', ' + (color >> 8 & 0xFF) + ', ' + (color & 0xFF) + ', ' + (Math.round((-(color >> 24)/255)*100)/100) + ')';
 	}
 	
 	public static function RGB_String_to_HEX(color:String):Int {

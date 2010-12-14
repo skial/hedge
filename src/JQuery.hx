@@ -172,7 +172,7 @@ extern class JQuery implements ArrayAccess<Dom> {
 	/**
 		Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.
 	**/
-	public function delegate(selector:String, eventType:String, ?eventData:Dynamic, handler:Dynamic):JQuery;
+	public function delegate(selector:String, eventType:String, ?eventDataorHandler:Dynamic, ?handler:Dynamic):JQuery;
 
 	/**
 		Execute the next function on the queue for the matched elements.

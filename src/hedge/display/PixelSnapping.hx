@@ -5,12 +5,10 @@
 
 package hedge.display;
 
-class PixelSnapping 
-{
+class PixelSnapping {
 
-	public function new() 
-	{
-		
-	}
+	public static inline var ALWAYS:String = 'always';
+	public static inline var AUTO:String = 'auto';
+	public static inline var NEVER:String = 'never';
 	
 }

@@ -106,9 +106,7 @@ extern class CanvasRenderingContext2D {
 	//		.	no-repeat
 	public function createPattern(image:Dynamic, repetition:String):Void;
 	
-	// PATHS
-	
-	// METHODS
+	// PATHS METHODS
 	
 	public function beginPath():Void;
 	public function closePath():Void;

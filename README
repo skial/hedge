@@ -29,6 +29,43 @@ get/set name        -  complete
 get/set alpha       -  complete
 get stage           -  complete
 
+Bitmap:
+bitmapData          -  almost complete
+pixelSnapping       -  research, dont think its possible, I'm sure canvas only works whole values
+smoothing           -  research
+
+BitmapData:
+width/height        -  complete
+rect                -  todo
+transparent         -  todo
+applyFilter         -  todo
+clone               -  todo
+colorTransform      -  todo
+compare             -  todo
+copyChannel         -  todo
+copyPixels          -  todo
+dispose             -  todo
+draw                -  complete
+fillRect            -  complete
+fillFill            -  complete
+generateFilterRect  -  todo
+getColorBoundsRect  -  todo
+getPixel            -  testing
+getPixel32          -  testing
+getPixels, hitTest, lock, merge, noise, paletteMap, perlinNoise, pixelDissolve,
+scroll, setPixel, setPixel32, threshold, unlock - todo
+
+Rectangle:
+x, y, width, height -  complete
+others              -  todo
+
+PixelSnapping:
+all                 -  complete
+
+EnterFrame:
+Does not act as a jQuery custom event - static class handled in eventdispatcher
+TODO - need to change class path to more suitable location
+
 NOTES
 -----
 Looking at svgweb - might be better solution than using raphaeljs. I'm only using raphaeljs to render - at moment no
