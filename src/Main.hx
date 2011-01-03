@@ -85,7 +85,7 @@ class BlitTest extends Sprite {
 		bunnies = new Array<BlitBunny>();
 		var bunnyAsset:BitmapData;
 		#if js
-		var htmlAsset = new JQuery('img#wabbit_alpha');
+		//var htmlAsset = new JQuery('img#wabbit_alpha');
 		bunnyAsset = new BitmapData(htmlAsset.width(), htmlAsset.height(), true, null, 'img#wabbit_alpha');
 		//bunnyAsset.__context__.drawImage(htmlAsset[0], 0, 0);
 		#elseif flash9
