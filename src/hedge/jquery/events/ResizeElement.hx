@@ -7,6 +7,7 @@ package hedge.jquery.events;
 
 import hedge.Setup;
 
+@:keep
 class ResizeElement {
 	
 	public function new() {

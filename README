@@ -1,5 +1,10 @@
 If your looking for a flash to html5 library - look at Jeash, its awesome - https://launchpad.net/jeash
 
+WARNING
+-----
+03/01/2011 12:08 javascript error with haxe build r3578 but works fine with haxe build r3577 - not sure
+whats causing it...
+
 WORKING - kind of
 -----
 I will try and keep this up todate on whats completed.
@@ -68,8 +73,19 @@ TODO - need to change class path to more suitable location
 
 NOTES
 -----
+The example bunny blit borrowed from Iain Lobbs as3 code [1]. His html5 example [2] is faster than hedge, but hedge is
+not optimized, but seems to run 3000 bunnies at 15 fps better than at 30 fps.
+
 Looking at svgweb - might be better solution than using raphaeljs. I'm only using raphaeljs to render - at moment no
 animation.
+
+Not using any thirdparty js library for canvas but there is bitmapdata.js as an alternative [3]
+
+canvas 2d context method drawImage is alot faster than method putImageData etc.
+
+[1] - http://blog.iainlobb.com/2010/11/display-list-vs-blitting-results.html
+[2] - http://iainlobb.com/bunnies/bunnies.html
+[3] - https://github.com/pnitsch/BitmapData.js
 
 REASON
 -----

@@ -13,8 +13,10 @@ import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.utils.ByteArray;
 import hedge.Setup;
+import js.Lib;
+import js.Dom;
 
-class BitmapData implements IBitmapDrawable {
+class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	public var height(getHeight, null)	:Int;
 	public var rect			:Rectangle;
@@ -25,22 +27,26 @@ class BitmapData implements IBitmapDrawable {
 	public var __context__	:CanvasRenderingContext2D;
 	public var __id__			:String;
 	public var __fillColor__:Int;
-	//public var __source__	:JQuery;
+	public var __source__	:JQuery;
 
-	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0xFFFFFFFF, ?canvasID:String = null, ?sourceID:String = null):Void {
+	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0x00FFFFFF, ?cssSelector:String = null):Void {
 		this.width 				= width;
 		this.height 			= height;
 		this.transparent 		= transparent 	== null ? true 								: transparent;
-		this.__fillColor__ 	= fillColor 	== null ? 0xFFFFFFFF 						: fillColor;
-		this.__id__				= canvasID 		== null ? Setup.generateInstanceName() : canvasID;
-		//this.__source__ 		= sourceID		== null ? null									: new JQuery('img#' + sourceID);
+		this.__fillColor__ 	= fillColor 	== null ? 0x00FFFFFF 						: fillColor;
+		this.__id__				= Setup.generateInstanceName();
+		this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
 		
 		__canvas__ = new JQuery('<canvas></canvas>').addClass('bitmapdata').attr('id', __id__).attr('width', width).attr('height', height);
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		Setup.__storage__.append(__canvas__);
 		// untyped following line - as I could not call getContext from variable as it's type is Jquery
 		__context__ = untyped __canvas__[0].getContext('2d');
-		this.fillRect(new Rectangle(0, 0, width, height), this.__fillColor__);
+		if (cssSelector == null) {
+			this.fillRect(new Rectangle(0, 0, width, height), this.__fillColor__);
+		} else {
+			__context__.drawImage(this.__source__[0], 0, 0);
+		}
 	}
 	
 	public function applyFilter(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, filter:BitmapFilter) {
@@ -67,7 +73,6 @@ class BitmapData implements IBitmapDrawable {
 	
 	public function copyPixels(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false) {
 		__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
-		__context__.putImageData(sourceBitmapData.__context__.getImageData(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height), destPoint.x, destPoint.y);
 	}
 	
 	public function dispose() {
@@ -116,7 +121,7 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function lock() {
-		//__context__.save();
+		__context__.save();
 	}
 	
 	public function merge(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, redMultiplier:Int, greenMultiplier:Int, blueMultiplier:Int, alphaMultiplier:Int) {
@@ -160,7 +165,7 @@ class BitmapData implements IBitmapDrawable {
 	}
 	
 	public function unlock(changeRect:Rectangle = null) {
-		//__context__.restore();
+		__context__.restore();
 	}
 	
 	// INTERNAL METHODS

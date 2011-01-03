@@ -42,7 +42,7 @@ class Main {
 		}
 		
 		#if js
-		Setup.init(launch);
+		Setup.init(launch, 15);
 		#elseif flash9
 		launch();
 		#end
@@ -50,15 +50,29 @@ class Main {
 	
 	static function launch() {
 		hedge.Lib.attachToStage(new BlitTest());
+		//hedge.Lib.attachToStage(new SimpleBitmapTest());
+	}
+	
+}
+
+class SimpleBitmapTest extends Sprite {
+	
+	public function new() {
+		super();
+		
+		var bitmapdata:BitmapData = new BitmapData(100, 100, false, 0x80000000);
+		var bitmap:Bitmap = new Bitmap(bitmapdata);
+		
+		this.addChild(bitmap);
 	}
 	
 }
 
 class BlitTest extends Sprite {
 	
-	public static var numBunnies:Int = 6000;
+	public static var numBunnies:Int = 3000;
 	public static var gravity:Float = 3;
-	public var bunnies:Array<BlitBunny>;// = new Array<BlitBunny>();
+	public var bunnies:Array<BlitBunny>;
 	public static var maxX:Int = 640;
 	public static var minX:Int = 0;
 	public static var maxY:Int = 480;
@@ -72,33 +86,34 @@ class BlitTest extends Sprite {
 		var bunnyAsset:BitmapData;
 		#if js
 		var htmlAsset = new JQuery('img#wabbit_alpha');
-		bunnyAsset = new BitmapData(htmlAsset.width(), htmlAsset.height());
-		bunnyAsset.draw(htmlAsset[0]);
+		bunnyAsset = new BitmapData(htmlAsset.width(), htmlAsset.height(), true, null, 'img#wabbit_alpha');
+		//bunnyAsset.__context__.drawImage(htmlAsset[0], 0, 0);
 		#elseif flash9
 		
 		#end
 		var bunny:BlitBunny;
 		
 		for (i in 0...numBunnies) {
-			bunny = new BlitBunny();
-			bunny.position = new Point();
-			bunny.bitmapData = bunnyAsset;
-			bunny.speedX = Math.random() * 10;
-			bunny.speedY = (Math.random() * 10) - 5;
+			bunny = {
+				position:new Point(),
+				bitmapData:bunnyAsset,
+				speedX:Math.random() * 10,
+				speedY:(Math.random() * 10) - 5
+			}
 			
 			bunnies[i] = bunny;
 		}
-		bitmap = new Bitmap(new BitmapData(maxX, maxY));
+		bitmap = new Bitmap(new BitmapData(maxX, maxY, true));
 		bitmap.name = 'bitmapSkial';
-		addChild(bitmap);
+		this.addChild(bitmap);
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 	
 	public function onEnterFrame(e):Void {
 		//bitmap.bitmapData.lock();
-		//bitmap.bitmapData.fillRect(new Rectangle(0, 0, maxX, maxY), 0);
-		bitmap.bitmapData.draw(bunnies[0].bitmapData.__canvas__[0]);
-		/*var sourceRect:Rectangle = new Rectangle(0, 0, 26, 37);
+		
+		bitmap.bitmapData.fillRect(new Rectangle(0, 0, maxX, maxY), /* needs to set to white as <canvas> default is black */ 0xFFFFFF);
+		var sourceRect:Rectangle = new Rectangle(0, 0, 26, 37);
 		var bunny:BlitBunny;
 		for (i in 0...numBunnies) {
 			bunny = bunnies[i];
@@ -114,7 +129,7 @@ class BlitTest extends Sprite {
 				bunny.position.x = minX;
 			}
 			
-			if (bunny.speedY > maxY) {
+			if (bunny.position.y > maxY) {
 				bunny.speedY *= -0.8;
 				bunny.position.y = maxY;
 				
@@ -127,20 +142,17 @@ class BlitTest extends Sprite {
 			}
 			
 			bitmap.bitmapData.copyPixels(bunny.bitmapData, sourceRect, bunny.position, null, null, true);
-		}*/
+		}
 		
-		bitmap.bitmapData.unlock();
+		//bitmap.bitmapData.unlock();
 		//this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 	
 }
 
-class BlitBunny {
-	
-	public var speedX:Float;
-	public var speedY:Float;
-	public var bitmapData:BitmapData;
-	public var position:Point;
-	
-	public function new() {}
+typedef BlitBunny = {
+	var speedX:Float;
+	var speedY:Float;
+	var bitmapData:BitmapData;
+	var position:Point;
 }

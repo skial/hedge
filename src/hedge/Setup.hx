@@ -60,12 +60,13 @@ class Setup {
 	
 	// PUBLIC METHODS
 	
-	public static function init(_callback:Dynamic, ?stageName:String = 'Stage') {
+	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
 		__jq__ = new JQuery('div#Stage');
 		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', backgroundColor:RGB_to_String(0xFFFFFF) } ) );
 		__jq__.css('z-index', 0);
 		
-		__jq__.attr( __data__( { version:0.1, project:'jshx', haXe:'http://www.haxe.org', frameRate:10 } ) );
+		__jq__.attr( __data__( { version:0.1, project:'jshx', haXe:'http://www.haxe.org' } ) );
+		frameRate = fps;
 		
 		// create default holder
 		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'none', width:'100%', height:'100%' } );
@@ -186,7 +187,12 @@ class Setup {
 	}
 	
 	public static function canvas_RGBA_to_String(color:Int):String {
-		return 'rgba(' + (color >> 16 & 0xFF) + ', ' + (color >> 8 & 0xFF) + ', ' + (color & 0xFF) + ', ' + (Math.round((-(color >> 24)/255)*100)/100) + ')';
+		return 'rgba(' + (color >> 16 & 0xFF) + ', '
+							+ (color >> 8 & 0xFF) + ', ' 
+							+ (color & 0xFF) + ', ' 
+							// below - first check if color value is less than 0 if true(?) then calculate alpha value if false(:) set to max(1)
+							// below - alpha values between 0 and 1
+							+ (color < 0 ? -(color >> 24) / 255 : 1) + ')';
 	}
 	
 	public static function RGB_String_to_HEX(color:String):Int {

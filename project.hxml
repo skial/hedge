@@ -1,0 +1,6 @@
+-js ./bin/hedge.js
+-cp ./src
+-lib raphaelExtern
+-main Main
+--macro keepClass(['Type'])
+--dead-code-elimination

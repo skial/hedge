@@ -22,7 +22,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
-		child.__jq__.appendTo(__jq__);
+		child.__jq__.appendTo(this.__jq__);
 		child.parent = this;
 		__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:child.x, y:child.y, w:child.width, h:child.height, p:this } ]);
 		return child;
