@@ -49,21 +49,20 @@ class Main {
 	}
 	
 	static function launch() {
-		hedge.Lib.attachToStage(new BlitTest());
-		//hedge.Lib.attachToStage(new SimpleBitmapTest());
+		hedge.Lib.attachToStage(new Examples());
 	}
 	
 }
 
-class SimpleBitmapTest extends Sprite {
+class Examples extends Sprite {
 	
 	public function new() {
 		super();
+		this.addChild(new BlitTest());
+	}
+	
+	public function setNumBunnies(value:Int) {
 		
-		var bitmapdata:BitmapData = new BitmapData(100, 100, false, 0x80000000);
-		var bitmap:Bitmap = new Bitmap(bitmapdata);
-		
-		this.addChild(bitmap);
 	}
 	
 }
@@ -85,9 +84,7 @@ class BlitTest extends Sprite {
 		bunnies = new Array<BlitBunny>();
 		var bunnyAsset:BitmapData;
 		#if js
-		//var htmlAsset = new JQuery('img#wabbit_alpha');
-		bunnyAsset = new BitmapData(htmlAsset.width(), htmlAsset.height(), true, null, 'img#wabbit_alpha');
-		//bunnyAsset.__context__.drawImage(htmlAsset[0], 0, 0);
+		bunnyAsset = new BitmapData(26, 37, true, null, 'img#wabbit_alpha');
 		#elseif flash9
 		
 		#end

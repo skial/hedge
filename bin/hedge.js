@@ -45,7 +45,7 @@ hedge.events.EventDispatcher.prototype.addEventListener = function(type,listener
 	}
 }
 hedge.events.EventDispatcher.prototype.dispatchEvent = function(event) {
-	event.target = (event.target == null?this:event.target);
+	event.target = event.target == null?this:event.target;
 	return true;
 }
 hedge.events.EventDispatcher.prototype.hasEventListener = function(type) {
@@ -95,7 +95,7 @@ hedge.display.DisplayObject.prototype.getCache = function() {
 	return this.cacheAsBitmap;
 }
 hedge.display.DisplayObject.prototype.getHeight = function() {
-	return (this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height"));
+	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.getMask = function() {
 	return this.mask;
@@ -134,10 +134,10 @@ hedge.display.DisplayObject.prototype.getStage = function() {
 	return hedge.Setup.__stage__;
 }
 hedge.display.DisplayObject.prototype.getVisible = function() {
-	return (this.__jq__.data("visible") == null?true:this.__jq__.data("visible"));
+	return this.__jq__.data("visible") == null?true:this.__jq__.data("visible");
 }
 hedge.display.DisplayObject.prototype.getWidth = function() {
-	return (this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width"));
+	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
 }
 hedge.display.DisplayObject.prototype.getX = function() {
 	return this.__jq__.position().left;
@@ -212,8 +212,8 @@ hedge.display.DisplayObject.prototype.setScrollRect = function(value) {
 	return this.getScrollRect();
 }
 hedge.display.DisplayObject.prototype.setVisible = function(value) {
-	this.__jq__.css("display",(value == false?"none":"block"));
-	this.__jq__.css("visibility",(value == false?"hidden":"visible"));
+	this.__jq__.css("display",value == false?"none":"block");
+	this.__jq__.css("visibility",value == false?"hidden":"visible");
 	this.__jq__.data("visible",value);
 	return this.__jq__.data("visible");
 }
@@ -289,33 +289,51 @@ hedge.display.DisplayObjectContainer.prototype.textSnapshot = null;
 hedge.display.DisplayObjectContainer.prototype.__class__ = hedge.display.DisplayObjectContainer;
 Reflect = function() { }
 Reflect.__name__ = ["Reflect"];
-Reflect.hasField = function(o,field) {
-	if(o.hasOwnProperty != null) return o.hasOwnProperty(field);
-	var arr = Reflect.fields(o);
-	{ var $it0 = arr.iterator();
-	while( $it0.hasNext() ) { var t = $it0.next();
-	if(t == field) return true;
-	}}
-	return false;
-}
-Reflect.field = function(o,field) {
-	var v = null;
-	try {
-		v = o[field];
-	}
-	catch( $e0 ) {
+Reflect.makeVarArgs = function(f) {
+	return function() {
+		var a = new Array();
 		{
-			var e = $e0;
-			null;
+			var _g1 = 0, _g = arguments.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				a.push(arguments[i]);
+			}
+		}
+		return f(a);
+	}
+}
+Reflect.copy = function(o) {
+	var o2 = { }
+	{
+		var _g = 0, _g1 = Reflect.fields(o);
+		while(_g < _g1.length) {
+			var f = _g1[_g];
+			++_g;
+			(o2[f] = Reflect.field(o,f));
 		}
 	}
-	return v;
+	return o2;
 }
-Reflect.setField = function(o,field,value) {
-	o[field] = value;
+Reflect.deleteField = function(o,f) {
+	if(!Reflect.hasField(o,f)) return false;
+	delete(o[f]);
+	return true;
 }
-Reflect.callMethod = function(o,func,args) {
-	return func.apply(o,args);
+Reflect.isObject = function(v) {
+	if(v == null) return false;
+	var t = typeof(v);
+	return (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
+}
+Reflect.compareMethods = function(f1,f2) {
+	if(f1 == f2) return true;
+	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) return false;
+	return f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
+}
+Reflect.compare = function(a,b) {
+	return a == b?0:a > b?1:-1;
+}
+Reflect.isFunction = function(f) {
+	return typeof(f) == "function" && f.__name__ == null;
 }
 Reflect.fields = function(o) {
 	if(o == null) return new Array();
@@ -350,51 +368,33 @@ Reflect.fields = function(o) {
 	}
 	return a;
 }
-Reflect.isFunction = function(f) {
-	return typeof(f) == "function" && f.__name__ == null;
+Reflect.callMethod = function(o,func,args) {
+	return func.apply(o,args);
 }
-Reflect.compare = function(a,b) {
-	return ((a == b)?0:((((a) > (b))?1:-1)));
+Reflect.setField = function(o,field,value) {
+	o[field] = value;
 }
-Reflect.compareMethods = function(f1,f2) {
-	if(f1 == f2) return true;
-	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) return false;
-	return f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
-}
-Reflect.isObject = function(v) {
-	if(v == null) return false;
-	var t = typeof(v);
-	return (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
-}
-Reflect.deleteField = function(o,f) {
-	if(!Reflect.hasField(o,f)) return false;
-	delete(o[f]);
-	return true;
-}
-Reflect.copy = function(o) {
-	var o2 = { }
-	{
-		var _g = 0, _g1 = Reflect.fields(o);
-		while(_g < _g1.length) {
-			var f = _g1[_g];
-			++_g;
-			o2[f] = Reflect.field(o,f);
-		}
+Reflect.field = function(o,field) {
+	var v = null;
+	try {
+		v = o[field];
 	}
-	return o2;
-}
-Reflect.makeVarArgs = function(f) {
-	return function() {
-		var a = new Array();
+	catch( $e0 ) {
 		{
-			var _g1 = 0, _g = arguments.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				a.push(arguments[i]);
-			}
+			var e = $e0;
+			null;
 		}
-		return f(a);
 	}
+	return v;
+}
+Reflect.hasField = function(o,field) {
+	if(o.hasOwnProperty != null) return o.hasOwnProperty(field);
+	var arr = Reflect.fields(o);
+	{ var $it0 = arr.iterator();
+	while( $it0.hasNext() ) { var t = $it0.next();
+	if(t == field) return true;
+	}}
+	return false;
 }
 Reflect.prototype.__class__ = Reflect;
 if(typeof haxe=='undefined') haxe = {}
@@ -502,10 +502,10 @@ hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelect
 	if(transparent == null) transparent = true;
 	this.width = width;
 	this.height = height;
-	this.transparent = (transparent == null?true:transparent);
-	this.__fillColor__ = (fillColor == null?16777215:fillColor);
+	this.transparent = transparent == null?true:transparent;
+	this.__fillColor__ = fillColor == null?16777215:fillColor;
 	this.__id__ = hedge.Setup.generateInstanceName();
-	this.__source__ = (cssSelector == null?null:new $(cssSelector));
+	this.__source__ = cssSelector == null?null:new $(cssSelector);
 	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr("id",this.__id__).attr("width",width).attr("height",height);
 	hedge.Setup.__storage__.append(this.__canvas__);
 	this.__context__ = this.__canvas__[0].getContext("2d");
@@ -527,7 +527,7 @@ hedge.display.BitmapData.prototype.copyPixels = function(sourceBitmapData,source
 	this.__context__.drawImage(sourceBitmapData.__canvas__[0],sourceRect.x,sourceRect.y,sourceRect.width,sourceRect.height,destPoint.x,destPoint.y,sourceRect.width,sourceRect.height);
 }
 hedge.display.BitmapData.prototype.fillRect = function(rect,color) {
-	this.__context__.fillStyle = (this.transparent == true?hedge.Setup.canvas_RGBA_to_String(color):hedge.Setup.RGB_to_String(color));
+	this.__context__.fillStyle = this.transparent == true?hedge.Setup.canvas_RGBA_to_String(color):hedge.Setup.RGB_to_String(color);
 	this.__context__.fillRect(rect.x,rect.y,rect.width,rect.height);
 }
 hedge.display.BitmapData.prototype.getHeight = function() {
@@ -573,9 +573,9 @@ haxe.Firebug.onError = function(err,stack) {
 	return true;
 }
 haxe.Firebug.trace = function(v,inf) {
-	var type = (inf != null && inf.customParams != null?inf.customParams[0]:null);
-	if(type != "warn" && type != "info" && type != "debug" && type != "error") type = (inf == null?"error":"log");
-	console[type](((inf == null?"":((inf.fileName + ":") + inf.lineNumber) + " : ")) + Std.string(v));
+	var type = inf != null && inf.customParams != null?inf.customParams[0]:null;
+	if(type != "warn" && type != "info" && type != "debug" && type != "error") type = inf == null?"error":"log";
+	console[type]((inf == null?"":((inf.fileName + ":") + inf.lineNumber) + " : ") + Std.string(v));
 }
 haxe.Firebug.prototype.__class__ = haxe.Firebug;
 hedge.display.Sprite = function(p) { if( p === $_ ) return; {
@@ -703,18 +703,18 @@ Hash.prototype.set = function(key,value) {
 }
 Hash.prototype.toString = function() {
 	var s = new StringBuf();
-	s.b[s.b.length] = "{";
+	(s.b[s.b.length] = "{");
 	var it = this.keys();
 	{ var $it0 = it;
 	while( $it0.hasNext() ) { var i = $it0.next();
 	{
-		s.b[s.b.length] = i;
-		s.b[s.b.length] = " => ";
-		s.b[s.b.length] = Std.string(this.get(i));
-		if(it.hasNext()) s.b[s.b.length] = ", ";
+		(s.b[s.b.length] = i);
+		(s.b[s.b.length] = " => ");
+		(s.b[s.b.length] = Std.string(this.get(i)));
+		if(it.hasNext()) (s.b[s.b.length] = ", ");
 	}
 	}}
-	s.b[s.b.length] = "}";
+	(s.b[s.b.length] = "}");
 	return s.b.join("");
 }
 Hash.prototype.__class__ = Hash;
@@ -786,9 +786,6 @@ Std.random = function(x) {
 	return Math.floor(Math.random() * x);
 }
 Std.prototype.__class__ = Std;
-hedge.display.PixelSnapping = function() { }
-hedge.display.PixelSnapping.__name__ = ["hedge","display","PixelSnapping"];
-hedge.display.PixelSnapping.prototype.__class__ = hedge.display.PixelSnapping;
 ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TBool = ["TBool",3];
 ValueType.TBool.toString = $estr;
@@ -987,7 +984,7 @@ js.Boot.__unhtml = function(s) {
 	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 }
 js.Boot.__trace = function(v,i) {
-	var msg = (i != null?((i.fileName + ":") + i.lineNumber) + ": ":"");
+	var msg = i != null?((i.fileName + ":") + i.lineNumber) + ": ":"";
 	msg += js.Boot.__unhtml(js.Boot.__string_rec(v,"")) + "<br/>";
 	var d = document.getElementById("haxe:trace");
 	if(d == null) alert("No haxe:trace element defined\n" + msg);
@@ -1038,7 +1035,7 @@ js.Boot.__string_rec = function(o,s) {
 				var _g = 0;
 				while(_g < l) {
 					var i1 = _g++;
-					str += ((i1 > 0?",":"")) + js.Boot.__string_rec(o[i1],s);
+					str += (i1 > 0?",":"") + js.Boot.__string_rec(o[i1],s);
 				}
 			}
 			str += "]";
@@ -1144,7 +1141,7 @@ js.Boot.__init = function() {
 	Array.prototype.insert = function(i,x) {
 		this.splice(i,0,x);
 	}
-	Array.prototype.remove = (Array.prototype.indexOf?function(obj) {
+	Array.prototype.remove = Array.prototype.indexOf?function(obj) {
 		var idx = this.indexOf(obj);
 		if(idx == -1) return false;
 		this.splice(idx,1);
@@ -1160,7 +1157,7 @@ js.Boot.__init = function() {
 			i++;
 		}
 		return false;
-	});
+	}
 	Array.prototype.iterator = function() {
 		return { cur : 0, arr : this, hasNext : function() {
 			return this.cur < this.arr.length;
@@ -1263,7 +1260,7 @@ haxe.rtti.Meta = function() { }
 haxe.rtti.Meta.__name__ = ["haxe","rtti","Meta"];
 haxe.rtti.Meta.getFields = function(t) {
 	var meta = t.__meta__;
-	return ((meta == null)?meta:meta.fields);
+	return meta == null?meta:meta.fields;
 }
 haxe.rtti.Meta.prototype.__class__ = haxe.rtti.Meta;
 hedge.display.Graphics = function(parent) { if( parent === $_ ) return; {
@@ -1334,13 +1331,13 @@ hedge.Setup.createJqueryEvents = function() {
 			_name = Type.getClassName(e).split(".");
 			_meta = haxe.rtti.Meta.getFields(e);
 			_fields = Reflect.fields(_meta);
-			_event = $.event.special[_name[_name.length - 1]] = { }
+			_event = ($.event.special[_name[_name.length - 1]] = { });
 			{
 				var _g2 = 0;
 				while(_g2 < _fields.length) {
 					var f = _fields[_g2];
 					++_g2;
-					_event[f] = Reflect.field(_class,f);
+					(_event[f] = Reflect.field(_class,f));
 				}
 			}
 		}
@@ -1386,7 +1383,7 @@ hedge.Setup.__data__ = function(values) {
 			_n_ = n;
 			_v_ = Reflect.field(values,n);
 			Reflect.deleteField(values,n);
-			values["data-" + _n_] = _v_;
+			(values["data-" + _n_] = _v_);
 		}
 	}
 	return values;
@@ -1403,24 +1400,24 @@ hedge.Setup.__attr__ = function(values) {
 			++_g;
 			_t_ = Reflect.field(values,n);
 			if(_t_ != null) {
-				_r_[n] = _t_;
+				(_r_[n] = _t_);
 			}
 		}
 	}
 	return _r_;
 }
 hedge.Setup.generateInstanceName = function() {
-	return "instance" + ((hedge.Setup.__counter__++) - 1);
+	return "instance" + (hedge.Setup.__counter__++ - 1);
 }
 hedge.Setup.RGB_to_String = function(color) {
 	return ((((("rgb(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ")";
 }
 hedge.Setup.canvas_RGBA_to_String = function(color) {
-	return ((((((("rgba(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ", ") + ((color < 0?-(color >> 24) / 255:1))) + ")";
+	return ((((((("rgba(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ", ") + (color < 0?-(color >> 24) / 255:1)) + ")";
 }
 hedge.Setup.RGB_String_to_HEX = function(color) {
 	var values = color.substr(color.indexOf("rgb(") + 4,color.lastIndexOf(")") - 4).split(", ");
-	return ((((Std.parseInt(values[0])) << 16) | ((Std.parseInt(values[1])) << 8)) | ((Std.parseInt(values[2]))));
+	return (((Std.parseInt(values[0]) << 16) | (Std.parseInt(values[1]) << 8)) | Std.parseInt(values[2]));
 }
 hedge.Setup.prototype.__class__ = hedge.Setup;
 Main = function() { }
@@ -1432,15 +1429,22 @@ Main.main = function() {
 	hedge.Setup.init($closure(Main,"launch"),15);
 }
 Main.launch = function() {
-	hedge.Lib.attachToStage(new BlitTest());
+	hedge.Lib.attachToStage(new Examples());
 }
 Main.prototype.__class__ = Main;
+Examples = function(p) { if( p === $_ ) return; {
+	hedge.display.Sprite.call(this);
+	this.addChild(new BlitTest());
+}}
+Examples.__name__ = ["Examples"];
+Examples.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) Examples.prototype[k] = hedge.display.Sprite.prototype[k];
+Examples.prototype.__class__ = Examples;
 BlitTest = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
 	this.bunnies = new Array();
 	var bunnyAsset;
-	var htmlAsset = new $("img#wabbit_alpha");
-	bunnyAsset = new hedge.display.BitmapData(htmlAsset.width(),htmlAsset.height(),true,null,"img#wabbit_alpha");
+	bunnyAsset = new hedge.display.BitmapData(26,37,true,null,"img#wabbit_alpha");
 	var bunny;
 	{
 		var _g1 = 0, _g = BlitTest.numBunnies;
@@ -1536,7 +1540,7 @@ js.Boot.__init();
 	}
 }
 {
-	js["XMLHttpRequest"] = (window.XMLHttpRequest?XMLHttpRequest:(window.ActiveXObject?function() {
+	js["XMLHttpRequest"] = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?function() {
 		try {
 			return new ActiveXObject("Msxml2.XMLHTTP");
 		}
@@ -1562,7 +1566,7 @@ js.Boot.__init();
 		var $r;
 		throw "Unable to create XMLHttpRequest object.";
 		return $r;
-	}(this))));
+	}(this));
 }
 hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}}
 hedge.events.Event.__meta__ = { statics : { ENTER_FRAME : { properties : ["bubbles","cancelable","currentTarget","target"]}}}
@@ -1571,7 +1575,6 @@ haxe.Timer.arr = new Array();
 hedge.jquery.events.EnterFrame.data = new Hash();
 hedge.jquery.events.EnterFrame.events = new Array();
 hedge.jquery.events.EnterFrame.running = false;
-hedge.display.PixelSnapping.AUTO = "auto";
 js.Lib.onerror = null;
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";

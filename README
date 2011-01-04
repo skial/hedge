@@ -1,7 +1,10 @@
 If your looking for a flash to html5 library - look at Jeash, its awesome - https://launchpad.net/jeash
 
-WARNING
+WARNINGS
 -----
+04/01/2011 13:03 --dead-code-elimination works with haxe build r3584. In your .hxml file add the following -
+--macro keepClass(['Type', 'Reflect']).
+
 03/01/2011 12:08 javascript error with haxe build r3578 but works fine with haxe build r3577 - not sure
 whats causing it...
 

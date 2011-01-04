@@ -2,5 +2,5 @@
 -cp ./src
 -lib raphaelExtern
 -main Main
---macro keepClass(['Type'])
+--macro keepClass(['Type', 'Reflect'])
 --dead-code-elimination
