@@ -82,13 +82,20 @@ not optimized, but seems to run 3000 bunnies at 15 fps better than at 30 fps.
 Looking at svgweb - might be better solution than using raphaeljs. I'm only using raphaeljs to render - at moment no
 animation.
 
-Not using any thirdparty js library for canvas but there is bitmapdata.js as an alternative [3]
+Not using any third party js library for canvas but there is bitmapdata.js as an alternative [3]
 
 canvas 2d context method drawImage is alot faster than method putImageData etc.
+
+I think the best solution to creating an as3 textfield->html textarea that supports all of as3 textfield html features is
+to use something like showdown [4] which weighs in around 10k - gzip at 4k. markItUp! [5] jQuery plugin weighs around 16k -
+gzip at 6k. Javascript Textile [6] weighs around 6k - gzip at 2k.
 
 [1] - http://blog.iainlobb.com/2010/11/display-list-vs-blitting-results.html
 [2] - http://iainlobb.com/bunnies/bunnies.html
 [3] - https://github.com/pnitsch/BitmapData.js
+[4] - http://attacklab.net/showdown/
+[5] - http://markitup.jaysalvat.com/home/
+[6] - http://www.ben-daglish.net/textile.shtml
 
 REASON
 -----

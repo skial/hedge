@@ -20,7 +20,7 @@ class TextField extends InteractiveObject {
 	public var bottomScrollV:Int;	// read-only
 	public var caretIndex:Int;
 	public var condenseWhite:Bool;
-	//public var contextMenu:NativeMenu;	// read-only
+	//public var contextMenu:NativeMenu;	// read-only	// air only
 	public var defaultTextFormat:TextFormat;
 	public var displayAsPassword:Bool;
 	public var embedFonts:Bool;
@@ -41,21 +41,31 @@ class TextField extends InteractiveObject {
 	public var selectionEndIndex:Int;	//	read-only
 	public var sharpness:Float;
 	public var styleSheet:StyleSheet;
-	public var text:String;
+	public var text(getText, setText):String;
 	public var textColor:Int;
 	public var textHeight:Float;	// read-only
 	public var textWidth:Float;	// read-only
 	public var thickness:Float;
-	public var type:String;
+	public var type(getType, setType):String;
 	public var useRichTextClipboard:Bool;
-	public var wordWrap:Bool;
+	public var wordWrap(getWordWrap, setWordWrap):Bool;
+	
+	public var __ta__:JQuery;
+	
+	// defualt is dynamic=__jq__.text() else input=__jq__.val()
+	private var textDependsOnType:Dynamic;
 
 	public function new() {
-		
+		super();
+		this.__jq__.append(this.__ta__ = new JQuery('<textarea></textarea>'));
+		this.__ta__.css( {background:'none', border:'none', overflow:'none', resize:'none', outline:'none'} ).css('border-width', '0px').width('100%').height('100%');
+		this.width = this.height = 100;
+		this.wordWrap = false;
+		this.type = TextFieldType.DYNAMIC;
 	}
 	
 	public function appendText(newText:String):Void {
-		
+		this.__jq__.text(this.text + newText);
 	}
 	
 	public function getCharBoundaries(charIndex:Int):Rectangle {
@@ -120,6 +130,52 @@ class TextField extends InteractiveObject {
 	
 	public function setTextFormat(format:TextFormat, beginIndex:Int = -1, endIndex:Int = -1):Void {
 		
+	}
+	
+	//	INTERNAL METHODS
+	
+	private function getHtmlText():String {
+		return this.__jq__.html();
+	}
+	
+	private function setHtmlText(value:String):String {
+		this.__jq__.html(value);
+		return this.__jq__.html();
+	}
+	
+	//	getText / setText function depends on textfields type
+	
+	private function getText():String {
+		return textDependsOnType();
+	}
+	
+	private function setText(value:String):String {
+		textDependsOnType(value);
+		return textDependsOnType();
+	}
+	
+	private function getType():String {
+		return this.__jq__.attr('data-type');
+	}
+	
+	private function setType(value:String):String {
+		if (value == TextFieldType.DYNAMIC) {
+			this.__ta__.attr( { readonly:true } );
+		} else if (value == TextFieldType.INPUT) {
+			this.__ta__.attr( { readonly:false } );
+		}
+		this.__jq__.attr('data-type', value);
+		return this.__jq__.attr('data-type');
+	}
+	
+	private function getWordWrap():Bool {
+		return this.__jq__.attr('data-wordWrap');
+	}
+	
+	private function setWordWrap(value:Bool):Bool {
+		this.__jq__.css('white-space', value == true ? 'normal' : 'nowrap');
+		this.__jq__.attr('data-wordWrap', value);
+		return this.__jq__.attr('data-wordWrap');
 	}
 	
 }

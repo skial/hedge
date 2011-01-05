@@ -5,12 +5,9 @@
 
 package hedge.text;
 
-class TextFieldType 
-{
-
-	public function new() 
-	{
-		
-	}
+class TextFieldType {
+	
+	public static inline var DYNAMIC	:String = 'dynamic';
+	public static inline var INPUT	:String = 'input';
 	
 }
