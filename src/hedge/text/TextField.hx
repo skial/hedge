@@ -51,13 +51,8 @@ class TextField extends InteractiveObject {
 	public var useRichTextClipboard:Bool;
 	public var wordWrap(getWordWrap, setWordWrap):Bool;
 	
-	public var __ta__:JQuery;
-	
 	public function new() {
 		super();
-		//this.__jq__.append(this.__ta__ = new JQuery('<textarea></textarea>'));
-		//this.__ta__ = new JQuery('<textarea>');
-		//this.__ta__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px').width('100%').height('100%');
 		// TODO values below - once all working, move to one line as most will = false
 		this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
 		this.background = false;
@@ -143,7 +138,7 @@ class TextField extends InteractiveObject {
 	
 	private function setBackground(value:Bool):Bool {
 		this.__jq__.attr('data-background', value);
-		this.__jq__.css('background-color', value == true ? Setup.RGB_to_String(0xFFFFFF) : 'none');
+		this.__jq__.css('background', value == true ? '' + Setup.RGB_to_String(0xFFFFFF) : 'none');
 		return this.__jq__.attr('data-background');
 	}
 	
@@ -230,8 +225,6 @@ class TextField extends InteractiveObject {
 	private override function setWidth(value:Float):Float {
 		this.__jq__.width(value);
 		this.__jq__.data('width', value);
-		trace(this.border == true);
-		trace(this.border);
 		//this.__ta__.width(this.border == true ? (value  - (Std.parseInt(this.__ta__.css('border-width'))*2)) : value);
 		return this.__jq__.data('width');
 	}
@@ -239,8 +232,6 @@ class TextField extends InteractiveObject {
 	private override function setHeight(value:Float):Float {
 		this.__jq__.height(value);
 		this.__jq__.data('height', value);
-		trace(this.border == true);
-		trace(this.border);
 		//this.__ta__.height(this.border == true ? (value  - (Std.parseInt(this.__ta__.css('border-width'))*2)) : value);
 		return this.__jq__.data('height');
 	}

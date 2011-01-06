@@ -2344,6 +2344,9 @@ hedge.display.Sprite.prototype.setHitArea = function(value) {
 }
 hedge.display.Sprite.prototype.useHandCursor = null;
 hedge.display.Sprite.prototype.__class__ = hedge.display.Sprite;
+hedge.display.GradientType = function() { }
+hedge.display.GradientType.__name__ = ["hedge","display","GradientType"];
+hedge.display.GradientType.prototype.__class__ = hedge.display.GradientType;
 hedge.display.Stage = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.display.Stage::new");
 	var $spos = $s.length;
@@ -2612,7 +2615,138 @@ hedge.display.Graphics = function(parent) { if( parent === $_ ) return; {
 hedge.display.Graphics.__name__ = ["hedge","display","Graphics"];
 hedge.display.Graphics.__super__ = hedge.Object;
 for(var k in hedge.Object.prototype ) hedge.display.Graphics.prototype[k] = hedge.Object.prototype[k];
+hedge.display.Graphics.prototype.__element__ = null;
 hedge.display.Graphics.prototype.__raphael__ = null;
+hedge.display.Graphics.prototype.beginFill = function(color,alpha) {
+	$s.push("hedge.display.Graphics::beginFill");
+	var $spos = $s.length;
+	if(alpha == null) alpha = 1.0;
+	this.fill_color = color;
+	this.fill_alpha = alpha;
+	this.fillType = "flood";
+	$s.pop();
+}
+hedge.display.Graphics.prototype.checkFill = function() {
+	$s.push("hedge.display.Graphics::checkFill");
+	var $spos = $s.length;
+	this.fillType = this.fillType == null?"flood":this.fillType;
+	switch(this.fillType) {
+	case "bitmapdata":{
+		throw "beginBitmapFill is not implemented";
+	}break;
+	case "flood":{
+		this.__element__.attr("fill",this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color));
+		this.__element__.attr("opacity",this.fill_alpha == null?1.0:this.fill_alpha);
+	}break;
+	case "gradient":{
+		var color_alpha = "";
+		{
+			var _g1 = 0, _g = this.gradient_colors.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				if(i == 0) {
+					color_alpha += hedge.Setup.RGB_to_String(this.fill_gradient_colors[i]);
+				}
+				else {
+					color_alpha += "-" + hedge.Setup.RGB_to_String(this.fill_gradient_colors[i]);
+				}
+				color_alpha += ":" + ((this.fill_gradient_ratios[i] / 255) * 100);
+			}
+		}
+		switch(this.fill_gradient_type) {
+		case hedge.display.GradientType.LINEAR:{
+			this.__element__.attr("fill","0-" + color_alpha);
+		}break;
+		case hedge.display.GradientType.RADIAL:{
+			throw "Gradient.RADIAL is not supported by RaphaelJS on any thing not a circle or ellipse";
+			this.__element__.attr("fill","r" + color_alpha);
+		}break;
+		}
+	}break;
+	default:{
+		null;
+	}break;
+	}
+	$s.pop();
+}
+hedge.display.Graphics.prototype.checkLineStyle = function() {
+	$s.push("hedge.display.Graphics::checkLineStyle");
+	var $spos = $s.length;
+	this.lineType = this.lineType == null?"plain":this.lineType;
+	switch(this.lineType) {
+	case "gradient":{
+		null;
+	}break;
+	case "plain":{
+		this.__element__.attr("stroke-width",this.line_thickness == null?1.0:this.line_thickness);
+		this.__element__.attr("stroke",this.line_color == null?"none":hedge.Setup.RGB_to_String(this.line_color));
+		this.__element__.attr("stroke-opacity",this.line_alpha == null?1.0:this.line_alpha);
+		this.__element__.attr("stroke-linecap",this.line_caps == null?"butt":this.line_caps = this.line_caps == "none"?"butt":this.line_caps);
+		this.__element__.attr("stroke-linejoin",this.line_joints == null?"miter":this.line_joints);
+		this.__element__.attr("stroke-miterlimit",this.line_limit == null?3.0:this.line_limit);
+	}break;
+	default:{
+		null;
+	}break;
+	}
+	$s.pop();
+}
+hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
+	$s.push("hedge.display.Graphics::drawRect");
+	var $spos = $s.length;
+	x = x + this.line_thickness;
+	y = y + this.line_thickness;
+	width = width - this.line_thickness;
+	height = height - this.line_thickness;
+	this.__element__ = this.__raphael__.rect(x,y,width,height);
+	this.checkFill();
+	this.checkLineStyle();
+	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : width + this.line_thickness, h : height + this.line_thickness, p : this.parent}]);
+	$s.pop();
+}
+hedge.display.Graphics.prototype.endFill = function() {
+	$s.push("hedge.display.Graphics::endFill");
+	var $spos = $s.length;
+	if(this.path != "" || this.path == null) {
+		this.__element__ = this.__raphael__.path(this.path += " z");
+		this.checkFill();
+		this.checkLineStyle();
+		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
+	}
+	$s.pop();
+}
+hedge.display.Graphics.prototype.fillType = null;
+hedge.display.Graphics.prototype.fill_alpha = null;
+hedge.display.Graphics.prototype.fill_color = null;
+hedge.display.Graphics.prototype.fill_gradient_colors = null;
+hedge.display.Graphics.prototype.fill_gradient_ratios = null;
+hedge.display.Graphics.prototype.fill_gradient_type = null;
+hedge.display.Graphics.prototype.lineStyle = function(thickness,color,alpha,pixelHinting,scaleMode,caps,joints,miterLimit) {
+	$s.push("hedge.display.Graphics::lineStyle");
+	var $spos = $s.length;
+	if(miterLimit == null) miterLimit = 3;
+	if(joints == null) joints = "miter";
+	if(caps == null) caps = "none";
+	if(scaleMode == null) scaleMode = "normal";
+	if(pixelHinting == null) pixelHinting = false;
+	if(alpha == null) alpha = 1.0;
+	if(color == null) color = 16777215;
+	this.lineType = "plain";
+	this.line_thickness = thickness;
+	this.line_color = color;
+	this.line_alpha = alpha;
+	this.line_caps = caps;
+	this.line_joints = joints;
+	this.line_limit = miterLimit;
+	$s.pop();
+}
+hedge.display.Graphics.prototype.lineType = null;
+hedge.display.Graphics.prototype.line_alpha = null;
+hedge.display.Graphics.prototype.line_caps = null;
+hedge.display.Graphics.prototype.line_color = null;
+hedge.display.Graphics.prototype.line_joints = null;
+hedge.display.Graphics.prototype.line_limit = null;
+hedge.display.Graphics.prototype.line_thickness = null;
 hedge.display.Graphics.prototype.parent = null;
 hedge.display.Graphics.prototype.path = null;
 hedge.display.Graphics.prototype.__class__ = hedge.display.Graphics;
@@ -2638,17 +2772,57 @@ Examples = function(p) { if( p === $_ ) return; {
 	$s.push("Examples::new");
 	var $spos = $s.length;
 	hedge.display.Sprite.call(this);
-	var numBunniesTxt = new hedge.text.TextField();
-	numBunniesTxt.setType("input");
-	numBunniesTxt.setBackground(true);
-	numBunniesTxt.setBorder(true);
-	this.addChild(new BlitTest());
-	this.addChild(numBunniesTxt);
+	this.__jq__.css("border","1px solid black");
+	this.bunnyOne = new BlitTest();
+	this.bunnyAmount = new hedge.text.TextField();
+	this.bunnyAmount.setType("input");
+	this.bunnyAmount.setBackground(true);
+	this.bunnyAmount.setBorder(true);
+	this.bunnyAmount.setWidth(50);
+	this.bunnyAmount.setHeight(20);
+	this.bunnyAmount.setText("3000");
+	this.submitAmount = new hedge.display.Sprite();
+	this.submitAmount.getGraphics().beginFill(40940);
+	this.submitAmount.getGraphics().lineStyle(1,0);
+	this.submitAmount.getGraphics().drawRect(0,0,98,20);
+	this.submitAmount.getGraphics().endFill();
+	this.submitText = new hedge.text.TextField();
+	this.submitText.setText("submit");
+	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
+	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
+	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
+	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
+	this.submitText.setX(25);
+	this.submitText.setY(2);
+	this.submitAmount.__jq__.bind("click",$closure(this,"onClick"));
+	this.addChild(this.bunnyOne);
+	this.addChild(this.bunnyAmount);
+	this.addChild(this.submitAmount);
+	this.submitAmount.addChild(this.submitText);
 	$s.pop();
 }}
 Examples.__name__ = ["Examples"];
 Examples.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) Examples.prototype[k] = hedge.display.Sprite.prototype[k];
+Examples.prototype.bunnyAmount = null;
+Examples.prototype.bunnyOne = null;
+Examples.prototype.onClick = function(e) {
+	$s.push("Examples::onClick");
+	var $spos = $s.length;
+	if(this.bunnyAmount.getText() == null) {
+		this.bunnyAmount.setText("3000");
+	}
+	if(Std.parseInt(this.bunnyAmount.getText()) > 3000) {
+		this.bunnyAmount.setText("3000");
+	}
+	if(Std.parseInt(this.bunnyAmount.getText()) < 0) {
+		this.bunnyAmount.setText("0");
+	}
+	BlitTest.numBunnies = Std.parseInt(this.bunnyAmount.getText());
+	$s.pop();
+}
+Examples.prototype.submitAmount = null;
+Examples.prototype.submitText = null;
 Examples.prototype.__class__ = Examples;
 BlitTest = function(p) { if( p === $_ ) return; {
 	$s.push("BlitTest::new");
@@ -2667,7 +2841,6 @@ BlitTest = function(p) { if( p === $_ ) return; {
 		}
 	}
 	this.bitmap = new hedge.display.Bitmap(new hedge.display.BitmapData(BlitTest.maxX,BlitTest.maxY,true));
-	this.bitmap.setName("bitmapSkial");
 	this.addChild(this.bitmap);
 	this.addEventListener(hedge.events.Event.ENTER_FRAME,$closure(this,"onEnterFrame"));
 	$s.pop();
@@ -2816,7 +2989,7 @@ hedge.text.TextField.prototype.setBackground = function(value) {
 	$s.push("hedge.text.TextField::setBackground");
 	var $spos = $s.length;
 	this.__jq__.attr("data-background",value);
-	this.__jq__.css("background-color",value == true?hedge.Setup.RGB_to_String(16777215):"none");
+	this.__jq__.css("background",value == true?"" + hedge.Setup.RGB_to_String(16777215):"none");
 	{
 		var $tmp = this.__jq__.attr("data-background");
 		$s.pop();
@@ -2867,8 +3040,6 @@ hedge.text.TextField.prototype.setHeight = function(value) {
 	var $spos = $s.length;
 	this.__jq__.height(value);
 	this.__jq__.data("height",value);
-	haxe.Log.trace(this.getBorder() == true,{ fileName : "TextField.hx", lineNumber : 242, className : "hedge.text.TextField", methodName : "setHeight"});
-	haxe.Log.trace(this.getBorder(),{ fileName : "TextField.hx", lineNumber : 243, className : "hedge.text.TextField", methodName : "setHeight"});
 	{
 		var $tmp = this.__jq__.data("height");
 		$s.pop();
@@ -2909,8 +3080,6 @@ hedge.text.TextField.prototype.setWidth = function(value) {
 	var $spos = $s.length;
 	this.__jq__.width(value);
 	this.__jq__.data("width",value);
-	haxe.Log.trace(this.getBorder() == true,{ fileName : "TextField.hx", lineNumber : 233, className : "hedge.text.TextField", methodName : "setWidth"});
-	haxe.Log.trace(this.getBorder(),{ fileName : "TextField.hx", lineNumber : 234, className : "hedge.text.TextField", methodName : "setWidth"});
 	{
 		var $tmp = this.__jq__.data("width");
 		$s.pop();
@@ -3227,6 +3396,8 @@ hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
 haxe.Timer.arr = new Array();
 hedge.events.Event.__meta__ = { statics : { ENTER_FRAME : { properties : ["bubbles","cancelable","currentTarget","target"]}}}
 hedge.events.Event.ENTER_FRAME = "enterFrame";
+hedge.display.GradientType.LINEAR = "linear";
+hedge.display.GradientType.RADIAL = "radial";
 BlitTest.numBunnies = 3000;
 BlitTest.gravity = 3;
 BlitTest.maxX = 640;
