@@ -4,6 +4,7 @@ import haxe.Firebug;
 import haxe.rtti.Meta;
 import hedge.geom.Rectangle;
 import hedge.text.TextField;
+import hedge.text.TextFieldType;
 #if js
 import js.Lib;
 import hedge.display.IBitmapDrawable;
@@ -60,6 +61,9 @@ class Examples extends Sprite {
 	public function new() {
 		super();
 		var numBunniesTxt:TextField = new TextField();
+		numBunniesTxt.type = TextFieldType.INPUT;
+		numBunniesTxt.background = true;
+		numBunniesTxt.border = true;
 		this.addChild(new BlitTest());
 		this.addChild(numBunniesTxt);
 	}

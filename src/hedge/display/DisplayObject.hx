@@ -19,7 +19,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var mouseX(getMouseX,null):Float;									//read only
 	public var mouseY(getMouseY,null):Float;									//read only
 	public var name(getName,setName):String;
-	public var opaqueBackground(getBackground,setBackground):Dynamic;
+	public var opaqueBackground(getOpaqueBackground,setOpaqueBackground):Dynamic;
 	public var parent(getParent,setParent):DisplayObjectContainer;		//read only | CHANGED - was read only
 	public var root(getRoot,null):DisplayObject;								//read only
 	public var rotation(getRotation,setRotation):Float;
@@ -39,13 +39,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 
 	public function new() {
 		super();
-		Setup.__storage__.append(__jq__ = new JQuery('<div>'));
-		__originalName__ = name = Setup.generateInstanceName();
-		// width and height need to be set to 0
-		__jq__.attr('id', this.name).css( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) );
-		__jq__.attr('data-originalName', __originalName__);
-		
-		parent = Setup.__default__;
+		this.initialize();
 	}
 	
 	public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle {
@@ -71,6 +65,22 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	/* OVERRIDE FUNCTIONS */
 	
 	/* INTERNAL FUNCTIONS */
+	
+	// method name might give you a hint to what it does
+	private function initialize():Void {
+		this.generateJQuery();
+		this.__originalName__ = this.name = Setup.generateInstanceName();
+		// width and height need to be set to 0
+		this.__jq__.attr('id', this.name).css( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) );
+		this.__jq__.attr('data-originalName', this.__originalName__);
+		
+		this.parent = Setup.__default__;
+	}
+	
+	// provide to be overriden
+	private function generateJQuery():Void {
+		Setup.__storage__.append(this.__jq__ = new JQuery('<div>'));
+	}
 	
 	private function getMouseX():Float {
 		return mouseX;
@@ -142,11 +152,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return value;
 	}
 	
-	private function getBackground():Dynamic {
+	private function getOpaqueBackground():Dynamic {
 		return opaqueBackground;
 	}
 	
-	private function setBackground(value:Dynamic):Dynamic {
+	private function setOpaqueBackground(value:Dynamic):Dynamic {
 		opaqueBackground = value;
 		return opaqueBackground;
 	}

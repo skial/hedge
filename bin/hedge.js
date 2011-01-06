@@ -126,11 +126,7 @@ hedge.display.DisplayObject = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.display.DisplayObject::new");
 	var $spos = $s.length;
 	hedge.events.EventDispatcher.call(this);
-	hedge.Setup.__storage__.append(this.__jq__ = new $("<div>"));
-	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
-	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"}));
-	this.__jq__.attr("data-originalName",this.__originalName__);
-	this.setParent(hedge.Setup.__default__);
+	this.initialize();
 	$s.pop();
 }}
 hedge.display.DisplayObject.__name__ = ["hedge","display","DisplayObject"];
@@ -140,21 +136,17 @@ hedge.display.DisplayObject.prototype.__originalName__ = null;
 hedge.display.DisplayObject.prototype.alpha = null;
 hedge.display.DisplayObject.prototype.blendMode = null;
 hedge.display.DisplayObject.prototype.cacheAsBitmap = null;
+hedge.display.DisplayObject.prototype.generateJQuery = function() {
+	$s.push("hedge.display.DisplayObject::generateJQuery");
+	var $spos = $s.length;
+	hedge.Setup.__storage__.append(this.__jq__ = new $("<div>"));
+	$s.pop();
+}
 hedge.display.DisplayObject.prototype.getAlpha = function() {
 	$s.push("hedge.display.DisplayObject::getAlpha");
 	var $spos = $s.length;
 	{
 		var $tmp = this.__jq__.css("opacity");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-hedge.display.DisplayObject.prototype.getBackground = function() {
-	$s.push("hedge.display.DisplayObject::getBackground");
-	var $spos = $s.length;
-	{
-		var $tmp = this.opaqueBackground;
 		$s.pop();
 		return $tmp;
 	}
@@ -225,6 +217,16 @@ hedge.display.DisplayObject.prototype.getName = function() {
 	var $spos = $s.length;
 	{
 		var $tmp = this.__jq__.attr("id");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.display.DisplayObject.prototype.getOpaqueBackground = function() {
+	$s.push("hedge.display.DisplayObject::getOpaqueBackground");
+	var $spos = $s.length;
+	{
+		var $tmp = this.opaqueBackground;
 		$s.pop();
 		return $tmp;
 	}
@@ -351,6 +353,16 @@ hedge.display.DisplayObject.prototype.getY = function() {
 	$s.pop();
 }
 hedge.display.DisplayObject.prototype.height = null;
+hedge.display.DisplayObject.prototype.initialize = function() {
+	$s.push("hedge.display.DisplayObject::initialize");
+	var $spos = $s.length;
+	this.generateJQuery();
+	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
+	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"}));
+	this.__jq__.attr("data-originalName",this.__originalName__);
+	this.setParent(hedge.Setup.__default__);
+	$s.pop();
+}
 hedge.display.DisplayObject.prototype.mask = null;
 hedge.display.DisplayObject.prototype.mouseX = null;
 hedge.display.DisplayObject.prototype.mouseY = null;
@@ -370,17 +382,6 @@ hedge.display.DisplayObject.prototype.setAlpha = function(value) {
 	{
 		$s.pop();
 		return value;
-	}
-	$s.pop();
-}
-hedge.display.DisplayObject.prototype.setBackground = function(value) {
-	$s.push("hedge.display.DisplayObject::setBackground");
-	var $spos = $s.length;
-	this.opaqueBackground = value;
-	{
-		var $tmp = this.getBackground();
-		$s.pop();
-		return $tmp;
 	}
 	$s.pop();
 }
@@ -436,6 +437,17 @@ hedge.display.DisplayObject.prototype.setName = function(value) {
 	{
 		$s.pop();
 		return value;
+	}
+	$s.pop();
+}
+hedge.display.DisplayObject.prototype.setOpaqueBackground = function(value) {
+	$s.push("hedge.display.DisplayObject::setOpaqueBackground");
+	var $spos = $s.length;
+	this.opaqueBackground = value;
+	{
+		var $tmp = this.getOpaqueBackground();
+		$s.pop();
+		return $tmp;
 	}
 	$s.pop();
 }
@@ -2627,6 +2639,9 @@ Examples = function(p) { if( p === $_ ) return; {
 	var $spos = $s.length;
 	hedge.display.Sprite.call(this);
 	var numBunniesTxt = new hedge.text.TextField();
+	numBunniesTxt.setType("input");
+	numBunniesTxt.setBackground(true);
+	numBunniesTxt.setBorder(true);
 	this.addChild(new BlitTest());
 	this.addChild(numBunniesTxt);
 	$s.pop();
@@ -2706,21 +2721,72 @@ hedge.text.TextField = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.text.TextField::new");
 	var $spos = $s.length;
 	hedge.display.InteractiveObject.call(this);
-	this.__jq__.append(this.__ta__ = new $("<textarea></textarea>"));
-	this.__ta__.css({ background : "none", border : "none", overflow : "none", resize : "none", outline : "none"}).css("border-width","0px").width("100%").height("100%");
-	this.setWidth(this.setHeight(100));
+	this.__jq__.css({ overflow : "none", padding : "0px", resize : "none", outline : "none"}).css("border-width","1px");
+	this.setBackground(false);
+	this.setBorder(false);
+	this.setWordWrap(false);
 	this.setType("dynamic");
+	this.setWidth(this.setHeight(100));
 	$s.pop();
 }}
 hedge.text.TextField.__name__ = ["hedge","text","TextField"];
 hedge.text.TextField.__super__ = hedge.display.InteractiveObject;
 for(var k in hedge.display.InteractiveObject.prototype ) hedge.text.TextField.prototype[k] = hedge.display.InteractiveObject.prototype[k];
-hedge.text.TextField.prototype.__ta__ = null;
+hedge.text.TextField.prototype.background = null;
+hedge.text.TextField.prototype.backgroundColor = null;
+hedge.text.TextField.prototype.border = null;
+hedge.text.TextField.prototype.borderColor = null;
+hedge.text.TextField.prototype.generateJQuery = function() {
+	$s.push("hedge.text.TextField::generateJQuery");
+	var $spos = $s.length;
+	hedge.Setup.__storage__.append(this.__jq__ = new $("<textarea>"));
+	$s.pop();
+}
+hedge.text.TextField.prototype.getBackground = function() {
+	$s.push("hedge.text.TextField::getBackground");
+	var $spos = $s.length;
+	{
+		var $tmp = this.__jq__.attr("data-background");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.getBackgroundColor = function() {
+	$s.push("hedge.text.TextField::getBackgroundColor");
+	var $spos = $s.length;
+	{
+		var $tmp = this.getBackground() == true?hedge.Setup.RGB_String_to_HEX(this.__jq__.css("background-color")):-1;
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.getBorder = function() {
+	$s.push("hedge.text.TextField::getBorder");
+	var $spos = $s.length;
+	{
+		var $tmp = this.__jq__.attr("data-border");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.getBorderColor = function() {
+	$s.push("hedge.text.TextField::getBorderColor");
+	var $spos = $s.length;
+	{
+		var $tmp = this.getBorder() == true?hedge.Setup.RGB_String_to_HEX(this.__jq__.css("border-color")):-16777216;
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
 hedge.text.TextField.prototype.getText = function() {
 	$s.push("hedge.text.TextField::getText");
 	var $spos = $s.length;
 	{
-		var $tmp = this.textDependsOnType();
+		var $tmp = this.__jq__.val();
 		$s.pop();
 		return $tmp;
 	}
@@ -2746,12 +2812,76 @@ hedge.text.TextField.prototype.getWordWrap = function() {
 	}
 	$s.pop();
 }
+hedge.text.TextField.prototype.setBackground = function(value) {
+	$s.push("hedge.text.TextField::setBackground");
+	var $spos = $s.length;
+	this.__jq__.attr("data-background",value);
+	this.__jq__.css("background-color",value == true?hedge.Setup.RGB_to_String(16777215):"none");
+	{
+		var $tmp = this.__jq__.attr("data-background");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.setBackgroundColor = function(value) {
+	$s.push("hedge.text.TextField::setBackgroundColor");
+	var $spos = $s.length;
+	if(this.getBackground() == true) {
+		this.__jq__.css("background-color",hedge.Setup.RGB_to_String(value));
+	}
+	{
+		var $tmp = this.getBackgroundColor();
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.setBorder = function(value) {
+	$s.push("hedge.text.TextField::setBorder");
+	var $spos = $s.length;
+	this.__jq__.attr("data-border",value);
+	this.__jq__.css("border",value == true?"1px solid " + hedge.Setup.RGB_to_String(0):"0px none");
+	{
+		var $tmp = this.__jq__.attr("data-border");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.setBorderColor = function(value) {
+	$s.push("hedge.text.TextField::setBorderColor");
+	var $spos = $s.length;
+	if(this.getBorder() == true) {
+		this.__jq__.css("border-color",hedge.Setup.RGB_to_String(value));
+	}
+	{
+		var $tmp = this.getBorderColor();
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.setHeight = function(value) {
+	$s.push("hedge.text.TextField::setHeight");
+	var $spos = $s.length;
+	this.__jq__.height(value);
+	this.__jq__.data("height",value);
+	haxe.Log.trace(this.getBorder() == true,{ fileName : "TextField.hx", lineNumber : 242, className : "hedge.text.TextField", methodName : "setHeight"});
+	haxe.Log.trace(this.getBorder(),{ fileName : "TextField.hx", lineNumber : 243, className : "hedge.text.TextField", methodName : "setHeight"});
+	{
+		var $tmp = this.__jq__.data("height");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
 hedge.text.TextField.prototype.setText = function(value) {
 	$s.push("hedge.text.TextField::setText");
 	var $spos = $s.length;
-	this.textDependsOnType(value);
+	this.__jq__.val(value);
 	{
-		var $tmp = this.textDependsOnType();
+		var $tmp = this.__jq__.val();
 		$s.pop();
 		return $tmp;
 	}
@@ -2761,14 +2891,28 @@ hedge.text.TextField.prototype.setType = function(value) {
 	$s.push("hedge.text.TextField::setType");
 	var $spos = $s.length;
 	if(value == "dynamic") {
-		this.__ta__.attr({ readonly : true});
+		this.__jq__.attr({ readonly : "readonly"});
 	}
 	else if(value == "input") {
-		this.__ta__.attr({ readonly : false});
+		this.__jq__.removeAttr("readonly");
 	}
 	this.__jq__.attr("data-type",value);
 	{
 		var $tmp = this.__jq__.attr("data-type");
+		$s.pop();
+		return $tmp;
+	}
+	$s.pop();
+}
+hedge.text.TextField.prototype.setWidth = function(value) {
+	$s.push("hedge.text.TextField::setWidth");
+	var $spos = $s.length;
+	this.__jq__.width(value);
+	this.__jq__.data("width",value);
+	haxe.Log.trace(this.getBorder() == true,{ fileName : "TextField.hx", lineNumber : 233, className : "hedge.text.TextField", methodName : "setWidth"});
+	haxe.Log.trace(this.getBorder(),{ fileName : "TextField.hx", lineNumber : 234, className : "hedge.text.TextField", methodName : "setWidth"});
+	{
+		var $tmp = this.__jq__.data("width");
 		$s.pop();
 		return $tmp;
 	}
@@ -2787,7 +2931,6 @@ hedge.text.TextField.prototype.setWordWrap = function(value) {
 	$s.pop();
 }
 hedge.text.TextField.prototype.text = null;
-hedge.text.TextField.prototype.textDependsOnType = null;
 hedge.text.TextField.prototype.type = null;
 hedge.text.TextField.prototype.wordWrap = null;
 hedge.text.TextField.prototype.__class__ = hedge.text.TextField;

@@ -7,16 +7,17 @@ package hedge.text;
 import hedge.display.DisplayObject;
 import hedge.display.InteractiveObject;
 import hedge.geom.Rectangle;
+import hedge.Setup;
 
 class TextField extends InteractiveObject {
 	
 	public var alwaysShowSelection:Bool;
 	public var antiAliasType:String;
 	public var autoSize:String;
-	public var background:Bool;
-	public var backgroundColor:Int;
-	public var border:Bool;
-	public var borderColor:Int;
+	public var background(getBackground, setBackground):Bool;
+	public var backgroundColor(getBackgroundColor, setBackgroundColor):Int;
+	public var border(getBorder, setBorder):Bool;
+	public var borderColor(getBorderColor, setBorderColor):Int;
 	public var bottomScrollV:Int;	// read-only
 	public var caretIndex:Int;
 	public var condenseWhite:Bool;
@@ -52,20 +53,22 @@ class TextField extends InteractiveObject {
 	
 	public var __ta__:JQuery;
 	
-	// defualt is dynamic=__jq__.text() else input=__jq__.val()
-	private var textDependsOnType:Dynamic;
-
 	public function new() {
 		super();
-		this.__jq__.append(this.__ta__ = new JQuery('<textarea></textarea>'));
-		this.__ta__.css( {background:'none', border:'none', overflow:'none', resize:'none', outline:'none'} ).css('border-width', '0px').width('100%').height('100%');
-		this.width = this.height = 100;
+		//this.__jq__.append(this.__ta__ = new JQuery('<textarea></textarea>'));
+		//this.__ta__ = new JQuery('<textarea>');
+		//this.__ta__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px').width('100%').height('100%');
+		// TODO values below - once all working, move to one line as most will = false
+		this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
+		this.background = false;
+		this.border = false;
 		this.wordWrap = false;
 		this.type = TextFieldType.DYNAMIC;
+		this.width = this.height = 100;
 	}
 	
 	public function appendText(newText:String):Void {
-		this.__jq__.text(this.text + newText);
+		this.__jq__.val(this.text + newText);
 	}
 	
 	public function getCharBoundaries(charIndex:Int):Rectangle {
@@ -134,6 +137,48 @@ class TextField extends InteractiveObject {
 	
 	//	INTERNAL METHODS
 	
+	private function getBackground():Bool {
+		return this.__jq__.attr('data-background');
+	}
+	
+	private function setBackground(value:Bool):Bool {
+		this.__jq__.attr('data-background', value);
+		this.__jq__.css('background-color', value == true ? Setup.RGB_to_String(0xFFFFFF) : 'none');
+		return this.__jq__.attr('data-background');
+	}
+	
+	private function getBackgroundColor():Int {
+		return this.background == true ? Setup.RGB_String_to_HEX(this.__jq__.css('background-color')) : 0xFFFFFFFF;
+	}
+	
+	private function setBackgroundColor(value:Int):Int {
+		if (background == true) {
+			this.__jq__.css('background-color', Setup.RGB_to_String(value));
+		}
+		return this.getBackgroundColor();
+	}
+	
+	private function getBorder():Bool {
+		return this.__jq__.attr('data-border');
+	}
+	
+	private function setBorder(value:Bool):Bool {
+		this.__jq__.attr('data-border', value);
+		this.__jq__.css('border', value == true ? '1px solid ' + Setup.RGB_to_String(0x000000) : '0px none');
+		return this.__jq__.attr('data-border');
+	}
+	
+	private function getBorderColor():Int {
+		return this.border == true ? Setup.RGB_String_to_HEX(this.__jq__.css('border-color')) : 0xFF000000;
+	}
+	
+	private function setBorderColor(value:Int):Int {
+		if (border == true) {
+			this.__jq__.css('border-color', Setup.RGB_to_String(value));
+		}
+		return this.getBorderColor();
+	}
+	
 	private function getHtmlText():String {
 		return this.__jq__.html();
 	}
@@ -143,15 +188,13 @@ class TextField extends InteractiveObject {
 		return this.__jq__.html();
 	}
 	
-	//	getText / setText function depends on textfields type
-	
 	private function getText():String {
-		return textDependsOnType();
+		return this.__jq__.val();
 	}
 	
 	private function setText(value:String):String {
-		textDependsOnType(value);
-		return textDependsOnType();
+		this.__jq__.val(value);
+		return this.__jq__.val();
 	}
 	
 	private function getType():String {
@@ -160,9 +203,9 @@ class TextField extends InteractiveObject {
 	
 	private function setType(value:String):String {
 		if (value == TextFieldType.DYNAMIC) {
-			this.__ta__.attr( { readonly:true } );
+			this.__jq__.attr( { readonly:'readonly' } );
 		} else if (value == TextFieldType.INPUT) {
-			this.__ta__.attr( { readonly:false } );
+			this.__jq__.removeAttr('readonly');
 		}
 		this.__jq__.attr('data-type', value);
 		return this.__jq__.attr('data-type');
@@ -176,6 +219,30 @@ class TextField extends InteractiveObject {
 		this.__jq__.css('white-space', value == true ? 'normal' : 'nowrap');
 		this.__jq__.attr('data-wordWrap', value);
 		return this.__jq__.attr('data-wordWrap');
+	}
+	
+	//	OVERRIDE METHODS
+	
+	private override function generateJQuery():Void {
+		Setup.__storage__.append(this.__jq__ = new JQuery('<textarea>'));
+	}
+	
+	private override function setWidth(value:Float):Float {
+		this.__jq__.width(value);
+		this.__jq__.data('width', value);
+		trace(this.border == true);
+		trace(this.border);
+		//this.__ta__.width(this.border == true ? (value  - (Std.parseInt(this.__ta__.css('border-width'))*2)) : value);
+		return this.__jq__.data('width');
+	}
+	
+	private override function setHeight(value:Float):Float {
+		this.__jq__.height(value);
+		this.__jq__.data('height', value);
+		trace(this.border == true);
+		trace(this.border);
+		//this.__ta__.height(this.border == true ? (value  - (Std.parseInt(this.__ta__.css('border-width'))*2)) : value);
+		return this.__jq__.data('height');
 	}
 	
 }
