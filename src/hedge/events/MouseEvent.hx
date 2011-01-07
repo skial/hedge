@@ -64,34 +64,15 @@ class MouseEvent extends Event {
 		
 	}
 	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'localX', 'localY', 'shiftKey', 'commandKey', 'controlKey', 'stageX', 'stageY', 'target')
-	public static var CLICK:String = 'click';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'localX', 'localY', 'shiftKey', 'commandKey', 'controlKey', 'stageX', 'stageY', 'target')
-	public static var DOUBLE_CLICK:String = 'doubleClick';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'localX', 'localY', 'shiftKey', 'commandKey', 'controlKey', 'clickCount', 'stageX', 'stageY', 'target')
-	public static var MOUSE_DOWN:String = 'mouseDown';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'localX', 'localY', 'shiftKey', 'stageX', 'stageY', 'target')
-	public static var MOUSE_MOVE:String = 'mouseMove';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'relatedObject', 'localX', 'localY', 'shiftKey', 'stageX', 'stageY', 'target')
-	public static var MOUSE_OUT:String = 'mouseOut';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'relatedObject', 'localX', 'localY', 'shiftKey', 'stageX', 'stageY', 'target')
-	public static var MOUSE_OVER:String = 'mouseOver';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'localX', 'localY', 'shiftKey', 'commandKey', 'controlKey', 'clickCount', 'stageX', 'stageY', 'target')
-	public static var MOUSE_UP:String = 'mouseUp';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'delta', 'localX', 'localY', 'shiftKey', 'stageX', 'stageY', 'target')
-	public static var MOUSE_WHEEL:String = 'mouseWheel';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'relatedObject', 'localX', 'localY', 'shiftKey', 'stageX', 'stageY', 'target')
-	public static var ROLL_OUT:String = 'rollOut';
-	
-	@properties('bubbles', 'buttonDown', 'cancelable', 'ctrlKey', 'currentTarget', 'relatedObject', 'localX', 'localY', 'shiftKey', 'stageX', 'stageY', 'target')
-	public static var ROLL_OVER:String = 'rollOver';
+	public static inline var CLICK:String = 'click';
+	public static inline var DOUBLE_CLICK:String = 'doubleClick';
+	public static inline var MOUSE_DOWN:String = 'mouseDown';
+	public static inline var MOUSE_MOVE:String = 'mouseMove';
+	public static inline var MOUSE_OUT:String = 'mouseOut';
+	public static inline var MOUSE_OVER:String = 'mouseOver';
+	public static inline var MOUSE_UP:String = 'mouseUp';
+	public static inline var MOUSE_WHEEL:String = 'mouseWheel';
+	public static inline var ROLL_OUT:String = 'rollOut';
+	public static inline var ROLL_OVER:String = 'rollOver';
 	
 }

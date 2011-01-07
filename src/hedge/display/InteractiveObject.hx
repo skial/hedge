@@ -4,7 +4,7 @@
  */
 
 package hedge.display;
-import hedge.events.EventDispatcher;
+import hedge.events.KeyboardEvent;
 
 class InteractiveObject extends DisplayObject {
 	
@@ -18,6 +18,18 @@ class InteractiveObject extends DisplayObject {
 	public function new() {
 		super();
 		//throw 'you cant create a new ineractiveobject';
+		this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		this.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+	}
+	
+	//	INTERNAL METHODS
+	
+	private function onKeyDown(e:KeyboardEvent):Void {
+		
+	}
+	
+	private function onKeyUp(e:KeyboardEvent):Void {
+		
 	}
 	
 }

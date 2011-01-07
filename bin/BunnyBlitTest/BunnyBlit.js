@@ -37,7 +37,7 @@ hedge.events.EventDispatcher.prototype.addEventListener = function(type,listener
 	if(useWeakReference == null) useWeakReference = false;
 	if(priority == null) priority = 0;
 	if(useCapture == null) useCapture = false;
-	if(type != hedge.events.Event.ENTER_FRAME) {
+	if(type != "enterFrame") {
 		this.__jq__.bind(type,{ },listener);
 	}
 	else {
@@ -54,7 +54,7 @@ hedge.events.EventDispatcher.prototype.hasEventListener = function(type) {
 }
 hedge.events.EventDispatcher.prototype.removeEventListener = function(type,listener,useCapture) {
 	if(useCapture == null) useCapture = false;
-	if(type != hedge.events.Event.ENTER_FRAME) {
+	if(type != "enterFrame") {
 		this.__jq__.unbind(type,listener);
 	}
 	else {
@@ -246,10 +246,18 @@ hedge.display.DisplayObject.prototype.y = null;
 hedge.display.DisplayObject.prototype.__class__ = hedge.display.DisplayObject;
 hedge.display.InteractiveObject = function(p) { if( p === $_ ) return; {
 	hedge.display.DisplayObject.call(this);
+	this.addEventListener("keydown",$closure(this,"onKeyDown"));
+	this.addEventListener("keyup",$closure(this,"onKeyUp"));
 }}
 hedge.display.InteractiveObject.__name__ = ["hedge","display","InteractiveObject"];
 hedge.display.InteractiveObject.__super__ = hedge.display.DisplayObject;
 for(var k in hedge.display.DisplayObject.prototype ) hedge.display.InteractiveObject.prototype[k] = hedge.display.DisplayObject.prototype[k];
+hedge.display.InteractiveObject.prototype.onKeyDown = function(e) {
+	null;
+}
+hedge.display.InteractiveObject.prototype.onKeyUp = function(e) {
+	null;
+}
 hedge.display.InteractiveObject.prototype.__class__ = hedge.display.InteractiveObject;
 hedge.display.DisplayObjectContainer = function(p) { if( p === $_ ) return; {
 	hedge.display.InteractiveObject.call(this);
@@ -356,7 +364,7 @@ demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
 	}
 	this.bitmap = new hedge.display.Bitmap(new hedge.display.BitmapData(demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY,true));
 	this.addChild(this.bitmap);
-	this.addEventListener(hedge.events.Event.ENTER_FRAME,$closure(this,"onEnterFrame"));
+	this.addEventListener("enterFrame",$closure(this,"onEnterFrame"));
 }}
 demo.bunnyBlitTest.BlitTest.__name__ = ["demo","bunnyBlitTest","BlitTest"];
 demo.bunnyBlitTest.BlitTest.__super__ = hedge.display.Sprite;
@@ -1090,7 +1098,7 @@ hedge.Setup.init = function(_callback,fps,stageName) {
 	if(fps == null) fps = 30;
 	hedge.Setup.__jq__ = new $("div#" + stageName);
 	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0);
-	hedge.Setup.__jq__.attr(hedge.Setup.__data__({ version : 0.1, project : "jshx", haXe : "http://www.haxe.org"}));
+	hedge.Setup.__jq__.attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"}));
 	hedge.Setup.setFrameRate(fps);
 	hedge.Setup.__storage__ = new $("<div>").attr("id","storage").css({ display : "none", width : "100%", height : "100%"});
 	hedge.Setup.__jq__.append(hedge.Setup.__storage__);
@@ -1250,7 +1258,9 @@ hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelect
 	this.__fillColor__ = fillColor == null?16777215:fillColor;
 	this.__id__ = hedge.Setup.generateInstanceName();
 	this.__source__ = cssSelector == null?null:new $(cssSelector);
-	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr("id",this.__id__).attr("width",width).attr("height",height);
+	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
+	this.__canvas__.bind("mouseenter",$closure(this,"onCanvasEnter"));
+	this.__canvas__.bind("mouseleave",$closure(this,"onCanvasLeave"));
 	hedge.Setup.__storage__.append(this.__canvas__);
 	this.__context__ = this.__canvas__[0].getContext("2d");
 	if(cssSelector == null) {
@@ -1281,6 +1291,12 @@ hedge.display.BitmapData.prototype.getWidth = function() {
 	return this.width;
 }
 hedge.display.BitmapData.prototype.height = null;
+hedge.display.BitmapData.prototype.onCanvasEnter = function(e) {
+	this.__canvas__.attr({ tabindex : 0}).focus();
+}
+hedge.display.BitmapData.prototype.onCanvasLeave = function(e) {
+	this.__canvas__.removeAttr("tabindex").blur();
+}
 hedge.display.BitmapData.prototype.transparent = null;
 hedge.display.BitmapData.prototype.width = null;
 hedge.display.BitmapData.prototype.__class__ = hedge.display.BitmapData;
@@ -1653,8 +1669,8 @@ Main.launch = function() {
 Main.prototype.__class__ = Main;
 Examples = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
-	this.__jq__.css("border","1px solid black");
 	this.bunnyOne = new demo.bunnyBlitTest.BlitTest();
+	this.bunnyOne.name = "blit";
 	this.bunnyClass = demo.bunnyBlitTest.BlitTest;
 	this.bunnyAmount = new hedge.text.TextField();
 	this.bunnyAmount.setType("input");
@@ -1663,20 +1679,23 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.bunnyAmount.setWidth(50);
 	this.bunnyAmount.setHeight(20);
 	this.bunnyAmount.setText("3000");
+	this.bunnyAmount.setName("bunnyAmount");
 	this.submitAmount = new hedge.display.Sprite();
 	this.submitAmount.getGraphics().beginFill(40940);
 	this.submitAmount.getGraphics().lineStyle(1,0);
 	this.submitAmount.getGraphics().drawRect(0,0,98,20);
 	this.submitAmount.getGraphics().endFill();
+	this.submitAmount.setName("submitAmount");
 	this.submitText = new hedge.text.TextField();
 	this.submitText.setText("submit");
+	this.submitText.setName("submitText");
 	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
 	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
 	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
 	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
 	this.submitText.setX(25);
 	this.submitText.setY(2);
-	this.submitAmount.addEventListener(hedge.events.MouseEvent.CLICK,$closure(this,"onBunnyClick"));
+	this.submitAmount.addEventListener("click",$closure(this,"onBunnyClick"));
 	this.addChild(this.bunnyOne);
 	this.addChild(this.bunnyAmount);
 	this.addChild(this.submitAmount);
@@ -2008,16 +2027,12 @@ demo.bunnyBlitTest.BlitTest.maxX = 640;
 demo.bunnyBlitTest.BlitTest.minX = 0;
 demo.bunnyBlitTest.BlitTest.maxY = 480;
 demo.bunnyBlitTest.BlitTest.minY = 0;
-hedge.events.Event.__meta__ = { statics : { ENTER_FRAME : { properties : ["bubbles","cancelable","currentTarget","target"]}}}
-hedge.events.Event.ENTER_FRAME = "enterFrame";
 hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}}
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
 haxe.Timer.arr = new Array();
 hedge.display.GradientType.LINEAR = "linear";
 hedge.display.GradientType.RADIAL = "radial";
-hedge.events.MouseEvent.__meta__ = { statics : { CLICK : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","commandKey","controlKey","stageX","stageY","target"]}}}
-hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.data = new Hash();
 hedge.jquery.events.EnterFrame.events = new Array();

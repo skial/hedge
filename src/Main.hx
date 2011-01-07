@@ -50,9 +50,9 @@ class Examples extends Sprite {
 	
 	public function new() {
 		super();
-		this.__jq__.css('border', '1px solid black');
 		
 		bunnyOne = #if bunnyBlit new BlitTest() #elseif bunnyLand new BunnyLandBlitTest() #end;
+		bunnyOne.name = 'blit';
 		bunnyClass = #if bunnyBlit BlitTest #elseif bunnyLand BunnyLandBlitTest #end;
 		
 		bunnyAmount = new TextField();
@@ -62,15 +62,18 @@ class Examples extends Sprite {
 		bunnyAmount.width = 50;
 		bunnyAmount.height = 20;
 		bunnyAmount.text = '3000';
+		bunnyAmount.name = 'bunnyAmount';
 		
 		submitAmount = new Sprite();
 		submitAmount.graphics.beginFill(0x009FEC);
 		submitAmount.graphics.lineStyle(1, 0x000000);
 		submitAmount.graphics.drawRect(0, 0, 98, 20);
 		submitAmount.graphics.endFill();
+		submitAmount.name = 'submitAmount';
 		
 		submitText = new TextField();
 		submitText.text = 'submit';
+		submitText.name = 'submitText';
 		
 		submitAmount.x = 640 - (submitAmount.width + 5);
 		submitAmount.y = 480 - (submitAmount.height + 5);

@@ -47,85 +47,32 @@ class Event extends Object {
 		
 	}*/
 	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var ACTIVATE:String = 'activate';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var ADDED:String = 'added';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var ADDED_TO_STAGE:String = 'addedToStage';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var CANCEL:String = 'cancel';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var CHANGE:String = 'change';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var CLOSE:String = 'close';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var COMPLETE:String = 'complete';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var CONNECT:String = 'connect';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var DEACTIVATE:String = 'deactivate';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var DISPLAYING:String = 'displaying';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var ENTER_FRAME:String = 'enterFrame';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var FULLSCREEN:String = 'fullScreen';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var ID3:String = 'id3';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var INIT:String = 'init';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var MOUSE_LEAVE:String = 'mouseLeave';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var OPEN:String = 'open';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var REMOVED:String = 'removed';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var REMOVED_FROM_STAGE:String = 'removedFromStage';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var RENDER:String = 'render';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var RESIZE:String = 'resize';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var SCROLL:String = 'scroll';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var SELECT:String = 'select';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var SOUND_COMPLETE:String = 'soundComplete';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var TAB_CHILDREN_CHANGE:String = 'tabChildrenChange';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var TAB_ENABLED_CHANGE:String = 'tabEnabledChange';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var TAB_INDEX_CHANGE:String = 'tabIndexChange';
-	
-	@properties('bubbles', 'cancelable', 'currentTarget', 'target')
-	public static var UNLOAD:String = 'unload';
+	public static inline var ACTIVATE:String = 'activate';
+	public static inline var ADDED:String = 'added';
+	public static inline var ADDED_TO_STAGE:String = 'addedToStage';
+	public static inline var CANCEL:String = 'cancel';
+	public static inline var CHANGE:String = 'change';
+	public static inline var CLOSE:String = 'close';
+	public static inline var COMPLETE:String = 'complete';
+	public static inline var CONNECT:String = 'connect';
+	public static inline var DEACTIVATE:String = 'deactivate';
+	public static inline var DISPLAYING:String = 'displaying';
+	public static inline var ENTER_FRAME:String = 'enterFrame';
+	public static inline var FULLSCREEN:String = 'fullScreen';
+	public static inline var ID3:String = 'id3';
+	public static inline var INIT:String = 'init';
+	public static inline var MOUSE_LEAVE:String = 'mouseLeave';
+	public static inline var OPEN:String = 'open';
+	public static inline var REMOVED:String = 'removed';
+	public static inline var REMOVED_FROM_STAGE:String = 'removedFromStage';
+	public static inline var RENDER:String = 'render';
+	public static inline var RESIZE:String = 'resize';
+	public static inline var SCROLL:String = 'scroll';
+	public static inline var SELECT:String = 'select';
+	public static inline var SOUND_COMPLETE:String = 'soundComplete';
+	public static inline var TAB_CHILDREN_CHANGE:String = 'tabChildrenChange';
+	public static inline var TAB_ENABLED_CHANGE:String = 'tabEnabledChange';
+	public static inline var TAB_INDEX_CHANGE:String = 'tabIndexChange';
+	public static inline var UNLOAD:String = 'unload';
 	
 }

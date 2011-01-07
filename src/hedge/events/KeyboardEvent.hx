@@ -14,8 +14,8 @@ class KeyboardEvent extends Event {
 	public var keyLocation:Int;
 	public var shiftKey:Bool;
 	
-	public static inline var KEY_DOWN:String = 'keyDown';
-	public static inline var KEY_UP:String = 'keyUp';
+	public static inline var KEY_DOWN:String = 'keydown'; //	originally 'keyDown'
+	public static inline var KEY_UP:String = 'keyup';		//	originally 'keyUp'
 
 	public function new(	type:String,
 								?bubbles:Bool = true,

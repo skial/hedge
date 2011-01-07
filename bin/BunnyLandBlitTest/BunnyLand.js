@@ -69,7 +69,7 @@ hedge.events.EventDispatcher.prototype.addEventListener = function(type,listener
 	if(useWeakReference == null) useWeakReference = false;
 	if(priority == null) priority = 0;
 	if(useCapture == null) useCapture = false;
-	if(type != hedge.events.Event.ENTER_FRAME) {
+	if(type != "enterFrame") {
 		this.__jq__.bind(type,{ },listener);
 	}
 	else {
@@ -102,7 +102,7 @@ hedge.events.EventDispatcher.prototype.removeEventListener = function(type,liste
 	$s.push("hedge.events.EventDispatcher::removeEventListener");
 	var $spos = $s.length;
 	if(useCapture == null) useCapture = false;
-	if(type != hedge.events.Event.ENTER_FRAME) {
+	if(type != "enterFrame") {
 		this.__jq__.unbind(type,listener);
 	}
 	else {
@@ -576,11 +576,25 @@ hedge.display.InteractiveObject = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.display.InteractiveObject::new");
 	var $spos = $s.length;
 	hedge.display.DisplayObject.call(this);
+	this.addEventListener("keydown",$closure(this,"onKeyDown"));
+	this.addEventListener("keyup",$closure(this,"onKeyUp"));
 	$s.pop();
 }}
 hedge.display.InteractiveObject.__name__ = ["hedge","display","InteractiveObject"];
 hedge.display.InteractiveObject.__super__ = hedge.display.DisplayObject;
 for(var k in hedge.display.DisplayObject.prototype ) hedge.display.InteractiveObject.prototype[k] = hedge.display.DisplayObject.prototype[k];
+hedge.display.InteractiveObject.prototype.onKeyDown = function(e) {
+	$s.push("hedge.display.InteractiveObject::onKeyDown");
+	var $spos = $s.length;
+	null;
+	$s.pop();
+}
+hedge.display.InteractiveObject.prototype.onKeyUp = function(e) {
+	$s.push("hedge.display.InteractiveObject::onKeyUp");
+	var $spos = $s.length;
+	null;
+	$s.pop();
+}
 hedge.display.InteractiveObject.prototype.__class__ = hedge.display.InteractiveObject;
 hedge.display.DisplayObjectContainer = function(p) { if( p === $_ ) return; {
 	$s.push("hedge.display.DisplayObjectContainer::new");
@@ -968,7 +982,7 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest = function(p) { if( p === $_ ) return; 
 	this.addChild(this.bitmap);
 	this.gamepad = new demo.gamepad.Gamepad(this.getStage(),true);
 	this.gamepad.useWASD();
-	this.addEventListener(hedge.events.Event.ENTER_FRAME,$closure(this,"onEnterFrame"));
+	this.addEventListener("enterFrame",$closure(this,"onEnterFrame"));
 	$s.pop();
 }}
 demo.bunnyLandBlitTest.BunnyLandBlitTest.__name__ = ["demo","bunnyLandBlitTest","BunnyLandBlitTest"];
@@ -2448,7 +2462,7 @@ hedge.Setup.init = function(_callback,fps,stageName) {
 	if(fps == null) fps = 30;
 	hedge.Setup.__jq__ = new $("div#" + stageName);
 	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0);
-	hedge.Setup.__jq__.attr(hedge.Setup.__data__({ version : 0.1, project : "jshx", haXe : "http://www.haxe.org"}));
+	hedge.Setup.__jq__.attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"}));
 	hedge.Setup.setFrameRate(fps);
 	hedge.Setup.__storage__ = new $("<div>").attr("id","storage").css({ display : "none", width : "100%", height : "100%"});
 	hedge.Setup.__jq__.append(hedge.Setup.__storage__);
@@ -2731,7 +2745,9 @@ hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelect
 	this.__fillColor__ = fillColor == null?16777215:fillColor;
 	this.__id__ = hedge.Setup.generateInstanceName();
 	this.__source__ = cssSelector == null?null:new $(cssSelector);
-	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr("id",this.__id__).attr("width",width).attr("height",height);
+	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
+	this.__canvas__.bind("mouseenter",$closure(this,"onCanvasEnter"));
+	this.__canvas__.bind("mouseleave",$closure(this,"onCanvasLeave"));
 	hedge.Setup.__storage__.append(this.__canvas__);
 	this.__context__ = this.__canvas__[0].getContext("2d");
 	if(cssSelector == null) {
@@ -2783,6 +2799,18 @@ hedge.display.BitmapData.prototype.getWidth = function() {
 	$s.pop();
 }
 hedge.display.BitmapData.prototype.height = null;
+hedge.display.BitmapData.prototype.onCanvasEnter = function(e) {
+	$s.push("hedge.display.BitmapData::onCanvasEnter");
+	var $spos = $s.length;
+	this.__canvas__.attr({ tabindex : 0}).focus();
+	$s.pop();
+}
+hedge.display.BitmapData.prototype.onCanvasLeave = function(e) {
+	$s.push("hedge.display.BitmapData::onCanvasLeave");
+	var $spos = $s.length;
+	this.__canvas__.removeAttr("tabindex").blur();
+	$s.pop();
+}
 hedge.display.BitmapData.prototype.transparent = null;
 hedge.display.BitmapData.prototype.width = null;
 hedge.display.BitmapData.prototype.__class__ = hedge.display.BitmapData;
@@ -2898,10 +2926,10 @@ demo.gamepad.Gamepad = function(stage,isCircle,ease,autoStep) { if( stage === $_
 	this._multiInputs = [this.getUpLeft(),this.getUpRight(),this.getDownLeft(),this.getDownRight(),this.getAnyDirection()];
 	this.useArrows();
 	this.useControlSpace();
-	stage.addEventListener("keyDown",$closure(this,"onKeyDown"));
-	stage.addEventListener("keyUp",$closure(this,"onKeyUp"));
+	stage.addEventListener("keydown",$closure(this,"onKeyDown"));
+	stage.addEventListener("keyup",$closure(this,"onKeyUp"));
 	if(autoStep) {
-		stage.addEventListener(hedge.events.Event.ENTER_FRAME,$closure(this,"onEnterFrame"));
+		stage.addEventListener("enterFrame",$closure(this,"onEnterFrame"));
 	}
 	$s.pop();
 }}
@@ -3654,8 +3682,8 @@ Examples = function(p) { if( p === $_ ) return; {
 	$s.push("Examples::new");
 	var $spos = $s.length;
 	hedge.display.Sprite.call(this);
-	this.__jq__.css("border","1px solid black");
 	this.bunnyOne = new demo.bunnyLandBlitTest.BunnyLandBlitTest();
+	this.bunnyOne.name = "blit";
 	this.bunnyClass = demo.bunnyLandBlitTest.BunnyLandBlitTest;
 	this.bunnyAmount = new hedge.text.TextField();
 	this.bunnyAmount.setType("input");
@@ -3664,20 +3692,23 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.bunnyAmount.setWidth(50);
 	this.bunnyAmount.setHeight(20);
 	this.bunnyAmount.setText("3000");
+	this.bunnyAmount.setName("bunnyAmount");
 	this.submitAmount = new hedge.display.Sprite();
 	this.submitAmount.getGraphics().beginFill(40940);
 	this.submitAmount.getGraphics().lineStyle(1,0);
 	this.submitAmount.getGraphics().drawRect(0,0,98,20);
 	this.submitAmount.getGraphics().endFill();
+	this.submitAmount.setName("submitAmount");
 	this.submitText = new hedge.text.TextField();
 	this.submitText.setText("submit");
+	this.submitText.setName("submitText");
 	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
 	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
 	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
 	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
 	this.submitText.setX(25);
 	this.submitText.setY(2);
-	this.submitAmount.addEventListener(hedge.events.MouseEvent.CLICK,$closure(this,"onBunnyClick"));
+	this.submitAmount.addEventListener("click",$closure(this,"onBunnyClick"));
 	this.addChild(this.bunnyOne);
 	this.addChild(this.bunnyAmount);
 	this.addChild(this.submitAmount);
@@ -4211,8 +4242,6 @@ js.Boot.__init();
 	}
 }
 demo.bunnyBlitTest.BlitTest.numBunnies = 3000;
-hedge.events.Event.__meta__ = { statics : { ENTER_FRAME : { properties : ["bubbles","cancelable","currentTarget","target"]}}}
-hedge.events.Event.ENTER_FRAME = "enterFrame";
 demo.bunnyLandBlitTest.BunnyLandBlitTest.numBunnies = 3000;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.gravity = 1;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ = 0;
@@ -4230,8 +4259,6 @@ hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
 haxe.Timer.arr = new Array();
 hedge.display.GradientType.LINEAR = "linear";
 hedge.display.GradientType.RADIAL = "radial";
-hedge.events.MouseEvent.__meta__ = { statics : { CLICK : { properties : ["bubbles","buttonDown","cancelable","ctrlKey","currentTarget","localX","localY","shiftKey","commandKey","controlKey","stageX","stageY","target"]}}}
-hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.data = new Hash();
 hedge.jquery.events.EnterFrame.events = new Array();

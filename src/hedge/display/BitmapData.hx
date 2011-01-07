@@ -6,6 +6,7 @@
 package hedge.display;
 import hedge.canvas.CanvasRenderingContext2D;
 import hedge.canvas.ImageData;
+import hedge.events.MouseEvent;
 import hedge.filters.BitmapFilter;
 import hedge.geom.ColorTransform;
 import hedge.geom.Matrix;
@@ -17,6 +18,10 @@ import js.Lib;
 import js.Dom;
 
 class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
+	
+	/* resources
+		[1] - http://stackoverflow.com/questions/1829586/how-do-i-give-an-html-canvas-the-keyboard-focus-using-jquery
+	*/
 	
 	public var height(getHeight, null)	:Int;
 	public var rect			:Rectangle;
@@ -37,7 +42,10 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		this.__id__				= Setup.generateInstanceName();
 		this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
 		
-		__canvas__ = new JQuery('<canvas></canvas>').addClass('bitmapdata').attr('id', __id__).attr('width', width).attr('height', height);
+		__canvas__ = new JQuery('<canvas></canvas>').addClass('bitmapdata').attr( { id:__id__, width:width, height:height } );
+		__canvas__.bind('mouseenter', onCanvasEnter);
+		__canvas__.bind('mouseleave', onCanvasLeave);
+		//__canvas__.bind('mousedown', function() { untyped new JQuery(this).focus(); return false; } );
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		Setup.__storage__.append(__canvas__);
 		// untyped following line - as I could not call getContext from variable as it's type is Jquery
@@ -176,6 +184,14 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	private function getWidth():Int {
 		return width;
+	}
+	
+	private function onCanvasEnter(e:MouseEvent):Void {
+		__canvas__.attr( { tabindex:0 }).focus();
+	}
+	
+	private function onCanvasLeave(e:MouseEvent):Void {
+		__canvas__.removeAttr('tabindex').blur();
 	}
 	
 }

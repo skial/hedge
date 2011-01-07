@@ -66,7 +66,7 @@ class Setup {
 				.css('background-color', RGB_to_String(0xFFFFFF))
 				.css('z-index', 0);
 		
-		__jq__.attr( __data__( { version:0.1, project:'jshx', haXe:'http://www.haxe.org' } ) );
+		__jq__.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) );
 		frameRate = fps;
 		
 		// create default holder
