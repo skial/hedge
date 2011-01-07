@@ -2017,7 +2017,7 @@ Main.prototype.__class__ = Main;
 Examples = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
 	this.bunnyOne = new demo.bunnyLandBlitTest.BunnyLandBlitTest();
-	this.max = 24000;
+	this.max = 34000;
 	this.bunnyOne.name = "blit";
 	this.bunnyClass = demo.bunnyLandBlitTest.BunnyLandBlitTest;
 	this.bunnyAmount = new hedge.text.TextField();

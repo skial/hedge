@@ -52,7 +52,7 @@ class Examples extends Sprite {
 	public function new() {
 		super();
 		
-		bunnyOne = #if bunnyBlit new BlitTest(); max=3000 #elseif bunnyLand new BunnyLandBlitTest(); max=24000 #end;
+		bunnyOne = #if bunnyBlit new BlitTest(); max=3000 #elseif bunnyLand new BunnyLandBlitTest(); max=34000 #end;
 		bunnyOne.name = 'blit';
 		bunnyClass = #if bunnyBlit BlitTest #elseif bunnyLand BunnyLandBlitTest #end;
 		
