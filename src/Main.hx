@@ -47,11 +47,12 @@ class Examples extends Sprite {
 	private var submitText:TextField;
 	private var bunnyOne:Dynamic;
 	private var bunnyClass:Dynamic;
+	private var max:Int;
 	
 	public function new() {
 		super();
 		
-		bunnyOne = #if bunnyBlit new BlitTest() #elseif bunnyLand new BunnyLandBlitTest() #end;
+		bunnyOne = #if bunnyBlit new BlitTest(); max=3000 #elseif bunnyLand new BunnyLandBlitTest(); max=24000 #end;
 		bunnyOne.name = 'blit';
 		bunnyClass = #if bunnyBlit BlitTest #elseif bunnyLand BunnyLandBlitTest #end;
 		
@@ -61,7 +62,7 @@ class Examples extends Sprite {
 		bunnyAmount.border = true;
 		bunnyAmount.width = 50;
 		bunnyAmount.height = 20;
-		bunnyAmount.text = '3000';
+		bunnyAmount.text = ''+max;
 		bunnyAmount.name = 'bunnyAmount';
 		
 		submitAmount = new Sprite();
@@ -94,16 +95,16 @@ class Examples extends Sprite {
 	
 	public function onBunnyClick(e:Dynamic):Void {
 		if (bunnyAmount.text == null) {
-			bunnyAmount.text = '3000';
+			bunnyAmount.text = ''+max;
 		}
 		var amount = Std.parseInt(bunnyAmount.text);
-		if (amount > 3000) {
-			bunnyAmount.text = '3000';
+		if (amount > max) {
+			bunnyAmount.text = ''+max;
 		}
 		if (amount < 0) {
 			bunnyAmount.text = '1';
 		}
-		BlitTest.numBunnies = Std.parseInt(bunnyAmount.text);
+		bunnyClass.numBunnies = Std.parseInt(bunnyAmount.text);
 	}
 	
 }

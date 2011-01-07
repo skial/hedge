@@ -1670,6 +1670,7 @@ Main.prototype.__class__ = Main;
 Examples = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
 	this.bunnyOne = new demo.bunnyBlitTest.BlitTest();
+	this.max = 3000;
 	this.bunnyOne.name = "blit";
 	this.bunnyClass = demo.bunnyBlitTest.BlitTest;
 	this.bunnyAmount = new hedge.text.TextField();
@@ -1678,7 +1679,7 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.bunnyAmount.setBorder(true);
 	this.bunnyAmount.setWidth(50);
 	this.bunnyAmount.setHeight(20);
-	this.bunnyAmount.setText("3000");
+	this.bunnyAmount.setText("" + this.max);
 	this.bunnyAmount.setName("bunnyAmount");
 	this.submitAmount = new hedge.display.Sprite();
 	this.submitAmount.getGraphics().beginFill(40940);
@@ -1707,18 +1708,19 @@ for(var k in hedge.display.Sprite.prototype ) Examples.prototype[k] = hedge.disp
 Examples.prototype.bunnyAmount = null;
 Examples.prototype.bunnyClass = null;
 Examples.prototype.bunnyOne = null;
+Examples.prototype.max = null;
 Examples.prototype.onBunnyClick = function(e) {
 	if(this.bunnyAmount.getText() == null) {
-		this.bunnyAmount.setText("3000");
+		this.bunnyAmount.setText("" + this.max);
 	}
 	var amount = Std.parseInt(this.bunnyAmount.getText());
-	if(amount > 3000) {
-		this.bunnyAmount.setText("3000");
+	if(amount > this.max) {
+		this.bunnyAmount.setText("" + this.max);
 	}
 	if(amount < 0) {
 		this.bunnyAmount.setText("1");
 	}
-	demo.bunnyBlitTest.BlitTest.numBunnies = Std.parseInt(this.bunnyAmount.getText());
+	this.bunnyClass.numBunnies = Std.parseInt(this.bunnyAmount.getText());
 }
 Examples.prototype.submitAmount = null;
 Examples.prototype.submitText = null;

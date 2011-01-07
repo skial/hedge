@@ -28,7 +28,7 @@ class BlitBunny {
 
 class BunnyLandBlitTest extends Sprite {
 	
-	public static var numBunnies:Int = 3000;
+	public static var numBunnies:Int = 24000;
 	public static var gravity:Float = 1;
 	public var bunnies:Array<BlitBunny>;
 	public var maxX:Int;
