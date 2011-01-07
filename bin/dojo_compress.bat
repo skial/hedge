@@ -1,1 +1,0 @@
-java -jar "C:\Documents and Settings\Administrator\My Documents\My Dropbox\dev\js_flash\bin\shrinksafe.jar" "C:\Documents and Settings\Administrator\My Documents\My Dropbox\dev\js_flash\bin\hedge.js" > "C:\Documents and Settings\Administrator\My Documents\My Dropbox\dev\js_flash\bin\hedge.min.dojo.js"

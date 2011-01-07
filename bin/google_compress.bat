@@ -1,1 +1,0 @@
-java -jar compiler.jar   --js hedge.js --js_output_file hedge.min.google.js

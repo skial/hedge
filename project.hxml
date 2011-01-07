@@ -1,7 +1,18 @@
--js ./bin/hedge.js
+-js ./bin/BunnyBlitTest/BunnyBlit.js
 -cp ./src
+-D bunnyBlit
 -lib raphaelExtern
 -main Main
--debug
 --macro keepClass(['Type', 'Reflect'])
 --dead-code-elimination
+
+--next
+
+-js ./bin/BunnyLandBlitTest/BunnyLand.js
+-cp ./src
+-D bunnyLand
+-lib raphaelExtern
+-main Main
+--macro keepClass(['Type', 'Reflect'])
+--dead-code-elimination
+-debug

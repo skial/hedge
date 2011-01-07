@@ -61,9 +61,10 @@ class Setup {
 	// PUBLIC METHODS
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
-		__jq__ = new JQuery('div#Stage');
-		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', backgroundColor:RGB_to_String(0xFFFFFF) } ) );
-		__jq__.css('z-index', 0);
+		__jq__ = new JQuery('div#' + stageName);
+		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ) )
+				.css('background-color', RGB_to_String(0xFFFFFF))
+				.css('z-index', 0);
 		
 		__jq__.attr( __data__( { version:0.1, project:'jshx', haXe:'http://www.haxe.org' } ) );
 		frameRate = fps;

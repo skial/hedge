@@ -70,6 +70,9 @@ have to ignore html support for now... I dont want to add another third party li
 spend most of my time writting code for a 'side feature'. Any suggestions please! If you
 think the suggestion is an obvious one - tell me! I always miss the obvious solution.
 
+KeyBoard:
+capsLock, numLock and isAccessible will always return false. isAccessible might change in future.
+
 Rectangle:
 x, y, width, height -  complete
 others              -  todo
