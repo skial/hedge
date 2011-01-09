@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html style="width:100%; height:100%;">
+<head>
+	<title>hedge | Bunny Land Blit Test</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/raphael-min.js"></script>
+	<script type="text/javascript" src="lib/Stats.js"></script>
+	<style type="text/css">
+		html, body { height:100%; }
+		body { margin:0; }
+		#embed { display:none; }
+		#holder { width:640px; height:480px; border:1px solid black; margin:auto; }
+	</style>
+</head>
+<body style="width:100%; height:100%;">
+	<div id="embed">
+		<img id="wabbit_alpha" 	src="wabbit_alpha.png" 	width="26" height="37"/>
+	</div>
+	<div id="holder">
+		<div id="bunnyBlit"></div>
+		<p>About 15fps | Max Bunnies 3000 | Canvas size 640 x 480</p>
+		<p>mrdoob <a target="_blank" href="https://github.com/mrdoob/stats.js">Stats.js Library</a></p>
+		<p><a target="_blank" href="https://github.com/skial/hedge/blob/master/src/demo/bunnyBlitTest/BlitTest.hx">Source Code</a></p>
+	</div>
+	<script type="text/javascript" src="BunnyBlitTest/BunnyBlit.js"></script>
+	<script type="text/javascript">
+		var stats = new Stats();
+		$('div#holder').append( stats.domElement );
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		setInterval(function () {
+		stats.update();
+		}, 1000/60);
+	</script>
+</body>
+</html>
