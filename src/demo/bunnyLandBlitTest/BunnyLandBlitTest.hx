@@ -96,19 +96,6 @@ class BunnyLandBlitTest extends Sprite {
 		var column;
 		var row;
 		
-		/*var bunny:BlitBunny = {
-			speedX:0.0,
-			speedY:0.0,
-			speedZ:-1.0,
-			bitmapData:bunnyAsset,
-			x:0.0,
-			y:0.0,
-			z:0.0,
-			angle:0.0,
-			speed:0.0,
-			drawPosition:new Point()
-		}*/
-		
 		for (i in 0...numBunnies) {
 			column = i % bunnyRows;
 			row = i / bunnyRows;
@@ -140,6 +127,10 @@ class BunnyLandBlitTest extends Sprite {
 		gamepad.useWASD();
 		
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		
+		ground.__canvas__.attr( { id:'bitmapdataGround' } );
+		grassAsset.__canvas__.attr( { id:'bitmapdataGrassAsset' } );
+		bunnyAsset.__canvas__.attr( { id:'bitmapdataBunnyAsset' } );
 	}
 	
 	public function onEnterFrame(e:Event):Void {
@@ -179,7 +170,9 @@ class BunnyLandBlitTest extends Sprite {
 		var bunny:BlitBunny;
 		var drawableBunnies:Array<BlitBunny> = new Array<BlitBunny>();
 		
-		for (i in 0...numBunnies) {
+		var i = numBunnies-1;
+		while (i > 0) {
+		//for (i in 0...numBunnies) {
 			bunny = bunnies[i];
 			bunny.x += bunny.speedX;
 			bunny.y += bunny.speedY;
@@ -234,18 +227,19 @@ class BunnyLandBlitTest extends Sprite {
 					drawableBunnies.push(bunny);
 				}
 			}
+			i--;
 		}
 		
-		drawableBunnies.sort(sortDepths);
+		//drawableBunnies.sort(sortDepths);
 		var numDrawableBunnies:Int = drawableBunnies.length;
 		
-		for (i in 0...numDrawableBunnies) {
+		i = numDrawableBunnies-1;
+		while (i > 0) {
+		//for (i in 0...numDrawableBunnies) {
 			bunny = drawableBunnies[i];
 			bitmap.bitmapData.copyPixels(bunny.bitmapData, sourceRect, bunny.drawPosition, null, null, true);
+			i--;
 		}
-		
-		//	THIS TRACES AROUND 1900
-		//trace('numDrawableBunnies', numDrawableBunnies);
 		
 		//bitmap.bitmapData.unlock();
 	}

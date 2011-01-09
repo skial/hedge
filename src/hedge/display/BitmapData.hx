@@ -42,13 +42,14 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		this.__id__				= Setup.generateInstanceName();
 		this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
 		
-		__canvas__ = new JQuery('<canvas></canvas>').addClass('bitmapdata').attr( { id:__id__, width:width, height:height } );
+		__canvas__ = new JQuery('<canvas></canvas>')
+			.addClass('bitmapdata')
+			.attr( { id:__id__, width:width, height:height } );
 		__canvas__.bind('mouseenter', onCanvasEnter);
 		__canvas__.bind('mouseleave', onCanvasLeave);
-		//__canvas__.bind('mousedown', function() { untyped new JQuery(this).focus(); return false; } );
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		Setup.__storage__.append(__canvas__);
-		// untyped following line - as I could not call getContext from variable as it's type is Jquery
+		
 		__context__ = untyped __canvas__[0].getContext('2d');
 		if (cssSelector == null) {
 			this.fillRect(new Rectangle(0, 0, width, height), this.__fillColor__);
