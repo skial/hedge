@@ -64,7 +64,7 @@ class Keyboard extends Object {
 	public static inline var UP:Int = 38;
 
 	public function new() {
-		
+		super();
 	}
 	
 	public static function isAccessible():Bool {

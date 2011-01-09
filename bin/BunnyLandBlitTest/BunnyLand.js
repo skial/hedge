@@ -74,84 +74,9 @@ hedge.display.DisplayObject = function(p) { if( p === $_ ) return; {
 hedge.display.DisplayObject.__name__ = ["hedge","display","DisplayObject"];
 hedge.display.DisplayObject.__super__ = hedge.events.EventDispatcher;
 for(var k in hedge.events.EventDispatcher.prototype ) hedge.display.DisplayObject.prototype[k] = hedge.events.EventDispatcher.prototype[k];
-hedge.display.DisplayObject.prototype.__originalName__ = null;
 hedge.display.DisplayObject.prototype.alpha = null;
 hedge.display.DisplayObject.prototype.blendMode = null;
 hedge.display.DisplayObject.prototype.cacheAsBitmap = null;
-hedge.display.DisplayObject.prototype.generateJQuery = function() {
-	hedge.Setup.__storage__.append(this.__jq__ = new $("<div>"));
-}
-hedge.display.DisplayObject.prototype.getAlpha = function() {
-	return this.__jq__.css("opacity");
-}
-hedge.display.DisplayObject.prototype.getBlendMode = function() {
-	return this.blendMode;
-}
-hedge.display.DisplayObject.prototype.getCache = function() {
-	return this.cacheAsBitmap;
-}
-hedge.display.DisplayObject.prototype.getHeight = function() {
-	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
-}
-hedge.display.DisplayObject.prototype.getMask = function() {
-	return this.mask;
-}
-hedge.display.DisplayObject.prototype.getMouseX = function() {
-	return this.mouseX;
-}
-hedge.display.DisplayObject.prototype.getMouseY = function() {
-	return this.mouseY;
-}
-hedge.display.DisplayObject.prototype.getName = function() {
-	return this.__jq__.attr("id");
-}
-hedge.display.DisplayObject.prototype.getOpaqueBackground = function() {
-	return this.opaqueBackground;
-}
-hedge.display.DisplayObject.prototype.getParent = function() {
-	return this.parent;
-}
-hedge.display.DisplayObject.prototype.getRoot = function() {
-	return this.root;
-}
-hedge.display.DisplayObject.prototype.getRotation = function() {
-	return this.rotation;
-}
-hedge.display.DisplayObject.prototype.getScale9 = function() {
-	return this.scale9Grid;
-}
-hedge.display.DisplayObject.prototype.getScaleX = function() {
-	return this.scaleX;
-}
-hedge.display.DisplayObject.prototype.getScaleY = function() {
-	return this.scaleY;
-}
-hedge.display.DisplayObject.prototype.getScrollRect = function() {
-	return this.scrollRect;
-}
-hedge.display.DisplayObject.prototype.getStage = function() {
-	return hedge.Setup.__stage__;
-}
-hedge.display.DisplayObject.prototype.getVisible = function() {
-	return this.__jq__.data("visible") == null?true:this.__jq__.data("visible");
-}
-hedge.display.DisplayObject.prototype.getWidth = function() {
-	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
-}
-hedge.display.DisplayObject.prototype.getX = function() {
-	return this.__jq__.position().left;
-}
-hedge.display.DisplayObject.prototype.getY = function() {
-	return this.__jq__.position().top;
-}
-hedge.display.DisplayObject.prototype.height = null;
-hedge.display.DisplayObject.prototype.initialize = function() {
-	this.generateJQuery();
-	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
-	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"}));
-	this.__jq__.attr("data-originalName",this.__originalName__);
-	this.setParent(hedge.Setup.__default__);
-}
 hedge.display.DisplayObject.prototype.mask = null;
 hedge.display.DisplayObject.prototype.mouseX = null;
 hedge.display.DisplayObject.prototype.mouseY = null;
@@ -164,58 +89,121 @@ hedge.display.DisplayObject.prototype.scale9Grid = null;
 hedge.display.DisplayObject.prototype.scaleX = null;
 hedge.display.DisplayObject.prototype.scaleY = null;
 hedge.display.DisplayObject.prototype.scrollRect = null;
-hedge.display.DisplayObject.prototype.setAlpha = function(value) {
-	this.__jq__.css("opacity",value);
-	return value;
+hedge.display.DisplayObject.prototype.stage = null;
+hedge.display.DisplayObject.prototype.visible = null;
+hedge.display.DisplayObject.prototype.height = null;
+hedge.display.DisplayObject.prototype.width = null;
+hedge.display.DisplayObject.prototype.x = null;
+hedge.display.DisplayObject.prototype.y = null;
+hedge.display.DisplayObject.prototype.__originalName__ = null;
+hedge.display.DisplayObject.prototype.initialize = function() {
+	this.generateJQuery();
+	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
+	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"}));
+	this.__jq__.attr("data-originalName",this.__originalName__);
+	this.setParent(hedge.Setup.__default__);
 }
-hedge.display.DisplayObject.prototype.setBlendMode = function(value) {
-	this.blendMode = value;
-	return this.getBlendMode();
+hedge.display.DisplayObject.prototype.generateJQuery = function() {
+	hedge.Setup.__storage__.append(this.__jq__ = new $("<div>"));
 }
-hedge.display.DisplayObject.prototype.setCache = function(value) {
-	this.cacheAsBitmap = value;
-	return this.getCache();
+hedge.display.DisplayObject.prototype.getMouseX = function() {
+	return this.mouseX;
 }
-hedge.display.DisplayObject.prototype.setHeight = function(value) {
-	this.__jq__.height(value);
-	this.__jq__.data("height",value);
-	return this.__jq__.data("height");
+hedge.display.DisplayObject.prototype.getMouseY = function() {
+	return this.mouseY;
 }
-hedge.display.DisplayObject.prototype.setMask = function(value) {
-	this.mask = value;
-	return this.getMask();
+hedge.display.DisplayObject.prototype.getRoot = function() {
+	return this.root;
 }
-hedge.display.DisplayObject.prototype.setName = function(value) {
-	this.__jq__.attr("id",value);
-	return value;
+hedge.display.DisplayObject.prototype.getStage = function() {
+	return hedge.Setup.__stage__;
 }
-hedge.display.DisplayObject.prototype.setOpaqueBackground = function(value) {
-	this.opaqueBackground = value;
-	return this.getOpaqueBackground();
+hedge.display.DisplayObject.prototype.getParent = function() {
+	return this.parent;
 }
 hedge.display.DisplayObject.prototype.setParent = function(value) {
 	this.parent = value;
 	return this.getParent();
 }
+hedge.display.DisplayObject.prototype.getAlpha = function() {
+	return this.__jq__.css("opacity");
+}
+hedge.display.DisplayObject.prototype.setAlpha = function(value) {
+	this.__jq__.css("opacity",value);
+	return value;
+}
+hedge.display.DisplayObject.prototype.getBlendMode = function() {
+	return this.blendMode;
+}
+hedge.display.DisplayObject.prototype.setBlendMode = function(value) {
+	this.blendMode = value;
+	return this.getBlendMode();
+}
+hedge.display.DisplayObject.prototype.getCache = function() {
+	return this.cacheAsBitmap;
+}
+hedge.display.DisplayObject.prototype.setCache = function(value) {
+	this.cacheAsBitmap = value;
+	return this.getCache();
+}
+hedge.display.DisplayObject.prototype.getMask = function() {
+	return this.mask;
+}
+hedge.display.DisplayObject.prototype.setMask = function(value) {
+	this.mask = value;
+	return this.getMask();
+}
+hedge.display.DisplayObject.prototype.getName = function() {
+	return this.__jq__.attr("id");
+}
+hedge.display.DisplayObject.prototype.setName = function(value) {
+	this.__jq__.attr("id",value);
+	return value;
+}
+hedge.display.DisplayObject.prototype.getOpaqueBackground = function() {
+	return this.opaqueBackground;
+}
+hedge.display.DisplayObject.prototype.setOpaqueBackground = function(value) {
+	this.opaqueBackground = value;
+	return this.getOpaqueBackground();
+}
+hedge.display.DisplayObject.prototype.getRotation = function() {
+	return this.rotation;
+}
 hedge.display.DisplayObject.prototype.setRotation = function(value) {
 	this.rotation = value;
 	return this.getRotation();
+}
+hedge.display.DisplayObject.prototype.getScale9 = function() {
+	return this.scale9Grid;
 }
 hedge.display.DisplayObject.prototype.setScale9 = function(value) {
 	this.scale9Grid = value;
 	return this.getScale9();
 }
+hedge.display.DisplayObject.prototype.getScaleX = function() {
+	return this.scaleX;
+}
 hedge.display.DisplayObject.prototype.setScaleX = function(value) {
 	this.scaleX = value;
 	return this.getScaleX();
+}
+hedge.display.DisplayObject.prototype.getScaleY = function() {
+	return this.scaleY;
 }
 hedge.display.DisplayObject.prototype.setScaleY = function(value) {
 	this.scaleY = value;
 	return this.getScaleY();
 }
+hedge.display.DisplayObject.prototype.getScrollRect = function() {
+	return this.scrollRect;
+}
 hedge.display.DisplayObject.prototype.setScrollRect = function(value) {
 	this.scrollRect = value;
 	return this.getScrollRect();
+}
+hedge.display.DisplayObject.prototype.getVisible = function() {
+	return this.__jq__.data("visible") == null?true:this.__jq__.data("visible");
 }
 hedge.display.DisplayObject.prototype.setVisible = function(value) {
 	this.__jq__.css("display",value == false?"none":"block");
@@ -223,26 +211,38 @@ hedge.display.DisplayObject.prototype.setVisible = function(value) {
 	this.__jq__.data("visible",value);
 	return this.__jq__.data("visible");
 }
+hedge.display.DisplayObject.prototype.getHeight = function() {
+	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
+}
+hedge.display.DisplayObject.prototype.setHeight = function(value) {
+	this.__jq__.height(value);
+	this.__jq__.data("height",value);
+	return this.__jq__.data("height");
+}
+hedge.display.DisplayObject.prototype.getWidth = function() {
+	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
+}
 hedge.display.DisplayObject.prototype.setWidth = function(value) {
 	this.__jq__.width(value);
 	this.__jq__.data("width",value);
 	return this.__jq__.data("width");
+}
+hedge.display.DisplayObject.prototype.getX = function() {
+	return this.__jq__.position().left;
 }
 hedge.display.DisplayObject.prototype.setX = function(value) {
 	this.x = value;
 	this.__jq__.css("left",("" + value) + "px");
 	return this.getX();
 }
+hedge.display.DisplayObject.prototype.getY = function() {
+	return this.__jq__.position().top;
+}
 hedge.display.DisplayObject.prototype.setY = function(value) {
 	this.y = value;
 	this.__jq__.css("top",("" + value) + "px");
 	return this.getY();
 }
-hedge.display.DisplayObject.prototype.stage = null;
-hedge.display.DisplayObject.prototype.visible = null;
-hedge.display.DisplayObject.prototype.width = null;
-hedge.display.DisplayObject.prototype.x = null;
-hedge.display.DisplayObject.prototype.y = null;
 hedge.display.DisplayObject.prototype.__class__ = hedge.display.DisplayObject;
 hedge.display.InteractiveObject = function(p) { if( p === $_ ) return; {
 	hedge.display.DisplayObject.call(this);
@@ -266,6 +266,10 @@ hedge.display.DisplayObjectContainer = function(p) { if( p === $_ ) return; {
 hedge.display.DisplayObjectContainer.__name__ = ["hedge","display","DisplayObjectContainer"];
 hedge.display.DisplayObjectContainer.__super__ = hedge.display.InteractiveObject;
 for(var k in hedge.display.InteractiveObject.prototype ) hedge.display.DisplayObjectContainer.prototype[k] = hedge.display.InteractiveObject.prototype[k];
+hedge.display.DisplayObjectContainer.prototype.mouseChildren = null;
+hedge.display.DisplayObjectContainer.prototype.numChildren = null;
+hedge.display.DisplayObjectContainer.prototype.tabChildren = null;
+hedge.display.DisplayObjectContainer.prototype.textSnapshot = null;
 hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 	child.__jq__.appendTo(this.__jq__);
 	child.setParent(this);
@@ -275,31 +279,27 @@ hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 hedge.display.DisplayObjectContainer.prototype.getMouseChildren = function() {
 	return this.mouseChildren;
 }
-hedge.display.DisplayObjectContainer.prototype.getNumChildren = function() {
-	return this.numChildren;
-}
-hedge.display.DisplayObjectContainer.prototype.getTabChildren = function() {
-	return this.tabChildren;
-}
-hedge.display.DisplayObjectContainer.prototype.getTextSnapshot = function() {
-	return this.textSnapshot;
-}
-hedge.display.DisplayObjectContainer.prototype.mouseChildren = null;
-hedge.display.DisplayObjectContainer.prototype.numChildren = null;
 hedge.display.DisplayObjectContainer.prototype.setMouseChildren = function(value) {
 	this.mouseChildren = value;
 	return this.getMouseChildren();
+}
+hedge.display.DisplayObjectContainer.prototype.getNumChildren = function() {
+	return this.numChildren;
 }
 hedge.display.DisplayObjectContainer.prototype.setNumChildren = function(value) {
 	this.numChildren = value;
 	return this.getNumChildren();
 }
+hedge.display.DisplayObjectContainer.prototype.getTabChildren = function() {
+	return this.tabChildren;
+}
 hedge.display.DisplayObjectContainer.prototype.setTabChildren = function(value) {
 	this.tabChildren = value;
 	return this.getTabChildren();
 }
-hedge.display.DisplayObjectContainer.prototype.tabChildren = null;
-hedge.display.DisplayObjectContainer.prototype.textSnapshot = null;
+hedge.display.DisplayObjectContainer.prototype.getTextSnapshot = function() {
+	return this.textSnapshot;
+}
 hedge.display.DisplayObjectContainer.prototype.__class__ = hedge.display.DisplayObjectContainer;
 hedge.display.Sprite = function(p) { if( p === $_ ) return; {
 	hedge.display.DisplayObjectContainer.call(this);
@@ -308,43 +308,43 @@ hedge.display.Sprite = function(p) { if( p === $_ ) return; {
 hedge.display.Sprite.__name__ = ["hedge","display","Sprite"];
 hedge.display.Sprite.__super__ = hedge.display.DisplayObjectContainer;
 for(var k in hedge.display.DisplayObjectContainer.prototype ) hedge.display.Sprite.prototype[k] = hedge.display.DisplayObjectContainer.prototype[k];
-hedge.display.Sprite.prototype._g = null;
 hedge.display.Sprite.prototype.buttonMode = null;
 hedge.display.Sprite.prototype.dropTarget = null;
+hedge.display.Sprite.prototype.graphics = null;
+hedge.display.Sprite.prototype.hitArea = null;
+hedge.display.Sprite.prototype.useHandCursor = null;
+hedge.display.Sprite.prototype._g = null;
 hedge.display.Sprite.prototype.getButtonMode = function() {
 	return this.buttonMode;
 }
-hedge.display.Sprite.prototype.getDropTarget = function() {
-	return this.dropTarget;
-}
-hedge.display.Sprite.prototype.getGraphics = function() {
-	return this._g;
-}
-hedge.display.Sprite.prototype.getHandCursor = function() {
-	return this.useHandCursor;
-}
-hedge.display.Sprite.prototype.getHitArea = function() {
-	return this.hitArea;
-}
-hedge.display.Sprite.prototype.graphics = null;
-hedge.display.Sprite.prototype.hitArea = null;
 hedge.display.Sprite.prototype.setButtonMode = function(value) {
 	this.buttonMode = value;
 	return this.getButtonMode();
+}
+hedge.display.Sprite.prototype.getDropTarget = function() {
+	return this.dropTarget;
 }
 hedge.display.Sprite.prototype.setDropTarget = function(value) {
 	this.dropTarget = value;
 	return this.getDropTarget();
 }
-hedge.display.Sprite.prototype.setHandCursor = function(value) {
-	this.useHandCursor = value;
-	return this.getHandCursor();
+hedge.display.Sprite.prototype.getGraphics = function() {
+	return this._g;
+}
+hedge.display.Sprite.prototype.getHitArea = function() {
+	return this.hitArea;
 }
 hedge.display.Sprite.prototype.setHitArea = function(value) {
 	this.hitArea = value;
 	return this.getHitArea();
 }
-hedge.display.Sprite.prototype.useHandCursor = null;
+hedge.display.Sprite.prototype.getHandCursor = function() {
+	return this.useHandCursor;
+}
+hedge.display.Sprite.prototype.setHandCursor = function(value) {
+	this.useHandCursor = value;
+	return this.getHandCursor();
+}
 hedge.display.Sprite.prototype.__class__ = hedge.display.Sprite;
 List = function() { }
 List.__name__ = ["List"];
@@ -363,11 +363,11 @@ hedge.events.Event.__super__ = hedge.Object;
 for(var k in hedge.Object.prototype ) hedge.events.Event.prototype[k] = hedge.Object.prototype[k];
 hedge.events.Event.prototype.bubbles = null;
 hedge.events.Event.prototype.cancelable = null;
+hedge.events.Event.prototype.target = null;
+hedge.events.Event.prototype.type = null;
 hedge.events.Event.prototype.clone = function() {
 	return new hedge.events.Event(this.type,this.bubbles,this.cancelable);
 }
-hedge.events.Event.prototype.target = null;
-hedge.events.Event.prototype.type = null;
 hedge.events.Event.prototype.__class__ = hedge.events.Event;
 hedge.events.KeyboardEvent = function(type,bubbles,cancelable,charCodeValue,keyCodeValue,keyLocationValue,ctrlKeyValue,altKeyValue,shiftKeyValue,controlKeyValue,commandKeyValue) { if( type === $_ ) return; {
 	if(commandKeyValue == null) commandKeyValue = false;
@@ -396,13 +396,13 @@ hedge.events.KeyboardEvent.__super__ = hedge.events.Event;
 for(var k in hedge.events.Event.prototype ) hedge.events.KeyboardEvent.prototype[k] = hedge.events.Event.prototype[k];
 hedge.events.KeyboardEvent.prototype.altKey = null;
 hedge.events.KeyboardEvent.prototype.charCode = null;
-hedge.events.KeyboardEvent.prototype.clone = function() {
-	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
-}
 hedge.events.KeyboardEvent.prototype.ctrlKey = null;
 hedge.events.KeyboardEvent.prototype.keyCode = null;
 hedge.events.KeyboardEvent.prototype.keyLocation = null;
 hedge.events.KeyboardEvent.prototype.shiftKey = null;
+hedge.events.KeyboardEvent.prototype.clone = function() {
+	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
+}
 hedge.events.KeyboardEvent.prototype.__class__ = hedge.events.KeyboardEvent;
 if(!hedge.geom) hedge.geom = {}
 hedge.geom.Point = function(x,y) { if( x === $_ ) return; {
@@ -421,16 +421,16 @@ demo.bunnyLandBlitTest.BlitBunny = function(p) { if( p === $_ ) return; {
 	null;
 }}
 demo.bunnyLandBlitTest.BlitBunny.__name__ = ["demo","bunnyLandBlitTest","BlitBunny"];
-demo.bunnyLandBlitTest.BlitBunny.prototype.angle = null;
-demo.bunnyLandBlitTest.BlitBunny.prototype.bitmapData = null;
-demo.bunnyLandBlitTest.BlitBunny.prototype.drawPosition = null;
-demo.bunnyLandBlitTest.BlitBunny.prototype.speed = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.speedX = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.speedY = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.speedZ = null;
+demo.bunnyLandBlitTest.BlitBunny.prototype.bitmapData = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.x = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.y = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.z = null;
+demo.bunnyLandBlitTest.BlitBunny.prototype.angle = null;
+demo.bunnyLandBlitTest.BlitBunny.prototype.speed = null;
+demo.bunnyLandBlitTest.BlitBunny.prototype.drawPosition = null;
 demo.bunnyLandBlitTest.BlitBunny.prototype.__class__ = demo.bunnyLandBlitTest.BlitBunny;
 demo.bunnyLandBlitTest.BunnyLandBlitTest = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
@@ -492,17 +492,17 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest = function(p) { if( p === $_ ) return; 
 demo.bunnyLandBlitTest.BunnyLandBlitTest.__name__ = ["demo","bunnyLandBlitTest","BunnyLandBlitTest"];
 demo.bunnyLandBlitTest.BunnyLandBlitTest.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype[k] = hedge.display.Sprite.prototype[k];
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.bitmap = null;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.bunnies = null;
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.bunnyAsset = null;
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.cameraRect = null;
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.gamepad = null;
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.grassAsset = null;
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.ground = null;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.maxX = null;
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.maxY = null;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.minX = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.maxY = null;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.minY = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.bitmap = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.cameraRect = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.ground = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.gamepad = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.bunnyAsset = null;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.grassAsset = null;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.onEnterFrame = function(e) {
 	demo.bunnyLandBlitTest.BunnyLandBlitTest.cameraSpeedX = this.gamepad.getX() * 10;
 	demo.bunnyLandBlitTest.BunnyLandBlitTest.cameraSpeedY = this.gamepad.getY() * 10;
@@ -598,32 +598,12 @@ demo.gamepad.GamepadInput = function(keyCode) { if( keyCode === $_ ) return; {
 	this.mappedKeys = (keyCode > -1) == true?[keyCode]:[];
 }}
 demo.gamepad.GamepadInput.__name__ = ["demo","gamepad","GamepadInput"];
-demo.gamepad.GamepadInput.prototype._downTicks = null;
 demo.gamepad.GamepadInput.prototype._isDown = null;
 demo.gamepad.GamepadInput.prototype._isPressed = null;
 demo.gamepad.GamepadInput.prototype._isReleased = null;
+demo.gamepad.GamepadInput.prototype._downTicks = null;
 demo.gamepad.GamepadInput.prototype._upTicks = null;
-demo.gamepad.GamepadInput.prototype.getDownTicks = function() {
-	return this._downTicks;
-}
-demo.gamepad.GamepadInput.prototype.getIsDown = function() {
-	return this._isDown;
-}
-demo.gamepad.GamepadInput.prototype.getIsPressed = function() {
-	return this._isPressed;
-}
-demo.gamepad.GamepadInput.prototype.getIsReleased = function() {
-	return this._isReleased;
-}
-demo.gamepad.GamepadInput.prototype.getUpTicks = function() {
-	return this._upTicks;
-}
-demo.gamepad.GamepadInput.prototype.keyDown = function(keyCode) {
-	if(Lambda.has(this.mappedKeys,keyCode) != false) this._isDown = true;
-}
-demo.gamepad.GamepadInput.prototype.keyUp = function(keyCode) {
-	if(Lambda.has(this.mappedKeys,keyCode) != false) this._isDown = false;
-}
+demo.gamepad.GamepadInput.prototype.mappedKeys = null;
 demo.gamepad.GamepadInput.prototype.mapKey = function(keyCode,replaceExisting) {
 	if(replaceExisting == null) replaceExisting = false;
 	if(replaceExisting) {
@@ -633,7 +613,6 @@ demo.gamepad.GamepadInput.prototype.mapKey = function(keyCode,replaceExisting) {
 		this.mappedKeys.push(keyCode);
 	}
 }
-demo.gamepad.GamepadInput.prototype.mappedKeys = null;
 demo.gamepad.GamepadInput.prototype.update = function() {
 	if(this.getIsDown()) {
 		this._isPressed = this.getDownTicks() == -1;
@@ -648,6 +627,27 @@ demo.gamepad.GamepadInput.prototype.update = function() {
 		this._downTicks = -1;
 	}
 }
+demo.gamepad.GamepadInput.prototype.keyDown = function(keyCode) {
+	if(Lambda.has(this.mappedKeys,keyCode) != false) this._isDown = true;
+}
+demo.gamepad.GamepadInput.prototype.keyUp = function(keyCode) {
+	if(Lambda.has(this.mappedKeys,keyCode) != false) this._isDown = false;
+}
+demo.gamepad.GamepadInput.prototype.getIsDown = function() {
+	return this._isDown;
+}
+demo.gamepad.GamepadInput.prototype.getIsPressed = function() {
+	return this._isPressed;
+}
+demo.gamepad.GamepadInput.prototype.getIsReleased = function() {
+	return this._isReleased;
+}
+demo.gamepad.GamepadInput.prototype.getDownTicks = function() {
+	return this._downTicks;
+}
+demo.gamepad.GamepadInput.prototype.getUpTicks = function() {
+	return this._upTicks;
+}
 demo.gamepad.GamepadInput.prototype.__class__ = demo.gamepad.GamepadInput;
 demo.gamepad.GamepadMultiInput = function(inputs,isOr) { if( inputs === $_ ) return; {
 	this._downTicks = this._upTicks = -1;
@@ -655,28 +655,13 @@ demo.gamepad.GamepadMultiInput = function(inputs,isOr) { if( inputs === $_ ) ret
 	this.isOr = isOr;
 }}
 demo.gamepad.GamepadMultiInput.__name__ = ["demo","gamepad","GamepadMultiInput"];
-demo.gamepad.GamepadMultiInput.prototype._downTicks = null;
 demo.gamepad.GamepadMultiInput.prototype._isDown = null;
 demo.gamepad.GamepadMultiInput.prototype._isPressed = null;
 demo.gamepad.GamepadMultiInput.prototype._isReleased = null;
+demo.gamepad.GamepadMultiInput.prototype._downTicks = null;
 demo.gamepad.GamepadMultiInput.prototype._upTicks = null;
-demo.gamepad.GamepadMultiInput.prototype.getDownTicks = function() {
-	return this._downTicks;
-}
-demo.gamepad.GamepadMultiInput.prototype.getIsDown = function() {
-	return this._isDown;
-}
-demo.gamepad.GamepadMultiInput.prototype.getIsPressed = function() {
-	return this._isPressed;
-}
-demo.gamepad.GamepadMultiInput.prototype.getIsReleased = function() {
-	return this._isReleased;
-}
-demo.gamepad.GamepadMultiInput.prototype.getUpTicks = function() {
-	return this._upTicks;
-}
-demo.gamepad.GamepadMultiInput.prototype.inputs = null;
 demo.gamepad.GamepadMultiInput.prototype.isOr = null;
+demo.gamepad.GamepadMultiInput.prototype.inputs = null;
 demo.gamepad.GamepadMultiInput.prototype.update = function() {
 	if(this.isOr) {
 		this._isDown = false;
@@ -716,6 +701,21 @@ demo.gamepad.GamepadMultiInput.prototype.update = function() {
 		this._upTicks++;
 		this._downTicks = -1;
 	}
+}
+demo.gamepad.GamepadMultiInput.prototype.getIsDown = function() {
+	return this._isDown;
+}
+demo.gamepad.GamepadMultiInput.prototype.getIsPressed = function() {
+	return this._isPressed;
+}
+demo.gamepad.GamepadMultiInput.prototype.getIsReleased = function() {
+	return this._isReleased;
+}
+demo.gamepad.GamepadMultiInput.prototype.getDownTicks = function() {
+	return this._downTicks;
+}
+demo.gamepad.GamepadMultiInput.prototype.getUpTicks = function() {
+	return this._upTicks;
 }
 demo.gamepad.GamepadMultiInput.prototype.__class__ = demo.gamepad.GamepadMultiInput;
 Reflect = function() { }
@@ -829,26 +829,26 @@ Reflect.hasField = function(o,field) {
 }
 Reflect.prototype.__class__ = Reflect;
 ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
-ValueType.TBool = ["TBool",3];
-ValueType.TBool.toString = $estr;
-ValueType.TBool.__enum__ = ValueType;
-ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
-ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
-ValueType.TFloat = ["TFloat",2];
-ValueType.TFloat.toString = $estr;
-ValueType.TFloat.__enum__ = ValueType;
-ValueType.TFunction = ["TFunction",5];
-ValueType.TFunction.toString = $estr;
-ValueType.TFunction.__enum__ = ValueType;
-ValueType.TInt = ["TInt",1];
-ValueType.TInt.toString = $estr;
-ValueType.TInt.__enum__ = ValueType;
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
 ValueType.TNull.__enum__ = ValueType;
+ValueType.TInt = ["TInt",1];
+ValueType.TInt.toString = $estr;
+ValueType.TInt.__enum__ = ValueType;
+ValueType.TFloat = ["TFloat",2];
+ValueType.TFloat.toString = $estr;
+ValueType.TFloat.__enum__ = ValueType;
+ValueType.TBool = ["TBool",3];
+ValueType.TBool.toString = $estr;
+ValueType.TBool.__enum__ = ValueType;
 ValueType.TObject = ["TObject",4];
 ValueType.TObject.toString = $estr;
 ValueType.TObject.__enum__ = ValueType;
+ValueType.TFunction = ["TFunction",5];
+ValueType.TFunction.toString = $estr;
+ValueType.TFunction.__enum__ = ValueType;
+ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
+ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
 ValueType.TUnknown = ["TUnknown",8];
 ValueType.TUnknown.toString = $estr;
 ValueType.TUnknown.__enum__ = ValueType;
@@ -1420,9 +1420,7 @@ haxe.Timer = function(time_ms) { if( time_ms === $_ ) return; {
 }}
 haxe.Timer.__name__ = ["haxe","Timer"];
 haxe.Timer.prototype.id = null;
-haxe.Timer.prototype.run = function() {
-	null;
-}
+haxe.Timer.prototype.timerId = null;
 haxe.Timer.prototype.stop = function() {
 	if(this.id == null) return;
 	window.clearInterval(this.timerId);
@@ -1434,19 +1432,15 @@ haxe.Timer.prototype.stop = function() {
 	}
 	this.id = null;
 }
-haxe.Timer.prototype.timerId = null;
+haxe.Timer.prototype.run = function() {
+	null;
+}
 haxe.Timer.prototype.__class__ = haxe.Timer;
 StringBuf = function(p) { if( p === $_ ) return; {
 	this.b = new Array();
 }}
 StringBuf.__name__ = ["StringBuf"];
-StringBuf.prototype.add = function(x) {
-	this.b[this.b.length] = x;
-}
 StringBuf.prototype.b = null;
-StringBuf.prototype.toString = function() {
-	return this.b.join("");
-}
 StringBuf.prototype.__class__ = StringBuf;
 hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelector) { if( width === $_ ) return; {
 	if(fillColor == null) fillColor = 16777215;
@@ -1470,10 +1464,13 @@ hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelect
 	}
 }}
 hedge.display.BitmapData.__name__ = ["hedge","display","BitmapData"];
+hedge.display.BitmapData.prototype.height = null;
+hedge.display.BitmapData.prototype.transparent = null;
+hedge.display.BitmapData.prototype.width = null;
 hedge.display.BitmapData.prototype.__canvas__ = null;
 hedge.display.BitmapData.prototype.__context__ = null;
-hedge.display.BitmapData.prototype.__fillColor__ = null;
 hedge.display.BitmapData.prototype.__id__ = null;
+hedge.display.BitmapData.prototype.__fillColor__ = null;
 hedge.display.BitmapData.prototype.__source__ = null;
 hedge.display.BitmapData.prototype.copyPixels = function(sourceBitmapData,sourceRect,destPoint,alphaBitmapData,alphaPoint,mergeAlpha) {
 	if(mergeAlpha == null) mergeAlpha = false;
@@ -1489,15 +1486,12 @@ hedge.display.BitmapData.prototype.getHeight = function() {
 hedge.display.BitmapData.prototype.getWidth = function() {
 	return this.width;
 }
-hedge.display.BitmapData.prototype.height = null;
 hedge.display.BitmapData.prototype.onCanvasEnter = function(e) {
 	this.__canvas__.attr({ tabindex : 0}).focus();
 }
 hedge.display.BitmapData.prototype.onCanvasLeave = function(e) {
 	this.__canvas__.removeAttr("tabindex").blur();
 }
-hedge.display.BitmapData.prototype.transparent = null;
-hedge.display.BitmapData.prototype.width = null;
 hedge.display.BitmapData.prototype.__class__ = hedge.display.BitmapData;
 Lambda = function() { }
 Lambda.__name__ = ["Lambda"];
@@ -1578,38 +1572,115 @@ demo.gamepad.Gamepad = function(stage,isCircle,ease,autoStep) { if( stage === $_
 	}
 }}
 demo.gamepad.Gamepad.__name__ = ["demo","gamepad","Gamepad"];
-demo.gamepad.Gamepad.prototype._angle = null;
-demo.gamepad.Gamepad.prototype._anyDirection = null;
+demo.gamepad.Gamepad.prototype._up = null;
 demo.gamepad.Gamepad.prototype._down = null;
-demo.gamepad.Gamepad.prototype._downLeft = null;
-demo.gamepad.Gamepad.prototype._downRight = null;
+demo.gamepad.Gamepad.prototype._left = null;
+demo.gamepad.Gamepad.prototype._right = null;
 demo.gamepad.Gamepad.prototype._fire1 = null;
 demo.gamepad.Gamepad.prototype._fire2 = null;
 demo.gamepad.Gamepad.prototype._inputs = null;
-demo.gamepad.Gamepad.prototype._left = null;
-demo.gamepad.Gamepad.prototype._magnitude = null;
-demo.gamepad.Gamepad.prototype._multiInputs = null;
-demo.gamepad.Gamepad.prototype._right = null;
-demo.gamepad.Gamepad.prototype._rotation = null;
-demo.gamepad.Gamepad.prototype._targetX = null;
-demo.gamepad.Gamepad.prototype._targetY = null;
-demo.gamepad.Gamepad.prototype._up = null;
 demo.gamepad.Gamepad.prototype._upLeft = null;
+demo.gamepad.Gamepad.prototype._downLeft = null;
 demo.gamepad.Gamepad.prototype._upRight = null;
+demo.gamepad.Gamepad.prototype._downRight = null;
+demo.gamepad.Gamepad.prototype._anyDirection = null;
+demo.gamepad.Gamepad.prototype._multiInputs = null;
 demo.gamepad.Gamepad.prototype._x = null;
 demo.gamepad.Gamepad.prototype._y = null;
+demo.gamepad.Gamepad.prototype._targetX = null;
+demo.gamepad.Gamepad.prototype._targetY = null;
+demo.gamepad.Gamepad.prototype._angle = null;
+demo.gamepad.Gamepad.prototype._rotation = null;
+demo.gamepad.Gamepad.prototype._magnitude = null;
+demo.gamepad.Gamepad.prototype.isCircle = null;
 demo.gamepad.Gamepad.prototype.ease = null;
+demo.gamepad.Gamepad.prototype.mapDirection = function(up,down,left,right,replaceExisting) {
+	if(replaceExisting == null) replaceExisting = false;
+	this.getUp().mapKey(up,replaceExisting);
+	this.getDown().mapKey(down,replaceExisting);
+	this.getLeft().mapKey(left,replaceExisting);
+	this.getRight().mapKey(right,replaceExisting);
+}
+demo.gamepad.Gamepad.prototype.useArrows = function(replaceExisting) {
+	if(replaceExisting == null) replaceExisting = false;
+	this.mapDirection(38,40,37,39,replaceExisting);
+}
+demo.gamepad.Gamepad.prototype.useWASD = function(replaceExisting) {
+	if(replaceExisting == null) replaceExisting = false;
+	this.mapDirection(87,83,65,68,replaceExisting);
+}
+demo.gamepad.Gamepad.prototype.mapFireButtons = function(fire1,fire2,replaceExisting) {
+	if(replaceExisting == null) replaceExisting = false;
+	this.getFire1().mapKey(fire1,replaceExisting);
+	this.getFire2().mapKey(fire2,replaceExisting);
+}
+demo.gamepad.Gamepad.prototype.useControlSpace = function(replaceExisting) {
+	if(replaceExisting == null) replaceExisting = false;
+	this.mapFireButtons(17,32,replaceExisting);
+}
+demo.gamepad.Gamepad.prototype.step = function() {
+	{
+		var _g = this;
+		_g.setX(_g.getX() + (this._targetX - this.getX()) * this.ease);
+	}
+	{
+		var _g = this;
+		_g.setY(_g.getY() + (this._targetY - this.getY()) * this.ease);
+	}
+	this._magnitude = Math.sqrt((this.getX() * this.getX()) + (this.getY() * this.getY()));
+	this._angle = Math.atan2(this.getX(),this.getY());
+	this._rotation = this.getAngle() * 57.29577951308232;
+	{
+		var _g1 = 0, _g = this._inputs.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this._inputs[i].update();
+		}
+	}
+}
+demo.gamepad.Gamepad.prototype.setX = function(value) {
+	this._x = value;
+	this._targetX = value;
+	this._angle = Math.atan2(this.getX(),this.getY());
+	this._rotation = this.getAngle() * 57.29577951308232;
+	return this.getX();
+}
+demo.gamepad.Gamepad.prototype.setY = function(value) {
+	this._y = value;
+	this._targetY = value;
+	this._angle = Math.atan2(this.getX(),this.getY());
+	this._rotation = this.getAngle() * 57.29577951308232;
+	return this.getY();
+}
 demo.gamepad.Gamepad.prototype.getAngle = function() {
 	return this._angle;
 }
-demo.gamepad.Gamepad.prototype.getAnyDirection = function() {
-	return this._anyDirection;
+demo.gamepad.Gamepad.prototype.getX = function() {
+	return this._x;
+}
+demo.gamepad.Gamepad.prototype.getY = function() {
+	return this._y;
+}
+demo.gamepad.Gamepad.prototype.getUp = function() {
+	return this._up;
 }
 demo.gamepad.Gamepad.prototype.getDown = function() {
 	return this._down;
 }
+demo.gamepad.Gamepad.prototype.getLeft = function() {
+	return this._left;
+}
+demo.gamepad.Gamepad.prototype.getRight = function() {
+	return this._right;
+}
+demo.gamepad.Gamepad.prototype.getUpLeft = function() {
+	return this._upLeft;
+}
 demo.gamepad.Gamepad.prototype.getDownLeft = function() {
 	return this._downLeft;
+}
+demo.gamepad.Gamepad.prototype.getUpRight = function() {
+	return this._upRight;
 }
 demo.gamepad.Gamepad.prototype.getDownRight = function() {
 	return this._downRight;
@@ -1620,45 +1691,14 @@ demo.gamepad.Gamepad.prototype.getFire1 = function() {
 demo.gamepad.Gamepad.prototype.getFire2 = function() {
 	return this._fire2;
 }
-demo.gamepad.Gamepad.prototype.getLeft = function() {
-	return this._left;
+demo.gamepad.Gamepad.prototype.getAnyDirection = function() {
+	return this._anyDirection;
 }
 demo.gamepad.Gamepad.prototype.getMagnitude = function() {
 	return this._magnitude;
 }
-demo.gamepad.Gamepad.prototype.getRight = function() {
-	return this._right;
-}
 demo.gamepad.Gamepad.prototype.getRotation = function() {
 	return this._rotation;
-}
-demo.gamepad.Gamepad.prototype.getUp = function() {
-	return this._up;
-}
-demo.gamepad.Gamepad.prototype.getUpLeft = function() {
-	return this._upLeft;
-}
-demo.gamepad.Gamepad.prototype.getUpRight = function() {
-	return this._upRight;
-}
-demo.gamepad.Gamepad.prototype.getX = function() {
-	return this._x;
-}
-demo.gamepad.Gamepad.prototype.getY = function() {
-	return this._y;
-}
-demo.gamepad.Gamepad.prototype.isCircle = null;
-demo.gamepad.Gamepad.prototype.mapDirection = function(up,down,left,right,replaceExisting) {
-	if(replaceExisting == null) replaceExisting = false;
-	this.getUp().mapKey(up,replaceExisting);
-	this.getDown().mapKey(down,replaceExisting);
-	this.getLeft().mapKey(left,replaceExisting);
-	this.getRight().mapKey(right,replaceExisting);
-}
-demo.gamepad.Gamepad.prototype.mapFireButtons = function(fire1,fire2,replaceExisting) {
-	if(replaceExisting == null) replaceExisting = false;
-	this.getFire1().mapKey(fire1,replaceExisting);
-	this.getFire2().mapKey(fire2,replaceExisting);
 }
 demo.gamepad.Gamepad.prototype.onEnterFrame = function(event) {
 	this.step();
@@ -1682,40 +1722,6 @@ demo.gamepad.Gamepad.prototype.onKeyUp = function(event) {
 		}
 	}
 	this.updateState();
-}
-demo.gamepad.Gamepad.prototype.setX = function(value) {
-	this._x = value;
-	this._targetX = value;
-	this._angle = Math.atan2(this.getX(),this.getY());
-	this._rotation = this.getAngle() * 57.29577951308232;
-	return this.getX();
-}
-demo.gamepad.Gamepad.prototype.setY = function(value) {
-	this._y = value;
-	this._targetY = value;
-	this._angle = Math.atan2(this.getX(),this.getY());
-	this._rotation = this.getAngle() * 57.29577951308232;
-	return this.getY();
-}
-demo.gamepad.Gamepad.prototype.step = function() {
-	{
-		var _g = this;
-		_g.setX(_g.getX() + (this._targetX - this.getX()) * this.ease);
-	}
-	{
-		var _g = this;
-		_g.setY(_g.getY() + (this._targetY - this.getY()) * this.ease);
-	}
-	this._magnitude = Math.sqrt((this.getX() * this.getX()) + (this.getY() * this.getY()));
-	this._angle = Math.atan2(this.getX(),this.getY());
-	this._rotation = this.getAngle() * 57.29577951308232;
-	{
-		var _g1 = 0, _g = this._inputs.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this._inputs[i].update();
-		}
-	}
 }
 demo.gamepad.Gamepad.prototype.updateState = function() {
 	{
@@ -1749,18 +1755,6 @@ demo.gamepad.Gamepad.prototype.updateState = function() {
 		this._targetY = Math.cos(_targetAngle);
 	}
 }
-demo.gamepad.Gamepad.prototype.useArrows = function(replaceExisting) {
-	if(replaceExisting == null) replaceExisting = false;
-	this.mapDirection(38,40,37,39,replaceExisting);
-}
-demo.gamepad.Gamepad.prototype.useControlSpace = function(replaceExisting) {
-	if(replaceExisting == null) replaceExisting = false;
-	this.mapFireButtons(17,32,replaceExisting);
-}
-demo.gamepad.Gamepad.prototype.useWASD = function(replaceExisting) {
-	if(replaceExisting == null) replaceExisting = false;
-	this.mapDirection(87,83,65,68,replaceExisting);
-}
 demo.gamepad.Gamepad.prototype.__class__ = demo.gamepad.Gamepad;
 hedge.display.Stage = function(p) { if( p === $_ ) return; {
 	null;
@@ -1786,6 +1780,13 @@ Hash = function(p) { if( p === $_ ) return; {
 	else null;
 }}
 Hash.__name__ = ["Hash"];
+Hash.prototype.h = null;
+Hash.prototype.set = function(key,value) {
+	this.h["$" + key] = value;
+}
+Hash.prototype.get = function(key) {
+	return this.h["$" + key];
+}
 Hash.prototype.exists = function(key) {
 	try {
 		key = "$" + key;
@@ -1804,17 +1805,10 @@ Hash.prototype.exists = function(key) {
 		}
 	}
 }
-Hash.prototype.get = function(key) {
-	return this.h["$" + key];
-}
-Hash.prototype.h = null;
-Hash.prototype.iterator = function() {
-	return { ref : this.h, it : this.keys(), hasNext : function() {
-		return this.it.hasNext();
-	}, next : function() {
-		var i = this.it.next();
-		return this.ref["$" + i];
-	}}
+Hash.prototype.remove = function(key) {
+	if(!this.exists(key)) return false;
+	delete(this.h["$" + key]);
+	return true;
 }
 Hash.prototype.keys = function() {
 	var a = new Array();
@@ -1824,13 +1818,13 @@ Hash.prototype.keys = function() {
 		;
 	return a.iterator();
 }
-Hash.prototype.remove = function(key) {
-	if(!this.exists(key)) return false;
-	delete(this.h["$" + key]);
-	return true;
-}
-Hash.prototype.set = function(key,value) {
-	this.h["$" + key] = value;
+Hash.prototype.iterator = function() {
+	return { ref : this.h, it : this.keys(), hasNext : function() {
+		return this.it.hasNext();
+	}, next : function() {
+		var i = this.it.next();
+		return this.ref["$" + i];
+	}}
 }
 Hash.prototype.toString = function() {
 	var s = new StringBuf();
@@ -1885,8 +1879,23 @@ hedge.display.Graphics = function(parent) { if( parent === $_ ) return; {
 hedge.display.Graphics.__name__ = ["hedge","display","Graphics"];
 hedge.display.Graphics.__super__ = hedge.Object;
 for(var k in hedge.Object.prototype ) hedge.display.Graphics.prototype[k] = hedge.Object.prototype[k];
-hedge.display.Graphics.prototype.__element__ = null;
 hedge.display.Graphics.prototype.__raphael__ = null;
+hedge.display.Graphics.prototype.__element__ = null;
+hedge.display.Graphics.prototype.parent = null;
+hedge.display.Graphics.prototype.path = null;
+hedge.display.Graphics.prototype.fill_color = null;
+hedge.display.Graphics.prototype.fill_alpha = null;
+hedge.display.Graphics.prototype.lineType = null;
+hedge.display.Graphics.prototype.line_thickness = null;
+hedge.display.Graphics.prototype.line_color = null;
+hedge.display.Graphics.prototype.line_alpha = null;
+hedge.display.Graphics.prototype.line_caps = null;
+hedge.display.Graphics.prototype.line_joints = null;
+hedge.display.Graphics.prototype.line_limit = null;
+hedge.display.Graphics.prototype.fillType = null;
+hedge.display.Graphics.prototype.fill_gradient_type = null;
+hedge.display.Graphics.prototype.fill_gradient_colors = null;
+hedge.display.Graphics.prototype.fill_gradient_ratios = null;
 hedge.display.Graphics.prototype.beginFill = function(color,alpha) {
 	if(alpha == null) alpha = 1.0;
 	this.fill_color = color;
@@ -1933,6 +1942,40 @@ hedge.display.Graphics.prototype.checkFill = function() {
 	}break;
 	}
 }
+hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
+	x = x + this.line_thickness;
+	y = y + this.line_thickness;
+	width = width - this.line_thickness;
+	height = height - this.line_thickness;
+	this.__element__ = this.__raphael__.rect(x,y,width,height);
+	this.checkFill();
+	this.checkLineStyle();
+	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : width + this.line_thickness, h : height + this.line_thickness, p : this.parent}]);
+}
+hedge.display.Graphics.prototype.endFill = function() {
+	if(this.path != "" || this.path == null) {
+		this.__element__ = this.__raphael__.path(this.path += " z");
+		this.checkFill();
+		this.checkLineStyle();
+		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
+	}
+}
+hedge.display.Graphics.prototype.lineStyle = function(thickness,color,alpha,pixelHinting,scaleMode,caps,joints,miterLimit) {
+	if(miterLimit == null) miterLimit = 3;
+	if(joints == null) joints = "miter";
+	if(caps == null) caps = "none";
+	if(scaleMode == null) scaleMode = "normal";
+	if(pixelHinting == null) pixelHinting = false;
+	if(alpha == null) alpha = 1.0;
+	if(color == null) color = 16777215;
+	this.lineType = "plain";
+	this.line_thickness = thickness;
+	this.line_color = color;
+	this.line_alpha = alpha;
+	this.line_caps = caps;
+	this.line_joints = joints;
+	this.line_limit = miterLimit;
+}
 hedge.display.Graphics.prototype.checkLineStyle = function() {
 	this.lineType = this.lineType == null?"plain":this.lineType;
 	switch(this.lineType) {
@@ -1952,55 +1995,6 @@ hedge.display.Graphics.prototype.checkLineStyle = function() {
 	}break;
 	}
 }
-hedge.display.Graphics.prototype.drawRect = function(x,y,width,height) {
-	x = x + this.line_thickness;
-	y = y + this.line_thickness;
-	width = width - this.line_thickness;
-	height = height - this.line_thickness;
-	this.__element__ = this.__raphael__.rect(x,y,width,height);
-	this.checkFill();
-	this.checkLineStyle();
-	this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : x, y : y, w : width + this.line_thickness, h : height + this.line_thickness, p : this.parent}]);
-}
-hedge.display.Graphics.prototype.endFill = function() {
-	if(this.path != "" || this.path == null) {
-		this.__element__ = this.__raphael__.path(this.path += " z");
-		this.checkFill();
-		this.checkLineStyle();
-		this.parent.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : this.__element__.getBBox().x, y : this.__element__.getBBox().y, w : this.__element__.getBBox().width, h : this.__element__.getBBox().height, p : this.parent}]);
-	}
-}
-hedge.display.Graphics.prototype.fillType = null;
-hedge.display.Graphics.prototype.fill_alpha = null;
-hedge.display.Graphics.prototype.fill_color = null;
-hedge.display.Graphics.prototype.fill_gradient_colors = null;
-hedge.display.Graphics.prototype.fill_gradient_ratios = null;
-hedge.display.Graphics.prototype.fill_gradient_type = null;
-hedge.display.Graphics.prototype.lineStyle = function(thickness,color,alpha,pixelHinting,scaleMode,caps,joints,miterLimit) {
-	if(miterLimit == null) miterLimit = 3;
-	if(joints == null) joints = "miter";
-	if(caps == null) caps = "none";
-	if(scaleMode == null) scaleMode = "normal";
-	if(pixelHinting == null) pixelHinting = false;
-	if(alpha == null) alpha = 1.0;
-	if(color == null) color = 16777215;
-	this.lineType = "plain";
-	this.line_thickness = thickness;
-	this.line_color = color;
-	this.line_alpha = alpha;
-	this.line_caps = caps;
-	this.line_joints = joints;
-	this.line_limit = miterLimit;
-}
-hedge.display.Graphics.prototype.lineType = null;
-hedge.display.Graphics.prototype.line_alpha = null;
-hedge.display.Graphics.prototype.line_caps = null;
-hedge.display.Graphics.prototype.line_color = null;
-hedge.display.Graphics.prototype.line_joints = null;
-hedge.display.Graphics.prototype.line_limit = null;
-hedge.display.Graphics.prototype.line_thickness = null;
-hedge.display.Graphics.prototype.parent = null;
-hedge.display.Graphics.prototype.path = null;
 hedge.display.Graphics.prototype.__class__ = hedge.display.Graphics;
 Main = function() { }
 Main.__name__ = ["Main"];
@@ -2053,8 +2047,10 @@ Examples.__name__ = ["Examples"];
 Examples.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) Examples.prototype[k] = hedge.display.Sprite.prototype[k];
 Examples.prototype.bunnyAmount = null;
-Examples.prototype.bunnyClass = null;
+Examples.prototype.submitAmount = null;
+Examples.prototype.submitText = null;
 Examples.prototype.bunnyOne = null;
+Examples.prototype.bunnyClass = null;
 Examples.prototype.max = null;
 Examples.prototype.onBunnyClick = function(e) {
 	if(this.bunnyAmount.getText() == null) {
@@ -2069,8 +2065,6 @@ Examples.prototype.onBunnyClick = function(e) {
 	}
 	this.bunnyClass.numBunnies = Std.parseInt(this.bunnyAmount.getText());
 }
-Examples.prototype.submitAmount = null;
-Examples.prototype.submitText = null;
 Examples.prototype.__class__ = Examples;
 if(!hedge.text) hedge.text = {}
 hedge.text.TextField = function(p) { if( p === $_ ) return; {
@@ -2089,34 +2083,19 @@ hedge.text.TextField.prototype.background = null;
 hedge.text.TextField.prototype.backgroundColor = null;
 hedge.text.TextField.prototype.border = null;
 hedge.text.TextField.prototype.borderColor = null;
-hedge.text.TextField.prototype.generateJQuery = function() {
-	hedge.Setup.__storage__.append(this.__jq__ = new $("<textarea>"));
-}
+hedge.text.TextField.prototype.text = null;
+hedge.text.TextField.prototype.type = null;
+hedge.text.TextField.prototype.wordWrap = null;
 hedge.text.TextField.prototype.getBackground = function() {
 	return this.__jq__.attr("data-background");
-}
-hedge.text.TextField.prototype.getBackgroundColor = function() {
-	return this.getBackground() == true?hedge.Setup.RGB_String_to_HEX(this.__jq__.css("background-color")):-1;
-}
-hedge.text.TextField.prototype.getBorder = function() {
-	return this.__jq__.attr("data-border");
-}
-hedge.text.TextField.prototype.getBorderColor = function() {
-	return this.getBorder() == true?hedge.Setup.RGB_String_to_HEX(this.__jq__.css("border-color")):-16777216;
-}
-hedge.text.TextField.prototype.getText = function() {
-	return this.__jq__.val();
-}
-hedge.text.TextField.prototype.getType = function() {
-	return this.__jq__.attr("data-type");
-}
-hedge.text.TextField.prototype.getWordWrap = function() {
-	return this.__jq__.attr("data-wordWrap");
 }
 hedge.text.TextField.prototype.setBackground = function(value) {
 	this.__jq__.attr("data-background",value);
 	this.__jq__.css("background",value == true?"" + hedge.Setup.RGB_to_String(16777215):"none");
 	return this.__jq__.attr("data-background");
+}
+hedge.text.TextField.prototype.getBackgroundColor = function() {
+	return this.getBackground() == true?hedge.Setup.RGB_String_to_HEX(this.__jq__.css("background-color")):-1;
 }
 hedge.text.TextField.prototype.setBackgroundColor = function(value) {
 	if(this.getBackground() == true) {
@@ -2124,10 +2103,16 @@ hedge.text.TextField.prototype.setBackgroundColor = function(value) {
 	}
 	return this.getBackgroundColor();
 }
+hedge.text.TextField.prototype.getBorder = function() {
+	return this.__jq__.attr("data-border");
+}
 hedge.text.TextField.prototype.setBorder = function(value) {
 	this.__jq__.attr("data-border",value);
 	this.__jq__.css("border",value == true?"1px solid " + hedge.Setup.RGB_to_String(0):"0px none");
 	return this.__jq__.attr("data-border");
+}
+hedge.text.TextField.prototype.getBorderColor = function() {
+	return this.getBorder() == true?hedge.Setup.RGB_String_to_HEX(this.__jq__.css("border-color")):-16777216;
 }
 hedge.text.TextField.prototype.setBorderColor = function(value) {
 	if(this.getBorder() == true) {
@@ -2135,14 +2120,15 @@ hedge.text.TextField.prototype.setBorderColor = function(value) {
 	}
 	return this.getBorderColor();
 }
-hedge.text.TextField.prototype.setHeight = function(value) {
-	this.__jq__.height(value);
-	this.__jq__.data("height",value);
-	return this.__jq__.data("height");
+hedge.text.TextField.prototype.getText = function() {
+	return this.__jq__.val();
 }
 hedge.text.TextField.prototype.setText = function(value) {
 	this.__jq__.val(value);
 	return this.__jq__.val();
+}
+hedge.text.TextField.prototype.getType = function() {
+	return this.__jq__.attr("data-type");
 }
 hedge.text.TextField.prototype.setType = function(value) {
 	if(value == "dynamic") {
@@ -2154,19 +2140,27 @@ hedge.text.TextField.prototype.setType = function(value) {
 	this.__jq__.attr("data-type",value);
 	return this.__jq__.attr("data-type");
 }
-hedge.text.TextField.prototype.setWidth = function(value) {
-	this.__jq__.width(value);
-	this.__jq__.data("width",value);
-	return this.__jq__.data("width");
+hedge.text.TextField.prototype.getWordWrap = function() {
+	return this.__jq__.attr("data-wordWrap");
 }
 hedge.text.TextField.prototype.setWordWrap = function(value) {
 	this.__jq__.css("white-space",value == true?"normal":"nowrap");
 	this.__jq__.attr("data-wordWrap",value);
 	return this.__jq__.attr("data-wordWrap");
 }
-hedge.text.TextField.prototype.text = null;
-hedge.text.TextField.prototype.type = null;
-hedge.text.TextField.prototype.wordWrap = null;
+hedge.text.TextField.prototype.generateJQuery = function() {
+	hedge.Setup.__storage__.append(this.__jq__ = new $("<textarea>"));
+}
+hedge.text.TextField.prototype.setWidth = function(value) {
+	this.__jq__.width(value);
+	this.__jq__.data("width",value);
+	return this.__jq__.data("width");
+}
+hedge.text.TextField.prototype.setHeight = function(value) {
+	this.__jq__.height(value);
+	this.__jq__.data("height",value);
+	return this.__jq__.data("height");
+}
 hedge.text.TextField.prototype.__class__ = hedge.text.TextField;
 hedge.display.Bitmap = function(bitmapData,pixelSnapping,smoothing) { if( bitmapData === $_ ) return; {
 	if(smoothing == null) smoothing = false;
@@ -2180,10 +2174,11 @@ hedge.display.Bitmap.__name__ = ["hedge","display","Bitmap"];
 hedge.display.Bitmap.__super__ = hedge.display.DisplayObject;
 for(var k in hedge.display.DisplayObject.prototype ) hedge.display.Bitmap.prototype[k] = hedge.display.DisplayObject.prototype[k];
 hedge.display.Bitmap.prototype.bitmapData = null;
+hedge.display.Bitmap.prototype.pixelSnapping = null;
+hedge.display.Bitmap.prototype.smoothing = null;
 hedge.display.Bitmap.prototype.getBitmapData = function() {
 	return this.__jq__.data("bitmapdata");
 }
-hedge.display.Bitmap.prototype.pixelSnapping = null;
 hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	this.setWidth(value.getWidth());
 	this.setHeight(value.getHeight());
@@ -2191,7 +2186,6 @@ hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	this.__jq__.data("bitmapdata",value);
 	return value;
 }
-hedge.display.Bitmap.prototype.smoothing = null;
 hedge.display.Bitmap.prototype.__class__ = hedge.display.Bitmap;
 hedge.events.MouseEvent = function(type,bubbles,cancelable,localX,localY,relatedObject,ctrlKey,altKey,shiftKey,buttonDown,delta,commandKey,controlKey,clickCount) { if( type === $_ ) return; {
 	if(clickCount == null) clickCount = 0;
@@ -2225,15 +2219,15 @@ hedge.events.MouseEvent.__super__ = hedge.events.Event;
 for(var k in hedge.events.Event.prototype ) hedge.events.MouseEvent.prototype[k] = hedge.events.Event.prototype[k];
 hedge.events.MouseEvent.prototype.altKey = null;
 hedge.events.MouseEvent.prototype.buttonDown = null;
-hedge.events.MouseEvent.prototype.clone = function() {
-	return new hedge.events.MouseEvent(this.type,this.bubbles,this.cancelable,this.localX,this.localY,this.relatedObject,this.ctrlKey,this.altKey,this.shiftKey,this.buttonDown,this.delta,this.commandKey,this.controlKey,this.clickCount);
-}
 hedge.events.MouseEvent.prototype.ctrlKey = null;
 hedge.events.MouseEvent.prototype.delta = null;
 hedge.events.MouseEvent.prototype.localX = null;
 hedge.events.MouseEvent.prototype.localY = null;
 hedge.events.MouseEvent.prototype.relatedObject = null;
 hedge.events.MouseEvent.prototype.shiftKey = null;
+hedge.events.MouseEvent.prototype.clone = function() {
+	return new hedge.events.MouseEvent(this.type,this.bubbles,this.cancelable,this.localX,this.localY,this.relatedObject,this.ctrlKey,this.altKey,this.shiftKey,this.buttonDown,this.delta,this.commandKey,this.controlKey,this.clickCount);
+}
 hedge.events.MouseEvent.prototype.__class__ = hedge.events.MouseEvent;
 hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
 	if(height == null) height = 0;
@@ -2248,8 +2242,8 @@ hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
 hedge.geom.Rectangle.__name__ = ["hedge","geom","Rectangle"];
 hedge.geom.Rectangle.prototype.height = null;
 hedge.geom.Rectangle.prototype.width = null;
-hedge.geom.Rectangle.prototype.x = null;
 hedge.geom.Rectangle.prototype.y = null;
+hedge.geom.Rectangle.prototype.x = null;
 hedge.geom.Rectangle.prototype.__class__ = hedge.geom.Rectangle;
 js.Lib = function() { }
 js.Lib.__name__ = ["js","Lib"];
