@@ -20,7 +20,7 @@ import hedge.Setup;
  * @author Skial Bainn
  */
 
-class Main {
+class BunnyMain {
 		
 	static function main() {
 		if (Firebug.detect()) {

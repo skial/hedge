@@ -2,7 +2,7 @@
 -cp ./src
 -D bunnyBlit
 -lib raphaelExtern
--main Main
+-main BunnyMain
 --macro keepClass(['Type', 'Reflect'])
 --dead-code-elimination
 
@@ -12,6 +12,6 @@
 -cp ./src
 -D bunnyLand
 -lib raphaelExtern
--main Main
+-main BunnyMain
 --macro keepClass(['Type', 'Reflect'])
 --dead-code-elimination
