@@ -375,33 +375,35 @@ demo.bunnyBlitTest.BlitTest.prototype.onEnterFrame = function(e) {
 	this.bitmap.getBitmapData().fillRect(new hedge.geom.Rectangle(0,0,demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY),16777215);
 	var sourceRect = new hedge.geom.Rectangle(0,0,26,37);
 	var bunny;
-	var i = demo.bunnyBlitTest.BlitTest.numBunnies - 1;
-	while(i > 0) {
-		bunny = this.bunnies[i];
-		bunny.position.x += bunny.speedX;
-		bunny.position.y += bunny.speedY;
-		bunny.speedY += demo.bunnyBlitTest.BlitTest.gravity;
-		if(bunny.position.x > demo.bunnyBlitTest.BlitTest.maxX) {
-			bunny.speedX *= -1;
-			bunny.position.x = demo.bunnyBlitTest.BlitTest.maxX;
-		}
-		else if(bunny.position.x < demo.bunnyBlitTest.BlitTest.minX) {
-			bunny.speedX *= -1;
-			bunny.position.x = demo.bunnyBlitTest.BlitTest.minX;
-		}
-		if(bunny.position.y > demo.bunnyBlitTest.BlitTest.maxY) {
-			bunny.speedY *= -0.8;
-			bunny.position.y = demo.bunnyBlitTest.BlitTest.maxY;
-			if(Math.random() > 0.5) {
-				bunny.speedY -= Math.random() * 12;
+	{
+		var _g1 = 0, _g = demo.bunnyBlitTest.BlitTest.numBunnies;
+		while(_g1 < _g) {
+			var i = _g1++;
+			bunny = this.bunnies[i];
+			bunny.position.x += bunny.speedX;
+			bunny.position.y += bunny.speedY;
+			bunny.speedY += demo.bunnyBlitTest.BlitTest.gravity;
+			if(bunny.position.x > demo.bunnyBlitTest.BlitTest.maxX) {
+				bunny.speedX *= -1;
+				bunny.position.x = demo.bunnyBlitTest.BlitTest.maxX;
 			}
+			else if(bunny.position.x < demo.bunnyBlitTest.BlitTest.minX) {
+				bunny.speedX *= -1;
+				bunny.position.x = demo.bunnyBlitTest.BlitTest.minX;
+			}
+			if(bunny.position.y > demo.bunnyBlitTest.BlitTest.maxY) {
+				bunny.speedY *= -0.8;
+				bunny.position.y = demo.bunnyBlitTest.BlitTest.maxY;
+				if(Math.random() > 0.5) {
+					bunny.speedY -= Math.random() * 12;
+				}
+			}
+			else if(bunny.position.y < demo.bunnyBlitTest.BlitTest.minY) {
+				bunny.speedY = 0;
+				bunny.position.y = demo.bunnyBlitTest.BlitTest.minY;
+			}
+			this.bitmap.getBitmapData().copyPixels(bunny.bitmapData,sourceRect,bunny.position,null,null,true);
 		}
-		else if(bunny.position.y < demo.bunnyBlitTest.BlitTest.minY) {
-			bunny.speedY = 0;
-			bunny.position.y = demo.bunnyBlitTest.BlitTest.minY;
-		}
-		this.bitmap.getBitmapData().copyPixels(bunny.bitmapData,sourceRect,bunny.position,null,null,true);
-		--i;
 	}
 }
 demo.bunnyBlitTest.BlitTest.prototype.__class__ = demo.bunnyBlitTest.BlitTest;

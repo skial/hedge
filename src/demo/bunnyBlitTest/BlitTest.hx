@@ -62,9 +62,8 @@ class BlitTest extends Sprite {
 		bitmap.bitmapData.fillRect(new Rectangle(0, 0, maxX, maxY), /* needs to set to white as <canvas> default is black */ 0xFFFFFF);
 		var sourceRect:Rectangle = new Rectangle(0, 0, 26, 37);
 		var bunny:BlitBunny;
-		var i = numBunnies-1;
-		while (i > 0) {
-		//for (i in 0...numBunnies) {
+		
+		for (i in 0...numBunnies) {
 			bunny = bunnies[i];
 			bunny.position.x += bunny.speedX;
 			bunny.position.y += bunny.speedY;
@@ -91,7 +90,6 @@ class BlitTest extends Sprite {
 			}
 			
 			bitmap.bitmapData.copyPixels(bunny.bitmapData, sourceRect, bunny.position, null, null, true);
-			--i;
 		}
 	}
 	
