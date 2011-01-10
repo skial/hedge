@@ -81,7 +81,7 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	}
 	
 	public function copyPixels(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false) {
-		__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
+		this.__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
 	}
 	
 	public function dispose() {
@@ -90,7 +90,7 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	public function draw(source:IBitmapDrawable, matrix:Matrix = null, colorTransform:ColorTransform = null, blendMode:String = null, clipRect:Rectangle = null, smoothing:Bool = false) {
 		// todo - need to check type of source - or only allow bitmapdata
-		__context__.drawImage(source, 0, 0);
+		this.__context__.drawImage(source, 0, 0);
 	}
 	
 	public function fillRect(rect:Rectangle, color:Int) {
