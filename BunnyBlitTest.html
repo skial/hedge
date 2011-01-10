@@ -7,6 +7,7 @@
 	<meta name="language" content="en" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 	<script type="text/javascript" src="lib/raphael-min.js"></script>
+	<script type="text/javascript" src="lib/Stats.js"></script>
 	<style type="text/css">
 		html, body { height:100%; }
 		body { margin:0; }
@@ -21,8 +22,18 @@
 	<div id="holder">
 		<div id="bunnyBlit"></div>
 		<p>About 15fps | Max Bunnies 3000 | Canvas size 640 x 480</p>
+		<p>mrdoob <a target="_blank" href="https://github.com/mrdoob/stats.js">Stats.js Library</a></p>
 		<p><a target="_blank" href="https://github.com/skial/hedge/blob/master/src/demo/bunnyBlitTest/BlitTest.hx">Source Code</a></p>
 	</div>
 	<script type="text/javascript" src="BunnyBlitTest/BunnyBlit.js"></script>
+	<script type="text/javascript">
+		var stats = new Stats();
+		$('div#holder').append( stats.domElement );
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		setInterval(function () {
+		stats.update();
+		}, 1000/60);
+	</script>
 </body>
 </html>

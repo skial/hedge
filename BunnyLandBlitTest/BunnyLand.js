@@ -488,6 +488,9 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest = function(p) { if( p === $_ ) return; 
 	this.gamepad = new demo.gamepad.Gamepad(this.getStage(),true);
 	this.gamepad.useWASD();
 	this.addEventListener("enterFrame",$closure(this,"onEnterFrame"));
+	this.ground.__canvas__.attr({ id : "bitmapdataGround"});
+	this.grassAsset.__canvas__.attr({ id : "bitmapdataGrassAsset"});
+	this.bunnyAsset.__canvas__.attr({ id : "bitmapdataBunnyAsset"});
 }}
 demo.bunnyLandBlitTest.BunnyLandBlitTest.__name__ = ["demo","bunnyLandBlitTest","BunnyLandBlitTest"];
 demo.bunnyLandBlitTest.BunnyLandBlitTest.__super__ = hedge.display.Sprite;
@@ -528,69 +531,129 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.onEnterFrame = function(e) {
 	var sourceRect = new hedge.geom.Rectangle(0,0,26,37);
 	var bunny;
 	var drawableBunnies = new Array();
-	{
-		var _g1 = 0, _g = demo.bunnyLandBlitTest.BunnyLandBlitTest.numBunnies;
-		while(_g1 < _g) {
-			var i = _g1++;
-			bunny = this.bunnies[i];
-			bunny.x += bunny.speedX;
-			bunny.y += bunny.speedY;
-			if(bunny.x > this.maxX) {
-				bunny.speedX *= -1;
-				bunny.x = this.maxX;
-			}
-			else if(bunny.x < this.minX) {
-				bunny.speedX *= -1;
-				bunny.x = this.minX;
-			}
-			if(bunny.y > this.maxY) {
-				bunny.speedY *= -1;
-				bunny.y = this.maxY;
-			}
-			else if(bunny.y < this.minY) {
-				bunny.speedY *= -1;
-				bunny.y = this.minY;
-			}
-			bunny.z += bunny.speedZ;
-			bunny.speedZ += demo.bunnyLandBlitTest.BunnyLandBlitTest.gravity;
-			if(bunny.z > demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ) {
-				bunny.speedZ *= -0.5;
-				bunny.z = demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ;
-				if(Math.random() > 0.1) {
-					bunny.speedZ -= Math.random();
-				}
-			}
-			else if(bunny.z < demo.bunnyLandBlitTest.BunnyLandBlitTest.minZ) {
-				bunny.speedZ = 0;
-				bunny.z = demo.bunnyLandBlitTest.BunnyLandBlitTest.minZ;
-			}
-			var drawPosition = bunny.drawPosition;
-			drawPosition.x = bunny.x - this.cameraRect.x;
-			drawPosition.y = (bunny.y + bunny.z) - this.cameraRect.y;
-			if(drawPosition.x <= demo.bunnyLandBlitTest.BunnyLandBlitTest.screenWidth && drawPosition.x > -sourceRect.width) {
-				if(drawPosition.y <= demo.bunnyLandBlitTest.BunnyLandBlitTest.screenHeight && drawPosition.y > -sourceRect.height) {
-					drawableBunnies.push(bunny);
-				}
+	var i = demo.bunnyLandBlitTest.BunnyLandBlitTest.numBunnies - 1;
+	while(i > 0) {
+		bunny = this.bunnies[i];
+		bunny.x += bunny.speedX;
+		bunny.y += bunny.speedY;
+		if(bunny.x > this.maxX) {
+			bunny.speedX *= -1;
+			bunny.x = this.maxX;
+		}
+		else if(bunny.x < this.minX) {
+			bunny.speedX *= -1;
+			bunny.x = this.minX;
+		}
+		if(bunny.y > this.maxY) {
+			bunny.speedY *= -1;
+			bunny.y = this.maxY;
+		}
+		else if(bunny.y < this.minY) {
+			bunny.speedY *= -1;
+			bunny.y = this.minY;
+		}
+		bunny.z += bunny.speedZ;
+		bunny.speedZ += demo.bunnyLandBlitTest.BunnyLandBlitTest.gravity;
+		if(bunny.z > demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ) {
+			bunny.speedZ *= -0.5;
+			bunny.z = demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ;
+			if(Math.random() > 0.1) {
+				bunny.speedZ -= Math.random();
 			}
 		}
+		else if(bunny.z < demo.bunnyLandBlitTest.BunnyLandBlitTest.minZ) {
+			bunny.speedZ = 0;
+			bunny.z = demo.bunnyLandBlitTest.BunnyLandBlitTest.minZ;
+		}
+		var drawPosition = bunny.drawPosition;
+		drawPosition.x = bunny.x - this.cameraRect.x;
+		drawPosition.y = (bunny.y + bunny.z) - this.cameraRect.y;
+		if(drawPosition.x <= demo.bunnyLandBlitTest.BunnyLandBlitTest.screenWidth && drawPosition.x > -sourceRect.width) {
+			if(drawPosition.y <= demo.bunnyLandBlitTest.BunnyLandBlitTest.screenHeight && drawPosition.y > -sourceRect.height) {
+				drawableBunnies.push(bunny);
+			}
+		}
+		i--;
 	}
-	drawableBunnies.sort($closure(this,"sortDepths"));
 	var numDrawableBunnies = drawableBunnies.length;
-	{
-		var _g = 0;
-		while(_g < numDrawableBunnies) {
-			var i = _g++;
-			bunny = drawableBunnies[i];
-			this.bitmap.getBitmapData().copyPixels(bunny.bitmapData,sourceRect,bunny.drawPosition,null,null,true);
-		}
+	i = numDrawableBunnies - 1;
+	while(i > 0) {
+		bunny = drawableBunnies[i];
+		this.bitmap.getBitmapData().copyPixels(bunny.bitmapData,sourceRect,bunny.drawPosition,null,null,true);
+		i--;
 	}
-}
-demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.sortDepths = function(bunny1,bunny2) {
-	if(bunny1.y < bunny2.y) return -1;
-	if(bunny1.y > bunny2.y) return 1;
-	return 0;
 }
 demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.__class__ = demo.bunnyLandBlitTest.BunnyLandBlitTest;
+BunnyMain = function() { }
+BunnyMain.__name__ = ["BunnyMain"];
+BunnyMain.main = function() {
+	if(haxe.Firebug.detect()) {
+		haxe.Firebug.redirectTraces();
+	}
+	hedge.Setup.init($closure(BunnyMain,"launch"),15,"bunnyLand");
+}
+BunnyMain.launch = function() {
+	hedge.Lib.attachToStage(new Examples());
+}
+BunnyMain.prototype.__class__ = BunnyMain;
+Examples = function(p) { if( p === $_ ) return; {
+	hedge.display.Sprite.call(this);
+	this.bunnyOne = new demo.bunnyLandBlitTest.BunnyLandBlitTest();
+	this.max = 34000;
+	this.bunnyOne.name = "blit";
+	this.bunnyClass = demo.bunnyLandBlitTest.BunnyLandBlitTest;
+	this.bunnyAmount = new hedge.text.TextField();
+	this.bunnyAmount.setType("input");
+	this.bunnyAmount.setBackground(true);
+	this.bunnyAmount.setBorder(true);
+	this.bunnyAmount.setWidth(50);
+	this.bunnyAmount.setHeight(20);
+	this.bunnyAmount.setText("" + this.max);
+	this.bunnyAmount.setName("bunnyAmount");
+	this.submitAmount = new hedge.display.Sprite();
+	this.submitAmount.getGraphics().beginFill(40940);
+	this.submitAmount.getGraphics().lineStyle(1,0);
+	this.submitAmount.getGraphics().drawRect(0,0,98,20);
+	this.submitAmount.getGraphics().endFill();
+	this.submitAmount.setName("submitAmount");
+	this.submitText = new hedge.text.TextField();
+	this.submitText.setText("submit");
+	this.submitText.setName("submitText");
+	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
+	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
+	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
+	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
+	this.submitText.setX(25);
+	this.submitText.setY(2);
+	this.submitAmount.addEventListener("click",$closure(this,"onBunnyClick"));
+	this.addChild(this.bunnyOne);
+	this.addChild(this.bunnyAmount);
+	this.addChild(this.submitAmount);
+	this.submitAmount.addChild(this.submitText);
+}}
+Examples.__name__ = ["Examples"];
+Examples.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) Examples.prototype[k] = hedge.display.Sprite.prototype[k];
+Examples.prototype.bunnyAmount = null;
+Examples.prototype.submitAmount = null;
+Examples.prototype.submitText = null;
+Examples.prototype.bunnyOne = null;
+Examples.prototype.bunnyClass = null;
+Examples.prototype.max = null;
+Examples.prototype.onBunnyClick = function(e) {
+	if(this.bunnyAmount.getText() == null) {
+		this.bunnyAmount.setText("" + this.max);
+	}
+	var amount = Std.parseInt(this.bunnyAmount.getText());
+	if(amount > this.max) {
+		this.bunnyAmount.setText("" + this.max);
+	}
+	if(amount < 0) {
+		this.bunnyAmount.setText("1");
+	}
+	this.bunnyClass.numBunnies = Std.parseInt(this.bunnyAmount.getText());
+}
+Examples.prototype.__class__ = Examples;
 if(!demo.gamepad) demo.gamepad = {}
 demo.gamepad.GamepadInput = function(keyCode) { if( keyCode === $_ ) return; {
 	if(keyCode == null) keyCode = -1;
@@ -1996,76 +2059,6 @@ hedge.display.Graphics.prototype.checkLineStyle = function() {
 	}
 }
 hedge.display.Graphics.prototype.__class__ = hedge.display.Graphics;
-Main = function() { }
-Main.__name__ = ["Main"];
-Main.main = function() {
-	if(haxe.Firebug.detect()) {
-		haxe.Firebug.redirectTraces();
-	}
-	hedge.Setup.init($closure(Main,"launch"),15,"bunnyLand");
-}
-Main.launch = function() {
-	hedge.Lib.attachToStage(new Examples());
-}
-Main.prototype.__class__ = Main;
-Examples = function(p) { if( p === $_ ) return; {
-	hedge.display.Sprite.call(this);
-	this.bunnyOne = new demo.bunnyLandBlitTest.BunnyLandBlitTest();
-	this.max = 34000;
-	this.bunnyOne.name = "blit";
-	this.bunnyClass = demo.bunnyLandBlitTest.BunnyLandBlitTest;
-	this.bunnyAmount = new hedge.text.TextField();
-	this.bunnyAmount.setType("input");
-	this.bunnyAmount.setBackground(true);
-	this.bunnyAmount.setBorder(true);
-	this.bunnyAmount.setWidth(50);
-	this.bunnyAmount.setHeight(20);
-	this.bunnyAmount.setText("" + this.max);
-	this.bunnyAmount.setName("bunnyAmount");
-	this.submitAmount = new hedge.display.Sprite();
-	this.submitAmount.getGraphics().beginFill(40940);
-	this.submitAmount.getGraphics().lineStyle(1,0);
-	this.submitAmount.getGraphics().drawRect(0,0,98,20);
-	this.submitAmount.getGraphics().endFill();
-	this.submitAmount.setName("submitAmount");
-	this.submitText = new hedge.text.TextField();
-	this.submitText.setText("submit");
-	this.submitText.setName("submitText");
-	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
-	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
-	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
-	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
-	this.submitText.setX(25);
-	this.submitText.setY(2);
-	this.submitAmount.addEventListener("click",$closure(this,"onBunnyClick"));
-	this.addChild(this.bunnyOne);
-	this.addChild(this.bunnyAmount);
-	this.addChild(this.submitAmount);
-	this.submitAmount.addChild(this.submitText);
-}}
-Examples.__name__ = ["Examples"];
-Examples.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) Examples.prototype[k] = hedge.display.Sprite.prototype[k];
-Examples.prototype.bunnyAmount = null;
-Examples.prototype.submitAmount = null;
-Examples.prototype.submitText = null;
-Examples.prototype.bunnyOne = null;
-Examples.prototype.bunnyClass = null;
-Examples.prototype.max = null;
-Examples.prototype.onBunnyClick = function(e) {
-	if(this.bunnyAmount.getText() == null) {
-		this.bunnyAmount.setText("" + this.max);
-	}
-	var amount = Std.parseInt(this.bunnyAmount.getText());
-	if(amount > this.max) {
-		this.bunnyAmount.setText("" + this.max);
-	}
-	if(amount < 0) {
-		this.bunnyAmount.setText("1");
-	}
-	this.bunnyClass.numBunnies = Std.parseInt(this.bunnyAmount.getText());
-}
-Examples.prototype.__class__ = Examples;
 if(!hedge.text) hedge.text = {}
 hedge.text.TextField = function(p) { if( p === $_ ) return; {
 	hedge.display.InteractiveObject.call(this);
@@ -2385,4 +2378,4 @@ js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.data = new Hash();
 hedge.jquery.events.EnterFrame.events = new Array();
 hedge.jquery.events.EnterFrame.running = false;
-Main.main()
+BunnyMain.main()
