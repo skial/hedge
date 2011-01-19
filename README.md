@@ -5,7 +5,7 @@ This project started because I've never had to use a substantial amount of javas
 
 This is more a reason for me to keep learning new libs / features. I will keep adding classes / methods when I need them. I will also add a list of classes / methods that have been added to the wiki.
 
-For a more **finished flash to html5 library**, take a look at [jeash](https://launchpad.net/jeash).
+For a more **finished flash to javascript / html(5) library**, take a look at [jeash](https://launchpad.net/jeash).
 ***
 ## contribute
 This project **encourages** contributions.

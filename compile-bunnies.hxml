@@ -3,7 +3,7 @@
 -D bunnyBlit
 -lib raphaelExtern
 -main BunnyMain
---macro keepClass(['Type', 'Reflect'])
+--macro keep(['Type', 'Reflect'])
 --dead-code-elimination
 
 --next
@@ -13,5 +13,5 @@
 -D bunnyLand
 -lib raphaelExtern
 -main BunnyMain
---macro keepClass(['Type', 'Reflect'])
+--macro keep(['Type', 'Reflect'])
 --dead-code-elimination
