@@ -1,5 +1,5 @@
 <haxe>
-	<class path="haxe.remoting.AsyncConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/AsyncConnection.hx" interface="1">
+	<class path="haxe.remoting.AsyncConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/AsyncConnection.hx" interface="1">
 		<resolve public="1" set="method"><f a="name">
 	<c path="String"/>
 	<c path="haxe.remoting.AsyncConnection"/>
@@ -21,7 +21,7 @@
 </f></setErrorHandler>
 		<haxe_dynamic><c path="haxe.remoting.AsyncConnection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.io.BytesBuffer" params="" file="/home/skial/motion-twin/std/haxe/io/BytesBuffer.hx">
+	<class path="haxe.io.BytesBuffer" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/BytesBuffer.hx">
 		<b><c path="Array"><c path="Int"/></c></b>
 		<addByte public="1" get="inline" set="null" line="55"><f a="byte">
 	<c path="Int"/>
@@ -46,7 +46,7 @@
 		</getBytes>
 		<new public="1" set="method" line="41"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.SHA1" params="" file="/home/skial/motion-twin/std/haxe/SHA1.hx">
+	<class path="haxe.SHA1" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/SHA1.hx">
 		<hex_chr line="30" static="1"><c path="String"/></hex_chr>
 		<newInt32 get="inline" set="null" line="32" static="1"><f a="left:right">
 	<c path="Int"/>
@@ -113,7 +113,7 @@
 	</haxe_doc>
 		</kt>
 	</class>
-	<class path="haxe.Http" params="" file="/home/skial/motion-twin/std/haxe/Http.hx">
+	<class path="haxe.Http" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Http.hx">
 		<requestUrl public="1" set="method" line="634" static="1"><f a="url">
 	<c path="String"/>
 	<c path="String"/>
@@ -158,7 +158,7 @@
 	 </haxe_doc>
 		</new>
 	</class>
-	<class path="String" params="" file="/home/skial/motion-twin/std/String.hx" extern="1">
+	<class path="String" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/String.hx" extern="1">
 		<fromCharCode public="1" set="method" static="1"><f a="code">
 	<c path="Int"/>
 	<c path="String"/>
@@ -250,10 +250,6 @@
 		Returns the String itself.
 	</haxe_doc>
 		</toString>
-		<cca set="method"><f a="pos">
-	<c path="Int"/>
-	<c path="Int"/>
-</f></cca>
 		<new public="1" set="method">
 			<f a="string">
 				<c path="String"/>
@@ -267,7 +263,7 @@
 	The basic String class.
 </haxe_doc>
 	</class>
-	<class path="haxe.remoting.Context" params="" file="/home/skial/motion-twin/std/haxe/remoting/Context.hx">
+	<class path="haxe.remoting.Context" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/Context.hx">
 		<share public="1" set="method" line="58" static="1"><f a="name:obj">
 	<c path="String"/>
 	<a/>
@@ -290,7 +286,7 @@
 </f></call>
 		<new public="1" set="method" line="31"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.remoting.ContextAll" params="" file="/home/skial/motion-twin/std/haxe/remoting/ContextAll.hx">
+	<class path="haxe.remoting.ContextAll" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/ContextAll.hx">
 		<extends path="haxe.remoting.Context"/>
 		<call public="1" set="method" line="29" override="1"><f a="path:params">
 	<c path="Array"><c path="String"/></c>
@@ -299,7 +295,7 @@
 </f></call>
 		<new public="1" set="method" line="27"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="List" params="T" file="/home/skial/motion-twin/std/List.hx">
+	<class path="List" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/List.hx">
 		<h><c path="Array"><d/></c></h>
 		<q><c path="Array"><d/></c></q>
 		<length public="1" set="null">
@@ -429,19 +425,19 @@
 	element doesn't imply to copy the whole array content everytime.
 </haxe_doc>
 	</class>
-	<enum path="Void" params="" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes"><haxe_doc>
+	<enum path="Void" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes"><haxe_doc>
 	The standard Void type. Only [null] values can be of the type [Void].
 </haxe_doc></enum>
-	<class path="Float" params="" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes" extern="1"><haxe_doc>
+	<class path="Float" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes" extern="1"><haxe_doc>
 	The standard Float type, this is a double-precision IEEE 64bit float.
 </haxe_doc></class>
-	<class path="Int" params="" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes" extern="1">
+	<class path="Int" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes" extern="1">
 		<extends path="Float"/>
 		<haxe_doc>
 	The standard Int type. Its precision depends on the platform.
 </haxe_doc>
 	</class>
-	<typedef path="Null" params="T" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Null" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes">
 		<c path="Null.T"/>
 		<haxe_doc>
 	[Null] can be useful in two cases. In order to document some methods
@@ -450,18 +446,18 @@
 	can't.
 </haxe_doc>
 	</typedef>
-	<enum path="Bool" params="" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes">
+	<enum path="Bool" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes">
 		<true/>
 		<false/>
 		<haxe_doc>
 	The standard Boolean type is represented as an enum with two choices.
 </haxe_doc>
 	</enum>
-	<class path="Dynamic" params="T" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes" extern="1"><haxe_doc>
+	<class path="Dynamic" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes" extern="1"><haxe_doc>
 	Dynamic is an internal compiler type which has special behavior.
 	See the haXe language reference for more informations.
 </haxe_doc></class>
-	<typedef path="Iterator" params="T" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Iterator" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes">
 		<a>
 			<next set="method"><f a=""><c path="Iterator.T"/></f></next>
 			<hasNext set="method"><f a=""><e path="Bool"/></f></hasNext>
@@ -472,22 +468,22 @@
 	documentation for more informations.
 </haxe_doc>
 	</typedef>
-	<typedef path="Iterable" params="T" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Iterable" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes">
 		<a><iterator set="method"><f a=""><t path="Iterator"><c path="Iterable.T"/></t></f></iterator></a>
 		<haxe_doc>
 	An Iterable is a data structure which has an iterator() method.
 	See [Lambda] for generic functions on iterable structures.
 </haxe_doc>
 	</typedef>
-	<class path="ArrayAccess" params="T" file="/home/skial/motion-twin/std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>
+	<class path="ArrayAccess" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>
 	ArrayAccess is used to indicate a class that can be accessed using brackets.
 	The type parameter represent the type of the elements stored.
 </haxe_doc></class>
-	<typedef path="haxe.macro.Ref" params="T" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.Ref" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<toString set="method"><f a=""><c path="String"/></f></toString>
 	<get set="method"><f a=""><c path="haxe.macro.Ref.T"/></f></get>
 </a></typedef>
-	<enum path="haxe.macro.Type" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx">
+	<enum path="haxe.macro.Type" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx">
 		<TType a="t:params">
 			<t path="haxe.macro.Ref"><t path="haxe.macro.DefType"/></t>
 			<c path="Array"><e path="haxe.macro.Type"/></c>
@@ -512,8 +508,8 @@
 		<TDynamic a="t"><t path="Null"><e path="haxe.macro.Type"/></t></TDynamic>
 		<TAnonymous a="a"><t path="haxe.macro.Ref"><t path="haxe.macro.AnonType"/></t></TAnonymous>
 	</enum>
-	<typedef path="haxe.macro.AnonType" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a><fields><c path="Array"><t path="haxe.macro.ClassField"/></c></fields></a></typedef>
-	<typedef path="haxe.macro.BaseType" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.AnonType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a><fields><c path="Array"><t path="haxe.macro.ClassField"/></c></fields></a></typedef>
+	<typedef path="haxe.macro.BaseType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<pos><e path="haxe.macro.Position"/></pos>
 	<params><c path="Array"><a>
 	<t><e path="haxe.macro.Type"/></t>
@@ -524,8 +520,9 @@
 	<meta><t path="haxe.macro.Metadata"/></meta>
 	<isPrivate><e path="Bool"/></isPrivate>
 	<isExtern><e path="Bool"/></isExtern>
+	<exclude set="method"><f a=""><e path="Void"/></f></exclude>
 </a></typedef>
-	<typedef path="haxe.macro.ClassField" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.ClassField" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<type><e path="haxe.macro.Type"/></type>
 	<params><c path="Array"><a>
 	<t><e path="haxe.macro.Type"/></t>
@@ -533,9 +530,11 @@
 </a></c></params>
 	<name><c path="String"/></name>
 	<meta><t path="haxe.macro.Metadata"/></meta>
+	<kind><e path="haxe.macro.FieldKind"/></kind>
 	<isPublic><e path="Bool"/></isPublic>
+	<expr><t path="Null"><e path="haxe.macro.TypedExpr"/></t></expr>
 </a></typedef>
-	<typedef path="haxe.macro.ClassType" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.ClassType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<superClass><t path="Null"><a>
 	<t><t path="haxe.macro.Ref"><t path="haxe.macro.ClassType"/></t></t>
 	<params><c path="Array"><e path="haxe.macro.Type"/></c></params>
@@ -556,17 +555,19 @@
 	<t><t path="haxe.macro.Ref"><t path="haxe.macro.ClassType"/></t></t>
 	<params><c path="Array"><e path="haxe.macro.Type"/></c></params>
 </a></c></interfaces>
+	<init><t path="Null"><e path="haxe.macro.TypedExpr"/></t></init>
 	<fields><t path="haxe.macro.Ref"><c path="Array"><t path="haxe.macro.ClassField"/></c></t></fields>
+	<exclude set="method"><f a=""><e path="Void"/></f></exclude>
 	<constructor><t path="Null"><t path="haxe.macro.Ref"><t path="haxe.macro.ClassField"/></t></t></constructor>
 </a></typedef>
-	<typedef path="haxe.macro.EnumField" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.EnumField" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<type><e path="haxe.macro.Type"/></type>
 	<pos><e path="haxe.macro.Position"/></pos>
 	<name><c path="String"/></name>
 	<meta><t path="haxe.macro.Metadata"/></meta>
 	<index><c path="Int"/></index>
 </a></typedef>
-	<typedef path="haxe.macro.EnumType" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.EnumType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<pos><e path="haxe.macro.Position"/></pos>
 	<params><c path="Array"><a>
 	<t><e path="haxe.macro.Type"/></t>
@@ -578,9 +579,10 @@
 	<meta><t path="haxe.macro.Metadata"/></meta>
 	<isPrivate><e path="Bool"/></isPrivate>
 	<isExtern><e path="Bool"/></isExtern>
+	<exclude set="method"><f a=""><e path="Void"/></f></exclude>
 	<contructs><c path="Hash"><t path="haxe.macro.EnumField"/></c></contructs>
 </a></typedef>
-	<typedef path="haxe.macro.DefType" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.DefType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<type><e path="haxe.macro.Type"/></type>
 	<pos><e path="haxe.macro.Position"/></pos>
 	<params><c path="Array"><a>
@@ -592,23 +594,49 @@
 	<meta><t path="haxe.macro.Metadata"/></meta>
 	<isPrivate><e path="Bool"/></isPrivate>
 	<isExtern><e path="Bool"/></isExtern>
+	<exclude set="method"><f a=""><e path="Void"/></f></exclude>
 </a></typedef>
-	<typedef path="haxe.macro.Metadata" params="" file="/home/skial/motion-twin/std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
+	<typedef path="haxe.macro.Metadata" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"><a>
 	<remove set="method"><f a="name">
 	<c path="String"/>
 	<e path="Void"/>
 </f></remove>
 	<get set="method"><f a=""><c path="Array"><a>
+	<pos><e path="haxe.macro.Position"/></pos>
 	<params><c path="Array"><t path="haxe.macro.Expr"/></c></params>
 	<name><c path="String"/></name>
 </a></c></f></get>
-	<add set="method"><f a="name:params">
+	<add set="method"><f a="name:params:pos">
 	<c path="String"/>
 	<c path="Array"><t path="haxe.macro.Expr"/></c>
+	<e path="haxe.macro.Position"/>
 	<e path="Void"/>
 </f></add>
 </a></typedef>
-	<class path="haxe.Serializer" params="" file="/home/skial/motion-twin/std/haxe/Serializer.hx">
+	<enum path="haxe.macro.FieldKind" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type">
+		<FVar a="read:write">
+			<e path="haxe.macro.VarAccess"/>
+			<e path="haxe.macro.VarAccess"/>
+		</FVar>
+		<FMethod a="k"><e path="haxe.macro.MethodKind"/></FMethod>
+	</enum>
+	<enum path="haxe.macro.VarAccess" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type">
+		<AccResolve/>
+		<AccRequire a="r"><c path="String"/></AccRequire>
+		<AccNormal/>
+		<AccNo/>
+		<AccNever/>
+		<AccInline/>
+		<AccCall a="m"><c path="String"/></AccCall>
+	</enum>
+	<enum path="haxe.macro.MethodKind" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type">
+		<MethNormal/>
+		<MethMacro/>
+		<MethInline/>
+		<MethDynamic/>
+	</enum>
+	<enum path="haxe.macro.TypedExpr" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Type.hx" module="haxe.macro.Type"/>
+	<class path="haxe.Serializer" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Serializer.hx">
 		<USE_CACHE public="1" line="34" static="1">
 			<e path="Bool"/>
 			<haxe_doc>
@@ -663,7 +691,7 @@
 </f></serializeException>
 		<new public="1" set="method" line="51"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.unit.TestRunner" params="" file="/home/skial/motion-twin/std/haxe/unit/TestRunner.hx">
+	<class path="haxe.unit.TestRunner" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/unit/TestRunner.hx">
 		<print public="1" set="dynamic" line="38" static="1"><f a="v">
 	<d/>
 	<e path="Void"/>
@@ -686,7 +714,7 @@
 </f></runCase>
 		<new public="1" set="method" line="83"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.unit.TestStatus" params="" file="/home/skial/motion-twin/std/haxe/unit/TestStatus.hx">
+	<class path="haxe.unit.TestStatus" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/unit/TestStatus.hx">
 		<done public="1"><e path="Bool"/></done>
 		<success public="1"><e path="Bool"/></success>
 		<error public="1"><c path="String"/></error>
@@ -696,7 +724,7 @@
 		<backtrace public="1"><c path="String"/></backtrace>
 		<new public="1" set="method" line="39"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.rtti.XmlParser" params="" file="/home/skial/motion-twin/std/haxe/rtti/XmlParser.hx">
+	<class path="haxe.rtti.XmlParser" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/XmlParser.hx">
 		<root public="1"><t path="haxe.rtti.TypeRoot"/></root>
 		<curplatform><c path="String"/></curplatform>
 		<sort public="1" set="method" line="38"><f a="?l">
@@ -790,7 +818,7 @@
 		<defplat set="method" line="458"><f a=""><c path="List"><c path="String"/></c></f></defplat>
 		<new public="1" set="method" line="34"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.remoting.Connection" params="" file="/home/skial/motion-twin/std/haxe/remoting/Connection.hx" interface="1">
+	<class path="haxe.remoting.Connection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/Connection.hx" interface="1">
 		<resolve public="1" set="method"><f a="name">
 	<c path="String"/>
 	<c path="haxe.remoting.Connection"/>
@@ -801,7 +829,7 @@
 </f></call>
 		<haxe_dynamic><c path="haxe.remoting.Connection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.remoting.HttpConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/HttpConnection.hx">
+	<class path="haxe.remoting.HttpConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/HttpConnection.hx">
 		<implements path="haxe.remoting.Connection"/>
 		<TIMEOUT public="1" line="29" static="1"><c path="Int"/></TIMEOUT>
 		<processRequest public="1" set="method" line="97" static="1"><f a="requestData:ctx">
@@ -826,7 +854,7 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.Connection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.BaseCode" params="" file="/home/skial/motion-twin/std/haxe/BaseCode.hx">
+	<class path="haxe.BaseCode" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/BaseCode.hx">
 		<encode public="1" set="method" line="127" static="1"><f a="s:base">
 	<c path="String"/>
 	<c path="String"/>
@@ -862,7 +890,7 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="haxe.io.Input" params="" file="/home/skial/motion-twin/std/haxe/io/Input.hx">
+	<class path="haxe.io.Input" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/Input.hx">
 		<bigEndian public="1" set="setEndian"><e path="Bool"/></bigEndian>
 		<readByte public="1" set="method" line="35"><f a=""><c path="Int"/></f></readByte>
 		<readBytes public="1" set="method" line="44"><f a="s:pos:len">
@@ -914,7 +942,7 @@
 	for several possible implementations.
 </haxe_doc>
 	</class>
-	<class path="haxe.io.BytesInput" params="" file="/home/skial/motion-twin/std/haxe/io/BytesInput.hx">
+	<class path="haxe.io.BytesInput" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/BytesInput.hx">
 		<extends path="haxe.io.Input"/>
 		<b><t path="haxe.io.BytesData"/></b>
 		<pos><c path="Int"/></pos>
@@ -933,18 +961,18 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="Class" params="T" file="/home/skial/motion-twin/std/Class.hx" extern="1"><haxe_doc>
+	<class path="Class" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Class.hx" extern="1"><haxe_doc>
 	An abstract type that represents a Class.
 	See [Type] for the haXe Reflection API.
 </haxe_doc></class>
-	<class path="haxe.io.Eof" params="" file="/home/skial/motion-twin/std/haxe/io/Eof.hx">
+	<class path="haxe.io.Eof" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/Eof.hx">
 		<toString set="method" line="33"><f a=""><c path="String"/></f></toString>
 		<new public="1" set="method" line="31"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
 	This exception is raised when reading while data is no longer available in the [Input].
 </haxe_doc>
 	</class>
-	<class path="Reflect" params="" file="/home/skial/motion-twin/std/Reflect.hx" extern="1">
+	<class path="Reflect" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Reflect.hx" extern="1">
 		<hasField public="1" set="method" static="1">
 			<f a="o:field">
 				<d/>
@@ -1073,7 +1101,7 @@
 	abstract interface in an untyped manner. Use with care.
 </haxe_doc>
 	</class>
-	<enum path="haxe.StackItem" params="" file="/home/skial/motion-twin/std/haxe/Stack.hx" module="haxe.Stack">
+	<enum path="haxe.StackItem" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Stack.hx" module="haxe.Stack">
 		<Module a="m"><c path="String"/></Module>
 		<Method a="classname:method">
 			<c path="String"/>
@@ -1090,7 +1118,7 @@
 	Elements return by [Stack] methods.
 </haxe_doc>
 	</enum>
-	<class path="haxe.Stack" params="" file="/home/skial/motion-twin/std/haxe/Stack.hx">
+	<class path="haxe.Stack" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Stack.hx">
 		<callStack public="1" set="method" line="46" static="1">
 			<f a=""><c path="Array"><e path="haxe.StackItem"/></c></f>
 			<haxe_doc>
@@ -1127,18 +1155,18 @@
 	Get informations about the call stack.
 </haxe_doc>
 	</class>
-	<enum path="haxe.xml.Filter" params="" file="/home/skial/motion-twin/std/haxe/xml/Check.hx" module="haxe.xml.Check">
+	<enum path="haxe.xml.Filter" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Check.hx" module="haxe.xml.Check">
 		<FReg a="matcher"><c path="EReg"/></FReg>
 		<FInt/>
 		<FEnum a="values"><c path="Array"><c path="String"/></c></FEnum>
 		<FBool/>
 	</enum>
-	<enum path="haxe.xml.Attrib" params="" file="/home/skial/motion-twin/std/haxe/xml/Check.hx" module="haxe.xml.Check"><Att a="name:?filter:?defvalue">
+	<enum path="haxe.xml.Attrib" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Check.hx" module="haxe.xml.Check"><Att a="name:?filter:?defvalue">
 	<c path="String"/>
 	<e path="haxe.xml.Filter"/>
 	<c path="String"/>
 </Att></enum>
-	<enum path="haxe.xml.Rule" params="" file="/home/skial/motion-twin/std/haxe/xml/Check.hx" module="haxe.xml.Check">
+	<enum path="haxe.xml.Rule" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Check.hx" module="haxe.xml.Check">
 		<ROptional a="rule"><e path="haxe.xml.Rule"/></ROptional>
 		<RNode a="name:?attribs:?childs">
 			<c path="String"/>
@@ -1156,7 +1184,7 @@
 		<RData a="?filter"><e path="haxe.xml.Filter"/></RData>
 		<RChoice a="choices"><c path="Array"><e path="haxe.xml.Rule"/></c></RChoice>
 	</enum>
-	<enum path="haxe.xml._Check.CheckResult" params="" file="/home/skial/motion-twin/std/haxe/xml/Check.hx" private="1" module="haxe.xml.Check">
+	<enum path="haxe.xml._Check.CheckResult" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Check.hx" private="1" module="haxe.xml.Check">
 		<CMissingAttrib a="att:x">
 			<c path="String"/>
 			<c path="Xml"/>
@@ -1187,7 +1215,7 @@
 		</CElementExpected>
 		<CDataExpected a="x"><c path="Xml"/></CDataExpected>
 	</enum>
-	<class path="EReg" params="" file="/home/skial/motion-twin/std/EReg.hx">
+	<class path="EReg" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/EReg.hx">
 		<match public="1" set="method" line="45">
 			<f a="s">
 				<c path="String"/>
@@ -1287,7 +1315,7 @@
 	how to use them.
 </haxe_doc>
 	</class>
-	<class path="haxe.xml.Check" params="" file="/home/skial/motion-twin/std/haxe/xml/Check.hx">
+	<class path="haxe.xml.Check" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Check.hx">
 		<blanks line="62" static="1"><c path="EReg"/></blanks>
 		<isBlank set="method" line="64" static="1"><f a="x">
 	<c path="Xml"/>
@@ -1340,7 +1368,7 @@
 	<e path="Void"/>
 </f></checkDocument>
 	</class>
-	<class path="haxe.FastCell" params="T" file="/home/skial/motion-twin/std/haxe/FastList.hx" module="haxe.FastList">
+	<class path="haxe.FastCell" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/FastList.hx" module="haxe.FastList">
 		<elt public="1"><c path="haxe.FastCell.T"/></elt>
 		<next public="1"><c path="haxe.FastCell"><c path="haxe.FastCell.T"/></c></next>
 		<new public="1" set="method" line="30"><f a="elt:next">
@@ -1349,7 +1377,7 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="haxe.FastList" params="T" file="/home/skial/motion-twin/std/haxe/FastList.hx">
+	<class path="haxe.FastList" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/FastList.hx">
 		<head public="1"><c path="haxe.FastCell"><c path="haxe.FastList.T"/></c></head>
 		<add public="1" get="inline" set="null" line="60">
 			<f a="item">
@@ -1413,7 +1441,7 @@
 	A linked-list of elements. A different class is created for each container used in platforms where it matters
 </haxe_doc>
 	</class>
-	<class path="IntIter" params="" file="/home/skial/motion-twin/std/IntIter.hx">
+	<class path="IntIter" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/IntIter.hx">
 		<min><c path="Int"/></min>
 		<max><c path="Int"/></max>
 		<hasNext public="1" set="method" line="46">
@@ -1443,7 +1471,7 @@
 	Integer iterator. Used for interval implementation.
 </haxe_doc>
 	</class>
-	<class path="Math" params="" file="/home/skial/motion-twin/std/Math.hx" extern="1">
+	<class path="Math" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Math.hx" extern="1">
 		<PI public="1" set="null" static="1"><c path="Float"/></PI>
 		<NaN public="1" set="null" static="1"><c path="Float"/></NaN>
 		<NEGATIVE_INFINITY public="1" set="null" static="1"><c path="Float"/></NEGATIVE_INFINITY>
@@ -1533,7 +1561,7 @@
 	This class defines mathematical functions and constants.
 </haxe_doc>
 	</class>
-	<class path="haxe.xml._Fast.NodeAccess" params="" file="/home/skial/motion-twin/std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
+	<class path="haxe.xml._Fast.NodeAccess" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
 		<__x><c path="Xml"/></__x>
 		<resolve public="1" set="method" line="35"><f a="name">
 	<c path="String"/>
@@ -1545,7 +1573,7 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.xml.Fast"/></haxe_dynamic>
 	</class>
-	<class path="haxe.xml._Fast.AttribAccess" params="" file="/home/skial/motion-twin/std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
+	<class path="haxe.xml._Fast.AttribAccess" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
 		<__x><c path="Xml"/></__x>
 		<resolve public="1" set="method" line="54"><f a="name">
 	<c path="String"/>
@@ -1557,7 +1585,7 @@
 </f></new>
 		<haxe_dynamic><c path="String"/></haxe_dynamic>
 	</class>
-	<class path="haxe.xml._Fast.HasAttribAccess" params="" file="/home/skial/motion-twin/std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
+	<class path="haxe.xml._Fast.HasAttribAccess" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
 		<__x><c path="Xml"/></__x>
 		<resolve public="1" set="method" line="73"><f a="name">
 	<c path="String"/>
@@ -1569,7 +1597,7 @@
 </f></new>
 		<haxe_dynamic><e path="Bool"/></haxe_dynamic>
 	</class>
-	<class path="haxe.xml._Fast.HasNodeAccess" params="" file="/home/skial/motion-twin/std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
+	<class path="haxe.xml._Fast.HasNodeAccess" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
 		<__x><c path="Xml"/></__x>
 		<resolve public="1" set="method" line="89"><f a="name">
 	<c path="String"/>
@@ -1581,7 +1609,7 @@
 </f></new>
 		<haxe_dynamic><e path="Bool"/></haxe_dynamic>
 	</class>
-	<class path="haxe.xml._Fast.NodeListAccess" params="" file="/home/skial/motion-twin/std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
+	<class path="haxe.xml._Fast.NodeListAccess" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Fast.hx" private="1" module="haxe.xml.Fast">
 		<__x><c path="Xml"/></__x>
 		<resolve public="1" set="method" line="103"><f a="name">
 	<c path="String"/>
@@ -1593,7 +1621,7 @@
 </f></new>
 		<haxe_dynamic><c path="List"><c path="haxe.xml.Fast"/></c></haxe_dynamic>
 	</class>
-	<class path="haxe.xml.Fast" params="" file="/home/skial/motion-twin/std/haxe/xml/Fast.hx">
+	<class path="haxe.xml.Fast" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Fast.hx">
 		<x public="1" set="null"><c path="Xml"/></x>
 		<name public="1" get="getName" set="null"><c path="String"/></name>
 		<innerData public="1" get="getInnerData" set="null"><c path="String"/></innerData>
@@ -1616,7 +1644,7 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<enum path="ValueType" params="" file="/home/skial/motion-twin/std/Type.hx" module="Type">
+	<enum path="ValueType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Type.hx" module="Type">
 		<TUnknown/>
 		<TObject/>
 		<TNull/>
@@ -1631,7 +1659,7 @@
 	See [Type] for the haXe Reflection API.
 </haxe_doc>
 	</enum>
-	<class path="Type" params="" file="/home/skial/motion-twin/std/Type.hx" extern="1">
+	<class path="Type" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Type.hx" extern="1">
 		<getClass public="1" params="T" set="method" static="1">
 			<f a="o">
 				<c path="getClass.T"/>
@@ -1817,7 +1845,7 @@
 	Classes and Enums at runtime.
 </haxe_doc>
 	</class>
-	<class path="haxe.Firebug" params="" file="/home/skial/motion-twin/std/haxe/Firebug.hx">
+	<class path="haxe.Firebug" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Firebug.hx">
 		<detect public="1" set="method" line="29" static="1"><f a=""><e path="Bool"/></f></detect>
 		<redirectTraces public="1" set="method" line="45" static="1"><f a=""><e path="Void"/></f></redirectTraces>
 		<onError public="1" set="method" line="55" static="1"><f a="err:stack">
@@ -1831,13 +1859,13 @@
 	<e path="Void"/>
 </f></trace>
 	</class>
-	<enum path="XmlType" params="" file="/home/skial/motion-twin/std/Xml.hx" module="Xml"><haxe_doc>
+	<enum path="XmlType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Xml.hx" module="Xml"><haxe_doc>
 	An abstract type representing the type of the Xml
 	Node. You can compare it to [Xml] statics and can
 	use [Std.string(t)] to get a string reprensation
 	of the type.
 </haxe_doc></enum>
-	<class path="Xml" params="" file="/home/skial/motion-twin/std/Xml.hx" extern="1">
+	<class path="Xml" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Xml.hx" extern="1">
 		<Element public="1" set="null" static="1">
 			<e path="XmlType"/>
 			<haxe_doc>
@@ -2111,7 +2139,7 @@
 	More API to manipulate XML are available in the [haxe.xml] package.
 </haxe_doc>
 	</class>
-	<class path="haxe.Timer" params="" file="/home/skial/motion-twin/std/haxe/Timer.hx">
+	<class path="haxe.Timer" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Timer.hx">
 		<delay public="1" set="method" line="76" static="1"><f a="f:time_ms">
 	<f a=""><e path="Void"/></f>
 	<c path="Int"/>
@@ -2136,7 +2164,7 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="IntHash" params="T" file="/home/skial/motion-twin/std/IntHash.hx" extern="1">
+	<class path="IntHash" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/IntHash.hx" extern="1">
 		<set public="1" set="method">
 			<f a="key:value">
 				<c path="Int"/>
@@ -2206,7 +2234,7 @@
 	On Flash and Javascript, the underlying structure is an Object.
 </haxe_doc>
 	</class>
-	<class path="Hash" params="T" file="/home/skial/motion-twin/std/Hash.hx" extern="1">
+	<class path="Hash" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Hash.hx" extern="1">
 		<set public="1" set="method">
 			<f a="key:value">
 				<c path="String"/>
@@ -2277,7 +2305,7 @@
 	can't always be implemented efficiently.
 </haxe_doc>
 	</class>
-	<class path="haxe.remoting.ExternalConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/ExternalConnection.hx">
+	<class path="haxe.remoting.ExternalConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/ExternalConnection.hx">
 		<implements path="haxe.remoting.Connection"/>
 		<escapeString get="inline" set="null" line="59" static="1"><f a="s">
 	<c path="String"/>
@@ -2317,7 +2345,7 @@
 </haxe_doc>
 		<haxe_dynamic><c path="haxe.remoting.Connection"/></haxe_dynamic>
 	</class>
-	<enum path="haxe._Template.TemplateExpr" params="" file="/home/skial/motion-twin/std/haxe/Template.hx" private="1" module="haxe.Template">
+	<enum path="haxe._Template.TemplateExpr" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Template.hx" private="1" module="haxe.Template">
 		<OpVar a="v"><c path="String"/></OpVar>
 		<OpStr a="str"><c path="String"/></OpStr>
 		<OpMacro a="name:params">
@@ -2336,16 +2364,16 @@
 		<OpExpr a="expr"><f a=""><d/></f></OpExpr>
 		<OpBlock a="l"><c path="List"><e path="haxe._Template.TemplateExpr"/></c></OpBlock>
 	</enum>
-	<typedef path="haxe._Template.Token" params="" file="/home/skial/motion-twin/std/haxe/Template.hx" private="1" module="haxe.Template"><a>
+	<typedef path="haxe._Template.Token" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Template.hx" private="1" module="haxe.Template"><a>
 	<s><e path="Bool"/></s>
 	<p><c path="String"/></p>
 	<l><c path="Array"><c path="String"/></c></l>
 </a></typedef>
-	<typedef path="haxe._Template.ExprToken" params="" file="/home/skial/motion-twin/std/haxe/Template.hx" private="1" module="haxe.Template"><a>
+	<typedef path="haxe._Template.ExprToken" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Template.hx" private="1" module="haxe.Template"><a>
 	<s><e path="Bool"/></s>
 	<p><c path="String"/></p>
 </a></typedef>
-	<class path="haxe.Template" params="" file="/home/skial/motion-twin/std/haxe/Template.hx">
+	<class path="haxe.Template" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Template.hx">
 		<splitter line="50" static="1"><c path="EReg"/></splitter>
 		<expr_splitter line="51" static="1"><c path="EReg"/></expr_splitter>
 		<expr_trim line="52" static="1"><c path="EReg"/></expr_trim>
@@ -2408,16 +2436,16 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="haxe.rtti.Generic" params="" file="/home/skial/motion-twin/std/haxe/rtti/Generic.hx" interface="1"><haxe_doc>
+	<class path="haxe.rtti.Generic" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/Generic.hx" interface="1"><haxe_doc>
 	You can implement this interface with a parametrized type. For each type
 	parameter used, a duplicate class with be created. This is useful on
 	platforms that supports runtime typing (such as flash9).
 </haxe_doc></class>
-	<class path="haxe.rtti.Infos" params="" file="/home/skial/motion-twin/std/haxe/rtti/Infos.hx" interface="1"><haxe_doc>
+	<class path="haxe.rtti.Infos" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/Infos.hx" interface="1"><haxe_doc>
 	This is a magic interface. When a class implements [haxe.rtti.Infos], this class and all its
 	subclass will get an additional static field [__rtti] storing the class type informations.
 </haxe_doc></class>
-	<class path="StringBuf" params="" file="/home/skial/motion-twin/std/StringBuf.hx">
+	<class path="StringBuf" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StringBuf.hx">
 		<add public="1" get="inline" set="null" line="46">
 			<f a="?x">
 				<d/>
@@ -2466,8 +2494,8 @@
 	appending small elements together.
 </haxe_doc>
 	</class>
-	<typedef path="haxe.remoting.Socket" params="" file="/home/skial/motion-twin/std/haxe/remoting/SocketProtocol.hx" module="haxe.remoting.SocketProtocol"><d/></typedef>
-	<class path="haxe.remoting.SocketProtocol" params="" file="/home/skial/motion-twin/std/haxe/remoting/SocketProtocol.hx">
+	<typedef path="haxe.remoting.Socket" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/SocketProtocol.hx" module="haxe.remoting.SocketProtocol"><d/></typedef>
+	<class path="haxe.remoting.SocketProtocol" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/SocketProtocol.hx">
 		<socket public="1"><t path="haxe.remoting.Socket"/></socket>
 		<context public="1"><c path="haxe.remoting.Context"/></context>
 		<decodeChar set="method" line="68"><f a="c">
@@ -2546,14 +2574,14 @@
 	when they are unserialized.
 </haxe_doc>
 	</class>
-	<typedef path="haxe.PosInfos" params="" file="/home/skial/motion-twin/std/haxe/PosInfos.hx"><a>
+	<typedef path="haxe.PosInfos" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/PosInfos.hx"><a>
 	<methodName><c path="String"/></methodName>
 	<lineNumber><c path="Int"/></lineNumber>
 	<fileName><c path="String"/></fileName>
 	<customParams><c path="Array"><d/></c></customParams>
 	<className><c path="String"/></className>
 </a></typedef>
-	<class path="Lambda" params="" file="/home/skial/motion-twin/std/Lambda.hx">
+	<class path="Lambda" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Lambda.hx">
 		<array public="1" params="A" set="method" line="35" static="1">
 			<f a="it">
 				<t path="Iterable"><c path="array.A"/></t>
@@ -2734,7 +2762,7 @@
 	use functional-style programming with haXe.
 </haxe_doc>
 	</class>
-	<class path="haxe.rtti.Meta" params="" file="/home/skial/motion-twin/std/haxe/rtti/Meta.hx">
+	<class path="haxe.rtti.Meta" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/Meta.hx">
 		<getType public="1" set="method" line="35" static="1">
 			<f a="t">
 				<d/>
@@ -2766,7 +2794,7 @@
 	An api to access classes and enums metadata at runtime.
 </haxe_doc>
 	</class>
-	<class path="haxe.remoting.HttpAsyncConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/HttpAsyncConnection.hx">
+	<class path="haxe.remoting.HttpAsyncConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/HttpAsyncConnection.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<urlConnect public="1" set="method" line="76" static="1"><f a="url">
 	<c path="String"/>
@@ -2812,14 +2840,14 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.AsyncConnection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.io.StringInput" params="" file="/home/skial/motion-twin/std/haxe/io/StringInput.hx">
+	<class path="haxe.io.StringInput" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/StringInput.hx">
 		<extends path="haxe.io.BytesInput"/>
 		<new public="1" set="method" line="29"><f a="s">
 	<c path="String"/>
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="haxe.remoting.Proxy" params="T" file="/home/skial/motion-twin/std/haxe/remoting/Proxy.hx">
+	<class path="haxe.remoting.Proxy" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/Proxy.hx">
 		<__cnx><c path="haxe.remoting.Connection"/></__cnx>
 		<new set="method" line="36"><f a="c">
 	<c path="haxe.remoting.Connection"/>
@@ -2831,7 +2859,7 @@
 	the connection.
 </haxe_doc>
 	</class>
-	<class path="haxe.io.Output" params="" file="/home/skial/motion-twin/std/haxe/io/Output.hx">
+	<class path="haxe.io.Output" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/Output.hx">
 		<bigEndian public="1" set="setEndian"><e path="Bool"/></bigEndian>
 		<writeByte public="1" set="method" line="37"><f a="c">
 	<c path="Int"/>
@@ -2927,11 +2955,11 @@
 	Output.
 </haxe_doc>
 	</class>
-	<class path="Enum" params="T" file="/home/skial/motion-twin/std/Enum.hx" extern="1"><haxe_doc>
+	<class path="Enum" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Enum.hx" extern="1"><haxe_doc>
 	An abstract type that represents an Enum.
 	See [Type] for the haXe Reflection API.
 </haxe_doc></class>
-	<class path="haxe.remoting.AsyncDebugConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/AsyncDebugConnection.hx">
+	<class path="haxe.remoting.AsyncDebugConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/AsyncDebugConnection.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<create public="1" set="method" line="79" static="1"><f a="cnx">
 	<c path="haxe.remoting.AsyncConnection"/>
@@ -3037,12 +3065,12 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.AsyncDebugConnection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.Public" params="" file="/home/skial/motion-twin/std/haxe/Public.hx" interface="1"><haxe_doc>
+	<class path="haxe.Public" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Public.hx" interface="1"><haxe_doc>
 	When implementing this interface, all default fields access for the class and
 	subclasses becomes [public] instead of [private].
 </haxe_doc></class>
-	<typedef path="haxe.io.BytesData" params="" file="/home/skial/motion-twin/std/haxe/io/BytesData.hx"><c path="Array"><c path="Int"/></c></typedef>
-	<class path="haxe.rtti.HtmlEditor" params="" file="/home/skial/motion-twin/std/haxe/rtti/HtmlEditor.hx">
+	<typedef path="haxe.io.BytesData" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/BytesData.hx"><c path="Array"><c path="Int"/></c></typedef>
+	<class path="haxe.rtti.HtmlEditor" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/HtmlEditor.hx">
 		<UID line="30" static="1"><c path="Int"/></UID>
 		<id><c path="String"/></id>
 		<types><c path="Hash"><e path="haxe.rtti.TypeTree"/></c></types>
@@ -3112,7 +3140,7 @@
 </f></skipObjectRec>
 		<new public="1" set="method" line="37"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="DateTools" params="" file="/home/skial/motion-twin/std/DateTools.hx">
+	<class path="DateTools" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/DateTools.hx">
 		<__format_get set="method" line="38" static="1"><f a="d:e">
 	<c path="Date"/>
 	<c path="String"/>
@@ -3230,7 +3258,7 @@
 	each application using it.
 </haxe_doc>
 	</class>
-	<class path="haxe.Log" params="" file="/home/skial/motion-twin/std/haxe/Log.hx">
+	<class path="haxe.Log" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Log.hx">
 		<trace public="1" set="dynamic" line="29" static="1"><f a="v:?infos">
 	<d/>
 	<t path="haxe.PosInfos"/>
@@ -3238,7 +3266,7 @@
 </f></trace>
 		<clear public="1" set="dynamic" line="43" static="1"><f a=""><e path="Void"/></f></clear>
 	</class>
-	<class path="haxe.remoting.AsyncProxy" params="T" file="/home/skial/motion-twin/std/haxe/remoting/AsyncProxy.hx">
+	<class path="haxe.remoting.AsyncProxy" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/AsyncProxy.hx">
 		<__cnx><c path="haxe.remoting.AsyncConnection"/></__cnx>
 		<new set="method" line="36"><f a="c">
 	<c path="haxe.remoting.AsyncConnection"/>
@@ -3250,7 +3278,7 @@
 	the connection.
 </haxe_doc>
 	</class>
-	<class path="Array" params="T" file="/home/skial/motion-twin/std/Array.hx" extern="1">
+	<class path="Array" params="T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Array.hx" extern="1">
 		<length public="1" set="null">
 			<c path="Int"/>
 			<haxe_doc>
@@ -3402,7 +3430,7 @@
 	is less memory and CPU consuming, unless you really need indexed access.
 </haxe_doc>
 	</class>
-	<class path="Std" params="" file="/home/skial/motion-twin/std/Std.hx" extern="1">
+	<class path="Std" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Std.hx" extern="1">
 		<is public="1" set="method" static="1">
 			<f a="v:t">
 				<d/>
@@ -3462,7 +3490,7 @@
 	The Std class provides standard methods for manipulating basic types.
 </haxe_doc>
 	</class>
-	<class path="haxe.xml.Proxy" params="Const:T" file="/home/skial/motion-twin/std/haxe/xml/Proxy.hx">
+	<class path="haxe.xml.Proxy" params="Const:T" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/xml/Proxy.hx">
 		<__f><f a="">
 	<c path="String"/>
 	<c path="haxe.xml.Proxy.T"/>
@@ -3497,7 +3525,7 @@
 	]
 ]]></haxe_doc>
 	</class>
-	<class path="haxe.remoting.AsyncAdapter" params="" file="/home/skial/motion-twin/std/haxe/remoting/AsyncAdapter.hx">
+	<class path="haxe.remoting.AsyncAdapter" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/AsyncAdapter.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<create public="1" set="method" line="59" static="1"><f a="cnx">
 	<c path="haxe.remoting.Connection"/>
@@ -3539,7 +3567,7 @@
 	Build an AsyncConnection from a synchronized Connection.
 </haxe_doc>
 	</class>
-	<class path="haxe.remoting.DelayedConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/DelayedConnection.hx">
+	<class path="haxe.remoting.DelayedConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/DelayedConnection.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<process set="method" line="73" static="1"><f a="d">
 	<c path="haxe.remoting.DelayedConnection"/>
@@ -3616,7 +3644,7 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.AsyncConnection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.Resource" params="" file="/home/skial/motion-twin/std/haxe/Resource.hx">
+	<class path="haxe.Resource" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Resource.hx">
 		<content static="1"><c path="Array"><a>
 	<str><c path="String"/></str>
 	<name><c path="String"/></name>
@@ -3632,7 +3660,7 @@
 	<c path="haxe.io.Bytes"/>
 </f></getBytes>
 	</class>
-	<class path="haxe.remoting.SocketConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/SocketConnection.hx">
+	<class path="haxe.remoting.SocketConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/SocketConnection.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<__path><c path="Array"><c path="String"/></c></__path>
 		<__data><a>
@@ -3725,7 +3753,7 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.AsyncConnection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.Md5" params="" file="/home/skial/motion-twin/std/haxe/Md5.hx">
+	<class path="haxe.Md5" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Md5.hx">
 		<encode public="1" set="method" line="32" static="1"><f a="s">
 	<c path="String"/>
 	<c path="String"/>
@@ -3822,7 +3850,7 @@
 	Creates a MD5 of a String.
 </haxe_doc>
 	</class>
-	<class path="haxe.remoting.LocalConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/LocalConnection.hx">
+	<class path="haxe.remoting.LocalConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/LocalConnection.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<ID line="29" static="1"><c path="Int"/></ID>
 		<remotingCall set="method" line="80" static="1"><f a="c:id:path:args">
@@ -3903,7 +3931,7 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.AsyncConnection"/></haxe_dynamic>
 	</class>
-	<typedef path="haxe.TypeResolver" params="" file="/home/skial/motion-twin/std/haxe/Unserializer.hx" module="haxe.Unserializer"><a>
+	<typedef path="haxe.TypeResolver" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Unserializer.hx" module="haxe.Unserializer"><a>
 	<resolveEnum set="method"><f a="name">
 	<c path="String"/>
 	<c path="Enum"><d/></c>
@@ -3913,12 +3941,12 @@
 	<c path="Class"><d/></c>
 </f></resolveClass>
 </a></typedef>
-	<class path="haxe.Unserializer" params="" file="/home/skial/motion-twin/std/haxe/Unserializer.hx">
+	<class path="haxe.Unserializer" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Unserializer.hx">
 		<DEFAULT_RESOLVER public="1" line="34" static="1"><t path="haxe.TypeResolver"/></DEFAULT_RESOLVER>
 		<BASE64 line="36" static="1"><c path="String"/></BASE64>
 		<CODES line="39" static="1"><c path="Array"><c path="Int"/></c></CODES>
 		<initCodes set="method" line="41" static="1"><f a=""><c path="Array"><c path="Int"/></c></f></initCodes>
-		<run public="1" set="method" line="364" static="1">
+		<run public="1" set="method" line="351" static="1">
 			<f a="v">
 				<c path="String"/>
 				<d/>
@@ -3942,24 +3970,24 @@
 	<c path="Int"/>
 	<c path="Int"/>
 </f></get>
-		<readDigits set="method" line="100"><f a=""><c path="Int"/></f></readDigits>
-		<unserializeObject set="method" line="132"><f a="o">
+		<readDigits set="method" line="94"><f a=""><c path="Int"/></f></readDigits>
+		<unserializeObject set="method" line="119"><f a="o">
 	<a/>
 	<e path="Void"/>
 </f></unserializeObject>
-		<unserializeEnum set="method" line="147"><f a="edecl:tag">
+		<unserializeEnum set="method" line="134"><f a="edecl:tag">
 	<c path="Enum"><d/></c>
 	<c path="String"/>
 	<unknown/>
 </f></unserializeEnum>
-		<unserialize public="1" set="method" line="168"><f a=""><d/></f></unserialize>
+		<unserialize public="1" set="method" line="155"><f a=""><d/></f></unserialize>
 		<new public="1" set="method" line="64"><f a="buf">
 	<c path="String"/>
 	<e path="Void"/>
 </f></new>
 	</class>
-	<enum path="haxe.macro.Position" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr"/>
-	<enum path="haxe.macro.Constant" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.Position" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr"/>
+	<enum path="haxe.macro.Constant" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<CType a="s"><c path="String"/></CType>
 		<CString a="s"><c path="String"/></CString>
 		<CRegexp a="r:opt">
@@ -3970,7 +3998,7 @@
 		<CIdent a="s"><c path="String"/></CIdent>
 		<CFloat a="f"><c path="String"/></CFloat>
 	</enum>
-	<enum path="haxe.macro.Binop" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.Binop" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<OpXor/>
 		<OpUShr/>
 		<OpSub/>
@@ -3994,18 +4022,18 @@
 		<OpAnd/>
 		<OpAdd/>
 	</enum>
-	<enum path="haxe.macro.Unop" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.Unop" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<OpNot/>
 		<OpNegBits/>
 		<OpNeg/>
 		<OpIncrement/>
 		<OpIDecrement/>
 	</enum>
-	<typedef path="haxe.macro.Expr" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx"><a>
+	<typedef path="haxe.macro.Expr" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx"><a>
 	<pos><e path="haxe.macro.Position"/></pos>
 	<expr><e path="haxe.macro.ExprDef"/></expr>
 </a></typedef>
-	<enum path="haxe.macro.ExprDef" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.ExprDef" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<EWhile a="econd:e:normalWhile">
 			<t path="haxe.macro.Expr"/>
 			<t path="haxe.macro.Expr"/>
@@ -4101,7 +4129,7 @@
 			<t path="haxe.macro.Expr"/>
 		</EArray>
 	</enum>
-	<enum path="haxe.macro.ComplexType" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.ComplexType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<TPath a="p"><t path="haxe.macro.TypePath"/></TPath>
 		<TParent a="t"><e path="haxe.macro.ComplexType"/></TParent>
 		<TFunction a="args:ret">
@@ -4114,34 +4142,34 @@
 		</TExtend>
 		<TAnonymous a="fields"><c path="Array"><t path="haxe.macro.Field"/></c></TAnonymous>
 	</enum>
-	<typedef path="haxe.macro.TypePath" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
+	<typedef path="haxe.macro.TypePath" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
 	<sub><t path="Null"><c path="String"/></t></sub>
 	<params><c path="Array"><e path="haxe.macro.TypeParam"/></c></params>
 	<pack><c path="Array"><c path="String"/></c></pack>
 	<name><c path="String"/></name>
 </a></typedef>
-	<enum path="haxe.macro.TypeParam" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.TypeParam" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<TPType a="t"><e path="haxe.macro.ComplexType"/></TPType>
 		<TPConst a="c"><e path="haxe.macro.Constant"/></TPConst>
 	</enum>
-	<typedef path="haxe.macro.Function" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
+	<typedef path="haxe.macro.Function" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
 	<ret><t path="Null"><e path="haxe.macro.ComplexType"/></t></ret>
 	<expr><t path="haxe.macro.Expr"/></expr>
 	<args><c path="Array"><t path="haxe.macro.FunctionArg"/></c></args>
 </a></typedef>
-	<typedef path="haxe.macro.FunctionArg" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
+	<typedef path="haxe.macro.FunctionArg" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
 	<value><t path="Null"><t path="haxe.macro.Expr"/></t></value>
 	<type><t path="Null"><e path="haxe.macro.ComplexType"/></t></type>
 	<opt><e path="Bool"/></opt>
 	<name><c path="String"/></name>
 </a></typedef>
-	<typedef path="haxe.macro.Field" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
+	<typedef path="haxe.macro.Field" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr"><a>
 	<type><e path="haxe.macro.FieldType"/></type>
 	<pos><e path="haxe.macro.Position"/></pos>
 	<name><c path="String"/></name>
 	<isPublic><t path="Null"><e path="Bool"/></t></isPublic>
 </a></typedef>
-	<enum path="haxe.macro.FieldType" params="" file="/home/skial/motion-twin/std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
+	<enum path="haxe.macro.FieldType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/macro/Expr.hx" module="haxe.macro.Expr">
 		<FVar a="t"><e path="haxe.macro.ComplexType"/></FVar>
 		<FProp a="t:get:set">
 			<e path="haxe.macro.ComplexType"/>
@@ -4157,9 +4185,9 @@
 			<e path="haxe.macro.ComplexType"/>
 		</FFun>
 	</enum>
-	<typedef path="haxe.rtti.Path" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="String"/></typedef>
-	<typedef path="haxe.rtti.Platforms" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="List"><c path="String"/></c></typedef>
-	<enum path="haxe.rtti.CType" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx">
+	<typedef path="haxe.rtti.Path" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="String"/></typedef>
+	<typedef path="haxe.rtti.Platforms" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="List"><c path="String"/></c></typedef>
+	<enum path="haxe.rtti.CType" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx">
 		<CUnknown/>
 		<CTypedef a="name:params">
 			<t path="haxe.rtti.Path"/>
@@ -4187,12 +4215,12 @@
 	<name><c path="String"/></name>
 </a></c></CAnonymous>
 	</enum>
-	<typedef path="haxe.rtti.PathParams" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.PathParams" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<path><t path="haxe.rtti.Path"/></path>
 	<params><c path="List"><e path="haxe.rtti.CType"/></c></params>
 </a></typedef>
-	<typedef path="haxe.rtti.TypeParams" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="Array"><c path="String"/></c></typedef>
-	<enum path="haxe.rtti.Rights" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType">
+	<typedef path="haxe.rtti.TypeParams" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="Array"><c path="String"/></c></typedef>
+	<enum path="haxe.rtti.Rights" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType">
 		<RNormal/>
 		<RNo/>
 		<RMethod/>
@@ -4200,7 +4228,7 @@
 		<RDynamic/>
 		<RCall a="m"><c path="String"/></RCall>
 	</enum>
-	<typedef path="haxe.rtti.ClassField" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.ClassField" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<type><e path="haxe.rtti.CType"/></type>
 	<set><e path="haxe.rtti.Rights"/></set>
 	<platforms><t path="haxe.rtti.Platforms"/></platforms>
@@ -4211,7 +4239,7 @@
 	<get><e path="haxe.rtti.Rights"/></get>
 	<doc><c path="String"/></doc>
 </a></typedef>
-	<typedef path="haxe.rtti.TypeInfos" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.TypeInfos" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<platforms><t path="haxe.rtti.Platforms"/></platforms>
 	<path><t path="haxe.rtti.Path"/></path>
 	<params><t path="haxe.rtti.TypeParams"/></params>
@@ -4219,7 +4247,7 @@
 	<isPrivate><e path="Bool"/></isPrivate>
 	<doc><c path="String"/></doc>
 </a></typedef>
-	<typedef path="haxe.rtti.Classdef" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.Classdef" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<tdynamic><t path="Null"><e path="haxe.rtti.CType"/></t></tdynamic>
 	<superClass><t path="haxe.rtti.PathParams"/></superClass>
 	<statics><c path="List"><t path="haxe.rtti.ClassField"/></c></statics>
@@ -4234,7 +4262,7 @@
 	<fields><c path="List"><t path="haxe.rtti.ClassField"/></c></fields>
 	<doc><c path="String"/></doc>
 </a></typedef>
-	<typedef path="haxe.rtti.EnumField" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.EnumField" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<platforms><t path="haxe.rtti.Platforms"/></platforms>
 	<name><c path="String"/></name>
 	<doc><c path="String"/></doc>
@@ -4244,7 +4272,7 @@
 	<name><c path="String"/></name>
 </a></c></t></args>
 </a></typedef>
-	<typedef path="haxe.rtti.Enumdef" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.Enumdef" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<platforms><t path="haxe.rtti.Platforms"/></platforms>
 	<path><t path="haxe.rtti.Path"/></path>
 	<params><t path="haxe.rtti.TypeParams"/></params>
@@ -4254,7 +4282,7 @@
 	<doc><c path="String"/></doc>
 	<constructors><c path="List"><t path="haxe.rtti.EnumField"/></c></constructors>
 </a></typedef>
-	<typedef path="haxe.rtti.Typedef" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
+	<typedef path="haxe.rtti.Typedef" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><a>
 	<types><c path="Hash"><e path="haxe.rtti.CType"/></c></types>
 	<type><e path="haxe.rtti.CType"/></type>
 	<platforms><t path="haxe.rtti.Platforms"/></platforms>
@@ -4264,7 +4292,7 @@
 	<isPrivate><e path="Bool"/></isPrivate>
 	<doc><c path="String"/></doc>
 </a></typedef>
-	<enum path="haxe.rtti.TypeTree" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType">
+	<enum path="haxe.rtti.TypeTree" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType">
 		<TTypedecl a="t"><t path="haxe.rtti.Typedef"/></TTypedecl>
 		<TPackage a="name:full:subs">
 			<c path="String"/>
@@ -4274,8 +4302,8 @@
 		<TEnumdecl a="e"><t path="haxe.rtti.Enumdef"/></TEnumdecl>
 		<TClassdecl a="c"><t path="haxe.rtti.Classdef"/></TClassdecl>
 	</enum>
-	<typedef path="haxe.rtti.TypeRoot" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="Array"><e path="haxe.rtti.TypeTree"/></c></typedef>
-	<class path="haxe.rtti.TypeApi" params="" file="/home/skial/motion-twin/std/haxe/rtti/CType.hx" module="haxe.rtti.CType">
+	<typedef path="haxe.rtti.TypeRoot" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType"><c path="Array"><e path="haxe.rtti.TypeTree"/></c></typedef>
+	<class path="haxe.rtti.TypeApi" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/rtti/CType.hx" module="haxe.rtti.CType">
 		<typeInfos public="1" set="method" line="116" static="1"><f a="t">
 	<e path="haxe.rtti.TypeTree"/>
 	<t path="haxe.rtti.TypeInfos"/>
@@ -4315,7 +4343,7 @@
 	<e path="Bool"/>
 </f></constructorEq>
 	</class>
-	<enum path="haxe.io.Error" params="" file="/home/skial/motion-twin/std/haxe/io/Error.hx">
+	<enum path="haxe.io.Error" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/Error.hx">
 		<Overflow><haxe_doc> An integer value is outside its allowed range </haxe_doc></Overflow>
 		<OutsideBounds><haxe_doc> An operation on Bytes is outside of its valid range </haxe_doc></OutsideBounds>
 		<Custom a="e">
@@ -4327,7 +4355,7 @@
 	The possible IO errors that can occur
 </haxe_doc>
 	</enum>
-	<class path="haxe.remoting.AMFConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/AMFConnection.hx">
+	<class path="haxe.remoting.AMFConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/AMFConnection.hx">
 		<implements path="haxe.remoting.AsyncConnection"/>
 		<__data><a>
 	<error><f a="">
@@ -4370,7 +4398,7 @@
 </f></new>
 		<haxe_dynamic><c path="haxe.remoting.AsyncConnection"/></haxe_dynamic>
 	</class>
-	<class path="haxe.io.BytesOutput" params="" file="/home/skial/motion-twin/std/haxe/io/BytesOutput.hx">
+	<class path="haxe.io.BytesOutput" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/BytesOutput.hx">
 		<extends path="haxe.io.Output"/>
 		<b><c path="haxe.io.BytesBuffer"/></b>
 		<writeByte public="1" set="method" line="44" override="1"><f a="c">
@@ -4386,7 +4414,7 @@
 		<getBytes public="1" set="method" line="126"><f a=""><c path="haxe.io.Bytes"/></f></getBytes>
 		<new public="1" set="method" line="35"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.unit.TestResult" params="" file="/home/skial/motion-twin/std/haxe/unit/TestResult.hx">
+	<class path="haxe.unit.TestResult" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/unit/TestResult.hx">
 		<m_tests><c path="List"><c path="haxe.unit.TestStatus"/></c></m_tests>
 		<success public="1" set="null"><e path="Bool"/></success>
 		<add public="1" set="method" line="37"><f a="t">
@@ -4396,7 +4424,7 @@
 		<toString public="1" set="method" line="43"><f a=""><c path="String"/></f></toString>
 		<new public="1" set="method" line="32"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.io.Bytes" params="" file="/home/skial/motion-twin/std/haxe/io/Bytes.hx">
+	<class path="haxe.io.Bytes" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/io/Bytes.hx">
 		<alloc public="1" set="method" line="211" static="1"><f a="length">
 	<c path="Int"/>
 	<c path="haxe.io.Bytes"/>
@@ -4449,7 +4477,7 @@
 	<e path="Void"/>
 </f></new>
 	</class>
-	<class path="haxe.unit.TestCase" params="" file="/home/skial/motion-twin/std/haxe/unit/TestCase.hx">
+	<class path="haxe.unit.TestCase" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/unit/TestCase.hx">
 		<implements path="haxe.Public"/>
 		<currentTest public="1"><c path="haxe.unit.TestStatus"/></currentTest>
 		<setup public="1" set="method" line="34"><f a=""><e path="Void"/></f></setup>
@@ -4476,7 +4504,7 @@
 </f></assertEquals>
 		<new public="1" set="method" line="31"><f a=""><e path="Void"/></f></new>
 	</class>
-	<class path="haxe.Int32" params="" file="/home/skial/motion-twin/std/haxe/Int32.hx">
+	<class path="haxe.Int32" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/Int32.hx">
 		<make public="1" get="inline" set="null" line="33" static="1"><f a="a:b">
 	<c path="Int"/>
 	<c path="Int"/>
@@ -4563,7 +4591,7 @@
 	<c path="Int"/>
 </f></compare>
 	</class>
-	<class path="Date" params="" file="/home/skial/motion-twin/std/Date.hx" extern="1">
+	<class path="Date" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/Date.hx" extern="1">
 		<now public="1" set="method" static="1">
 			<f a=""><c path="Date"/></f>
 			<haxe_doc>
@@ -4668,8 +4696,8 @@
 	available in the [DateTools] class.
 </haxe_doc>
 	</class>
-	<class path="haxe.remoting.FlashJsConnection" params="" file="/home/skial/motion-twin/std/haxe/remoting/FlashJsConnection.hx"/>
-	<class path="StringTools" params="" file="/home/skial/motion-twin/std/StringTools.hx">
+	<class path="haxe.remoting.FlashJsConnection" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/haxe/remoting/FlashJsConnection.hx"/>
+	<class path="StringTools" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StringTools.hx">
 		<urlEncode public="1" set="method" line="38" static="1">
 			<f a="s">
 				<c path="String"/>
@@ -4806,6 +4834,21 @@
 		Encode a number into a hexadecimal representation, with an optional number of zeros for left padding.
 	</haxe_doc>
 		</hex>
+		<fastCodeAt public="1" get="inline" set="null" line="253" static="1">
+			<f a="s:index">
+				<c path="String"/>
+				<c path="Int"/>
+				<c path="Int"/>
+			</f>
+			<haxe_doc>
+		Provides a fast native string charCodeAt access. Since the EOF value might vary depending on the platforms, always test with StringTools.isEOF.
+		Only guaranteed to work if index in [0,s.length] range. Might not work with strings containing \0 char.
+	</haxe_doc>
+		</fastCodeAt>
+		<isEOF public="1" get="inline" set="null" line="270" static="1"><f a="c">
+	<c path="Int"/>
+	<e path="Bool"/>
+</f></isEOF>
 		<haxe_doc>
 	The StringTools class contains some extra functionalities for [String]
 	manipulation. It's stored in a different class in order to prevent

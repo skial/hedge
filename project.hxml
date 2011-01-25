@@ -1,0 +1,17 @@
+-js ./bin/BunnyBlitTest/BunnyBlit.js
+-cp ./src
+-D bunnyBlit
+-lib raphaelExtern
+-main BunnyMain
+--macro keep(['Type', 'Reflect'])
+--dead-code-elimination
+
+--next
+
+-js ./bin/BunnyLandBlitTest/BunnyLand.js
+-cp ./src
+-D bunnyLand
+-lib raphaelExtern
+-main BunnyMain
+--macro keep(['Type', 'Reflect'])
+--dead-code-elimination

@@ -992,7 +992,7 @@ js.Boot.__string_rec = function(o,s) {
 		return o;
 	}break;
 	default:{
-		return String(o);
+		return (String)(o);
 	}break;
 	}
 }
