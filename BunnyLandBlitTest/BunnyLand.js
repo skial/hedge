@@ -1,5 +1,15 @@
 $estr = function() { return js.Boot.__string_rec(this,''); }
+if(typeof demo=='undefined') demo = {}
+if(!demo.cheezeworld) demo.cheezeworld = {}
+if(!demo.cheezeworld.utils) demo.cheezeworld.utils = {}
+demo.cheezeworld.utils.KeyCode = function() { }
+demo.cheezeworld.utils.KeyCode.__name__ = ["demo","cheezeworld","utils","KeyCode"];
+demo.cheezeworld.utils.KeyCode.prototype.__class__ = demo.cheezeworld.utils.KeyCode;
 if(typeof hedge=='undefined') hedge = {}
+if(!hedge.display) hedge.display = {}
+hedge.display.JointStyle = function() { }
+hedge.display.JointStyle.__name__ = ["hedge","display","JointStyle"];
+hedge.display.JointStyle.prototype.__class__ = hedge.display.JointStyle;
 hedge.Object = function(p) { if( p === $_ ) return; {
 	null;
 }}
@@ -66,7 +76,6 @@ hedge.events.EventDispatcher.prototype.willTrigger = function(type) {
 }
 hedge.events.EventDispatcher.prototype.__class__ = hedge.events.EventDispatcher;
 hedge.events.EventDispatcher.__interfaces__ = [hedge.events.IEventDispatcher];
-if(!hedge.display) hedge.display = {}
 hedge.display.DisplayObject = function(p) { if( p === $_ ) return; {
 	hedge.events.EventDispatcher.call(this);
 	this.initialize();
@@ -350,6 +359,9 @@ List = function() { }
 List.__name__ = ["List"];
 List.prototype.length = null;
 List.prototype.__class__ = List;
+hedge.display.CapsStyle = function() { }
+hedge.display.CapsStyle.__name__ = ["hedge","display","CapsStyle"];
+hedge.display.CapsStyle.prototype.__class__ = hedge.display.CapsStyle;
 hedge.events.Event = function(type,bubbles,cancelable) { if( type === $_ ) return; {
 	if(cancelable == null) cancelable = false;
 	if(bubbles == null) bubbles = false;
@@ -415,7 +427,6 @@ hedge.geom.Point.__name__ = ["hedge","geom","Point"];
 hedge.geom.Point.prototype.x = null;
 hedge.geom.Point.prototype.y = null;
 hedge.geom.Point.prototype.__class__ = hedge.geom.Point;
-if(typeof demo=='undefined') demo = {}
 if(!demo.bunnyLandBlitTest) demo.bunnyLandBlitTest = {}
 demo.bunnyLandBlitTest.BlitBunny = function(p) { if( p === $_ ) return; {
 	null;
@@ -783,51 +794,33 @@ demo.gamepad.GamepadMultiInput.prototype.getUpTicks = function() {
 demo.gamepad.GamepadMultiInput.prototype.__class__ = demo.gamepad.GamepadMultiInput;
 Reflect = function() { }
 Reflect.__name__ = ["Reflect"];
-Reflect.makeVarArgs = function(f) {
-	return function() {
-		var a = new Array();
+Reflect.hasField = function(o,field) {
+	if(o.hasOwnProperty != null) return o.hasOwnProperty(field);
+	var arr = Reflect.fields(o);
+	{ var $it0 = arr.iterator();
+	while( $it0.hasNext() ) { var t = $it0.next();
+	if(t == field) return true;
+	}}
+	return false;
+}
+Reflect.field = function(o,field) {
+	var v = null;
+	try {
+		v = o[field];
+	}
+	catch( $e0 ) {
 		{
-			var _g1 = 0, _g = arguments.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				a.push(arguments[i]);
-			}
-		}
-		return f(a);
-	}
-}
-Reflect.copy = function(o) {
-	var o2 = { }
-	{
-		var _g = 0, _g1 = Reflect.fields(o);
-		while(_g < _g1.length) {
-			var f = _g1[_g];
-			++_g;
-			(o2[f] = Reflect.field(o,f));
+			var e = $e0;
+			null;
 		}
 	}
-	return o2;
+	return v;
 }
-Reflect.deleteField = function(o,f) {
-	if(!Reflect.hasField(o,f)) return false;
-	delete(o[f]);
-	return true;
+Reflect.setField = function(o,field,value) {
+	o[field] = value;
 }
-Reflect.isObject = function(v) {
-	if(v == null) return false;
-	var t = typeof(v);
-	return (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
-}
-Reflect.compareMethods = function(f1,f2) {
-	if(f1 == f2) return true;
-	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) return false;
-	return f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
-}
-Reflect.compare = function(a,b) {
-	return a == b?0:a > b?1:-1;
-}
-Reflect.isFunction = function(f) {
-	return typeof(f) == "function" && f.__name__ == null;
+Reflect.callMethod = function(o,func,args) {
+	return func.apply(o,args);
 }
 Reflect.fields = function(o) {
 	if(o == null) return new Array();
@@ -862,35 +855,56 @@ Reflect.fields = function(o) {
 	}
 	return a;
 }
-Reflect.callMethod = function(o,func,args) {
-	return func.apply(o,args);
+Reflect.isFunction = function(f) {
+	return typeof(f) == "function" && f.__name__ == null;
 }
-Reflect.setField = function(o,field,value) {
-	o[field] = value;
+Reflect.compare = function(a,b) {
+	return a == b?0:a > b?1:-1;
 }
-Reflect.field = function(o,field) {
-	var v = null;
-	try {
-		v = o[field];
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			null;
+Reflect.compareMethods = function(f1,f2) {
+	if(f1 == f2) return true;
+	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) return false;
+	return f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
+}
+Reflect.isObject = function(v) {
+	if(v == null) return false;
+	var t = typeof(v);
+	return (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
+}
+Reflect.deleteField = function(o,f) {
+	if(!Reflect.hasField(o,f)) return false;
+	delete(o[f]);
+	return true;
+}
+Reflect.copy = function(o) {
+	var o2 = { }
+	{
+		var _g = 0, _g1 = Reflect.fields(o);
+		while(_g < _g1.length) {
+			var f = _g1[_g];
+			++_g;
+			(o2[f] = Reflect.field(o,f));
 		}
 	}
-	return v;
+	return o2;
 }
-Reflect.hasField = function(o,field) {
-	if(o.hasOwnProperty != null) return o.hasOwnProperty(field);
-	var arr = Reflect.fields(o);
-	{ var $it0 = arr.iterator();
-	while( $it0.hasNext() ) { var t = $it0.next();
-	if(t == field) return true;
-	}}
-	return false;
+Reflect.makeVarArgs = function(f) {
+	return function() {
+		var a = new Array();
+		{
+			var _g1 = 0, _g = arguments.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				a.push(arguments[i]);
+			}
+		}
+		return f(a);
+	}
 }
 Reflect.prototype.__class__ = Reflect;
+hedge.display.PixelSnapping = function() { }
+hedge.display.PixelSnapping.__name__ = ["hedge","display","PixelSnapping"];
+hedge.display.PixelSnapping.prototype.__class__ = hedge.display.PixelSnapping;
 ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -917,38 +931,96 @@ ValueType.TUnknown.toString = $estr;
 ValueType.TUnknown.__enum__ = ValueType;
 Type = function() { }
 Type.__name__ = ["Type"];
-Type.enumIndex = function(e) {
-	return e[1];
+Type.getClass = function(o) {
+	if(o == null) return null;
+	if(o.__enum__ != null) return null;
+	return o.__class__;
 }
-Type.enumParameters = function(e) {
-	return e.slice(2);
+Type.getEnum = function(o) {
+	if(o == null) return null;
+	return o.__enum__;
 }
-Type.enumConstructor = function(e) {
-	return e[0];
+Type.getSuperClass = function(c) {
+	return c.__super__;
 }
-Type.enumEq = function(a,b) {
-	if(a == b) return true;
+Type.getClassName = function(c) {
+	var a = c.__name__;
+	return a.join(".");
+}
+Type.getEnumName = function(e) {
+	var a = e.__ename__;
+	return a.join(".");
+}
+Type.resolveClass = function(name) {
+	var cl;
 	try {
-		if(a[0] != b[0]) return false;
-		{
-			var _g1 = 2, _g = a.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				if(!Type.enumEq(a[i],b[i])) return false;
-			}
-		}
-		var e = a.__enum__;
-		if(e != b.__enum__ || e == null) return false;
+		cl = eval(name);
 	}
 	catch( $e0 ) {
 		{
 			var e = $e0;
 			{
-				return false;
+				cl = null;
 			}
 		}
 	}
-	return true;
+	if(cl == null || cl.__name__ == null) return null;
+	return cl;
+}
+Type.resolveEnum = function(name) {
+	var e;
+	try {
+		e = eval(name);
+	}
+	catch( $e0 ) {
+		{
+			var err = $e0;
+			{
+				e = null;
+			}
+		}
+	}
+	if(e == null || e.__ename__ == null) return null;
+	return e;
+}
+Type.createInstance = function(cl,args) {
+	if(args.length <= 3) return new cl(args[0],args[1],args[2]);
+	if(args.length > 8) throw "Too many arguments";
+	return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
+}
+Type.createEmptyInstance = function(cl) {
+	return new cl($_);
+}
+Type.createEnum = function(e,constr,params) {
+	var f = Reflect.field(e,constr);
+	if(f == null) throw "No such constructor " + constr;
+	if(Reflect.isFunction(f)) {
+		if(params == null) throw ("Constructor " + constr) + " need parameters";
+		return f.apply(e,params);
+	}
+	if(params != null && params.length != 0) throw ("Constructor " + constr) + " does not need parameters";
+	return f;
+}
+Type.createEnumIndex = function(e,index,params) {
+	var c = Type.getEnumConstructs(e)[index];
+	if(c == null) throw index + " is not a valid enum constructor index";
+	return Type.createEnum(e,c,params);
+}
+Type.getInstanceFields = function(c) {
+	var a = Reflect.fields(c.prototype);
+	a.remove("__class__");
+	return a;
+}
+Type.getClassFields = function(c) {
+	var a = Reflect.fields(c);
+	a.remove("__name__");
+	a.remove("__interfaces__");
+	a.remove("__super__");
+	a.remove("prototype");
+	return a;
+}
+Type.getEnumConstructs = function(e) {
+	return e.__constructs__;
 }
 Type["typeof"] = function(v) {
 	switch(typeof(v)) {
@@ -982,96 +1054,38 @@ Type["typeof"] = function(v) {
 	}break;
 	}
 }
-Type.getEnumConstructs = function(e) {
-	return e.__constructs__;
-}
-Type.getClassFields = function(c) {
-	var a = Reflect.fields(c);
-	a.remove("__name__");
-	a.remove("__interfaces__");
-	a.remove("__super__");
-	a.remove("prototype");
-	return a;
-}
-Type.getInstanceFields = function(c) {
-	var a = Reflect.fields(c.prototype);
-	a.remove("__class__");
-	return a;
-}
-Type.createEnumIndex = function(e,index,params) {
-	var c = Type.getEnumConstructs(e)[index];
-	if(c == null) throw index + " is not a valid enum constructor index";
-	return Type.createEnum(e,c,params);
-}
-Type.createEnum = function(e,constr,params) {
-	var f = Reflect.field(e,constr);
-	if(f == null) throw "No such constructor " + constr;
-	if(Reflect.isFunction(f)) {
-		if(params == null) throw ("Constructor " + constr) + " need parameters";
-		return f.apply(e,params);
-	}
-	if(params != null && params.length != 0) throw ("Constructor " + constr) + " does not need parameters";
-	return f;
-}
-Type.createEmptyInstance = function(cl) {
-	return new cl($_);
-}
-Type.createInstance = function(cl,args) {
-	if(args.length <= 3) return new cl(args[0],args[1],args[2]);
-	if(args.length > 8) throw "Too many arguments";
-	return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
-}
-Type.resolveEnum = function(name) {
-	var e;
+Type.enumEq = function(a,b) {
+	if(a == b) return true;
 	try {
-		e = eval(name);
-	}
-	catch( $e0 ) {
+		if(a[0] != b[0]) return false;
 		{
-			var err = $e0;
-			{
-				e = null;
+			var _g1 = 2, _g = a.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				if(!Type.enumEq(a[i],b[i])) return false;
 			}
 		}
-	}
-	if(e == null || e.__ename__ == null) return null;
-	return e;
-}
-Type.resolveClass = function(name) {
-	var cl;
-	try {
-		cl = eval(name);
+		var e = a.__enum__;
+		if(e != b.__enum__ || e == null) return false;
 	}
 	catch( $e0 ) {
 		{
 			var e = $e0;
 			{
-				cl = null;
+				return false;
 			}
 		}
 	}
-	if(cl == null || cl.__name__ == null) return null;
-	return cl;
+	return true;
 }
-Type.getEnumName = function(e) {
-	var a = e.__ename__;
-	return a.join(".");
+Type.enumConstructor = function(e) {
+	return e[0];
 }
-Type.getClassName = function(c) {
-	var a = c.__name__;
-	return a.join(".");
+Type.enumParameters = function(e) {
+	return e.slice(2);
 }
-Type.getSuperClass = function(c) {
-	return c.__super__;
-}
-Type.getEnum = function(o) {
-	if(o == null) return null;
-	return o.__enum__;
-}
-Type.getClass = function(o) {
-	if(o == null) return null;
-	if(o.__enum__ != null) return null;
-	return o.__class__;
+Type.enumIndex = function(e) {
+	return e[1];
 }
 Type.prototype.__class__ = Type;
 if(typeof js=='undefined') js = {}
@@ -1175,7 +1189,7 @@ js.Boot.__string_rec = function(o,s) {
 		return o;
 	}break;
 	default:{
-		return String(o);
+		return (String)(o);
 	}break;
 	}
 }
@@ -1499,12 +1513,25 @@ haxe.Timer.prototype.run = function() {
 	null;
 }
 haxe.Timer.prototype.__class__ = haxe.Timer;
+hedge.display.FillType = function() { }
+hedge.display.FillType.__name__ = ["hedge","display","FillType"];
+hedge.display.FillType.prototype.__class__ = hedge.display.FillType;
 StringBuf = function(p) { if( p === $_ ) return; {
 	this.b = new Array();
 }}
 StringBuf.__name__ = ["StringBuf"];
+StringBuf.prototype.add = function(x) {
+	this.b[this.b.length] = x;
+}
+StringBuf.prototype.toString = function() {
+	return this.b.join("");
+}
 StringBuf.prototype.b = null;
 StringBuf.prototype.__class__ = StringBuf;
+if(!hedge.text) hedge.text = {}
+hedge.text.TextFieldType = function() { }
+hedge.text.TextFieldType.__name__ = ["hedge","text","TextFieldType"];
+hedge.text.TextFieldType.prototype.__class__ = hedge.text.TextFieldType;
 hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelector) { if( width === $_ ) return; {
 	if(fillColor == null) fillColor = 16777215;
 	if(transparent == null) transparent = true;
@@ -2059,7 +2086,6 @@ hedge.display.Graphics.prototype.checkLineStyle = function() {
 	}
 }
 hedge.display.Graphics.prototype.__class__ = hedge.display.Graphics;
-if(!hedge.text) hedge.text = {}
 hedge.text.TextField = function(p) { if( p === $_ ) return; {
 	hedge.display.InteractiveObject.call(this);
 	this.__jq__.css({ overflow : "none", padding : "0px", resize : "none", outline : "none"}).css("border-width","1px");
@@ -2180,6 +2206,9 @@ hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	return value;
 }
 hedge.display.Bitmap.prototype.__class__ = hedge.display.Bitmap;
+hedge.display.LineType = function() { }
+hedge.display.LineType.__name__ = ["hedge","display","LineType"];
+hedge.display.LineType.prototype.__class__ = hedge.display.LineType;
 hedge.events.MouseEvent = function(type,bubbles,cancelable,localX,localY,relatedObject,ctrlKey,altKey,shiftKey,buttonDown,delta,commandKey,controlKey,clickCount) { if( type === $_ ) return; {
 	if(clickCount == null) clickCount = 0;
 	if(controlKey == null) controlKey = false;
@@ -2357,6 +2386,17 @@ js.Boot.__init();
 		return f(msg,[url+":"+line]);
 	}
 }
+demo.cheezeworld.utils.KeyCode.A = 65;
+demo.cheezeworld.utils.KeyCode.D = 68;
+demo.cheezeworld.utils.KeyCode.S = 83;
+demo.cheezeworld.utils.KeyCode.W = 87;
+demo.cheezeworld.utils.KeyCode.CONTROL = 17;
+demo.cheezeworld.utils.KeyCode.SPACEBAR = 32;
+hedge.display.JointStyle.MITER = "miter";
+hedge.display.CapsStyle.NONE = "none";
+hedge.events.Event.ENTER_FRAME = "enterFrame";
+hedge.events.KeyboardEvent.KEY_DOWN = "keydown";
+hedge.events.KeyboardEvent.KEY_UP = "keyup";
 demo.bunnyLandBlitTest.BunnyLandBlitTest.numBunnies = 24000;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.gravity = 1;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ = 0;
@@ -2368,12 +2408,25 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest.cameraSpeedY = 5;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.columns = 127;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.rows = 127;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.tileSize = 32;
+hedge.display.PixelSnapping.AUTO = "auto";
 hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}}
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
 haxe.Timer.arr = new Array();
+hedge.display.FillType.FLOOD = "flood";
+hedge.display.FillType.BITMAPDATA = "bitmapdata";
+hedge.display.FillType.GRADIENT = "gradient";
+hedge.text.TextFieldType.DYNAMIC = "dynamic";
+hedge.text.TextFieldType.INPUT = "input";
+hedge.ui.Keyboard.DOWN = 40;
+hedge.ui.Keyboard.LEFT = 37;
+hedge.ui.Keyboard.RIGHT = 39;
+hedge.ui.Keyboard.UP = 38;
 hedge.display.GradientType.LINEAR = "linear";
 hedge.display.GradientType.RADIAL = "radial";
+hedge.display.LineType.PLAIN = "plain";
+hedge.display.LineType.GRADIENT = "gradient";
+hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.data = new Hash();
 hedge.jquery.events.EnterFrame.events = new Array();
