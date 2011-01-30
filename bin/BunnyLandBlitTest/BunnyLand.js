@@ -241,7 +241,7 @@ hedge.display.DisplayObject.prototype.getX = function() {
 }
 hedge.display.DisplayObject.prototype.setX = function(value) {
 	this.x = value;
-	this.__jq__.css("left",("" + value) + "px");
+	this.__jq__.css("left","" + value + "px");
 	return this.getX();
 }
 hedge.display.DisplayObject.prototype.getY = function() {
@@ -249,7 +249,7 @@ hedge.display.DisplayObject.prototype.getY = function() {
 }
 hedge.display.DisplayObject.prototype.setY = function(value) {
 	this.y = value;
-	this.__jq__.css("top",("" + value) + "px");
+	this.__jq__.css("top","" + value + "px");
 	return this.getY();
 }
 hedge.display.DisplayObject.prototype.__class__ = hedge.display.DisplayObject;
@@ -486,7 +486,7 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest = function(p) { if( p === $_ ) return; 
 			bunny.x = column * spacingX;
 			bunny.y = row * spacingY;
 			bunny.angle = Math.random() * Math.PI * 2;
-			bunny.speed = (Math.random() * 5) + 0.5;
+			bunny.speed = Math.random() * 5 + 0.5;
 			bunny.speedX = Math.sin(bunny.angle) * bunny.speed;
 			bunny.speedY = Math.cos(bunny.angle) * bunny.speed;
 			bunny.speedZ = -1;
@@ -578,7 +578,7 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest.prototype.onEnterFrame = function(e) {
 		}
 		var drawPosition = bunny.drawPosition;
 		drawPosition.x = bunny.x - this.cameraRect.x;
-		drawPosition.y = (bunny.y + bunny.z) - this.cameraRect.y;
+		drawPosition.y = bunny.y + bunny.z - this.cameraRect.y;
 		if(drawPosition.x <= demo.bunnyLandBlitTest.BunnyLandBlitTest.screenWidth && drawPosition.x > -sourceRect.width) {
 			if(drawPosition.y <= demo.bunnyLandBlitTest.BunnyLandBlitTest.screenHeight && drawPosition.y > -sourceRect.height) {
 				drawableBunnies.push(bunny);
@@ -632,7 +632,7 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.submitText.setName("submitText");
 	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
 	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
-	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
+	this.bunnyAmount.setX(640 - (this.submitAmount.getWidth() + 5) - (this.bunnyAmount.getWidth() + 5));
 	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
 	this.submitText.setX(25);
 	this.submitText.setY(2);
@@ -669,7 +669,7 @@ if(!demo.gamepad) demo.gamepad = {}
 demo.gamepad.GamepadInput = function(keyCode) { if( keyCode === $_ ) return; {
 	if(keyCode == null) keyCode = -1;
 	this._downTicks = this._upTicks = -1;
-	this.mappedKeys = (keyCode > -1) == true?[keyCode]:[];
+	this.mappedKeys = keyCode > -1 == true?[keyCode]:[];
 }}
 demo.gamepad.GamepadInput.__name__ = ["demo","gamepad","GamepadInput"];
 demo.gamepad.GamepadInput.prototype._isDown = null;
@@ -869,7 +869,7 @@ Reflect.compareMethods = function(f1,f2) {
 Reflect.isObject = function(v) {
 	if(v == null) return false;
 	var t = typeof(v);
-	return (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
+	return t == "string" || t == "object" && !v.__enum__ || t == "function" && v.__name__ != null;
 }
 Reflect.deleteField = function(o,f) {
 	if(!Reflect.hasField(o,f)) return false;
@@ -877,13 +877,13 @@ Reflect.deleteField = function(o,f) {
 	return true;
 }
 Reflect.copy = function(o) {
-	var o2 = { }
+	var o2 = { };
 	{
 		var _g = 0, _g1 = Reflect.fields(o);
 		while(_g < _g1.length) {
 			var f = _g1[_g];
 			++_g;
-			(o2[f] = Reflect.field(o,f));
+			o2[f] = Reflect.field(o,f);
 		}
 	}
 	return o2;
@@ -995,10 +995,10 @@ Type.createEnum = function(e,constr,params) {
 	var f = Reflect.field(e,constr);
 	if(f == null) throw "No such constructor " + constr;
 	if(Reflect.isFunction(f)) {
-		if(params == null) throw ("Constructor " + constr) + " need parameters";
+		if(params == null) throw "Constructor " + constr + " need parameters";
 		return f.apply(e,params);
 	}
-	if(params != null && params.length != 0) throw ("Constructor " + constr) + " does not need parameters";
+	if(params != null && params.length != 0) throw "Constructor " + constr + " does not need parameters";
 	return f;
 }
 Type.createEnumIndex = function(e,index,params) {
@@ -1095,7 +1095,7 @@ js.Boot.__unhtml = function(s) {
 	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 }
 js.Boot.__trace = function(v,i) {
-	var msg = i != null?((i.fileName + ":") + i.lineNumber) + ": ":"";
+	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
 	msg += js.Boot.__unhtml(js.Boot.__string_rec(v,"")) + "<br/>";
 	var d = document.getElementById("haxe:trace");
 	if(d == null) alert("No haxe:trace element defined\n" + msg);
@@ -1171,15 +1171,15 @@ js.Boot.__string_rec = function(o,s) {
 		var k = null;
 		var str = "{\n";
 		s += "\t";
-		var hasp = (o.hasOwnProperty != null);
+		var hasp = o.hasOwnProperty != null;
 		for( var k in o ) { ;
 		if(hasp && !o.hasOwnProperty(k)) continue;
 		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__") continue;
 		if(str.length != 2) str += ", \n";
-		str += ((s + k) + " : ") + js.Boot.__string_rec(o[k],s);
+		str += s + k + " : " + js.Boot.__string_rec(o[k],s);
 		}
 		s = s.substring(1);
-		str += ("\n" + s) + "}";
+		str += "\n" + s + "}";
 		return str;
 	}break;
 	case "function":{
@@ -1189,7 +1189,7 @@ js.Boot.__string_rec = function(o,s) {
 		return o;
 	}break;
 	default:{
-		return (String)(o);
+		return String(o);
 	}break;
 	}
 }
@@ -1210,7 +1210,7 @@ js.Boot.__interfLoop = function(cc,cl) {
 js.Boot.__instanceof = function(o,cl) {
 	try {
 		if(o instanceof cl) {
-			if(cl == Array) return (o.__enum__ == null);
+			if(cl == Array) return o.__enum__ == null;
 			return true;
 		}
 		if(js.Boot.__interfLoop(o.__class__,cl)) return true;
@@ -1241,13 +1241,13 @@ js.Boot.__instanceof = function(o,cl) {
 	}break;
 	default:{
 		if(o == null) return false;
-		return o.__enum__ == cl || (cl == Class && o.__name__ != null) || (cl == Enum && o.__ename__ != null);
+		return o.__enum__ == cl || cl == Class && o.__name__ != null || cl == Enum && o.__ename__ != null;
 	}break;
 	}
 }
 js.Boot.__init = function() {
-	js.Lib.isIE = (typeof document!='undefined' && document.all != null && typeof window!='undefined' && window.opera == null);
-	js.Lib.isOpera = (typeof window!='undefined' && window.opera != null);
+	js.Lib.isIE = typeof document!='undefined' && document.all != null && typeof window!='undefined' && window.opera == null;
+	js.Lib.isOpera = typeof window!='undefined' && window.opera != null;
 	Array.prototype.copy = Array.prototype.slice;
 	Array.prototype.insert = function(i,x) {
 		this.splice(i,0,x);
@@ -1274,7 +1274,7 @@ js.Boot.__init = function() {
 			return this.cur < this.arr.length;
 		}, next : function() {
 			return this.arr[this.cur++];
-		}}
+		}};
 	}
 	if(String.prototype.cca == null) String.prototype.cca = String.prototype.charCodeAt;
 	String.prototype.charCodeAt = function(i) {
@@ -1291,7 +1291,7 @@ js.Boot.__init = function() {
 			if(pos < 0) pos = 0;
 		}
 		else if(len < 0) {
-			len = (this.length + len) - pos;
+			len = this.length + len - pos;
 		}
 		return oldsub.apply(this,[pos,len]);
 	}
@@ -1325,7 +1325,7 @@ haxe.Firebug.onError = function(err,stack) {
 		while(_g < stack.length) {
 			var s = stack[_g];
 			++_g;
-			buf += ("Called from " + s) + "\n";
+			buf += "Called from " + s + "\n";
 		}
 	}
 	haxe.Firebug.trace(buf,null);
@@ -1334,7 +1334,7 @@ haxe.Firebug.onError = function(err,stack) {
 haxe.Firebug.trace = function(v,inf) {
 	var type = inf != null && inf.customParams != null?inf.customParams[0]:null;
 	if(type != "warn" && type != "info" && type != "debug" && type != "error") type = inf == null?"error":"log";
-	console[type]((inf == null?"":((inf.fileName + ":") + inf.lineNumber) + " : ") + Std.string(v));
+	console[type]((inf == null?"":inf.fileName + ":" + inf.lineNumber + " : ") + Std.string(v));
 }
 haxe.Firebug.prototype.__class__ = haxe.Firebug;
 if(!hedge.jquery) hedge.jquery = {}
@@ -1401,13 +1401,13 @@ hedge.Setup.createJqueryEvents = function() {
 			_name = Type.getClassName(e).split(".");
 			_meta = haxe.rtti.Meta.getFields(e);
 			_fields = Reflect.fields(_meta);
-			_event = ($.event.special[_name[_name.length - 1]] = { });
+			_event = $.event.special[_name[_name.length - 1]] = { };
 			{
 				var _g2 = 0;
 				while(_g2 < _fields.length) {
 					var f = _fields[_g2];
 					++_g2;
-					(_event[f] = Reflect.field(_class,f));
+					_event[f] = Reflect.field(_class,f);
 				}
 			}
 		}
@@ -1444,7 +1444,7 @@ hedge.Setup.setFrameRate = function(value) {
 hedge.Setup.__data__ = function(values) {
 	Reflect.deleteField(values,"__name__");
 	var _n_ = "";
-	var _v_ = { }
+	var _v_ = { };
 	{
 		var _g = 0, _g1 = Reflect.fields(values);
 		while(_g < _g1.length) {
@@ -1453,14 +1453,14 @@ hedge.Setup.__data__ = function(values) {
 			_n_ = n;
 			_v_ = Reflect.field(values,n);
 			Reflect.deleteField(values,n);
-			(values["data-" + _n_] = _v_);
+			values["data-" + _n_] = _v_;
 		}
 	}
 	return values;
 }
 hedge.Setup.__attr__ = function(values) {
-	var _r_ = { overflow : "hidden", position : "absolute", visibility : "visible"}
-	var _t_ = { }
+	var _r_ = { overflow : "hidden", position : "absolute", visibility : "visible"};
+	var _t_ = { };
 	Reflect.deleteField(values,"__name__");
 	Reflect.deleteField(_r_,"__name__");
 	{
@@ -1470,7 +1470,7 @@ hedge.Setup.__attr__ = function(values) {
 			++_g;
 			_t_ = Reflect.field(values,n);
 			if(_t_ != null) {
-				(_r_[n] = _t_);
+				_r_[n] = _t_;
 			}
 		}
 	}
@@ -1480,20 +1480,20 @@ hedge.Setup.generateInstanceName = function() {
 	return "instance" + (hedge.Setup.__counter__++ - 1);
 }
 hedge.Setup.RGB_to_String = function(color) {
-	return ((((("rgb(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ")";
+	return "rgb(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ")";
 }
 hedge.Setup.canvas_RGBA_to_String = function(color) {
-	return ((((((("rgba(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ", ") + (color < 0?-(color >> 24) / 255:1)) + ")";
+	return "rgba(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ", " + (color < 0?-(color >> 24) / 255:1) + ")";
 }
 hedge.Setup.RGB_String_to_HEX = function(color) {
 	var values = color.substr(color.indexOf("rgb(") + 4,color.lastIndexOf(")") - 4).split(", ");
-	return (((Std.parseInt(values[0]) << 16) | (Std.parseInt(values[1]) << 8)) | Std.parseInt(values[2]));
+	return Std.parseInt(values[0]) << 16 | Std.parseInt(values[1]) << 8 | Std.parseInt(values[2]);
 }
 hedge.Setup.prototype.__class__ = hedge.Setup;
 haxe.Timer = function(time_ms) { if( time_ms === $_ ) return; {
 	this.id = haxe.Timer.arr.length;
 	haxe.Timer.arr[this.id] = this;
-	this.timerId = window.setInterval(("haxe.Timer.arr[" + this.id) + "].run();",time_ms);
+	this.timerId = window.setInterval("haxe.Timer.arr[" + this.id + "].run();",time_ms);
 }}
 haxe.Timer.__name__ = ["haxe","Timer"];
 haxe.Timer.prototype.id = null;
@@ -1717,7 +1717,7 @@ demo.gamepad.Gamepad.prototype.step = function() {
 		var _g = this;
 		_g.setY(_g.getY() + (this._targetY - this.getY()) * this.ease);
 	}
-	this._magnitude = Math.sqrt((this.getX() * this.getX()) + (this.getY() * this.getY()));
+	this._magnitude = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY());
 	this._angle = Math.atan2(this.getX(),this.getY());
 	this._rotation = this.getAngle() * 57.29577951308232;
 	{
@@ -1914,22 +1914,22 @@ Hash.prototype.iterator = function() {
 	}, next : function() {
 		var i = this.it.next();
 		return this.ref["$" + i];
-	}}
+	}};
 }
 Hash.prototype.toString = function() {
 	var s = new StringBuf();
-	(s.b[s.b.length] = "{");
+	s.b[s.b.length] = "{";
 	var it = this.keys();
 	{ var $it0 = it;
 	while( $it0.hasNext() ) { var i = $it0.next();
 	{
-		(s.b[s.b.length] = i);
-		(s.b[s.b.length] = " => ");
-		(s.b[s.b.length] = Std.string(this.get(i)));
-		if(it.hasNext()) (s.b[s.b.length] = ", ");
+		s.b[s.b.length] = i;
+		s.b[s.b.length] = " => ";
+		s.b[s.b.length] = Std.string(this.get(i));
+		if(it.hasNext()) s.b[s.b.length] = ", ";
 	}
 	}}
-	(s.b[s.b.length] = "}");
+	s.b[s.b.length] = "}";
 	return s.b.join("");
 }
 Hash.prototype.__class__ = Hash;
@@ -2014,7 +2014,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 				else {
 					color_alpha += "-" + hedge.Setup.RGB_to_String(this.fill_gradient_colors[i]);
 				}
-				color_alpha += ":" + ((this.fill_gradient_ratios[i] / 255) * 100);
+				color_alpha += ":" + this.fill_gradient_ratios[i] / 255 * 100;
 			}
 		}
 		switch(this.fill_gradient_type) {
@@ -2367,14 +2367,14 @@ js.Boot.__init();
 	String.__name__ = ["String"];
 	Array.prototype.__class__ = Array;
 	Array.__name__ = ["Array"];
-	Int = { __name__ : ["Int"]}
-	Dynamic = { __name__ : ["Dynamic"]}
+	Int = { __name__ : ["Int"]};
+	Dynamic = { __name__ : ["Dynamic"]};
 	Float = Number;
 	Float.__name__ = ["Float"];
-	Bool = { __ename__ : ["Bool"]}
-	Class = { __name__ : ["Class"]}
-	Enum = { }
-	Void = { __ename__ : ["Void"]}
+	Bool = { __ename__ : ["Bool"]};
+	Class = { __name__ : ["Class"]};
+	Enum = { };
+	Void = { __ename__ : ["Void"]};
 }
 {
 	js.Lib.document = document;
@@ -2409,7 +2409,7 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest.columns = 127;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.rows = 127;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.tileSize = 32;
 hedge.display.PixelSnapping.AUTO = "auto";
-hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}}
+hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}};
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
 haxe.Timer.arr = new Array();
