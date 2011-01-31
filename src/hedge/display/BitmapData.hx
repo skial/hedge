@@ -42,9 +42,10 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		this.__id__				= Setup.generateInstanceName();
 		this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
 		
-		__canvas__ = new JQuery('<canvas></canvas>')
+		__canvas__ = new JQuery('<canvas>')
 			.addClass('bitmapdata')
 			.attr( { id:__id__, width:width, height:height } );
+		
 		__canvas__.bind('mouseenter', onCanvasEnter);
 		__canvas__.bind('mouseleave', onCanvasLeave);
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location

@@ -73,15 +73,15 @@ class GraphicsOLD extends Object {
 	
 	/**
 	 * 
-	 * @param	type					| RADIAL gradients can only be applied to circles and ellipses - raphaeljs restriction
+	 * @param	type					| RADIAL gradients can only be applied to circles and ellipses - raphael__jq__ restriction
 	 * @param	colors
-	 * @param	alphas 					| alpha's dont work with gradients in raphaeljs - (potential raphaeljs bug?)
+	 * @param	alphas 					| alpha's dont work with gradients in raphael__jq__ - (potential raphael__jq__ bug?)
 	 * @param	ratios					| seems fine with LINEAR gradients 0 being smallest 255 being biggest vaule - (I might be wrong?),
 	 * 									  but the biggest value for RADIAL is radius*2 eg. radius = 50, max value will be 100
 	 * @param	matrix?
 	 * @param	spreadMethod?
 	 * @param	interpolationMethod?
-	 * @param	focalPointRatio?		| might change from Float to Array<Float> as raphaeljs can take more than one value - (possible enhancement?)
+	 * @param	focalPointRatio?		| might change from Float to Array<Float> as raphael__jq__ can take more than one value - (possible enhancement?)
 	 */
 	public function beginGradientFill(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focalPointRatio:Float = 0) {
 		gradient = type;
@@ -186,7 +186,7 @@ class GraphicsOLD extends Object {
 	}
 	
 	public function lineGradientStyle(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focusPointRatio:Float = 0) {
-		// raphaeljs? - ?dont think this will be possible
+		// raphael__jq__? - ?dont think this will be possible
 	}
 	
 	public function lineStyle(thickness:Float = null, color:Int = 0xFFFFFF, alpha:Float = 1.0, pixelHinting:Bool = false, scaleMode:String = 'normal', caps:String = 'round', joints:String = 'round', miterLimit:Float = 3) {
@@ -204,13 +204,13 @@ class GraphicsOLD extends Object {
 	public function lineTo(x:Float, y:Float) {
 		checkRaphael();
 		path += 'L' + x + ' ' + y;
-		// raphaeljs
+		// raphael__jq__
 	}
 	
 	public function moveTo(x:Float, y:Float) {
 		checkRaphael();
 		path += 'M' + x + ' ' + y;
-		// raphaeljs? or not?
+		// raphael__jq__? or not?
 		// idea: acts like lineTo, but makes the lines alpha 0... ?which will still allow fills
 	}
 	

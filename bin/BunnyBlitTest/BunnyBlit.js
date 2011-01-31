@@ -102,8 +102,7 @@ hedge.display.DisplayObject.prototype.__originalName__ = null;
 hedge.display.DisplayObject.prototype.initialize = function() {
 	this.generateJQuery();
 	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
-	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"}));
-	this.__jq__.attr("data-originalName",this.__originalName__);
+	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"})).attr("data-originalName",this.__originalName__);
 	this.setParent(hedge.Setup.__default__);
 }
 hedge.display.DisplayObject.prototype.generateJQuery = function() {
@@ -209,42 +208,36 @@ hedge.display.DisplayObject.prototype.getVisible = function() {
 	return this.__jq__.data("visible") == null?true:this.__jq__.data("visible");
 }
 hedge.display.DisplayObject.prototype.setVisible = function(value) {
-	this.__jq__.css("display",value == false?"none":"block");
-	this.__jq__.css("visibility",value == false?"hidden":"visible");
-	this.__jq__.data("visible",value);
+	this.__jq__.css("display",value == false?"none":"block").css("visibility",value == false?"hidden":"visible").data("visible",value);
 	return this.__jq__.data("visible");
 }
 hedge.display.DisplayObject.prototype.getHeight = function() {
 	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.setHeight = function(value) {
-	this.__jq__.height(value);
-	this.__jq__.data("height",value);
+	this.__jq__.height(value).data("height",value);
 	return this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.getWidth = function() {
 	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
 }
 hedge.display.DisplayObject.prototype.setWidth = function(value) {
-	this.__jq__.width(value);
-	this.__jq__.data("width",value);
+	this.__jq__.width(value).data("width",value);
 	return this.__jq__.data("width");
 }
 hedge.display.DisplayObject.prototype.getX = function() {
 	return this.__jq__.position().left;
 }
 hedge.display.DisplayObject.prototype.setX = function(value) {
-	this.x = value;
 	this.__jq__.css("left","" + value + "px");
-	return this.getX();
+	return value;
 }
 hedge.display.DisplayObject.prototype.getY = function() {
 	return this.__jq__.position().top;
 }
 hedge.display.DisplayObject.prototype.setY = function(value) {
-	this.y = value;
 	this.__jq__.css("top","" + value + "px");
-	return this.getY();
+	return value;
 }
 hedge.display.DisplayObject.prototype.__class__ = hedge.display.DisplayObject;
 hedge.display.InteractiveObject = function(p) { if( p === $_ ) return; {
@@ -306,7 +299,6 @@ hedge.display.DisplayObjectContainer.prototype.getTextSnapshot = function() {
 hedge.display.DisplayObjectContainer.prototype.__class__ = hedge.display.DisplayObjectContainer;
 hedge.display.Sprite = function(p) { if( p === $_ ) return; {
 	hedge.display.DisplayObjectContainer.call(this);
-	this._g = new hedge.display.Graphics(this);
 }}
 hedge.display.Sprite.__name__ = ["hedge","display","Sprite"];
 hedge.display.Sprite.__super__ = hedge.display.DisplayObjectContainer;
@@ -332,7 +324,7 @@ hedge.display.Sprite.prototype.setDropTarget = function(value) {
 	return this.getDropTarget();
 }
 hedge.display.Sprite.prototype.getGraphics = function() {
-	return this._g;
+	return this._g == null?this._g = new hedge.display.Graphics(this):this._g;
 }
 hedge.display.Sprite.prototype.getHitArea = function() {
 	return this.hitArea;
@@ -1175,12 +1167,10 @@ hedge.Setup.__counter__ = null;
 hedge.Setup.init = function(_callback,fps,stageName) {
 	if(stageName == null) stageName = "Stage";
 	if(fps == null) fps = 30;
-	hedge.Setup.__jq__ = new $("div#" + stageName);
-	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0);
-	hedge.Setup.__jq__.attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"}));
-	hedge.Setup.setFrameRate(fps);
 	hedge.Setup.__storage__ = new $("<div>").attr("id","storage").css({ display : "none", width : "100%", height : "100%"});
-	hedge.Setup.__jq__.append(hedge.Setup.__storage__);
+	hedge.Setup.__jq__ = new $("div#" + stageName);
+	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0).attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"})).append(hedge.Setup.__storage__);
+	hedge.Setup.setFrameRate(fps);
 	hedge.Setup.__stage__ = new hedge.display.Stage();
 	hedge.Setup.__stage__.setName(stageName);
 	hedge.Setup.__stage__.__jq__ = hedge.Setup.__jq__;
@@ -1344,7 +1334,7 @@ hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelect
 	this.__fillColor__ = fillColor == null?16777215:fillColor;
 	this.__id__ = hedge.Setup.generateInstanceName();
 	this.__source__ = cssSelector == null?null:new $(cssSelector);
-	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
+	this.__canvas__ = new $("<canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
 	this.__canvas__.bind("mouseenter",$closure(this,"onCanvasEnter"));
 	this.__canvas__.bind("mouseleave",$closure(this,"onCanvasLeave"));
 	hedge.Setup.__storage__.append(this.__canvas__);
@@ -1654,8 +1644,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 		throw "beginBitmapFill is not implemented";
 	}break;
 	case "flood":{
-		this.__element__.attr("fill",this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color));
-		this.__element__.attr("opacity",this.fill_alpha == null?1.0:this.fill_alpha);
+		this.__element__.attr("fill",this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color)).attr("opacity",this.fill_alpha == null?1.0:this.fill_alpha);
 	}break;
 	case "gradient":{
 		var color_alpha = "";
@@ -1677,7 +1666,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 			this.__element__.attr("fill","0-" + color_alpha);
 		}break;
 		case hedge.display.GradientType.RADIAL:{
-			throw "Gradient.RADIAL is not supported by RaphaelJS on any thing not a circle or ellipse";
+			throw "Gradient.RADIAL is not supported by Raphael__jq__ on any thing not a circle or ellipse";
 			this.__element__.attr("fill","r" + color_alpha);
 		}break;
 		}
@@ -1728,12 +1717,7 @@ hedge.display.Graphics.prototype.checkLineStyle = function() {
 		null;
 	}break;
 	case "plain":{
-		this.__element__.attr("stroke-width",this.line_thickness == null?1.0:this.line_thickness);
-		this.__element__.attr("stroke",this.line_color == null?"none":hedge.Setup.RGB_to_String(this.line_color));
-		this.__element__.attr("stroke-opacity",this.line_alpha == null?1.0:this.line_alpha);
-		this.__element__.attr("stroke-linecap",this.line_caps == null?"butt":this.line_caps = this.line_caps == "none"?"butt":this.line_caps);
-		this.__element__.attr("stroke-linejoin",this.line_joints == null?"miter":this.line_joints);
-		this.__element__.attr("stroke-miterlimit",this.line_limit == null?3.0:this.line_limit);
+		this.__element__.attr("stroke-width",this.line_thickness == null?1.0:this.line_thickness).attr("stroke",this.line_color == null?"none":hedge.Setup.RGB_to_String(this.line_color)).attr("stroke-opacity",this.line_alpha == null?1.0:this.line_alpha).attr("stroke-linecap",this.line_caps == null?"butt":this.line_caps = this.line_caps == "none"?"butt":this.line_caps).attr("stroke-linejoin",this.line_joints == null?"miter":this.line_joints).attr("stroke-miterlimit",this.line_limit == null?3.0:this.line_limit);
 	}break;
 	default:{
 		null;
@@ -1856,8 +1840,7 @@ hedge.display.Bitmap.prototype.getBitmapData = function() {
 hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	this.setWidth(value.getWidth());
 	this.setHeight(value.getHeight());
-	this.__jq__.append(value.__canvas__);
-	this.__jq__.data("bitmapdata",value);
+	this.__jq__.append(value.__canvas__).data("bitmapdata",value);
 	return value;
 }
 hedge.display.Bitmap.prototype.__class__ = hedge.display.Bitmap;

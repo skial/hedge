@@ -74,7 +74,9 @@ class Graphics extends Object {
 		this.path = '';
 		
 		parent.__jq__.append(__jq__ = new JQuery('<div>'));
-		__jq__.attr('id', parent.__originalName__ + '-graphics').css( Setup.__attr__( { width:'100%', height:'100%' } ) ).css('background-color', 'transparent');
+		__jq__.attr('id', parent.__originalName__ + '-graphics')
+				.css( Setup.__attr__( { width:'100%', height:'100%' } ) )
+				.css('background-color', 'transparent');
 		
 		__raphael__ = new Raphael(parent.__originalName__ + '-graphics', '100%', '100%');
 	}
@@ -125,8 +127,8 @@ class Graphics extends Object {
 			case FillType.BITMAPDATA:
 				throw 'beginBitmapFill is not implemented';
 			case FillType.FLOOD:
-				__element__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color));
-				__element__.attr('opacity', this.fill_alpha == null ? 1.0 : this.fill_alpha);
+				__element__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color))
+							  .attr('opacity', this.fill_alpha == null ? 1.0 : this.fill_alpha);
 			case FillType.GRADIENT:
 				// TODO - raphael gradient incompatible with flash code & cant recreate same result
 				//	Browsers need to better support svg so raphael can advance
@@ -145,7 +147,7 @@ class Graphics extends Object {
 					case GradientType.LINEAR:
 						__element__.attr('fill', '0-' + color_alpha);
 					case GradientType.RADIAL:
-						throw 'Gradient.RADIAL is not supported by RaphaelJS on any thing not a circle or ellipse';
+						throw 'Gradient.RADIAL is not supported by Raphael__jq__ on any thing not a circle or ellipse';
 						__element__.attr('fill', 'r' + color_alpha);
 				}
 			default:
@@ -257,14 +259,14 @@ class Graphics extends Object {
 			case LineType.GRADIENT:
 				
 			case LineType.PLAIN:
-				__element__.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness);
-				__element__.attr('stroke', this.line_color == null ? 'none' : Setup.RGB_to_String(this.line_color));
-				__element__.attr('stroke-opacity', this.line_alpha == null ? 1.0 : this.line_alpha);
+				__element__.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness)
+							  .attr('stroke', this.line_color == null ? 'none' : Setup.RGB_to_String(this.line_color))
+							  .attr('stroke-opacity', this.line_alpha == null ? 1.0 : this.line_alpha)
 				// pixelhinting
 				// scalemode
-				__element__.attr('stroke-linecap', this.line_caps == null ? 'butt' : this.line_caps = this.line_caps == CapsStyle.NONE ? 'butt' : this.line_caps);
-				__element__.attr('stroke-linejoin', this.line_joints == null ? JointStyle.MITER : this.line_joints);
-				__element__.attr('stroke-miterlimit', this.line_limit == null ? 3.0 : this.line_limit);
+							  .attr('stroke-linecap', this.line_caps == null ? 'butt' : this.line_caps = this.line_caps == CapsStyle.NONE ? 'butt' : this.line_caps)
+							  .attr('stroke-linejoin', this.line_joints == null ? JointStyle.MITER : this.line_joints)
+							  .attr('stroke-miterlimit', this.line_limit == null ? 3.0 : this.line_limit);
 			default:
 				
 		}

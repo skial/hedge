@@ -27,8 +27,8 @@ class Bitmap extends DisplayObject {
 	private function setBitmapData(value:BitmapData):BitmapData {
 		this.width 	= value.width;
 		this.height = value.height;
-		__jq__.append(value.__canvas__);
-		__jq__.data('bitmapdata', value);
+		__jq__.append(value.__canvas__)
+				.data('bitmapdata', value);
 		return value;
 	}
 	

@@ -61,17 +61,17 @@ class Setup {
 	// PUBLIC METHODS
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
+		// create default holder
+		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'none', width:'100%', height:'100%' } );
+		
 		__jq__ = new JQuery('div#' + stageName);
 		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ) )
 				.css('background-color', RGB_to_String(0xFFFFFF))
-				.css('z-index', 0);
-		
-		__jq__.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) );
+				.css('z-index', 0)
+				.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) )
+				.append(__storage__);
+				
 		frameRate = fps;
-		
-		// create default holder
-		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'none', width:'100%', height:'100%' } );
-		__jq__.append(__storage__);
 		
 		__stage__ = new Stage();
 		__stage__.name = stageName;
@@ -169,12 +169,6 @@ class Setup {
 		return _r_;
 	}
 	
-	public static function generateListenerName(type:String):String {
-		return 'eventListener_' + type + '_' + Md5.encode(Date.now().getTime() + '_' + Math.random());
-	}
-	public static function generateEventName(type:String):String {
-		return __project__ + '_' + type + '.' + __stage__.name;
-	}
 	public static function generateInstanceName():String {
 		return 'instance' + ((__counter__++) - 1);
 	}

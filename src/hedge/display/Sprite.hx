@@ -24,7 +24,7 @@ class Sprite extends DisplayObjectContainer {
 
 	public function new() {
 		super();
-		_g = new Graphics(this);
+		//_g = new Graphics(this);
 	}
 	
 	public function startDrag(lockCenter:Bool = false, bounds:Rectangle = null) {
@@ -66,7 +66,7 @@ class Sprite extends DisplayObjectContainer {
 		/*if (new JQuery('div#' + this.name).has('div#' + this.name + '-graphics').length == 0) {
 			new JQuery('<div></div>').attr('id', (this.name + '-graphics')).css( { width:'100%', height:'100%' } ).appendTo('div#' + this.name);
 		}*/
-		return _g;
+		return _g == null ? _g = new Graphics(this) : _g;
 	}
 	
 	private function getHitArea():Sprite {

@@ -71,8 +71,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.generateJQuery();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
 		// width and height need to be set to 0
-		this.__jq__.attr('id', this.name).css( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) );
-		this.__jq__.attr('data-originalName', this.__originalName__);
+		this.__jq__.attr('id', this.name).css( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) )
+					  .attr('data-originalName', this.__originalName__);
 		
 		this.parent = Setup.__default__;
 	}
@@ -211,9 +211,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setVisible(value:Bool):Bool {
-		__jq__.css('display', value == false ? 'none' : 'block');
-		__jq__.css('visibility', value == false ? 'hidden' : 'visible');
-		__jq__.data('visible', value);
+		__jq__.css('display', value == false ? 'none' : 'block')
+				.css('visibility', value == false ? 'hidden' : 'visible')
+				.data('visible', value);
 		return __jq__.data('visible');
 	}
 	
@@ -222,8 +222,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setHeight(value:Float):Float {
-		__jq__.height(value);
-		__jq__.data('height', value);
+		__jq__.height(value)
+				.data('height', value);
 		return __jq__.data('height');
 	}
 	
@@ -232,8 +232,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setWidth(value:Float):Float {
-		__jq__.width(value);
-		__jq__.data('width', value);
+		__jq__.width(value)
+				.data('width', value);
 		return __jq__.data('width');
 	}
 	
@@ -242,9 +242,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setX(value:Float):Float {
-		x = value;
 		__jq__.css('left', '' + value + 'px');
-		return x;
+		return value;
 	}
 	
 	private function getY():Float {
@@ -252,9 +251,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setY(value:Float):Float {
-		y = value;
 		__jq__.css('top', '' + value + 'px');
-		return y;
+		return value;
 	}
 	
 }
