@@ -45,7 +45,14 @@ hedge.events.EventDispatcher.prototype.addEventListener = function(type,listener
 		this.__jq__.bind(type,{ },listener);
 	}
 	else {
-		hedge.jquery.events.EnterFrame.addListener(this.__originalName__,listener);
+		{
+			hedge.jquery.events.EnterFrame.dataHash.set(this.__originalName__,hedge.jquery.events.EnterFrame.dataArray.push(listener));
+			if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
+				hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
+				hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
+			}
+			hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
+		}
 	}
 }
 hedge.events.EventDispatcher.prototype.dispatchEvent = function(event) {
@@ -341,6 +348,23 @@ hedge.display.Sprite.prototype.setHandCursor = function(value) {
 	return this.getHandCursor();
 }
 hedge.display.Sprite.prototype.__class__ = hedge.display.Sprite;
+if(!hedge.geom) hedge.geom = {}
+hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
+	if(height == null) height = 0;
+	if(width == null) width = 0;
+	if(y == null) y = 0;
+	if(x == null) x = 0;
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+}}
+hedge.geom.Rectangle.__name__ = ["hedge","geom","Rectangle"];
+hedge.geom.Rectangle.prototype.height = null;
+hedge.geom.Rectangle.prototype.width = null;
+hedge.geom.Rectangle.prototype.y = null;
+hedge.geom.Rectangle.prototype.x = null;
+hedge.geom.Rectangle.prototype.__class__ = hedge.geom.Rectangle;
 if(typeof demo=='undefined') demo = {}
 if(!demo.bunnyBlitTest) demo.bunnyBlitTest = {}
 demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
@@ -348,13 +372,12 @@ demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
 	this.bunnies = new Array();
 	var bunnyAsset;
 	bunnyAsset = new hedge.display.BitmapData(26,37,true,null,"img#wabbit_alpha");
-	var bunny;
 	{
 		var _g1 = 0, _g = demo.bunnyBlitTest.BlitTest.numBunnies;
 		while(_g1 < _g) {
 			var i = _g1++;
-			bunny = { position : new hedge.geom.Point(), bitmapData : bunnyAsset, speedX : Math.random() * 10, speedY : Math.random() * 10 - 5};
-			this.bunnies[i] = bunny;
+			demo.bunnyBlitTest.BlitTest.bunny = { position : new hedge.geom.Point(), bitmapData : bunnyAsset, speedX : Math.random() * 10, speedY : Math.random() * 10 - 5};
+			this.bunnies[i] = demo.bunnyBlitTest.BlitTest.bunny;
 		}
 	}
 	this.bitmap = new hedge.display.Bitmap(new hedge.display.BitmapData(demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY,true));
@@ -364,40 +387,39 @@ demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
 demo.bunnyBlitTest.BlitTest.__name__ = ["demo","bunnyBlitTest","BlitTest"];
 demo.bunnyBlitTest.BlitTest.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) demo.bunnyBlitTest.BlitTest.prototype[k] = hedge.display.Sprite.prototype[k];
+demo.bunnyBlitTest.BlitTest.bunny = null;
 demo.bunnyBlitTest.BlitTest.prototype.bunnies = null;
 demo.bunnyBlitTest.BlitTest.prototype.bitmap = null;
 demo.bunnyBlitTest.BlitTest.prototype.onEnterFrame = function(e) {
-	this.bitmap.getBitmapData().fillRect(new hedge.geom.Rectangle(0,0,demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY),16777215);
-	var sourceRect = new hedge.geom.Rectangle(0,0,26,37);
-	var bunny;
+	this.bitmap.getBitmapData().fillRect(demo.bunnyBlitTest.BlitTest.rect,16777215);
 	{
 		var _g1 = 0, _g = demo.bunnyBlitTest.BlitTest.numBunnies;
 		while(_g1 < _g) {
 			var i = _g1++;
-			bunny = this.bunnies[i];
-			bunny.position.x += bunny.speedX;
-			bunny.position.y += bunny.speedY;
-			bunny.speedY += demo.bunnyBlitTest.BlitTest.gravity;
-			if(bunny.position.x > demo.bunnyBlitTest.BlitTest.maxX) {
-				bunny.speedX *= -1;
-				bunny.position.x = demo.bunnyBlitTest.BlitTest.maxX;
+			demo.bunnyBlitTest.BlitTest.bunny = this.bunnies[i];
+			demo.bunnyBlitTest.BlitTest.bunny.position.x += demo.bunnyBlitTest.BlitTest.bunny.speedX;
+			demo.bunnyBlitTest.BlitTest.bunny.position.y += demo.bunnyBlitTest.BlitTest.bunny.speedY;
+			demo.bunnyBlitTest.BlitTest.bunny.speedY += demo.bunnyBlitTest.BlitTest.gravity;
+			if(demo.bunnyBlitTest.BlitTest.bunny.position.x > demo.bunnyBlitTest.BlitTest.maxX) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedX *= -1;
+				demo.bunnyBlitTest.BlitTest.bunny.position.x = demo.bunnyBlitTest.BlitTest.maxX;
 			}
-			else if(bunny.position.x < demo.bunnyBlitTest.BlitTest.minX) {
-				bunny.speedX *= -1;
-				bunny.position.x = demo.bunnyBlitTest.BlitTest.minX;
+			else if(demo.bunnyBlitTest.BlitTest.bunny.position.x < demo.bunnyBlitTest.BlitTest.minX) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedX *= -1;
+				demo.bunnyBlitTest.BlitTest.bunny.position.x = demo.bunnyBlitTest.BlitTest.minX;
 			}
-			if(bunny.position.y > demo.bunnyBlitTest.BlitTest.maxY) {
-				bunny.speedY *= -0.8;
-				bunny.position.y = demo.bunnyBlitTest.BlitTest.maxY;
+			if(demo.bunnyBlitTest.BlitTest.bunny.position.y > demo.bunnyBlitTest.BlitTest.maxY) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedY *= -0.8;
+				demo.bunnyBlitTest.BlitTest.bunny.position.y = demo.bunnyBlitTest.BlitTest.maxY;
 				if(Math.random() > 0.5) {
-					bunny.speedY -= Math.random() * 12;
+					demo.bunnyBlitTest.BlitTest.bunny.speedY -= Math.random() * 12;
 				}
 			}
-			else if(bunny.position.y < demo.bunnyBlitTest.BlitTest.minY) {
-				bunny.speedY = 0;
-				bunny.position.y = demo.bunnyBlitTest.BlitTest.minY;
+			else if(demo.bunnyBlitTest.BlitTest.bunny.position.y < demo.bunnyBlitTest.BlitTest.minY) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedY = 0;
+				demo.bunnyBlitTest.BlitTest.bunny.position.y = demo.bunnyBlitTest.BlitTest.minY;
 			}
-			this.bitmap.getBitmapData().copyPixels(bunny.bitmapData,sourceRect,bunny.position,null,null,true);
+			this.bitmap.getBitmapData().copyPixels(demo.bunnyBlitTest.BlitTest.bunny.bitmapData,demo.bunnyBlitTest.BlitTest.sourceRect,demo.bunnyBlitTest.BlitTest.bunny.position,null,null,true);
 		}
 	}
 }
@@ -459,7 +481,6 @@ hedge.events.KeyboardEvent.prototype.clone = function() {
 	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
 }
 hedge.events.KeyboardEvent.prototype.__class__ = hedge.events.KeyboardEvent;
-if(!hedge.geom) hedge.geom = {}
 hedge.geom.Point = function(x,y) { if( x === $_ ) return; {
 	if(y == null) y = 0;
 	if(x == null) x = 0;
@@ -1868,22 +1889,6 @@ hedge.events.MouseEvent.prototype.clone = function() {
 	return new hedge.events.MouseEvent(this.type,this.bubbles,this.cancelable,this.localX,this.localY,this.relatedObject,this.ctrlKey,this.altKey,this.shiftKey,this.buttonDown,this.delta,this.commandKey,this.controlKey,this.clickCount);
 }
 hedge.events.MouseEvent.prototype.__class__ = hedge.events.MouseEvent;
-hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
-	if(height == null) height = 0;
-	if(width == null) width = 0;
-	if(y == null) y = 0;
-	if(x == null) x = 0;
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-}}
-hedge.geom.Rectangle.__name__ = ["hedge","geom","Rectangle"];
-hedge.geom.Rectangle.prototype.height = null;
-hedge.geom.Rectangle.prototype.width = null;
-hedge.geom.Rectangle.prototype.y = null;
-hedge.geom.Rectangle.prototype.x = null;
-hedge.geom.Rectangle.prototype.__class__ = hedge.geom.Rectangle;
 js.Lib = function() { }
 js.Lib.__name__ = ["js","Lib"];
 js.Lib.document = null;
@@ -1899,7 +1904,6 @@ hedge.jquery.events.EnterFrame.timer = null;
 hedge.jquery.events.EnterFrame.addListener = function(name,listener) {
 	hedge.jquery.events.EnterFrame.dataHash.set(name,hedge.jquery.events.EnterFrame.dataArray.push(listener));
 	if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
-		hedge.jquery.events.EnterFrame.running = true;
 		hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
 		hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
 	}
@@ -1910,7 +1914,6 @@ hedge.jquery.events.EnterFrame.removeListener = function(name,listener) {
 		hedge.jquery.events.EnterFrame.dataArray.remove(listener);
 		hedge.jquery.events.EnterFrame.dataHash.remove(name);
 		if(hedge.jquery.events.EnterFrame.dataArray.length == 0) {
-			hedge.jquery.events.EnterFrame.running = false;
 			clearInterval(hedge.jquery.events.EnterFrame.timer);
 		}
 		hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
@@ -1920,11 +1923,11 @@ hedge.jquery.events.EnterFrame.determineFrameRate = function() {
 	hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
 }
 hedge.jquery.events.EnterFrame.runEnterFrame = function() {
-	if(hedge.jquery.events.EnterFrame.running == true) {
-		var i = hedge.jquery.events.EnterFrame.eventLength;
-		while(i > 0) {
-			hedge.jquery.events.EnterFrame.dataArray[i - 1]("");
-			i--;
+	if(hedge.jquery.events.EnterFrame.eventLength != 0) {
+		hedge.jquery.events.EnterFrame.i = hedge.jquery.events.EnterFrame.eventLength;
+		while(hedge.jquery.events.EnterFrame.i > 0) {
+			hedge.jquery.events.EnterFrame.dataArray[hedge.jquery.events.EnterFrame.i - 1]("");
+			hedge.jquery.events.EnterFrame.i--;
 		}
 	}
 	else {
@@ -2007,6 +2010,8 @@ demo.bunnyBlitTest.BlitTest.maxX = 640;
 demo.bunnyBlitTest.BlitTest.minX = 0;
 demo.bunnyBlitTest.BlitTest.maxY = 480;
 demo.bunnyBlitTest.BlitTest.minY = 0;
+demo.bunnyBlitTest.BlitTest.rect = new hedge.geom.Rectangle(0,0,demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY);
+demo.bunnyBlitTest.BlitTest.sourceRect = new hedge.geom.Rectangle(0,0,26,37);
 hedge.display.CapsStyle.NONE = "none";
 hedge.events.Event.ENTER_FRAME = "enterFrame";
 hedge.events.KeyboardEvent.KEY_DOWN = "keydown";
@@ -2028,6 +2033,6 @@ hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.dataHash = new Hash();
 hedge.jquery.events.EnterFrame.dataArray = new Array();
-hedge.jquery.events.EnterFrame.running = false;
 hedge.jquery.events.EnterFrame.eventLength = 0;
+hedge.jquery.events.EnterFrame.i = 0;
 BunnyMain.main()

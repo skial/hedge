@@ -51,7 +51,14 @@ hedge.events.EventDispatcher.prototype.addEventListener = function(type,listener
 		this.__jq__.bind(type,{ },listener);
 	}
 	else {
-		hedge.jquery.events.EnterFrame.addListener(this.__originalName__,listener);
+		{
+			hedge.jquery.events.EnterFrame.dataHash.set(this.__originalName__,hedge.jquery.events.EnterFrame.dataArray.push(listener));
+			if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
+				hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
+				hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
+			}
+			hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
+		}
 	}
 }
 hedge.events.EventDispatcher.prototype.dispatchEvent = function(event) {
@@ -2244,7 +2251,6 @@ hedge.jquery.events.EnterFrame.timer = null;
 hedge.jquery.events.EnterFrame.addListener = function(name,listener) {
 	hedge.jquery.events.EnterFrame.dataHash.set(name,hedge.jquery.events.EnterFrame.dataArray.push(listener));
 	if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
-		hedge.jquery.events.EnterFrame.running = true;
 		hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
 		hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
 	}
@@ -2255,7 +2261,6 @@ hedge.jquery.events.EnterFrame.removeListener = function(name,listener) {
 		hedge.jquery.events.EnterFrame.dataArray.remove(listener);
 		hedge.jquery.events.EnterFrame.dataHash.remove(name);
 		if(hedge.jquery.events.EnterFrame.dataArray.length == 0) {
-			hedge.jquery.events.EnterFrame.running = false;
 			clearInterval(hedge.jquery.events.EnterFrame.timer);
 		}
 		hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
@@ -2265,11 +2270,11 @@ hedge.jquery.events.EnterFrame.determineFrameRate = function() {
 	hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
 }
 hedge.jquery.events.EnterFrame.runEnterFrame = function() {
-	if(hedge.jquery.events.EnterFrame.running == true) {
-		var i = hedge.jquery.events.EnterFrame.eventLength;
-		while(i > 0) {
-			hedge.jquery.events.EnterFrame.dataArray[i - 1]("");
-			i--;
+	if(hedge.jquery.events.EnterFrame.eventLength != 0) {
+		hedge.jquery.events.EnterFrame.i = hedge.jquery.events.EnterFrame.eventLength;
+		while(hedge.jquery.events.EnterFrame.i > 0) {
+			hedge.jquery.events.EnterFrame.dataArray[hedge.jquery.events.EnterFrame.i - 1]("");
+			hedge.jquery.events.EnterFrame.i--;
 		}
 	}
 	else {
@@ -2388,6 +2393,6 @@ hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.dataHash = new Hash();
 hedge.jquery.events.EnterFrame.dataArray = new Array();
-hedge.jquery.events.EnterFrame.running = false;
 hedge.jquery.events.EnterFrame.eventLength = 0;
+hedge.jquery.events.EnterFrame.i = 0;
 BunnyMain.main()

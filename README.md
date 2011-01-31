@@ -22,7 +22,7 @@ jQuery is used extensively through out the library. Raphaeljs is used only for t
 I recommend using Chrome to view the examples. Chrome runs the quickest for me, then Safari, Opera, Firefox 4.0 *(beta)*.
 
 + [1] [BunnyMark BlitTest](http://skial.github.com/hedge/BunnyBlitTest.html) | Runs at 45fps about, with 3000 max bunnies. Canvas at 640x480.
-+ [2] [BunnyLand BlitTest](http://skial.github.com/hedge/BunnyLandBlitTest.html) | Runs at 20fps about, with 34000 max bunnies. Canvas at 4046x4046.
++ [2] [BunnyLand BlitTest](http://skial.github.com/hedge/BunnyLandBlitTest.html) | Runs at 22-30fps about, with 34000 max bunnies. Canvas at 4046x4046.
 
 At the moment I'm not sure what the reason is for **[1]** being 2x slower than the pure javascript version by [iain lobb](http://iainlobb.com/bunnies/bunnies.html). It's either *(1)* haXe's generated javascript, *(2)* using jQuery or *(3)* my lack of knowledge. I will go with *(3)* ![alt :D](http://cdn.skialbainn.com/emote/emoticon_grin.png).
 

@@ -29,6 +29,9 @@ class BlitTest extends Sprite {
 	public static var minX:Int = 0;
 	public static var maxY:Int = 480;
 	public static var minY:Int = 0;
+	public static var rect:Rectangle = new Rectangle(0, 0, maxX, maxY);
+	public static var sourceRect:Rectangle = new Rectangle(0, 0, 26, 37);
+	public static var bunny:BlitBunny;
 	public var bitmap:Bitmap;
 	
 	public function new() {
@@ -41,7 +44,6 @@ class BlitTest extends Sprite {
 		#elseif flash9
 		
 		#end
-		var bunny:BlitBunny;
 		
 		for (i in 0...numBunnies) {
 			bunny = {
@@ -59,9 +61,7 @@ class BlitTest extends Sprite {
 	}
 	
 	public function onEnterFrame(e):Void {
-		bitmap.bitmapData.fillRect(new Rectangle(0, 0, maxX, maxY), /* needs to set to white as <canvas> default is black */ 0xFFFFFF);
-		var sourceRect:Rectangle = new Rectangle(0, 0, 26, 37);
-		var bunny:BlitBunny;
+		bitmap.bitmapData.fillRect(rect, /* needs to set to white as <canvas> default is black */ 0xFFFFFF);
 		
 		for (i in 0...numBunnies) {
 			bunny = bunnies[i];
