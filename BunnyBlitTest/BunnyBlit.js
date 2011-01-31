@@ -45,7 +45,14 @@ hedge.events.EventDispatcher.prototype.addEventListener = function(type,listener
 		this.__jq__.bind(type,{ },listener);
 	}
 	else {
-		hedge.jquery.events.EnterFrame.addListener(this.__originalName__,listener);
+		{
+			hedge.jquery.events.EnterFrame.dataHash.set(this.__originalName__,hedge.jquery.events.EnterFrame.dataArray.push(listener));
+			if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
+				hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
+				hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
+			}
+			hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
+		}
 	}
 }
 hedge.events.EventDispatcher.prototype.dispatchEvent = function(event) {
@@ -102,8 +109,7 @@ hedge.display.DisplayObject.prototype.__originalName__ = null;
 hedge.display.DisplayObject.prototype.initialize = function() {
 	this.generateJQuery();
 	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
-	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"}));
-	this.__jq__.attr("data-originalName",this.__originalName__);
+	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"})).attr("data-originalName",this.__originalName__);
 	this.setParent(hedge.Setup.__default__);
 }
 hedge.display.DisplayObject.prototype.generateJQuery = function() {
@@ -209,42 +215,36 @@ hedge.display.DisplayObject.prototype.getVisible = function() {
 	return this.__jq__.data("visible") == null?true:this.__jq__.data("visible");
 }
 hedge.display.DisplayObject.prototype.setVisible = function(value) {
-	this.__jq__.css("display",value == false?"none":"block");
-	this.__jq__.css("visibility",value == false?"hidden":"visible");
-	this.__jq__.data("visible",value);
+	this.__jq__.css("display",value == false?"none":"block").css("visibility",value == false?"hidden":"visible").data("visible",value);
 	return this.__jq__.data("visible");
 }
 hedge.display.DisplayObject.prototype.getHeight = function() {
 	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.setHeight = function(value) {
-	this.__jq__.height(value);
-	this.__jq__.data("height",value);
+	this.__jq__.height(value).data("height",value);
 	return this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.getWidth = function() {
 	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
 }
 hedge.display.DisplayObject.prototype.setWidth = function(value) {
-	this.__jq__.width(value);
-	this.__jq__.data("width",value);
+	this.__jq__.width(value).data("width",value);
 	return this.__jq__.data("width");
 }
 hedge.display.DisplayObject.prototype.getX = function() {
 	return this.__jq__.position().left;
 }
 hedge.display.DisplayObject.prototype.setX = function(value) {
-	this.x = value;
-	this.__jq__.css("left",("" + value) + "px");
-	return this.getX();
+	this.__jq__.css("left","" + value + "px");
+	return value;
 }
 hedge.display.DisplayObject.prototype.getY = function() {
 	return this.__jq__.position().top;
 }
 hedge.display.DisplayObject.prototype.setY = function(value) {
-	this.y = value;
-	this.__jq__.css("top",("" + value) + "px");
-	return this.getY();
+	this.__jq__.css("top","" + value + "px");
+	return value;
 }
 hedge.display.DisplayObject.prototype.__class__ = hedge.display.DisplayObject;
 hedge.display.InteractiveObject = function(p) { if( p === $_ ) return; {
@@ -306,7 +306,6 @@ hedge.display.DisplayObjectContainer.prototype.getTextSnapshot = function() {
 hedge.display.DisplayObjectContainer.prototype.__class__ = hedge.display.DisplayObjectContainer;
 hedge.display.Sprite = function(p) { if( p === $_ ) return; {
 	hedge.display.DisplayObjectContainer.call(this);
-	this._g = new hedge.display.Graphics(this);
 }}
 hedge.display.Sprite.__name__ = ["hedge","display","Sprite"];
 hedge.display.Sprite.__super__ = hedge.display.DisplayObjectContainer;
@@ -332,7 +331,7 @@ hedge.display.Sprite.prototype.setDropTarget = function(value) {
 	return this.getDropTarget();
 }
 hedge.display.Sprite.prototype.getGraphics = function() {
-	return this._g;
+	return this._g == null?this._g = new hedge.display.Graphics(this):this._g;
 }
 hedge.display.Sprite.prototype.getHitArea = function() {
 	return this.hitArea;
@@ -349,6 +348,23 @@ hedge.display.Sprite.prototype.setHandCursor = function(value) {
 	return this.getHandCursor();
 }
 hedge.display.Sprite.prototype.__class__ = hedge.display.Sprite;
+if(!hedge.geom) hedge.geom = {}
+hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
+	if(height == null) height = 0;
+	if(width == null) width = 0;
+	if(y == null) y = 0;
+	if(x == null) x = 0;
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+}}
+hedge.geom.Rectangle.__name__ = ["hedge","geom","Rectangle"];
+hedge.geom.Rectangle.prototype.height = null;
+hedge.geom.Rectangle.prototype.width = null;
+hedge.geom.Rectangle.prototype.y = null;
+hedge.geom.Rectangle.prototype.x = null;
+hedge.geom.Rectangle.prototype.__class__ = hedge.geom.Rectangle;
 if(typeof demo=='undefined') demo = {}
 if(!demo.bunnyBlitTest) demo.bunnyBlitTest = {}
 demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
@@ -356,13 +372,12 @@ demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
 	this.bunnies = new Array();
 	var bunnyAsset;
 	bunnyAsset = new hedge.display.BitmapData(26,37,true,null,"img#wabbit_alpha");
-	var bunny;
 	{
 		var _g1 = 0, _g = demo.bunnyBlitTest.BlitTest.numBunnies;
 		while(_g1 < _g) {
 			var i = _g1++;
-			bunny = { position : new hedge.geom.Point(), bitmapData : bunnyAsset, speedX : Math.random() * 10, speedY : (Math.random() * 10) - 5}
-			this.bunnies[i] = bunny;
+			demo.bunnyBlitTest.BlitTest.bunny = { position : new hedge.geom.Point(), bitmapData : bunnyAsset, speedX : Math.random() * 10, speedY : Math.random() * 10 - 5};
+			this.bunnies[i] = demo.bunnyBlitTest.BlitTest.bunny;
 		}
 	}
 	this.bitmap = new hedge.display.Bitmap(new hedge.display.BitmapData(demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY,true));
@@ -372,40 +387,39 @@ demo.bunnyBlitTest.BlitTest = function(p) { if( p === $_ ) return; {
 demo.bunnyBlitTest.BlitTest.__name__ = ["demo","bunnyBlitTest","BlitTest"];
 demo.bunnyBlitTest.BlitTest.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) demo.bunnyBlitTest.BlitTest.prototype[k] = hedge.display.Sprite.prototype[k];
+demo.bunnyBlitTest.BlitTest.bunny = null;
 demo.bunnyBlitTest.BlitTest.prototype.bunnies = null;
 demo.bunnyBlitTest.BlitTest.prototype.bitmap = null;
 demo.bunnyBlitTest.BlitTest.prototype.onEnterFrame = function(e) {
-	this.bitmap.getBitmapData().fillRect(new hedge.geom.Rectangle(0,0,demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY),16777215);
-	var sourceRect = new hedge.geom.Rectangle(0,0,26,37);
-	var bunny;
+	this.bitmap.getBitmapData().fillRect(demo.bunnyBlitTest.BlitTest.rect,16777215);
 	{
 		var _g1 = 0, _g = demo.bunnyBlitTest.BlitTest.numBunnies;
 		while(_g1 < _g) {
 			var i = _g1++;
-			bunny = this.bunnies[i];
-			bunny.position.x += bunny.speedX;
-			bunny.position.y += bunny.speedY;
-			bunny.speedY += demo.bunnyBlitTest.BlitTest.gravity;
-			if(bunny.position.x > demo.bunnyBlitTest.BlitTest.maxX) {
-				bunny.speedX *= -1;
-				bunny.position.x = demo.bunnyBlitTest.BlitTest.maxX;
+			demo.bunnyBlitTest.BlitTest.bunny = this.bunnies[i];
+			demo.bunnyBlitTest.BlitTest.bunny.position.x += demo.bunnyBlitTest.BlitTest.bunny.speedX;
+			demo.bunnyBlitTest.BlitTest.bunny.position.y += demo.bunnyBlitTest.BlitTest.bunny.speedY;
+			demo.bunnyBlitTest.BlitTest.bunny.speedY += demo.bunnyBlitTest.BlitTest.gravity;
+			if(demo.bunnyBlitTest.BlitTest.bunny.position.x > demo.bunnyBlitTest.BlitTest.maxX) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedX *= -1;
+				demo.bunnyBlitTest.BlitTest.bunny.position.x = demo.bunnyBlitTest.BlitTest.maxX;
 			}
-			else if(bunny.position.x < demo.bunnyBlitTest.BlitTest.minX) {
-				bunny.speedX *= -1;
-				bunny.position.x = demo.bunnyBlitTest.BlitTest.minX;
+			else if(demo.bunnyBlitTest.BlitTest.bunny.position.x < demo.bunnyBlitTest.BlitTest.minX) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedX *= -1;
+				demo.bunnyBlitTest.BlitTest.bunny.position.x = demo.bunnyBlitTest.BlitTest.minX;
 			}
-			if(bunny.position.y > demo.bunnyBlitTest.BlitTest.maxY) {
-				bunny.speedY *= -0.8;
-				bunny.position.y = demo.bunnyBlitTest.BlitTest.maxY;
+			if(demo.bunnyBlitTest.BlitTest.bunny.position.y > demo.bunnyBlitTest.BlitTest.maxY) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedY *= -0.8;
+				demo.bunnyBlitTest.BlitTest.bunny.position.y = demo.bunnyBlitTest.BlitTest.maxY;
 				if(Math.random() > 0.5) {
-					bunny.speedY -= Math.random() * 12;
+					demo.bunnyBlitTest.BlitTest.bunny.speedY -= Math.random() * 12;
 				}
 			}
-			else if(bunny.position.y < demo.bunnyBlitTest.BlitTest.minY) {
-				bunny.speedY = 0;
-				bunny.position.y = demo.bunnyBlitTest.BlitTest.minY;
+			else if(demo.bunnyBlitTest.BlitTest.bunny.position.y < demo.bunnyBlitTest.BlitTest.minY) {
+				demo.bunnyBlitTest.BlitTest.bunny.speedY = 0;
+				demo.bunnyBlitTest.BlitTest.bunny.position.y = demo.bunnyBlitTest.BlitTest.minY;
 			}
-			this.bitmap.getBitmapData().copyPixels(bunny.bitmapData,sourceRect,bunny.position,null,null,true);
+			this.bitmap.getBitmapData().copyPixels(demo.bunnyBlitTest.BlitTest.bunny.bitmapData,demo.bunnyBlitTest.BlitTest.sourceRect,demo.bunnyBlitTest.BlitTest.bunny.position,null,null,true);
 		}
 	}
 }
@@ -467,7 +481,6 @@ hedge.events.KeyboardEvent.prototype.clone = function() {
 	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
 }
 hedge.events.KeyboardEvent.prototype.__class__ = hedge.events.KeyboardEvent;
-if(!hedge.geom) hedge.geom = {}
 hedge.geom.Point = function(x,y) { if( x === $_ ) return; {
 	if(y == null) y = 0;
 	if(x == null) x = 0;
@@ -515,7 +528,7 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.submitText.setName("submitText");
 	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
 	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
-	this.bunnyAmount.setX((640 - (this.submitAmount.getWidth() + 5)) - (this.bunnyAmount.getWidth() + 5));
+	this.bunnyAmount.setX(640 - (this.submitAmount.getWidth() + 5) - (this.bunnyAmount.getWidth() + 5));
 	this.bunnyAmount.setY(480 - (this.submitAmount.getHeight() + 5));
 	this.submitText.setX(25);
 	this.submitText.setY(2);
@@ -672,7 +685,7 @@ Reflect.compareMethods = function(f1,f2) {
 Reflect.isObject = function(v) {
 	if(v == null) return false;
 	var t = typeof(v);
-	return (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
+	return t == "string" || t == "object" && !v.__enum__ || t == "function" && v.__name__ != null;
 }
 Reflect.deleteField = function(o,f) {
 	if(!Reflect.hasField(o,f)) return false;
@@ -680,13 +693,13 @@ Reflect.deleteField = function(o,f) {
 	return true;
 }
 Reflect.copy = function(o) {
-	var o2 = { }
+	var o2 = { };
 	{
 		var _g = 0, _g1 = Reflect.fields(o);
 		while(_g < _g1.length) {
 			var f = _g1[_g];
 			++_g;
-			(o2[f] = Reflect.field(o,f));
+			o2[f] = Reflect.field(o,f);
 		}
 	}
 	return o2;
@@ -798,10 +811,10 @@ Type.createEnum = function(e,constr,params) {
 	var f = Reflect.field(e,constr);
 	if(f == null) throw "No such constructor " + constr;
 	if(Reflect.isFunction(f)) {
-		if(params == null) throw ("Constructor " + constr) + " need parameters";
+		if(params == null) throw "Constructor " + constr + " need parameters";
 		return f.apply(e,params);
 	}
-	if(params != null && params.length != 0) throw ("Constructor " + constr) + " does not need parameters";
+	if(params != null && params.length != 0) throw "Constructor " + constr + " does not need parameters";
 	return f;
 }
 Type.createEnumIndex = function(e,index,params) {
@@ -898,7 +911,7 @@ js.Boot.__unhtml = function(s) {
 	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 }
 js.Boot.__trace = function(v,i) {
-	var msg = i != null?((i.fileName + ":") + i.lineNumber) + ": ":"";
+	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
 	msg += js.Boot.__unhtml(js.Boot.__string_rec(v,"")) + "<br/>";
 	var d = document.getElementById("haxe:trace");
 	if(d == null) alert("No haxe:trace element defined\n" + msg);
@@ -974,15 +987,15 @@ js.Boot.__string_rec = function(o,s) {
 		var k = null;
 		var str = "{\n";
 		s += "\t";
-		var hasp = (o.hasOwnProperty != null);
+		var hasp = o.hasOwnProperty != null;
 		for( var k in o ) { ;
 		if(hasp && !o.hasOwnProperty(k)) continue;
 		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__") continue;
 		if(str.length != 2) str += ", \n";
-		str += ((s + k) + " : ") + js.Boot.__string_rec(o[k],s);
+		str += s + k + " : " + js.Boot.__string_rec(o[k],s);
 		}
 		s = s.substring(1);
-		str += ("\n" + s) + "}";
+		str += "\n" + s + "}";
 		return str;
 	}break;
 	case "function":{
@@ -992,7 +1005,7 @@ js.Boot.__string_rec = function(o,s) {
 		return o;
 	}break;
 	default:{
-		return (String)(o);
+		return String(o);
 	}break;
 	}
 }
@@ -1013,7 +1026,7 @@ js.Boot.__interfLoop = function(cc,cl) {
 js.Boot.__instanceof = function(o,cl) {
 	try {
 		if(o instanceof cl) {
-			if(cl == Array) return (o.__enum__ == null);
+			if(cl == Array) return o.__enum__ == null;
 			return true;
 		}
 		if(js.Boot.__interfLoop(o.__class__,cl)) return true;
@@ -1044,13 +1057,13 @@ js.Boot.__instanceof = function(o,cl) {
 	}break;
 	default:{
 		if(o == null) return false;
-		return o.__enum__ == cl || (cl == Class && o.__name__ != null) || (cl == Enum && o.__ename__ != null);
+		return o.__enum__ == cl || cl == Class && o.__name__ != null || cl == Enum && o.__ename__ != null;
 	}break;
 	}
 }
 js.Boot.__init = function() {
-	js.Lib.isIE = (typeof document!='undefined' && document.all != null && typeof window!='undefined' && window.opera == null);
-	js.Lib.isOpera = (typeof window!='undefined' && window.opera != null);
+	js.Lib.isIE = typeof document!='undefined' && document.all != null && typeof window!='undefined' && window.opera == null;
+	js.Lib.isOpera = typeof window!='undefined' && window.opera != null;
 	Array.prototype.copy = Array.prototype.slice;
 	Array.prototype.insert = function(i,x) {
 		this.splice(i,0,x);
@@ -1077,7 +1090,7 @@ js.Boot.__init = function() {
 			return this.cur < this.arr.length;
 		}, next : function() {
 			return this.arr[this.cur++];
-		}}
+		}};
 	}
 	if(String.prototype.cca == null) String.prototype.cca = String.prototype.charCodeAt;
 	String.prototype.charCodeAt = function(i) {
@@ -1094,7 +1107,7 @@ js.Boot.__init = function() {
 			if(pos < 0) pos = 0;
 		}
 		else if(len < 0) {
-			len = (this.length + len) - pos;
+			len = this.length + len - pos;
 		}
 		return oldsub.apply(this,[pos,len]);
 	}
@@ -1128,7 +1141,7 @@ haxe.Firebug.onError = function(err,stack) {
 		while(_g < stack.length) {
 			var s = stack[_g];
 			++_g;
-			buf += ("Called from " + s) + "\n";
+			buf += "Called from " + s + "\n";
 		}
 	}
 	haxe.Firebug.trace(buf,null);
@@ -1137,7 +1150,7 @@ haxe.Firebug.onError = function(err,stack) {
 haxe.Firebug.trace = function(v,inf) {
 	var type = inf != null && inf.customParams != null?inf.customParams[0]:null;
 	if(type != "warn" && type != "info" && type != "debug" && type != "error") type = inf == null?"error":"log";
-	console[type]((inf == null?"":((inf.fileName + ":") + inf.lineNumber) + " : ") + Std.string(v));
+	console[type]((inf == null?"":inf.fileName + ":" + inf.lineNumber + " : ") + Std.string(v));
 }
 haxe.Firebug.prototype.__class__ = haxe.Firebug;
 if(!hedge.jquery) hedge.jquery = {}
@@ -1175,12 +1188,10 @@ hedge.Setup.__counter__ = null;
 hedge.Setup.init = function(_callback,fps,stageName) {
 	if(stageName == null) stageName = "Stage";
 	if(fps == null) fps = 30;
-	hedge.Setup.__jq__ = new $("div#" + stageName);
-	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0);
-	hedge.Setup.__jq__.attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"}));
-	hedge.Setup.setFrameRate(fps);
 	hedge.Setup.__storage__ = new $("<div>").attr("id","storage").css({ display : "none", width : "100%", height : "100%"});
-	hedge.Setup.__jq__.append(hedge.Setup.__storage__);
+	hedge.Setup.__jq__ = new $("div#" + stageName);
+	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0).attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"})).append(hedge.Setup.__storage__);
+	hedge.Setup.setFrameRate(fps);
 	hedge.Setup.__stage__ = new hedge.display.Stage();
 	hedge.Setup.__stage__.setName(stageName);
 	hedge.Setup.__stage__.__jq__ = hedge.Setup.__jq__;
@@ -1204,13 +1215,13 @@ hedge.Setup.createJqueryEvents = function() {
 			_name = Type.getClassName(e).split(".");
 			_meta = haxe.rtti.Meta.getFields(e);
 			_fields = Reflect.fields(_meta);
-			_event = ($.event.special[_name[_name.length - 1]] = { });
+			_event = $.event.special[_name[_name.length - 1]] = { };
 			{
 				var _g2 = 0;
 				while(_g2 < _fields.length) {
 					var f = _fields[_g2];
 					++_g2;
-					(_event[f] = Reflect.field(_class,f));
+					_event[f] = Reflect.field(_class,f);
 				}
 			}
 		}
@@ -1247,7 +1258,7 @@ hedge.Setup.setFrameRate = function(value) {
 hedge.Setup.__data__ = function(values) {
 	Reflect.deleteField(values,"__name__");
 	var _n_ = "";
-	var _v_ = { }
+	var _v_ = { };
 	{
 		var _g = 0, _g1 = Reflect.fields(values);
 		while(_g < _g1.length) {
@@ -1256,14 +1267,14 @@ hedge.Setup.__data__ = function(values) {
 			_n_ = n;
 			_v_ = Reflect.field(values,n);
 			Reflect.deleteField(values,n);
-			(values["data-" + _n_] = _v_);
+			values["data-" + _n_] = _v_;
 		}
 	}
 	return values;
 }
 hedge.Setup.__attr__ = function(values) {
-	var _r_ = { overflow : "hidden", position : "absolute", visibility : "visible"}
-	var _t_ = { }
+	var _r_ = { overflow : "hidden", position : "absolute", visibility : "visible"};
+	var _t_ = { };
 	Reflect.deleteField(values,"__name__");
 	Reflect.deleteField(_r_,"__name__");
 	{
@@ -1273,7 +1284,7 @@ hedge.Setup.__attr__ = function(values) {
 			++_g;
 			_t_ = Reflect.field(values,n);
 			if(_t_ != null) {
-				(_r_[n] = _t_);
+				_r_[n] = _t_;
 			}
 		}
 	}
@@ -1283,39 +1294,16 @@ hedge.Setup.generateInstanceName = function() {
 	return "instance" + (hedge.Setup.__counter__++ - 1);
 }
 hedge.Setup.RGB_to_String = function(color) {
-	return ((((("rgb(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ")";
+	return "rgb(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ")";
 }
 hedge.Setup.canvas_RGBA_to_String = function(color) {
-	return ((((((("rgba(" + (color >> 16 & 255)) + ", ") + (color >> 8 & 255)) + ", ") + (color & 255)) + ", ") + (color < 0?-(color >> 24) / 255:1)) + ")";
+	return "rgba(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ", " + (color < 0?-(color >> 24) / 255:1) + ")";
 }
 hedge.Setup.RGB_String_to_HEX = function(color) {
 	var values = color.substr(color.indexOf("rgb(") + 4,color.lastIndexOf(")") - 4).split(", ");
-	return (((Std.parseInt(values[0]) << 16) | (Std.parseInt(values[1]) << 8)) | Std.parseInt(values[2]));
+	return Std.parseInt(values[0]) << 16 | Std.parseInt(values[1]) << 8 | Std.parseInt(values[2]);
 }
 hedge.Setup.prototype.__class__ = hedge.Setup;
-haxe.Timer = function(time_ms) { if( time_ms === $_ ) return; {
-	this.id = haxe.Timer.arr.length;
-	haxe.Timer.arr[this.id] = this;
-	this.timerId = window.setInterval(("haxe.Timer.arr[" + this.id) + "].run();",time_ms);
-}}
-haxe.Timer.__name__ = ["haxe","Timer"];
-haxe.Timer.prototype.id = null;
-haxe.Timer.prototype.timerId = null;
-haxe.Timer.prototype.stop = function() {
-	if(this.id == null) return;
-	window.clearInterval(this.timerId);
-	haxe.Timer.arr[this.id] = null;
-	if(this.id > 100 && this.id == haxe.Timer.arr.length - 1) {
-		var p = this.id - 1;
-		while(p >= 0 && haxe.Timer.arr[p] == null) p--;
-		haxe.Timer.arr = haxe.Timer.arr.slice(0,p + 1);
-	}
-	this.id = null;
-}
-haxe.Timer.prototype.run = function() {
-	null;
-}
-haxe.Timer.prototype.__class__ = haxe.Timer;
 hedge.display.FillType = function() { }
 hedge.display.FillType.__name__ = ["hedge","display","FillType"];
 hedge.display.FillType.prototype.__class__ = hedge.display.FillType;
@@ -1344,7 +1332,7 @@ hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelect
 	this.__fillColor__ = fillColor == null?16777215:fillColor;
 	this.__id__ = hedge.Setup.generateInstanceName();
 	this.__source__ = cssSelector == null?null:new $(cssSelector);
-	this.__canvas__ = new $("<canvas></canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
+	this.__canvas__ = new $("<canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
 	this.__canvas__.bind("mouseenter",$closure(this,"onCanvasEnter"));
 	this.__canvas__.bind("mouseleave",$closure(this,"onCanvasLeave"));
 	hedge.Setup.__storage__.append(this.__canvas__);
@@ -1569,22 +1557,22 @@ Hash.prototype.iterator = function() {
 	}, next : function() {
 		var i = this.it.next();
 		return this.ref["$" + i];
-	}}
+	}};
 }
 Hash.prototype.toString = function() {
 	var s = new StringBuf();
-	(s.b[s.b.length] = "{");
+	s.b[s.b.length] = "{";
 	var it = this.keys();
 	{ var $it0 = it;
 	while( $it0.hasNext() ) { var i = $it0.next();
 	{
-		(s.b[s.b.length] = i);
-		(s.b[s.b.length] = " => ");
-		(s.b[s.b.length] = Std.string(this.get(i)));
-		if(it.hasNext()) (s.b[s.b.length] = ", ");
+		s.b[s.b.length] = i;
+		s.b[s.b.length] = " => ";
+		s.b[s.b.length] = Std.string(this.get(i));
+		if(it.hasNext()) s.b[s.b.length] = ", ";
 	}
 	}}
-	(s.b[s.b.length] = "}");
+	s.b[s.b.length] = "}";
 	return s.b.join("");
 }
 Hash.prototype.__class__ = Hash;
@@ -1654,8 +1642,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 		throw "beginBitmapFill is not implemented";
 	}break;
 	case "flood":{
-		this.__element__.attr("fill",this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color));
-		this.__element__.attr("opacity",this.fill_alpha == null?1.0:this.fill_alpha);
+		this.__element__.attr("fill",this.fill_color == null?"#ffffff":hedge.Setup.RGB_to_String(this.fill_color)).attr("opacity",this.fill_alpha == null?1.0:this.fill_alpha);
 	}break;
 	case "gradient":{
 		var color_alpha = "";
@@ -1669,7 +1656,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 				else {
 					color_alpha += "-" + hedge.Setup.RGB_to_String(this.fill_gradient_colors[i]);
 				}
-				color_alpha += ":" + ((this.fill_gradient_ratios[i] / 255) * 100);
+				color_alpha += ":" + this.fill_gradient_ratios[i] / 255 * 100;
 			}
 		}
 		switch(this.fill_gradient_type) {
@@ -1677,7 +1664,7 @@ hedge.display.Graphics.prototype.checkFill = function() {
 			this.__element__.attr("fill","0-" + color_alpha);
 		}break;
 		case hedge.display.GradientType.RADIAL:{
-			throw "Gradient.RADIAL is not supported by RaphaelJS on any thing not a circle or ellipse";
+			throw "Gradient.RADIAL is not supported by Raphael__jq__ on any thing not a circle or ellipse";
 			this.__element__.attr("fill","r" + color_alpha);
 		}break;
 		}
@@ -1728,12 +1715,7 @@ hedge.display.Graphics.prototype.checkLineStyle = function() {
 		null;
 	}break;
 	case "plain":{
-		this.__element__.attr("stroke-width",this.line_thickness == null?1.0:this.line_thickness);
-		this.__element__.attr("stroke",this.line_color == null?"none":hedge.Setup.RGB_to_String(this.line_color));
-		this.__element__.attr("stroke-opacity",this.line_alpha == null?1.0:this.line_alpha);
-		this.__element__.attr("stroke-linecap",this.line_caps == null?"butt":this.line_caps = this.line_caps == "none"?"butt":this.line_caps);
-		this.__element__.attr("stroke-linejoin",this.line_joints == null?"miter":this.line_joints);
-		this.__element__.attr("stroke-miterlimit",this.line_limit == null?3.0:this.line_limit);
+		this.__element__.attr("stroke-width",this.line_thickness == null?1.0:this.line_thickness).attr("stroke",this.line_color == null?"none":hedge.Setup.RGB_to_String(this.line_color)).attr("stroke-opacity",this.line_alpha == null?1.0:this.line_alpha).attr("stroke-linecap",this.line_caps == null?"butt":this.line_caps = this.line_caps == "none"?"butt":this.line_caps).attr("stroke-linejoin",this.line_joints == null?"miter":this.line_joints).attr("stroke-miterlimit",this.line_limit == null?3.0:this.line_limit);
 	}break;
 	default:{
 		null;
@@ -1847,17 +1829,18 @@ hedge.display.Bitmap = function(bitmapData,pixelSnapping,smoothing) { if( bitmap
 hedge.display.Bitmap.__name__ = ["hedge","display","Bitmap"];
 hedge.display.Bitmap.__super__ = hedge.display.DisplayObject;
 for(var k in hedge.display.DisplayObject.prototype ) hedge.display.Bitmap.prototype[k] = hedge.display.DisplayObject.prototype[k];
+hedge.display.Bitmap.prototype.bmd = null;
 hedge.display.Bitmap.prototype.bitmapData = null;
 hedge.display.Bitmap.prototype.pixelSnapping = null;
 hedge.display.Bitmap.prototype.smoothing = null;
 hedge.display.Bitmap.prototype.getBitmapData = function() {
-	return this.__jq__.data("bitmapdata");
+	return this.bmd;
 }
 hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	this.setWidth(value.getWidth());
 	this.setHeight(value.getHeight());
 	this.__jq__.append(value.__canvas__);
-	this.__jq__.data("bitmapdata",value);
+	this.bmd = value;
 	return value;
 }
 hedge.display.Bitmap.prototype.__class__ = hedge.display.Bitmap;
@@ -1906,22 +1889,6 @@ hedge.events.MouseEvent.prototype.clone = function() {
 	return new hedge.events.MouseEvent(this.type,this.bubbles,this.cancelable,this.localX,this.localY,this.relatedObject,this.ctrlKey,this.altKey,this.shiftKey,this.buttonDown,this.delta,this.commandKey,this.controlKey,this.clickCount);
 }
 hedge.events.MouseEvent.prototype.__class__ = hedge.events.MouseEvent;
-hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
-	if(height == null) height = 0;
-	if(width == null) width = 0;
-	if(y == null) y = 0;
-	if(x == null) x = 0;
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-}}
-hedge.geom.Rectangle.__name__ = ["hedge","geom","Rectangle"];
-hedge.geom.Rectangle.prototype.height = null;
-hedge.geom.Rectangle.prototype.width = null;
-hedge.geom.Rectangle.prototype.y = null;
-hedge.geom.Rectangle.prototype.x = null;
-hedge.geom.Rectangle.prototype.__class__ = hedge.geom.Rectangle;
 js.Lib = function() { }
 js.Lib.__name__ = ["js","Lib"];
 js.Lib.document = null;
@@ -1935,41 +1902,36 @@ hedge.jquery.events.EnterFrame.__name__ = ["hedge","jquery","events","EnterFrame
 hedge.jquery.events.EnterFrame.interval = null;
 hedge.jquery.events.EnterFrame.timer = null;
 hedge.jquery.events.EnterFrame.addListener = function(name,listener) {
-	hedge.jquery.events.EnterFrame.data.set(name,listener);
-	hedge.jquery.events.EnterFrame.events.push(name);
-	if(hedge.jquery.events.EnterFrame.events.length != 0) {
-		hedge.jquery.events.EnterFrame.running = true;
-		hedge.jquery.events.EnterFrame.determineFrameRate();
-		hedge.jquery.events.EnterFrame.timer = new haxe.Timer(hedge.jquery.events.EnterFrame.interval);
-		hedge.jquery.events.EnterFrame.timer.run = $closure(hedge.jquery.events.EnterFrame,"runEnterFrame");
+	hedge.jquery.events.EnterFrame.dataHash.set(name,hedge.jquery.events.EnterFrame.dataArray.push(listener));
+	if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
+		hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
+		hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
 	}
+	hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
 }
 hedge.jquery.events.EnterFrame.removeListener = function(name,listener) {
-	if(hedge.jquery.events.EnterFrame.data.exists(name) == true) {
-		hedge.jquery.events.EnterFrame.data.remove(name);
-		hedge.jquery.events.EnterFrame.events.remove(name);
-		if(hedge.jquery.events.EnterFrame.events.length == 0) {
-			hedge.jquery.events.EnterFrame.running = false;
-			hedge.jquery.events.EnterFrame.timer.stop();
+	if(hedge.jquery.events.EnterFrame.dataHash.exists(name) == true) {
+		hedge.jquery.events.EnterFrame.dataArray.remove(listener);
+		hedge.jquery.events.EnterFrame.dataHash.remove(name);
+		if(hedge.jquery.events.EnterFrame.dataArray.length == 0) {
+			clearInterval(hedge.jquery.events.EnterFrame.timer);
 		}
+		hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
 	}
 }
 hedge.jquery.events.EnterFrame.determineFrameRate = function() {
 	hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
 }
 hedge.jquery.events.EnterFrame.runEnterFrame = function() {
-	if(hedge.jquery.events.EnterFrame.running == true) {
-		{
-			var _g = 0, _g1 = hedge.jquery.events.EnterFrame.events;
-			while(_g < _g1.length) {
-				var i = _g1[_g];
-				++_g;
-				(hedge.jquery.events.EnterFrame.data.get(i))("");
-			}
+	if(hedge.jquery.events.EnterFrame.eventLength != 0) {
+		hedge.jquery.events.EnterFrame.i = hedge.jquery.events.EnterFrame.eventLength;
+		while(hedge.jquery.events.EnterFrame.i > 0) {
+			hedge.jquery.events.EnterFrame.dataArray[hedge.jquery.events.EnterFrame.i - 1]("");
+			hedge.jquery.events.EnterFrame.i--;
 		}
 	}
 	else {
-		hedge.jquery.events.EnterFrame.timer.stop();
+		clearInterval(hedge.jquery.events.EnterFrame.timer);
 	}
 }
 hedge.jquery.events.EnterFrame.prototype.__class__ = hedge.jquery.events.EnterFrame;
@@ -2022,14 +1984,14 @@ js.Boot.__init();
 	String.__name__ = ["String"];
 	Array.prototype.__class__ = Array;
 	Array.__name__ = ["Array"];
-	Int = { __name__ : ["Int"]}
-	Dynamic = { __name__ : ["Dynamic"]}
+	Int = { __name__ : ["Int"]};
+	Dynamic = { __name__ : ["Dynamic"]};
 	Float = Number;
 	Float.__name__ = ["Float"];
-	Bool = { __ename__ : ["Bool"]}
-	Class = { __name__ : ["Class"]}
-	Enum = { }
-	Void = { __ename__ : ["Void"]}
+	Bool = { __ename__ : ["Bool"]};
+	Class = { __name__ : ["Class"]};
+	Enum = { };
+	Void = { __ename__ : ["Void"]};
 }
 {
 	js.Lib.document = document;
@@ -2048,15 +2010,16 @@ demo.bunnyBlitTest.BlitTest.maxX = 640;
 demo.bunnyBlitTest.BlitTest.minX = 0;
 demo.bunnyBlitTest.BlitTest.maxY = 480;
 demo.bunnyBlitTest.BlitTest.minY = 0;
+demo.bunnyBlitTest.BlitTest.rect = new hedge.geom.Rectangle(0,0,demo.bunnyBlitTest.BlitTest.maxX,demo.bunnyBlitTest.BlitTest.maxY);
+demo.bunnyBlitTest.BlitTest.sourceRect = new hedge.geom.Rectangle(0,0,26,37);
 hedge.display.CapsStyle.NONE = "none";
 hedge.events.Event.ENTER_FRAME = "enterFrame";
 hedge.events.KeyboardEvent.KEY_DOWN = "keydown";
 hedge.events.KeyboardEvent.KEY_UP = "keyup";
 hedge.display.PixelSnapping.AUTO = "auto";
-hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}}
+hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}};
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
-haxe.Timer.arr = new Array();
 hedge.display.FillType.FLOOD = "flood";
 hedge.display.FillType.BITMAPDATA = "bitmapdata";
 hedge.display.FillType.GRADIENT = "gradient";
@@ -2068,7 +2031,8 @@ hedge.display.LineType.PLAIN = "plain";
 hedge.display.LineType.GRADIENT = "gradient";
 hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
-hedge.jquery.events.EnterFrame.data = new Hash();
-hedge.jquery.events.EnterFrame.events = new Array();
-hedge.jquery.events.EnterFrame.running = false;
+hedge.jquery.events.EnterFrame.dataHash = new Hash();
+hedge.jquery.events.EnterFrame.dataArray = new Array();
+hedge.jquery.events.EnterFrame.eventLength = 0;
+hedge.jquery.events.EnterFrame.i = 0;
 BunnyMain.main()
