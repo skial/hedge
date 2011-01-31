@@ -5,51 +5,53 @@
 
 package hedge.jquery.events;
 
-import haxe.Timer;
 import hedge.Setup;
 
 @:keep
 class EnterFrame {
 	
-	public static var data		:Hash<Dynamic> = new Hash<Dynamic>();
-	public static var events	:Array<Dynamic> = new Array<Dynamic>();
-	public static var interval	:Dynamic;
-	public static var running	:Bool = false;
-	public static var timer		:Timer;
+	public static var dataHash		:Hash<Int> = new Hash<Int>();
+	public static var dataArray	:Array<Dynamic> = new Array<Dynamic>();
+	public static var interval		:Dynamic;
+	public static var running		:Bool = false;
+	public static var timer			:Dynamic;
+	public static var eventLength	:Int = 0;
 	
 	public static function addListener(name:String, listener:Dynamic):Void {
-		data.set(name, listener);
-		events.push(name);
-		if (events.length != 0) {
+		dataHash.set(name, dataArray.push(listener));
+		if (dataArray.length != 0) {
 			running = true;
 			determineFrameRate();
-			timer = new Timer(interval);
-			timer.run = runEnterFrame;
+			timer = untyped setInterval(runEnterFrame, interval);
 		}
+		eventLength = dataArray.length;
 	}
 	
 	public static function removeListener(name:String, listener:Dynamic):Void {
-		if (data.exists(name) == true) {
-			data.remove(name);
-			events.remove(name);
-			if (events.length == 0) {
+		if (dataHash.exists(name) == true) {
+			dataArray.remove(listener);
+			dataHash.remove(name);
+			if (dataArray.length == 0) {
 				running = false;
-				timer.stop();
+				untyped clearInterval(timer);
 			}
+			eventLength = dataArray.length;
 		}
 	}
 	
-	public static function determineFrameRate():Void {
+	public inline static function determineFrameRate():Void {
 		interval = 1000 / Setup.frameRate;
 	}
 	
 	public static function runEnterFrame():Void {
 		if (running == true) {
-			for (i in events) {
-				data.get(i)('');
+			var i = eventLength;
+			while (i > 0) {
+				dataArray[i-1]('');
+				i--;
 			}
 		} else {
-			timer.stop();
+			untyped clearInterval(timer);
 		}
 	}
 	

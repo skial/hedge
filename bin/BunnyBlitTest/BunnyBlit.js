@@ -1283,29 +1283,6 @@ hedge.Setup.RGB_String_to_HEX = function(color) {
 	return Std.parseInt(values[0]) << 16 | Std.parseInt(values[1]) << 8 | Std.parseInt(values[2]);
 }
 hedge.Setup.prototype.__class__ = hedge.Setup;
-haxe.Timer = function(time_ms) { if( time_ms === $_ ) return; {
-	this.id = haxe.Timer.arr.length;
-	haxe.Timer.arr[this.id] = this;
-	this.timerId = window.setInterval("haxe.Timer.arr[" + this.id + "].run();",time_ms);
-}}
-haxe.Timer.__name__ = ["haxe","Timer"];
-haxe.Timer.prototype.id = null;
-haxe.Timer.prototype.timerId = null;
-haxe.Timer.prototype.stop = function() {
-	if(this.id == null) return;
-	window.clearInterval(this.timerId);
-	haxe.Timer.arr[this.id] = null;
-	if(this.id > 100 && this.id == haxe.Timer.arr.length - 1) {
-		var p = this.id - 1;
-		while(p >= 0 && haxe.Timer.arr[p] == null) p--;
-		haxe.Timer.arr = haxe.Timer.arr.slice(0,p + 1);
-	}
-	this.id = null;
-}
-haxe.Timer.prototype.run = function() {
-	null;
-}
-haxe.Timer.prototype.__class__ = haxe.Timer;
 hedge.display.FillType = function() { }
 hedge.display.FillType.__name__ = ["hedge","display","FillType"];
 hedge.display.FillType.prototype.__class__ = hedge.display.FillType;
@@ -1831,16 +1808,18 @@ hedge.display.Bitmap = function(bitmapData,pixelSnapping,smoothing) { if( bitmap
 hedge.display.Bitmap.__name__ = ["hedge","display","Bitmap"];
 hedge.display.Bitmap.__super__ = hedge.display.DisplayObject;
 for(var k in hedge.display.DisplayObject.prototype ) hedge.display.Bitmap.prototype[k] = hedge.display.DisplayObject.prototype[k];
+hedge.display.Bitmap.prototype.bmd = null;
 hedge.display.Bitmap.prototype.bitmapData = null;
 hedge.display.Bitmap.prototype.pixelSnapping = null;
 hedge.display.Bitmap.prototype.smoothing = null;
 hedge.display.Bitmap.prototype.getBitmapData = function() {
-	return this.__jq__.data("bitmapdata");
+	return this.bmd;
 }
 hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	this.setWidth(value.getWidth());
 	this.setHeight(value.getHeight());
-	this.__jq__.append(value.__canvas__).data("bitmapdata",value);
+	this.__jq__.append(value.__canvas__);
+	this.bmd = value;
 	return value;
 }
 hedge.display.Bitmap.prototype.__class__ = hedge.display.Bitmap;
@@ -1918,23 +1897,23 @@ hedge.jquery.events.EnterFrame.__name__ = ["hedge","jquery","events","EnterFrame
 hedge.jquery.events.EnterFrame.interval = null;
 hedge.jquery.events.EnterFrame.timer = null;
 hedge.jquery.events.EnterFrame.addListener = function(name,listener) {
-	hedge.jquery.events.EnterFrame.data.set(name,listener);
-	hedge.jquery.events.EnterFrame.events.push(name);
-	if(hedge.jquery.events.EnterFrame.events.length != 0) {
+	hedge.jquery.events.EnterFrame.dataHash.set(name,hedge.jquery.events.EnterFrame.dataArray.push(listener));
+	if(hedge.jquery.events.EnterFrame.dataArray.length != 0) {
 		hedge.jquery.events.EnterFrame.running = true;
-		hedge.jquery.events.EnterFrame.determineFrameRate();
-		hedge.jquery.events.EnterFrame.timer = new haxe.Timer(hedge.jquery.events.EnterFrame.interval);
-		hedge.jquery.events.EnterFrame.timer.run = $closure(hedge.jquery.events.EnterFrame,"runEnterFrame");
+		hedge.jquery.events.EnterFrame.interval = 1000 / hedge.Setup.getFrameRate();
+		hedge.jquery.events.EnterFrame.timer = setInterval($closure(hedge.jquery.events.EnterFrame,"runEnterFrame"),hedge.jquery.events.EnterFrame.interval);
 	}
+	hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
 }
 hedge.jquery.events.EnterFrame.removeListener = function(name,listener) {
-	if(hedge.jquery.events.EnterFrame.data.exists(name) == true) {
-		hedge.jquery.events.EnterFrame.data.remove(name);
-		hedge.jquery.events.EnterFrame.events.remove(name);
-		if(hedge.jquery.events.EnterFrame.events.length == 0) {
+	if(hedge.jquery.events.EnterFrame.dataHash.exists(name) == true) {
+		hedge.jquery.events.EnterFrame.dataArray.remove(listener);
+		hedge.jquery.events.EnterFrame.dataHash.remove(name);
+		if(hedge.jquery.events.EnterFrame.dataArray.length == 0) {
 			hedge.jquery.events.EnterFrame.running = false;
-			hedge.jquery.events.EnterFrame.timer.stop();
+			clearInterval(hedge.jquery.events.EnterFrame.timer);
 		}
+		hedge.jquery.events.EnterFrame.eventLength = hedge.jquery.events.EnterFrame.dataArray.length;
 	}
 }
 hedge.jquery.events.EnterFrame.determineFrameRate = function() {
@@ -1942,17 +1921,14 @@ hedge.jquery.events.EnterFrame.determineFrameRate = function() {
 }
 hedge.jquery.events.EnterFrame.runEnterFrame = function() {
 	if(hedge.jquery.events.EnterFrame.running == true) {
-		{
-			var _g = 0, _g1 = hedge.jquery.events.EnterFrame.events;
-			while(_g < _g1.length) {
-				var i = _g1[_g];
-				++_g;
-				(hedge.jquery.events.EnterFrame.data.get(i))("");
-			}
+		var i = hedge.jquery.events.EnterFrame.eventLength;
+		while(i > 0) {
+			hedge.jquery.events.EnterFrame.dataArray[i - 1]("");
+			i--;
 		}
 	}
 	else {
-		hedge.jquery.events.EnterFrame.timer.stop();
+		clearInterval(hedge.jquery.events.EnterFrame.timer);
 	}
 }
 hedge.jquery.events.EnterFrame.prototype.__class__ = hedge.jquery.events.EnterFrame;
@@ -2039,7 +2015,6 @@ hedge.display.PixelSnapping.AUTO = "auto";
 hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}};
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
-haxe.Timer.arr = new Array();
 hedge.display.FillType.FLOOD = "flood";
 hedge.display.FillType.BITMAPDATA = "bitmapdata";
 hedge.display.FillType.GRADIENT = "gradient";
@@ -2051,7 +2026,8 @@ hedge.display.LineType.PLAIN = "plain";
 hedge.display.LineType.GRADIENT = "gradient";
 hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
-hedge.jquery.events.EnterFrame.data = new Hash();
-hedge.jquery.events.EnterFrame.events = new Array();
+hedge.jquery.events.EnterFrame.dataHash = new Hash();
+hedge.jquery.events.EnterFrame.dataArray = new Array();
 hedge.jquery.events.EnterFrame.running = false;
+hedge.jquery.events.EnterFrame.eventLength = 0;
 BunnyMain.main()
