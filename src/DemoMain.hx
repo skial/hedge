@@ -1,10 +1,11 @@
 ﻿package ;
 
-import demo.bunnyLandBlitTest.BunnyLandBlitTest;
 import haxe.Firebug;
 import haxe.rtti.Meta;
-import demo.bunnyBlitTest.BlitTest;
 #if js
+import demo.bunnyBlitTest.BlitTest;
+import demo.bunnyLandBlitTest.BunnyLandBlitTest;
+import demo.wizardry.Main;
 import js.Lib;
 import hedge.display.Sprite;
 import hedge.events.MouseEvent;
@@ -20,7 +21,7 @@ import hedge.Setup;
  * @author Skial Bainn
  */
 
-class BunnyMain {
+class DemoMain {
 		
 	static function main() {
 		if (Firebug.detect()) {
@@ -28,14 +29,25 @@ class BunnyMain {
 		}
 		
 		#if js
-		Setup.init(launch, 15, #if bunnyBlit 'bunnyBlit' #elseif bunnyLand 'bunnyLand' #end);
+			// Setup.init params : callback method, frame rate for enterframe event, then stage id
+			#if bunnyBlit
+				Setup.init(launch, 15, 'bunnyBlit');
+			#elseif bunnyLand 
+				Setup.init(launch, 15, 'bunnyLand');
+			#elseif wizardry
+				Setup.init(launch, 15, 'wizardry');
+			#end
 		#elseif flash9
 		launch();
 		#end
 	}
 	
 	static function launch() {
-		hedge.Lib.attachToStage(new Examples());
+		#if !wizardry
+			hedge.Lib.attachToStage(new Examples());
+		#else
+			hedge.Lib.attachToStage(new Main());
+		#end
 	}
 	
 }
@@ -52,9 +64,9 @@ class Examples extends Sprite {
 	public function new() {
 		super();
 		
-		bunnyOne = #if bunnyBlit new BlitTest(); max=3000 #elseif bunnyLand new BunnyLandBlitTest(); max=34000 #end;
+		bunnyOne = #if bunnyBlit new BlitTest(); max = 3000; #elseif bunnyLand new BunnyLandBlitTest(); max = 34000; #end
 		bunnyOne.name = 'blit';
-		bunnyClass = #if bunnyBlit BlitTest #elseif bunnyLand BunnyLandBlitTest #end;
+		bunnyClass = #if bunnyBlit BlitTest; #elseif bunnyLand BunnyLandBlitTest; #end
 		
 		bunnyAmount = new TextField();
 		bunnyAmount.type = TextFieldType.INPUT;

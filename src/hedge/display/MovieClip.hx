@@ -18,14 +18,14 @@ class MovieClip extends Sprite {
 	public var trackAsMenu:Bool;
 
 	public function new() {
-		
+		super();
 	}
 	
 	public function gotoAndPlay(frame:Dynamic, ?scene:String = null):Void {
 		
 	}
 	
-	public function gotoAndStop(frame:Dynamic, ?Scene:String = null):Void {
+	public function gotoAndStop(frame:Dynamic, ?scene:String = null):Void {
 		
 	}
 	

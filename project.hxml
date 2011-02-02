@@ -2,7 +2,7 @@
 -cp ./src
 -D bunnyBlit
 -lib raphaelExtern
--main BunnyMain
+-main DemoMain
 --macro keep(['Type', 'Reflect'])
 --dead-code-elimination
 
@@ -12,6 +12,16 @@
 -cp ./src
 -D bunnyLand
 -lib raphaelExtern
--main BunnyMain
+-main DemoMain
+--macro keep(['Type', 'Reflect'])
+--dead-code-elimination
+
+--next
+
+-js ./bin/WizardyMovieClipTest/WizardryMovie.js
+-cp ./src
+-D wizardry
+-lib raphaelExtern
+-main DemoMain
 --macro keep(['Type', 'Reflect'])
 --dead-code-elimination
