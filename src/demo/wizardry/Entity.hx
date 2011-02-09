@@ -5,9 +5,9 @@
 
 package demo.wizardry;
 
-import hedge.display.MovieClip;
+import hedge.display.Sprite;
 
-class Entity extends MovieClip {
+class Entity extends Sprite {
 	
 	public var radius:Float;
 	public var kinGroup:Array<Dynamic>;

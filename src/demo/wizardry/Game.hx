@@ -10,7 +10,7 @@ import hedge.display.Sprite;
 class Game extends Sprite {
 	
 	public var entities:Array<Entity>;
-	public var villiagers:Array<Villager>;
+	public var villagers:Array<Villager>;
 	public var enemies:Array<EvilWizard>;
 	
 	public var player:PlayerWizard;
@@ -21,6 +21,7 @@ class Game extends Sprite {
 	public static var instance:Game;
 	
 	public var level:Level;
+	
 	public var scene:Sprite;
 	
 	public var cameraX:Float;
@@ -33,14 +34,14 @@ class Game extends Sprite {
 		super();
 		
 		instance = this;
-		this.entities = [];
-		this.villiagers = [];
-		this.enemies = [];
+		this.entities = new Array<Entity>();
+		this.villiagers = new Array<Villager>();
+		this.enemies = new Array<EvilWizard>();
 		
 		this.createScene();
 		this.createLevel();
 		this.createPlayer();
-		this.createVilliagers();
+		this.createVillagers();
 		this.createEvilWizards();
 	}
 	
@@ -52,9 +53,7 @@ class Game extends Sprite {
 	private function createLevel():Void {
 		this.level = new Level();
 		
-		var n:Int = level.numChildren;
-		
-		for (i in 0...n) {
+		for (i in 0...level.numChildren) {
 			var entity:Entity = cast level.getChildAt(0);
 			addEntity(entity);
 		}
@@ -67,7 +66,19 @@ class Game extends Sprite {
 	}
 	
 	private function sortDepths():Void {
-		// ?
+		trace(entities);
+		entities.sort(function(x, y):Int {
+			if (x.y == y.y) {
+				return 0;
+			} else if (x.y > y.y) {
+				return Std.int(x.y);
+			} else if (x.y < y.y) {
+				return Std.int(y.y);
+			} else {
+				return 0;
+			}
+		});
+		trace(entities);
 	}
 	
 	private function createPlayer():Void {
@@ -123,8 +134,8 @@ class Game extends Sprite {
 	}
 	
 	public function update():Void {
-		for (i in entities) {
-			i.update();
+		for (entity in entities) {
+			entity.update();
 		}
 		
 		sortDepths();

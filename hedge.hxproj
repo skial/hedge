@@ -2,7 +2,7 @@
 <project>
   <!-- Output SWF options -->
   <output>
-    <movie disabled="False" />
+    <movie disabled="True" />
     <movie input="" />
     <movie path="bin\hedge.js" />
     <movie fps="0" />
@@ -38,9 +38,9 @@
     <hidden path="bin\yuicompressor-2.4.2.jar" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand />
+  <preBuildCommand>haxe project.hxml</preBuildCommand>
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False" />
+  <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

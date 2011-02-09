@@ -4,8 +4,9 @@
  */
 
 package demo.wizardry;
+import hedge.display.MovieClip;
 
-class Ground extends Entity {
+class VillagerSouth extends MovieClip {
 
 	public function new() {
 		super();

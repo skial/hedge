@@ -6,13 +6,6 @@
  * @author Skial Bainn
  </haxe_doc>
 	</class>
-	<class path="hedge.display.JointStyle" params="" file="src/hedge/display/JointStyle.hx">
-		<MITER public="1" get="inline" set="null" line="10" static="1"><c path="String"/></MITER>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
-	</class>
 	<typedef path="demo.bunnyBlitTest.BlitBunny" params="" file="src/demo/bunnyBlitTest/BlitTest.hx" module="demo.bunnyBlitTest.BlitTest">
 		<a>
 			<speedY><c path="Float"/></speedY>
@@ -252,6 +245,10 @@
 	<c path="hedge.display.DisplayObject"/>
 	<c path="hedge.display.DisplayObject"/>
 </f></addChild>
+		<getChildAt public="1" set="method" line="43"><f a="index">
+	<c path="Int"/>
+	<c path="hedge.display.DisplayObject"/>
+</f></getChildAt>
 		<removeChild public="1" set="method" line="59"><f a="child">
 	<c path="hedge.display.DisplayObject"/>
 	<c path="hedge.display.DisplayObject"/>
@@ -313,46 +310,41 @@
  * @author Skial Bainn
  </haxe_doc>
 	</class>
-	<class path="hedge.geom.Rectangle" params="" file="src/hedge/geom/Rectangle.hx">
-		<height public="1"><c path="Float"/></height>
-		<width public="1"><c path="Float"/></width>
-		<y public="1"><c path="Float"/></y>
-		<x public="1"><c path="Float"/></x>
-		<new public="1" set="method" line="22"><f a="?x:?y:?width:?height">
-	<c path="Float"/>
-	<c path="Float"/>
-	<c path="Float"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></new>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
-	</class>
-	<class path="demo.bunnyBlitTest.BlitTest" params="" file="src/demo/bunnyBlitTest/BlitTest.hx">
-		<extends path="hedge.display.Sprite"/>
-		<numBunnies public="1" line="25" static="1"><c path="Int"/></numBunnies>
-		<gravity public="1" line="26" static="1"><c path="Float"/></gravity>
-		<maxX public="1" line="28" static="1"><c path="Int"/></maxX>
-		<minX public="1" line="29" static="1"><c path="Int"/></minX>
-		<maxY public="1" line="30" static="1"><c path="Int"/></maxY>
-		<minY public="1" line="31" static="1"><c path="Int"/></minY>
-		<rect public="1" line="32" static="1"><c path="hedge.geom.Rectangle"/></rect>
-		<sourceRect public="1" line="33" static="1"><c path="hedge.geom.Rectangle"/></sourceRect>
-		<bunny public="1" static="1"><t path="demo.bunnyBlitTest.BlitBunny"/></bunny>
-		<bunnies public="1"><c path="Array"><t path="demo.bunnyBlitTest.BlitBunny"/></c></bunnies>
-		<bitmap public="1"><c path="hedge.display.Bitmap"/></bitmap>
-		<onEnterFrame public="1" set="method" line="63"><f a="e">
-	<unknown/>
-	<e path="Void"/>
-</f></onEnterFrame>
-		<new public="1" set="method" line="37"><f a=""><e path="Void"/></f></new>
-	</class>
 	<class path="demo.wizardry.Gamepad" params="" file="src/demo/wizardry/Gamepad.hx">
 		<extends path="hedge.events.EventDispatcher"/>
+		<up public="1"><e path="Bool"/></up>
+		<down public="1"><e path="Bool"/></down>
+		<left public="1"><e path="Bool"/></left>
+		<right public="1"><e path="Bool"/></right>
+		<upLeft public="1"><e path="Bool"/></upLeft>
+		<downLeft public="1"><e path="Bool"/></downLeft>
+		<upRight public="1"><e path="Bool"/></upRight>
+		<downRight public="1"><e path="Bool"/></downRight>
+		<fire1 public="1"><e path="Bool"/></fire1>
+		<fire2 public="1"><e path="Bool"/></fire2>
 		<any public="1"><e path="Bool"/></any>
+		<x public="1"><c path="Float"/></x>
+		<y public="1"><c path="Float"/></y>
 		<angle public="1"><c path="Float"/></angle>
+		<leftKey public="1"><c path="Int"/></leftKey>
+		<rightKey public="1"><c path="Int"/></rightKey>
+		<downKey public="1"><c path="Int"/></downKey>
+		<upKey public="1"><c path="Int"/></upKey>
+		<fire1Key public="1"><c path="Int"/></fire1Key>
+		<fire2Key public="1"><c path="Int"/></fire2Key>
+		<onKeyDown set="method" line="65"><f a="e">
+	<c path="hedge.events.KeyboardEvent"/>
+	<e path="Void"/>
+</f></onKeyDown>
+		<onKeyUp set="method" line="86"><f a="e">
+	<c path="hedge.events.KeyboardEvent"/>
+	<e path="Void"/>
+</f></onKeyUp>
+		<updateState set="method" line="107"><f a=""><e path="Void"/></f></updateState>
+		<new public="1" set="method" line="49"><f a="stage">
+	<c path="hedge.display.Stage"/>
+	<e path="Void"/>
+</f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -395,6 +387,7 @@
 	</class>
 	<class path="demo.wizardry.Person" params="" file="src/demo/wizardry/Person.hx">
 		<extends path="demo.wizardry.Entity"/>
+		<health public="1"><c path="Int"/></health>
 		<speed public="1"><c path="Float"/></speed>
 		<angle public="1"><c path="Float"/></angle>
 		<speedX public="1"><c path="Float"/></speedX>
@@ -403,6 +396,7 @@
 		<south public="1"><c path="hedge.display.MovieClip"/></south>
 		<east public="1"><c path="hedge.display.MovieClip"/></east>
 		<west public="1"><c path="hedge.display.MovieClip"/></west>
+		<animations public="1"><c path="Array"><c path="hedge.display.MovieClip"/></c></animations>
 		<currentAnimation><c path="hedge.display.MovieClip"/></currentAnimation>
 		<destroy public="1" set="method" line="51" override="1"><f a=""><e path="Void"/></f></destroy>
 		<showAnimation set="method" line="56"><f a="animation">
@@ -417,6 +411,7 @@
 		<showWalk set="method" line="80"><f a=""><e path="Void"/></f></showWalk>
 		<showIdle set="method" line="94"><f a=""><e path="Void"/></f></showIdle>
 		<render public="1" set="method" line="98" override="1"><f a=""><e path="Void"/></f></render>
+		<new public="1" set="method" line="28"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -4101,13 +4096,6 @@
 	ArrayAccess is used to indicate a class that can be accessed using brackets.
 	The type parameter represent the type of the elements stored.
 </haxe_doc></class>
-	<class path="hedge.display.CapsStyle" params="" file="src/hedge/display/CapsStyle.hx">
-		<NONE public="1" get="inline" set="null" line="10" static="1"><c path="String"/></NONE>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
-	</class>
 	<class path="hedge.events.Event" params="" file="src/hedge/events/Event.hx">
 		<extends path="hedge.Object"/>
 		<ENTER_FRAME public="1" get="inline" set="null" line="60" static="1"><c path="String"/></ENTER_FRAME>
@@ -4159,10 +4147,24 @@
 	</class>
 	<class path="demo.wizardry.Game" params="" file="src/demo/wizardry/Game.hx">
 		<extends path="hedge.display.Sprite"/>
+		<numEvilWizards line="19" static="1"><c path="Int"/></numEvilWizards>
 		<instance public="1" static="1"><c path="demo.wizardry.Game"/></instance>
+		<screenCenterX line="29" static="1"><c path="Float"/></screenCenterX>
+		<screenCenterY line="30" static="1"><c path="Float"/></screenCenterY>
 		<entities public="1"><c path="Array"><c path="demo.wizardry.Entity"/></c></entities>
 		<villiagers public="1"><c path="Array"><c path="demo.wizardry.Villager"/></c></villiagers>
+		<enemies public="1"><c path="Array"><c path="demo.wizardry.EvilWizard"/></c></enemies>
+		<player public="1"><c path="demo.wizardry.PlayerWizard"/></player>
+		<level public="1"><c path="demo.wizardry.Level"/></level>
 		<scene public="1"><c path="hedge.display.Sprite"/></scene>
+		<cameraX public="1"><c path="Float"/></cameraX>
+		<cameraY public="1"><c path="Float"/></cameraY>
+		<createScene set="method" line="47"><f a=""><e path="Void"/></f></createScene>
+		<createLevel set="method" line="52"><f a=""><e path="Void"/></f></createLevel>
+		<sortDepths set="method" line="69"><f a=""><e path="Void"/></f></sortDepths>
+		<createPlayer set="method" line="73"><f a=""><e path="Void"/></f></createPlayer>
+		<createEvilWizards set="method" line="80"><f a=""><e path="Void"/></f></createEvilWizards>
+		<createEvilWizard set="method" line="86"><f a=""><e path="Void"/></f></createEvilWizard>
 		<createExplosion public="1" set="method" line="105"><f a="x:y">
 	<c path="Float"/>
 	<c path="Float"/>
@@ -4176,6 +4178,9 @@
 	<c path="demo.wizardry.Entity"/>
 	<e path="Void"/>
 </f></removeEntity>
+		<update public="1" set="method" line="125"><f a=""><e path="Void"/></f></update>
+		<updateCamera set="method" line="135"><f a=""><e path="Void"/></f></updateCamera>
+		<new public="1" set="method" line="32"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -4218,19 +4223,6 @@
 	<e path="Void"/>
 </f></send>
 		<new public="1" set="method"><f a=""><e path="Void"/></f></new>
-	</class>
-	<class path="hedge.geom.Point" params="" file="src/hedge/geom/Point.hx">
-		<x public="1"><c path="Float"/></x>
-		<y public="1"><c path="Float"/></y>
-		<new public="1" set="method" line="14"><f a="?x:?y">
-	<c path="Float"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></new>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
 	</class>
 	<class path="hedge.canvas.CanvasRenderingContext2D" params="" file="src/hedge/canvas/CanvasRenderingContext2D.hx" extern="1">
 		<width public="1"><c path="Int"/></width>
@@ -6532,8 +6524,9 @@
 		Enables you to create custom jQuery events
 	</haxe_doc>
 </special></class>
-	<class path="hedge.display.PixelSnapping" params="" file="src/hedge/display/PixelSnapping.hx">
-		<AUTO public="1" get="inline" set="null" line="11" static="1"><c path="String"/></AUTO>
+	<class path="demo.wizardry.Level" params="" file="src/demo/wizardry/Level.hx">
+		<extends path="hedge.display.Sprite"/>
+		<new public="1" set="method" line="14"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -6811,6 +6804,7 @@
 		<addFireball set="method" line="22"><f a=""><e path="Void"/></f></addFireball>
 		<attemptFire set="method" line="30"><f a=""><e path="Void"/></f></attemptFire>
 		<update public="1" set="method" line="37" override="1"><f a=""><e path="Void"/></f></update>
+		<new public="1" set="method" line="15"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -6901,10 +6895,6 @@
 	<c path="Int"/>
 	<c path="String"/>
 </f></RGB_to_String>
-		<canvas_RGBA_to_String public="1" set="method" line="184" static="1"><f a="color">
-	<c path="Int"/>
-	<c path="String"/>
-</f></canvas_RGBA_to_String>
 		<RGB_String_to_HEX public="1" set="method" line="193" static="1"><f a="color">
 	<c path="String"/>
 	<c path="Int"/>
@@ -6941,6 +6931,7 @@
 	<e path="Void"/>
 </f></setPosition>
 		<update public="1" set="method" line="35" override="1"><f a=""><e path="Void"/></f></update>
+		<new public="1" set="method" line="15"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -7704,15 +7695,6 @@
 	<l><c path="Float"/></l>
 	<h><c path="Float"/></h>
 </a></typedef>
-	<class path="hedge.display.FillType" params="" file="src/hedge/display/FillType.hx">
-		<FLOOD public="1" get="inline" set="null" line="10" static="1"><c path="String"/></FLOOD>
-		<BITMAPDATA public="1" get="inline" set="null" line="11" static="1"><c path="String"/></BITMAPDATA>
-		<GRADIENT public="1" get="inline" set="null" line="12" static="1"><c path="String"/></GRADIENT>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
-	</class>
 	<class path="StringBuf" params="" file="C:\Program Files (x86)\Motion-Twin\haxe\std/StringBuf.hx">
 		<add public="1" get="inline" set="null" line="46">
 			<f a="?x">
@@ -7752,45 +7734,10 @@
 	</class>
 	<class path="hedge.display.BitmapData" params="" file="src/hedge/display/BitmapData.hx">
 		<height public="1" get="getHeight" set="null"><c path="Int"/></height>
-		<transparent public="1"><e path="Bool"/></transparent>
 		<width public="1" get="getWidth" set="null"><c path="Int"/></width>
 		<__canvas__ public="1"><c path="JQuery"/></__canvas__>
-		<__context__ public="1"><c path="hedge.canvas.CanvasRenderingContext2D"/></__context__>
-		<__id__ public="1"><c path="String"/></__id__>
-		<__fillColor__ public="1"><c path="Int"/></__fillColor__>
-		<__source__ public="1"><c path="JQuery"/></__source__>
-		<copyPixels public="1" set="method" line="84"><f a="sourceBitmapData:sourceRect:destPoint:?alphaBitmapData:?alphaPoint:?mergeAlpha">
-	<c path="hedge.display.BitmapData"/>
-	<c path="hedge.geom.Rectangle"/>
-	<c path="hedge.geom.Point"/>
-	<c path="hedge.display.BitmapData"/>
-	<c path="hedge.geom.Point"/>
-	<e path="Bool"/>
-	<e path="Void"/>
-</f></copyPixels>
-		<fillRect public="1" set="method" line="97"><f a="rect:color">
-	<c path="hedge.geom.Rectangle"/>
-	<c path="Int"/>
-	<e path="Void"/>
-</f></fillRect>
 		<getHeight set="method" line="183"><f a=""><c path="Int"/></f></getHeight>
 		<getWidth set="method" line="187"><f a=""><c path="Int"/></f></getWidth>
-		<onCanvasEnter set="method" line="191"><f a="e">
-	<c path="hedge.events.MouseEvent"/>
-	<e path="Void"/>
-</f></onCanvasEnter>
-		<onCanvasLeave set="method" line="195"><f a="e">
-	<c path="hedge.events.MouseEvent"/>
-	<e path="Void"/>
-</f></onCanvasLeave>
-		<new public="1" set="method" line="37"><f a="width:height:?transparent:?fillColor:?cssSelector">
-	<c path="Int"/>
-	<c path="Int"/>
-	<e path="Bool"/>
-	<c path="Int"/>
-	<c path="String"/>
-	<e path="Void"/>
-</f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -7822,6 +7769,12 @@
 		<extends path="hedge.Object"/>
 		<capsLock public="1" get="getCapsLock" set="null" static="1"><e path="Bool"/></capsLock>
 		<numLock public="1" get="getNumLock" set="null" static="1"><e path="Bool"/></numLock>
+		<DOWN public="1" get="inline" set="null" line="19" static="1"><c path="Int"/></DOWN>
+		<ENTER public="1" get="inline" set="null" line="21" static="1"><c path="Int"/></ENTER>
+		<LEFT public="1" get="inline" set="null" line="41" static="1"><c path="Int"/></LEFT>
+		<RIGHT public="1" get="inline" set="null" line="60" static="1"><c path="Int"/></RIGHT>
+		<SPACE public="1" get="inline" set="null" line="62" static="1"><c path="Int"/></SPACE>
+		<UP public="1" get="inline" set="null" line="64" static="1"><c path="Int"/></UP>
 		<getCapsLock set="method" line="77" static="1"><f a=""><e path="Bool"/></f></getCapsLock>
 		<getNumLock set="method" line="81" static="1"><f a=""><e path="Bool"/></f></getNumLock>
 		<haxe_doc>
@@ -7838,14 +7791,6 @@
 	<c path="hedge.display.DisplayObject"/>
 	<c path="hedge.display.Stage"/>
 </f></attachToStage>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
-	</class>
-	<class path="hedge.display.GradientType" params="" file="src/hedge/display/GradientType.hx">
-		<LINEAR public="1" line="10" static="1"><c path="String"/></LINEAR>
-		<RADIAL public="1" line="11" static="1"><c path="String"/></RADIAL>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -7899,6 +7844,19 @@
  * @author Skial Bainn
  </haxe_doc>
 	</class>
+	<class path="demo.wizardry.Main" params="" file="src/demo/wizardry/Main.hx">
+		<extends path="hedge.display.Sprite"/>
+		<game><c path="demo.wizardry.Game"/></game>
+		<onEnterFrame set="method" line="24"><f a="e">
+	<c path="hedge.events.Event"/>
+	<e path="Void"/>
+</f></onEnterFrame>
+		<new public="1" set="method" line="15"><f a=""><e path="Void"/></f></new>
+		<haxe_doc>
+ * ...
+ * @author Skial Bainn
+ </haxe_doc>
+	</class>
 	<class path="DemoMain" params="" file="src/DemoMain.hx">
 		<main set="method" line="26" static="1"><f a=""><e path="Void"/></f></main>
 		<launch set="method" line="45" static="1"><f a=""><e path="Void"/></f></launch>
@@ -7906,20 +7864,6 @@
  * ...
  * @author Skial Bainn
  </haxe_doc>
-	</class>
-	<class path="Examples" params="" file="src/DemoMain.hx" module="DemoMain">
-		<extends path="hedge.display.Sprite"/>
-		<bunnyAmount><c path="hedge.text.TextField"/></bunnyAmount>
-		<submitAmount><c path="hedge.display.Sprite"/></submitAmount>
-		<submitText><c path="hedge.text.TextField"/></submitText>
-		<bunnyOne><d/></bunnyOne>
-		<bunnyClass><d/></bunnyClass>
-		<max><c path="Int"/></max>
-		<onBunnyClick public="1" set="method" line="108"><f a="e">
-	<d/>
-	<e path="Void"/>
-</f></onBunnyClick>
-		<new public="1" set="method" line="64"><f a=""><e path="Void"/></f></new>
 	</class>
 	<class path="hedge.display.Stage" params="" file="src/hedge/display/Stage.hx">
 		<extends path="hedge.display.DisplayObjectContainer"/>
@@ -8227,48 +8171,8 @@
 	<class path="hedge.display.Graphics" params="" file="src/hedge/display/Graphics.hx">
 		<extends path="hedge.Object"/>
 		<__raphael__ public="1"><c path="Raphael"/></__raphael__>
-		<__element__ public="1"><c path="RaphaelElement"/></__element__>
 		<parent public="1"><c path="hedge.display.DisplayObject"/></parent>
 		<path public="1"><c path="String"/></path>
-		<fill_color public="1"><c path="Int"/></fill_color>
-		<fill_alpha public="1"><c path="Float"/></fill_alpha>
-		<lineType public="1"><c path="String"/></lineType>
-		<line_thickness public="1"><c path="Float"/></line_thickness>
-		<line_color public="1"><c path="Int"/></line_color>
-		<line_alpha public="1"><c path="Float"/></line_alpha>
-		<line_caps public="1"><c path="String"/></line_caps>
-		<line_joints public="1"><c path="String"/></line_joints>
-		<line_limit public="1"><c path="Float"/></line_limit>
-		<fillType public="1"><c path="String"/></fillType>
-		<fill_gradient_type public="1"><c path="String"/></fill_gradient_type>
-		<fill_gradient_colors public="1"><c path="Array"><c path="Int"/></c></fill_gradient_colors>
-		<fill_gradient_ratios public="1"><c path="Array"><c path="Int"/></c></fill_gradient_ratios>
-		<beginFill public="1" set="method" line="94"><f a="color:?alpha">
-	<c path="Int"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></beginFill>
-		<checkFill set="method" line="124"><f a=""><e path="Void"/></f></checkFill>
-		<drawRect public="1" set="method" line="193"><f a="x:y:width:height">
-	<c path="Float"/>
-	<c path="Float"/>
-	<c path="Float"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></drawRect>
-		<endFill public="1" set="method" line="221"><f a=""><e path="Void"/></f></endFill>
-		<lineStyle public="1" set="method" line="244"><f a="?thickness:?color:?alpha:?pixelHinting:?scaleMode:?caps:?joints:?miterLimit">
-	<c path="Float"/>
-	<c path="Int"/>
-	<c path="Float"/>
-	<e path="Bool"/>
-	<c path="String"/>
-	<c path="String"/>
-	<c path="String"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></lineStyle>
-		<checkLineStyle set="method" line="256"><f a=""><e path="Void"/></f></checkLineStyle>
 		<new public="1" set="method" line="70"><f a="parent">
 	<c path="hedge.display.DisplayObject"/>
 	<e path="Void"/>
@@ -8331,7 +8235,6 @@
 	<c path="Float"/>
 	<c path="Float"/>
 </f></setHeight>
-		<new public="1" set="method" line="54"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -8341,19 +8244,11 @@
 		<extends path="hedge.display.DisplayObject"/>
 		<bmd><c path="hedge.display.BitmapData"/></bmd>
 		<bitmapData public="1" get="getBitmapData" set="setBitmapData"><c path="hedge.display.BitmapData"/></bitmapData>
-		<pixelSnapping public="1"><c path="String"/></pixelSnapping>
-		<smoothing public="1"><e path="Bool"/></smoothing>
 		<getBitmapData set="method" line="25"><f a=""><c path="hedge.display.BitmapData"/></f></getBitmapData>
 		<setBitmapData set="method" line="29"><f a="value">
 	<c path="hedge.display.BitmapData"/>
 	<c path="hedge.display.BitmapData"/>
 </f></setBitmapData>
-		<new public="1" set="method" line="16"><f a="?bitmapData:?pixelSnapping:?smoothing">
-	<c path="hedge.display.BitmapData"/>
-	<c path="String"/>
-	<e path="Bool"/>
-	<e path="Void"/>
-</f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -8378,14 +8273,6 @@
 		<rightBound public="1" line="11" static="1"><c path="Float"/></rightBound>
 		<topBound public="1" line="12" static="1"><c path="Float"/></topBound>
 		<bottomBound public="1" line="13" static="1"><c path="Float"/></bottomBound>
-		<haxe_doc>
- * ...
- * @author Skial Bainn
- </haxe_doc>
-	</class>
-	<class path="hedge.display.LineType" params="" file="src/hedge/display/LineType.hx">
-		<PLAIN public="1" get="inline" set="null" line="10" static="1"><c path="String"/></PLAIN>
-		<GRADIENT public="1" get="inline" set="null" line="11" static="1"><c path="String"/></GRADIENT>
 		<haxe_doc>
  * ...
  * @author Skial Bainn
@@ -8452,7 +8339,6 @@
 	</class>
 	<class path="hedge.events.MouseEvent" params="" file="src/hedge/events/MouseEvent.hx">
 		<extends path="hedge.events.Event"/>
-		<CLICK public="1" get="inline" set="null" line="67" static="1"><c path="String"/></CLICK>
 		<altKey public="1"><e path="Bool"/></altKey>
 		<buttonDown public="1"><e path="Bool"/></buttonDown>
 		<ctrlKey public="1"><e path="Bool"/></ctrlKey>
@@ -8517,6 +8403,7 @@
 		<targetVillager><c path="demo.wizardry.Villager"/></targetVillager>
 		<findTargetVillager set="method" line="22"><f a=""><e path="Void"/></f></findTargetVillager>
 		<update public="1" set="method" line="26" override="1"><f a=""><e path="Void"/></f></update>
+		<new public="1" set="method" line="12"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
  * @author Skial Bainn

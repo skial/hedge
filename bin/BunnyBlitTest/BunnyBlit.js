@@ -1,4 +1,4 @@
-(function(){$estr = function() { return js.Boot.__string_rec(this,''); }
+$estr = function() { return js.Boot.__string_rec(this,''); }
 if(typeof hedge=='undefined') hedge = {}
 if(!hedge.display) hedge.display = {}
 hedge.display.JointStyle = function() { }
@@ -215,15 +215,15 @@ hedge.display.DisplayObject.prototype.getHeight = function() {
 	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.setHeight = function(value) {
-	this.__jq__.height(value).data("height",value);
-	return this.__jq__.data("height");
+	this.__jq__.height(value);
+	return value;
 }
 hedge.display.DisplayObject.prototype.getWidth = function() {
-	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
+	return this.__jq__.width();
 }
 hedge.display.DisplayObject.prototype.setWidth = function(value) {
-	this.__jq__.width(value).data("width",value);
-	return this.__jq__.data("width");
+	this.__jq__.width(value);
+	return value;
 }
 hedge.display.DisplayObject.prototype.getX = function() {
 	return this.__jq__.position().left;
@@ -271,6 +271,9 @@ hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 	child.setParent(this);
 	this.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : child.getX(), y : child.getY(), w : child.getWidth(), h : child.getHeight(), p : this}]);
 	return child;
+}
+hedge.display.DisplayObjectContainer.prototype.addChildAt = function(child,index) {
+	return new hedge.display.DisplayObject();
 }
 hedge.display.DisplayObjectContainer.prototype.removeChild = function(child) {
 	return new hedge.display.DisplayObject();
@@ -428,30 +431,13 @@ for(var k in hedge.events.EventDispatcher.prototype ) demo.wizardry.Gamepad.prot
 demo.wizardry.Gamepad.prototype.any = null;
 demo.wizardry.Gamepad.prototype.angle = null;
 demo.wizardry.Gamepad.prototype.__class__ = demo.wizardry.Gamepad;
-hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
-	hedge.display.Sprite.call(this);
-}}
-hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
-hedge.display.MovieClip.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
-hedge.display.MovieClip.prototype.currentFrame = null;
-hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
-	null;
-}
-hedge.display.MovieClip.prototype.play = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.stop = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
 demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
+	hedge.display.Sprite.call(this);
 	this.radius = 16;
 }}
 demo.wizardry.Entity.__name__ = ["demo","wizardry","Entity"];
-demo.wizardry.Entity.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.MovieClip.prototype[k];
+demo.wizardry.Entity.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.Sprite.prototype[k];
 demo.wizardry.Entity.prototype.radius = null;
 demo.wizardry.Entity.prototype.kinGroup = null;
 demo.wizardry.Entity.prototype.isDestroyed = null;
@@ -535,6 +521,54 @@ demo.wizardry.Person.prototype.render = function() {
 	demo.wizardry.Entity.prototype.render.call(this);
 }
 demo.wizardry.Person.prototype.__class__ = demo.wizardry.Person;
+hedge.display.MovieClip = function() { }
+hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
+hedge.display.MovieClip.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
+hedge.display.MovieClip.prototype.currentFrame = null;
+hedge.display.MovieClip.prototype.__running__ = null;
+hedge.display.MovieClip.prototype.__timer__ = null;
+hedge.display.MovieClip.prototype.__counter__ = null;
+hedge.display.MovieClip.prototype.__interval__ = null;
+hedge.display.MovieClip.prototype.__bitmapdata__ = null;
+hedge.display.MovieClip.prototype.__array__ = null;
+hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
+	null;
+}
+hedge.display.MovieClip.prototype.play = function() {
+	null;
+}
+hedge.display.MovieClip.prototype.stop = function() {
+	null;
+}
+hedge.display.MovieClip.prototype.addChild = function(child) {
+	if(this.__running__ == false) {
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+	return hedge.display.Sprite.prototype.addChild.call(this,child);
+}
+hedge.display.MovieClip.prototype.addChildAt = function(child,index) {
+	if(this.__running__ == false) {
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+	return hedge.display.Sprite.prototype.addChildAt.call(this,child,index);
+}
+hedge.display.MovieClip.prototype.__checkRunning__ = function() {
+	if(this.__running__ == false) {
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+}
+hedge.display.MovieClip.prototype.__updateRender__ = function() {
+	this.__bitmapdata__.__context__.drawImage(this.__array__[this.__counter__].image[0],0,0);
+	this.__interval__ = Std.parseFloat(this.__array__[this.__counter__].pause) * 1000;
+	if(this.__counter__ == this.__array__.length - 1) this.__counter__ = 0;
+	else ++this.__counter__;
+	this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+}
+hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
 hedge.display.CapsStyle = function() { }
 hedge.display.CapsStyle.__name__ = ["hedge","display","CapsStyle"];
 hedge.display.CapsStyle.prototype.__class__ = hedge.display.CapsStyle;
@@ -598,7 +632,6 @@ demo.wizardry.Game.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) demo.wizardry.Game.prototype[k] = hedge.display.Sprite.prototype[k];
 demo.wizardry.Game.instance = null;
 demo.wizardry.Game.prototype.entities = null;
-demo.wizardry.Game.prototype.villiagers = null;
 demo.wizardry.Game.prototype.scene = null;
 demo.wizardry.Game.prototype.createExplosion = function(x,y) {
 	var explosion = new demo.wizardry.Explosion();
@@ -1552,7 +1585,7 @@ hedge.display.BitmapData.prototype.__fillColor__ = null;
 hedge.display.BitmapData.prototype.__source__ = null;
 hedge.display.BitmapData.prototype.copyPixels = function(sourceBitmapData,sourceRect,destPoint,alphaBitmapData,alphaPoint,mergeAlpha) {
 	if(mergeAlpha == null) mergeAlpha = false;
-	this.__context__.drawImage(sourceBitmapData.__canvas__[0],~~(0.5+sourceRect.x),~~(0.5+sourceRect.y),sourceRect.width,sourceRect.height,destPoint.x,destPoint.y,sourceRect.width,sourceRect.height);
+	this.__context__.drawImage(sourceBitmapData.__canvas__[0],sourceRect.x,sourceRect.y,sourceRect.width,sourceRect.height,destPoint.x,destPoint.y,sourceRect.width,sourceRect.height);
 }
 hedge.display.BitmapData.prototype.fillRect = function(rect,color) {
 	this.__context__.fillStyle = this.transparent == true?hedge.Setup.canvas_RGBA_to_String(color):hedge.Setup.RGB_to_String(color);
@@ -2421,4 +2454,4 @@ hedge.jquery.events.EnterFrame.dataHash = new Hash();
 hedge.jquery.events.EnterFrame.dataArray = new Array();
 hedge.jquery.events.EnterFrame.eventLength = 0;
 hedge.jquery.events.EnterFrame.i = 0;
-DemoMain.main()})();
+DemoMain.main()

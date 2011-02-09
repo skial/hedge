@@ -222,19 +222,17 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setHeight(value:Float):Float {
-		__jq__.height(value)
-				.data('height', value);
-		return __jq__.data('height');
+		__jq__.height(value);
+		return value;
 	}
 	
 	private function getWidth():Float {
-		return __jq__.data('width') == null ? __jq__.width() : __jq__.data('width');
+		return __jq__.width();
 	}
 	
 	private function setWidth(value:Float):Float {
-		__jq__.width(value)
-				.data('width', value);
-		return __jq__.data('width');
+		__jq__.width(value);
+		return value;
 	}
 	
 	private function getX():Float {

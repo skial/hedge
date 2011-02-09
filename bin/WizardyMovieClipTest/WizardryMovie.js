@@ -212,15 +212,15 @@ hedge.display.DisplayObject.prototype.getHeight = function() {
 	return this.__jq__.data("height") == null?this.__jq__.height():this.__jq__.data("height");
 }
 hedge.display.DisplayObject.prototype.setHeight = function(value) {
-	this.__jq__.height(value).data("height",value);
-	return this.__jq__.data("height");
+	this.__jq__.height(value);
+	return value;
 }
 hedge.display.DisplayObject.prototype.getWidth = function() {
-	return this.__jq__.data("width") == null?this.__jq__.width():this.__jq__.data("width");
+	return this.__jq__.width();
 }
 hedge.display.DisplayObject.prototype.setWidth = function(value) {
-	this.__jq__.width(value).data("width",value);
-	return this.__jq__.data("width");
+	this.__jq__.width(value);
+	return value;
 }
 hedge.display.DisplayObject.prototype.getX = function() {
 	return this.__jq__.position().left;
@@ -268,6 +268,9 @@ hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 	child.setParent(this);
 	this.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : child.getX(), y : child.getY(), w : child.getWidth(), h : child.getHeight(), p : this}]);
 	return child;
+}
+hedge.display.DisplayObjectContainer.prototype.addChildAt = function(child,index) {
+	return new hedge.display.DisplayObject();
 }
 hedge.display.DisplayObjectContainer.prototype.getChildAt = function(index) {
 	return new hedge.display.DisplayObject();
@@ -460,30 +463,13 @@ demo.wizardry.Gamepad.prototype.updateState = function() {
 	this.angle = Math.atan2(this.x,this.y);
 }
 demo.wizardry.Gamepad.prototype.__class__ = demo.wizardry.Gamepad;
-hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
-	hedge.display.Sprite.call(this);
-}}
-hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
-hedge.display.MovieClip.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
-hedge.display.MovieClip.prototype.currentFrame = null;
-hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
-	null;
-}
-hedge.display.MovieClip.prototype.play = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.stop = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
 demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
+	hedge.display.Sprite.call(this);
 	this.radius = 16;
 }}
 demo.wizardry.Entity.__name__ = ["demo","wizardry","Entity"];
-demo.wizardry.Entity.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.MovieClip.prototype[k];
+demo.wizardry.Entity.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.Sprite.prototype[k];
 demo.wizardry.Entity.prototype.radius = null;
 demo.wizardry.Entity.prototype.kinGroup = null;
 demo.wizardry.Entity.prototype.isDestroyed = null;
@@ -505,7 +491,11 @@ demo.wizardry.Entity.prototype.__class__ = demo.wizardry.Entity;
 demo.wizardry.Person = function(p) { if( p === $_ ) return; {
 	demo.wizardry.Entity.call(this);
 	this.health = 100;
-	this.animations = [this.west,this.south,this.east,this.north];
+	this.animations = new Array();
+	this.animations.push(this.north = new demo.wizardry.VillagerNorth());
+	this.animations.push(this.south = new demo.wizardry.VillagerSouth());
+	this.animations.push(this.east = new demo.wizardry.VillagerEast());
+	this.animations.push(this.west = new demo.wizardry.VillagerWest());
 	{
 		var _g = 0, _g1 = this.animations;
 		while(_g < _g1.length) {
@@ -583,6 +573,81 @@ demo.wizardry.Person.prototype.render = function() {
 	demo.wizardry.Entity.prototype.render.call(this);
 }
 demo.wizardry.Person.prototype.__class__ = demo.wizardry.Person;
+hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
+	hedge.display.Sprite.call(this);
+	this.__timeline__ = new $("div[data-link=\"" + Type.getClassName(Type.getClass(this)) + "\"]");
+	this.__frames__ = this.__timeline__.children("img");
+	this.__running__ = false;
+	this.__counter__ = 0;
+	this.__array__ = new Array();
+	{
+		var _g1 = 0, _g = this.__frames__.length;
+		while(_g1 < _g) {
+			var n = _g1++;
+			this.__array__.push({ image : new $(this.__frames__[n]), pause : new $(this.__frames__[n]).attr("data-pause")});
+		}
+	}
+	this.__bitmapdata__ = new hedge.display.BitmapData(this.__array__[0].image.width(),this.__array__[0].image.height(),true,-16777216);
+	this.__bitmap__ = new hedge.display.Bitmap(this.__bitmapdata__);
+	this.addChild(this.__bitmap__);
+}}
+hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
+hedge.display.MovieClip.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
+hedge.display.MovieClip.prototype.currentFrame = null;
+hedge.display.MovieClip.prototype.__timeline__ = null;
+hedge.display.MovieClip.prototype.__frames__ = null;
+hedge.display.MovieClip.prototype.__running__ = null;
+hedge.display.MovieClip.prototype.__timer__ = null;
+hedge.display.MovieClip.prototype.__counter__ = null;
+hedge.display.MovieClip.prototype.__interval__ = null;
+hedge.display.MovieClip.prototype.__bitmap__ = null;
+hedge.display.MovieClip.prototype.__bitmapdata__ = null;
+hedge.display.MovieClip.prototype.__array__ = null;
+hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
+	null;
+}
+hedge.display.MovieClip.prototype.play = function() {
+	null;
+}
+hedge.display.MovieClip.prototype.stop = function() {
+	null;
+}
+hedge.display.MovieClip.prototype.addChild = function(child) {
+	if(this.__running__ == false) {
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+	return hedge.display.Sprite.prototype.addChild.call(this,child);
+}
+hedge.display.MovieClip.prototype.addChildAt = function(child,index) {
+	if(this.__running__ == false) {
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+	return hedge.display.Sprite.prototype.addChildAt.call(this,child,index);
+}
+hedge.display.MovieClip.prototype.__checkRunning__ = function() {
+	if(this.__running__ == false) {
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+}
+hedge.display.MovieClip.prototype.__updateRender__ = function() {
+	this.__bitmapdata__.__context__.drawImage(this.__array__[this.__counter__].image[0],0,0);
+	this.__interval__ = Std.parseFloat(this.__array__[this.__counter__].pause) * 1000;
+	if(this.__counter__ == this.__array__.length - 1) this.__counter__ = 0;
+	else ++this.__counter__;
+	this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+}
+hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
+demo.wizardry.VillagerWest = function(p) { if( p === $_ ) return; {
+	hedge.display.MovieClip.call(this);
+}}
+demo.wizardry.VillagerWest.__name__ = ["demo","wizardry","VillagerWest"];
+demo.wizardry.VillagerWest.__super__ = hedge.display.MovieClip;
+for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerWest.prototype[k] = hedge.display.MovieClip.prototype[k];
+demo.wizardry.VillagerWest.prototype.__class__ = demo.wizardry.VillagerWest;
 hedge.events.Event = function(type,bubbles,cancelable) { if( type === $_ ) return; {
 	if(cancelable == null) cancelable = false;
 	if(bubbles == null) bubbles = false;
@@ -637,16 +702,23 @@ hedge.events.KeyboardEvent.prototype.clone = function() {
 	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
 }
 hedge.events.KeyboardEvent.prototype.__class__ = hedge.events.KeyboardEvent;
+demo.wizardry.VillagerSouth = function(p) { if( p === $_ ) return; {
+	hedge.display.MovieClip.call(this);
+}}
+demo.wizardry.VillagerSouth.__name__ = ["demo","wizardry","VillagerSouth"];
+demo.wizardry.VillagerSouth.__super__ = hedge.display.MovieClip;
+for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerSouth.prototype[k] = hedge.display.MovieClip.prototype[k];
+demo.wizardry.VillagerSouth.prototype.__class__ = demo.wizardry.VillagerSouth;
 demo.wizardry.Game = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
 	demo.wizardry.Game.instance = this;
-	this.entities = [];
-	this.villiagers = [];
-	this.enemies = [];
+	this.entities = new Array();
+	this.villiagers = new Array();
+	this.enemies = new Array();
 	this.createScene();
 	this.createLevel();
 	this.createPlayer();
-	this.createVilliagers();
+	this.createVillagers();
 	this.createEvilWizards();
 }}
 demo.wizardry.Game.__name__ = ["demo","wizardry","Game"];
@@ -654,7 +726,7 @@ demo.wizardry.Game.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) demo.wizardry.Game.prototype[k] = hedge.display.Sprite.prototype[k];
 demo.wizardry.Game.instance = null;
 demo.wizardry.Game.prototype.entities = null;
-demo.wizardry.Game.prototype.villiagers = null;
+demo.wizardry.Game.prototype.villagers = null;
 demo.wizardry.Game.prototype.enemies = null;
 demo.wizardry.Game.prototype.player = null;
 demo.wizardry.Game.prototype.level = null;
@@ -667,18 +739,39 @@ demo.wizardry.Game.prototype.createScene = function() {
 }
 demo.wizardry.Game.prototype.createLevel = function() {
 	this.level = new demo.wizardry.Level();
-	var n = this.level.getNumChildren();
 	{
-		var _g = 0;
-		while(_g < n) {
-			var i = _g++;
+		var _g1 = 0, _g = this.level.getNumChildren();
+		while(_g1 < _g) {
+			var i = _g1++;
 			var entity = this.level.getChildAt(0);
 			this.addEntity(entity);
 		}
 	}
 }
+demo.wizardry.Game.prototype.createVillagers = function() {
+	var _g1 = 0, _g = demo.wizardry.Game.numVillagers;
+	while(_g1 < _g) {
+		var i = _g1++;
+		this.createVillager();
+	}
+}
 demo.wizardry.Game.prototype.sortDepths = function() {
-	null;
+	haxe.Log.trace(this.entities,{ fileName : "Game.hx", lineNumber : 69, className : "demo.wizardry.Game", methodName : "sortDepths"});
+	this.entities.sort(function(x,y) {
+		if(x.getY() == y.getY()) {
+			return 0;
+		}
+		else if(x.getY() > y.getY()) {
+			return Std["int"](x.getY());
+		}
+		else if(x.getY() < y.getY()) {
+			return Std["int"](y.getY());
+		}
+		else {
+			return 0;
+		}
+	});
+	haxe.Log.trace(this.entities,{ fileName : "Game.hx", lineNumber : 81, className : "demo.wizardry.Game", methodName : "sortDepths"});
 }
 demo.wizardry.Game.prototype.createPlayer = function() {
 	this.player = new demo.wizardry.PlayerWizard();
@@ -699,6 +792,13 @@ demo.wizardry.Game.prototype.createEvilWizard = function() {
 	this.enemies.push(evilWizard);
 	evilWizard.kinGroup = this.enemies;
 }
+demo.wizardry.Game.prototype.createVillager = function() {
+	var villager = new demo.wizardry.Villager();
+	villager.setPosition(demo.wizardry.MathHelper.random(demo.wizardry.Config.leftBound,demo.wizardry.Config.rightBound),demo.wizardry.MathHelper.random(demo.wizardry.Config.leftBound,demo.wizardry.Config.rightBound));
+	this.addEntity(villager);
+	this.villagers.push(villager);
+	villager.kinGroup = this.villagers;
+}
 demo.wizardry.Game.prototype.createExplosion = function(x,y) {
 	var explosion = new demo.wizardry.Explosion();
 	explosion.setX(x);
@@ -718,9 +818,9 @@ demo.wizardry.Game.prototype.update = function() {
 	{
 		var _g = 0, _g1 = this.entities;
 		while(_g < _g1.length) {
-			var i = _g1[_g];
+			var entity = _g1[_g];
 			++_g;
-			i.update();
+			entity.update();
 		}
 	}
 	this.sortDepths();
@@ -901,6 +1001,9 @@ demo.wizardry.Explosion.prototype.update = function() {
 	demo.wizardry.Entity.prototype.update.call(this);
 }
 demo.wizardry.Explosion.prototype.__class__ = demo.wizardry.Explosion;
+hedge.display.PixelSnapping = function() { }
+hedge.display.PixelSnapping.__name__ = ["hedge","display","PixelSnapping"];
+hedge.display.PixelSnapping.prototype.__class__ = hedge.display.PixelSnapping;
 demo.wizardry.Level = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
 }}
@@ -1301,6 +1404,13 @@ js.Boot.__init = function() {
 	$closure = js.Boot.__closure;
 }
 js.Boot.prototype.__class__ = js.Boot;
+demo.wizardry.VillagerEast = function(p) { if( p === $_ ) return; {
+	hedge.display.MovieClip.call(this);
+}}
+demo.wizardry.VillagerEast.__name__ = ["demo","wizardry","VillagerEast"];
+demo.wizardry.VillagerEast.__super__ = hedge.display.MovieClip;
+for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerEast.prototype[k] = hedge.display.MovieClip.prototype[k];
+demo.wizardry.VillagerEast.prototype.__class__ = demo.wizardry.VillagerEast;
 if(typeof haxe=='undefined') haxe = {}
 haxe.Firebug = function() { }
 haxe.Firebug.__name__ = ["haxe","Firebug"];
@@ -1512,6 +1622,9 @@ hedge.Setup.generateInstanceName = function() {
 hedge.Setup.RGB_to_String = function(color) {
 	return "rgb(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ")";
 }
+hedge.Setup.canvas_RGBA_to_String = function(color) {
+	return "rgba(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ", " + (color < 0?-(color >> 24) / 255:1) + ")";
+}
 hedge.Setup.RGB_String_to_HEX = function(color) {
 	var values = color.substr(color.indexOf("rgb(") + 4,color.lastIndexOf(")") - 4).split(", ");
 	return Std.parseInt(values[0]) << 16 | Std.parseInt(values[1]) << 8 | Std.parseInt(values[2]);
@@ -1633,20 +1746,62 @@ StringBuf.prototype.toString = function() {
 }
 StringBuf.prototype.b = null;
 StringBuf.prototype.__class__ = StringBuf;
+demo.wizardry.VillagerNorth = function(p) { if( p === $_ ) return; {
+	hedge.display.MovieClip.call(this);
+}}
+demo.wizardry.VillagerNorth.__name__ = ["demo","wizardry","VillagerNorth"];
+demo.wizardry.VillagerNorth.__super__ = hedge.display.MovieClip;
+for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerNorth.prototype[k] = hedge.display.MovieClip.prototype[k];
+demo.wizardry.VillagerNorth.prototype.__class__ = demo.wizardry.VillagerNorth;
 if(!hedge.text) hedge.text = {}
 hedge.text.TextFieldType = function() { }
 hedge.text.TextFieldType.__name__ = ["hedge","text","TextFieldType"];
 hedge.text.TextFieldType.prototype.__class__ = hedge.text.TextFieldType;
-hedge.display.BitmapData = function() { }
+hedge.display.BitmapData = function(width,height,transparent,fillColor,cssSelector) { if( width === $_ ) return; {
+	if(fillColor == null) fillColor = 16777215;
+	if(transparent == null) transparent = true;
+	this.width = width;
+	this.height = height;
+	this.transparent = transparent == null?true:transparent;
+	this.__fillColor__ = fillColor == null?16777215:fillColor;
+	this.__id__ = hedge.Setup.generateInstanceName();
+	this.__source__ = cssSelector == null?null:new $(cssSelector);
+	this.__canvas__ = new $("<canvas>").addClass("bitmapdata").attr({ id : this.__id__, width : width, height : height});
+	this.__canvas__.bind("mouseenter",$closure(this,"onCanvasEnter"));
+	this.__canvas__.bind("mouseleave",$closure(this,"onCanvasLeave"));
+	hedge.Setup.__storage__.append(this.__canvas__);
+	this.__context__ = this.__canvas__[0].getContext("2d");
+	if(cssSelector == null) {
+		this.fillRect(new hedge.geom.Rectangle(0,0,width,height),this.__fillColor__);
+	}
+	else {
+		this.__context__.drawImage(this.__source__[0],0,0);
+	}
+}}
 hedge.display.BitmapData.__name__ = ["hedge","display","BitmapData"];
 hedge.display.BitmapData.prototype.height = null;
+hedge.display.BitmapData.prototype.transparent = null;
 hedge.display.BitmapData.prototype.width = null;
 hedge.display.BitmapData.prototype.__canvas__ = null;
+hedge.display.BitmapData.prototype.__context__ = null;
+hedge.display.BitmapData.prototype.__id__ = null;
+hedge.display.BitmapData.prototype.__fillColor__ = null;
+hedge.display.BitmapData.prototype.__source__ = null;
+hedge.display.BitmapData.prototype.fillRect = function(rect,color) {
+	this.__context__.fillStyle = this.transparent == true?hedge.Setup.canvas_RGBA_to_String(color):hedge.Setup.RGB_to_String(color);
+	this.__context__.fillRect(rect.x,rect.y,rect.width,rect.height);
+}
 hedge.display.BitmapData.prototype.getHeight = function() {
 	return this.height;
 }
 hedge.display.BitmapData.prototype.getWidth = function() {
 	return this.width;
+}
+hedge.display.BitmapData.prototype.onCanvasEnter = function(e) {
+	this.__canvas__.attr({ tabindex : 0}).focus();
+}
+hedge.display.BitmapData.prototype.onCanvasLeave = function(e) {
+	this.__canvas__.removeAttr("tabindex").blur();
 }
 hedge.display.BitmapData.prototype.__class__ = hedge.display.BitmapData;
 if(!haxe.rtti) haxe.rtti = {}
@@ -1796,7 +1951,12 @@ hedge.display.Stage.__name__ = ["hedge","display","Stage"];
 hedge.display.Stage.__super__ = hedge.display.DisplayObjectContainer;
 for(var k in hedge.display.DisplayObjectContainer.prototype ) hedge.display.Stage.prototype[k] = hedge.display.DisplayObjectContainer.prototype[k];
 hedge.display.Stage.prototype.__class__ = hedge.display.Stage;
-demo.wizardry.Villager = function() { }
+demo.wizardry.Villager = function(p) { if( p === $_ ) return; {
+	demo.wizardry.Person.call(this);
+	this.speed = 2;
+	this.angle = 0;
+	this.setRandomPosition();
+}}
 demo.wizardry.Villager.__name__ = ["demo","wizardry","Villager"];
 demo.wizardry.Villager.__super__ = demo.wizardry.Person;
 for(var k in demo.wizardry.Person.prototype ) demo.wizardry.Villager.prototype[k] = demo.wizardry.Person.prototype[k];
@@ -2029,12 +2189,21 @@ hedge.text.TextField.prototype.setHeight = function(value) {
 	return this.__jq__.data("height");
 }
 hedge.text.TextField.prototype.__class__ = hedge.text.TextField;
-hedge.display.Bitmap = function() { }
+hedge.display.Bitmap = function(bitmapData,pixelSnapping,smoothing) { if( bitmapData === $_ ) return; {
+	if(smoothing == null) smoothing = false;
+	if(pixelSnapping == null) pixelSnapping = "auto";
+	hedge.display.DisplayObject.call(this);
+	this.setBitmapData(bitmapData);
+	this.pixelSnapping = pixelSnapping;
+	this.smoothing = smoothing;
+}}
 hedge.display.Bitmap.__name__ = ["hedge","display","Bitmap"];
 hedge.display.Bitmap.__super__ = hedge.display.DisplayObject;
 for(var k in hedge.display.DisplayObject.prototype ) hedge.display.Bitmap.prototype[k] = hedge.display.DisplayObject.prototype[k];
 hedge.display.Bitmap.prototype.bmd = null;
 hedge.display.Bitmap.prototype.bitmapData = null;
+hedge.display.Bitmap.prototype.pixelSnapping = null;
+hedge.display.Bitmap.prototype.smoothing = null;
 hedge.display.Bitmap.prototype.getBitmapData = function() {
 	return this.bmd;
 }
@@ -2147,6 +2316,23 @@ hedge.events.MouseEvent.prototype.clone = function() {
 	return new hedge.events.MouseEvent(this.type,this.bubbles,this.cancelable,this.localX,this.localY,this.relatedObject,this.ctrlKey,this.altKey,this.shiftKey,this.buttonDown,this.delta,this.commandKey,this.controlKey,this.clickCount);
 }
 hedge.events.MouseEvent.prototype.__class__ = hedge.events.MouseEvent;
+if(!hedge.geom) hedge.geom = {}
+hedge.geom.Rectangle = function(x,y,width,height) { if( x === $_ ) return; {
+	if(height == null) height = 0;
+	if(width == null) width = 0;
+	if(y == null) y = 0;
+	if(x == null) x = 0;
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+}}
+hedge.geom.Rectangle.__name__ = ["hedge","geom","Rectangle"];
+hedge.geom.Rectangle.prototype.height = null;
+hedge.geom.Rectangle.prototype.width = null;
+hedge.geom.Rectangle.prototype.y = null;
+hedge.geom.Rectangle.prototype.x = null;
+hedge.geom.Rectangle.prototype.__class__ = hedge.geom.Rectangle;
 js.Lib = function() { }
 js.Lib.__name__ = ["js","Lib"];
 js.Lib.document = null;
@@ -2294,9 +2480,11 @@ js.Boot.__init();
 hedge.events.Event.ENTER_FRAME = "enterFrame";
 hedge.events.KeyboardEvent.KEY_DOWN = "keydown";
 hedge.events.KeyboardEvent.KEY_UP = "keyup";
+demo.wizardry.Game.numVillagers = 15;
 demo.wizardry.Game.numEvilWizards = 3;
 demo.wizardry.Game.screenCenterX = 275;
 demo.wizardry.Game.screenCenterY = 200;
+hedge.display.PixelSnapping.AUTO = "auto";
 hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}};
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
