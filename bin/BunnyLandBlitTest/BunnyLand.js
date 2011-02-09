@@ -1515,7 +1515,41 @@ hedge.Setup.init = function(_callback,fps,stageName) {
 	hedge.Setup.__default__ = new hedge.display.DisplayObjectContainer();
 	hedge.Setup.__default__.setName("default_parent_object");
 	hedge.Setup.createJqueryEvents();
+	hedge.Setup.getAllMovieClips();
 	_callback();
+}
+hedge.Setup.getAllMovieClips = function() {
+	var movieclips = new $("div.movieclip_timeline");
+	var tmp;
+	{
+		var _g1 = 0, _g = movieclips.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var mcf = [{ frameName : null, frameData : null, framePause : null}];
+			var mcl = [{ labelName : null, labelFrames : new Array()}];
+			var mcs = [{ movieclipLink : null, movieclipLayers : new Array()}];
+			tmp = new $(movieclips[i]);
+			mcs[0].movieclipLink = tmp.attr("data-link");
+			tmp.children("div.label").each(function(mcs,mcl,mcf) {
+				return function() {
+					tmp = new $(this);
+					mcl[0].labelName = tmp.attr("class");
+					tmp.children("img").each(function(mcl,mcf) {
+						return function() {
+							tmp = new $(this);
+							mcf[0].frameName = tmp.attr("class");
+							mcf[0].framePause = tmp.attr("data-pause");
+							mcf[0].frameData = tmp[0];
+							mcl[0].labelFrames.push(mcf[0]);
+						}
+					}(mcl,mcf));
+					mcs[0].movieclipLayers.push(mcl[0]);
+				}
+			}(mcs,mcl,mcf));
+			hedge.Setup.__movieclips__.push(mcs[0]);
+			haxe.Log.trace(mcs[0],{ fileName : "Setup.hx", lineNumber : 143, className : "hedge.Setup", methodName : "getAllMovieClips"});
+		}
+	}
 }
 hedge.Setup.createJqueryEvents = function() {
 	var _class;
@@ -2787,6 +2821,7 @@ demo.bunnyLandBlitTest.BunnyLandBlitTest.tileSize = 32;
 hedge.display.PixelSnapping.AUTO = "auto";
 hedge.jquery.events.ResizeElement.__meta__ = { fields : { add : { jquery : null}}};
 hedge.Setup.__events__ = [hedge.jquery.events.ResizeElement];
+hedge.Setup.__movieclips__ = new Array();
 hedge.Setup.RESIZE_ELEMENT = "ResizeElement";
 hedge.display.FillType.FLOOD = "flood";
 hedge.display.FillType.BITMAPDATA = "bitmapdata";

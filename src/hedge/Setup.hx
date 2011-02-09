@@ -34,6 +34,22 @@ typedef ChildProperties = {
 	var p:DisplayObject;
 }
 
+typedef MovieclipStructure = {
+	var movieclipLink:String;
+	var movieclipLayers:Array<MovieclipLayer>;
+}
+
+typedef MovieclipLayer = {
+	var labelName:String;
+	var labelFrames:Array<MovieclipFrame>;
+}
+
+typedef MovieclipFrame = {
+	var frameName:String;
+	var frameData:Dynamic;
+	var framePause:String;
+}
+
 class Setup {
 	
 	private static var __events__:Array<Dynamic> = [ResizeElement,
@@ -53,6 +69,8 @@ class Setup {
 	public static var __storage__:JQuery;
 	public static var __stage__:Stage;
 	public static var __default__:DisplayObjectContainer;
+	
+	public static var __movieclips__:Array<MovieclipStructure> = new Array<MovieclipStructure>();
 	
 	// INTERNAL PROPERTIES
 	
@@ -81,11 +99,51 @@ class Setup {
 		__default__.name = 'default_parent_object';
 		
 		createJqueryEvents();
+		getAllMovieClips();
 		
 		_callback();
 	}
 	
 	// INTERNAL METHODS / ADVANCED PUBLIC METHODS
+	
+	public static function getAllMovieClips():Void {
+		var movieclips = new JQuery('div.movieclip_timeline');
+		
+		var tmp:JQuery;
+		
+		for (i in 0...movieclips.length) {
+			var mcf:MovieclipFrame = { frameName:null, frameData:null, framePause:null };
+			var mcl:MovieclipLayer = { labelName:null, labelFrames:new Array<MovieclipFrame>() };
+			var mcs:MovieclipStructure = { movieclipLink:null, movieclipLayers:new Array<MovieclipLayer>() };
+			
+			tmp = new JQuery(movieclips[i]);
+			
+			mcs.movieclipLink = tmp.attr('data-link');
+			//trace(tmp.children('div.label'));
+			tmp.children('div.label').each(function() {
+				tmp = untyped new JQuery(this);
+				
+				mcl.labelName = tmp.attr('class');
+				//trace(tmp.children('img'));
+				
+				tmp.children('img').each(function() {
+					tmp = untyped new JQuery(this);
+					
+					mcf.frameName = tmp.attr('class');
+					mcf.framePause = tmp.attr('data-pause');
+					mcf.frameData = tmp[0];
+					
+					mcl.labelFrames.push(mcf);
+				});
+				
+				mcs.movieclipLayers.push(mcl);
+			});
+			
+			__movieclips__.push(mcs);
+			trace(mcs.movieclipLayers);
+		}
+		
+	}
 	
 	public static function createJqueryEvents():Void {
 		var _class;

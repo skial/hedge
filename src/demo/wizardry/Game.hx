@@ -109,6 +109,7 @@ class Game extends Sprite {
 		
 		addEntity(villager);
 		
+		//villagers = new Array<Villager>();
 		villagers.push(villager);
 		villager.kinGroup = villagers;
 	}

@@ -35,6 +35,7 @@ class MovieClip extends Sprite {
 	public function new() {
 		super();
 		__timeline__ = new JQuery('div[data-link="' + Type.getClassName(Type.getClass(this)) + '"]');
+		trace(__timeline__.attr('data-link'));
 		__frames__ = __timeline__.children('img');
 		
 		__running__ = false;
