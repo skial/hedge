@@ -57,7 +57,10 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function removeChild(child:DisplayObject):DisplayObject {
-		return new DisplayObject();
+		child.__jq__.appendTo(Setup.__storage__);
+		child.parent = Setup.__default__;
+		__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:0, y:0, w:0, h:0, p:this } ]);
+		return child;
 	}
 	
 	public function removeChildAt(index:Int):DisplayObject {

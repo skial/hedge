@@ -45,7 +45,7 @@ class MovieClip extends Sprite {
 		if (__movieclip__ != null) {
 			__timers__ = new Array<Dynamic>();
 			for (i in __layers__) {
-				// unfortunately we need to reference (this) for setTimeout to work, also to access __updateRender__ & mclb. Wrapped in a closure.
+				// unfortunately we need to reference (this) for setTimeout to work, also to access __updateRender__. Wrapped in a closure.
 				var __self__ = this;
 				var mclb:MovieclipLayerBitmap = { labelName:i.labelName, 
 															 labelFrames:i.labelFrames, 

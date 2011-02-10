@@ -1,0 +1,7 @@
+-js ./bin/WizardyMovieClipTest/WizardryMovie.js
+-cp ./src
+-D wizardry
+-lib raphaelExtern
+-main DemoMain
+--macro keep(['Type', 'Reflect'])
+--dead-code-elimination

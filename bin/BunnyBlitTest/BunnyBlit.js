@@ -272,9 +272,6 @@ hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 	this.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : child.getX(), y : child.getY(), w : child.getWidth(), h : child.getHeight(), p : this}]);
 	return child;
 }
-hedge.display.DisplayObjectContainer.prototype.removeChild = function(child) {
-	return new hedge.display.DisplayObject();
-}
 hedge.display.DisplayObjectContainer.prototype.getMouseChildren = function() {
 	return this.mouseChildren;
 }
@@ -420,167 +417,6 @@ demo.bunnyBlitTest.BlitTest.prototype.onEnterFrame = function(e) {
 	}
 }
 demo.bunnyBlitTest.BlitTest.prototype.__class__ = demo.bunnyBlitTest.BlitTest;
-if(!demo.wizardry) demo.wizardry = {}
-demo.wizardry.Gamepad = function() { }
-demo.wizardry.Gamepad.__name__ = ["demo","wizardry","Gamepad"];
-demo.wizardry.Gamepad.__super__ = hedge.events.EventDispatcher;
-for(var k in hedge.events.EventDispatcher.prototype ) demo.wizardry.Gamepad.prototype[k] = hedge.events.EventDispatcher.prototype[k];
-demo.wizardry.Gamepad.prototype.any = null;
-demo.wizardry.Gamepad.prototype.angle = null;
-demo.wizardry.Gamepad.prototype.__class__ = demo.wizardry.Gamepad;
-hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
-	hedge.display.Sprite.call(this);
-	{
-		var _g = 0, _g1 = hedge.Setup.__movieclips__;
-		while(_g < _g1.length) {
-			var i = _g1[_g];
-			++_g;
-			if(i.movieclipLink == Type.getClassName(Type.getClass(this))) {
-				this.__movieclip__ = { movieclipLink : null, movieclipLayers : new Array()};
-				this.__movieclip__ = i;
-				this.__layers__ = this.__movieclip__.movieclipLayers;
-				this.__frames__ = this.__movieclip__.movieclipLayers[0].labelFrames;
-				break;
-			}
-		}
-	}
-	if(this.__movieclip__ != null) {
-		this.__timers__ = new Array();
-		{
-			var _g = 0, _g1 = this.__layers__;
-			while(_g < _g1.length) {
-				var i = _g1[_g];
-				++_g;
-				var __self__ = [this];
-				var mclb = [{ labelName : i.labelName, labelFrames : i.labelFrames, labelBitmap : new hedge.display.Bitmap(new hedge.display.BitmapData(new $(i.labelFrames[0].frameData).width(),new $(i.labelFrames[0].frameData).height(),true,-16777216)), labelTimerPosition : null, labelCounter : 0}];
-				mclb[0].labelBitmap.setName(mclb[0].labelName);
-				this.addChild(mclb[0].labelBitmap);
-				mclb[0].labelTimerPosition = this.__timers__.push(setTimeout(function(mclb,__self__) {
-					return function() {
-						__self__[0].__updateRender__(mclb[0]);
-					}
-				}(mclb,__self__),0)) - 1;
-			}
-		}
-	}
-}}
-hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
-hedge.display.MovieClip.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
-hedge.display.MovieClip.prototype.currentFrame = null;
-hedge.display.MovieClip.prototype.__timers__ = null;
-hedge.display.MovieClip.prototype.__movieclip__ = null;
-hedge.display.MovieClip.prototype.__frames__ = null;
-hedge.display.MovieClip.prototype.__layers__ = null;
-hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
-	null;
-}
-hedge.display.MovieClip.prototype.play = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.stop = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.__updateRender__ = function(layer) {
-	var __self__ = this;
-	layer.labelBitmap.getBitmapData().__context__.drawImage(layer.labelFrames[layer.labelCounter].frameData,0,0);
-	if(layer.labelCounter == layer.labelFrames.length - 1) layer.labelCounter = 0;
-	else ++layer.labelCounter;
-	this.__timers__[layer.labelTimerPosition] = setTimeout(setTimeout(function() {
-		__self__.__updateRender__(layer);
-	},Std.parseFloat(layer.labelFrames[layer.labelCounter].framePause) * 1000));
-}
-hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
-demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
-	this.radius = 16;
-}}
-demo.wizardry.Entity.__name__ = ["demo","wizardry","Entity"];
-demo.wizardry.Entity.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.MovieClip.prototype[k];
-demo.wizardry.Entity.prototype.radius = null;
-demo.wizardry.Entity.prototype.kinGroup = null;
-demo.wizardry.Entity.prototype.isDestroyed = null;
-demo.wizardry.Entity.prototype.setPosition = function(x,y) {
-	this.setX(x);
-	this.setY(y);
-}
-demo.wizardry.Entity.prototype.destroy = function() {
-	this.isDestroyed = true;
-	demo.wizardry.Game.instance.removeEntity(this);
-}
-demo.wizardry.Entity.prototype.update = function() {
-	this.render();
-}
-demo.wizardry.Entity.prototype.render = function() {
-	null;
-}
-demo.wizardry.Entity.prototype.__class__ = demo.wizardry.Entity;
-demo.wizardry.Person = function() { }
-demo.wizardry.Person.__name__ = ["demo","wizardry","Person"];
-demo.wizardry.Person.__super__ = demo.wizardry.Entity;
-for(var k in demo.wizardry.Entity.prototype ) demo.wizardry.Person.prototype[k] = demo.wizardry.Entity.prototype[k];
-demo.wizardry.Person.prototype.speed = null;
-demo.wizardry.Person.prototype.angle = null;
-demo.wizardry.Person.prototype.speedX = null;
-demo.wizardry.Person.prototype.speedY = null;
-demo.wizardry.Person.prototype.north = null;
-demo.wizardry.Person.prototype.south = null;
-demo.wizardry.Person.prototype.east = null;
-demo.wizardry.Person.prototype.west = null;
-demo.wizardry.Person.prototype.currentAnimation = null;
-demo.wizardry.Person.prototype.destroy = function() {
-	demo.wizardry.Game.instance.createExplosion(this.getX(),this.getY());
-	demo.wizardry.Entity.prototype.destroy.call(this);
-}
-demo.wizardry.Person.prototype.showAnimation = function(animation) {
-	if(this.currentAnimation != null) {
-		this.removeChild(this.currentAnimation);
-		this.currentAnimation.stop();
-	}
-	this.addChild(animation);
-	animation.play();
-	this.currentAnimation = animation;
-}
-demo.wizardry.Person.prototype.showStill = function(animation,frameNum) {
-	if(frameNum == null) frameNum = 1;
-	if(this.currentAnimation != null) {
-		this.removeChild(this.currentAnimation);
-		this.currentAnimation.stop();
-	}
-	this.addChild(animation);
-	animation.gotoAndStop(frameNum);
-	this.currentAnimation = animation;
-}
-demo.wizardry.Person.prototype.showWalk = function() {
-	this.angle = demo.wizardry.MathHelper.limitRadians(this.angle);
-	if(this.angle >= demo.wizardry.MathHelper.EIGHTH_CIRCLE - 0.01 && this.angle <= demo.wizardry.MathHelper.EIGHTH_CIRCLE * 3) {
-		this.showAnimation(this.east);
-	}
-	else if(this.angle <= -demo.wizardry.MathHelper.EIGHTH_CIRCLE + 0.02 && this.angle >= -demo.wizardry.MathHelper.EIGHTH_CIRCLE * 3 - 0.02) {
-		this.showAnimation(this.west);
-	}
-	else if(this.angle > -demo.wizardry.MathHelper.EIGHTH_CIRCLE && this.angle < demo.wizardry.MathHelper.EIGHTH_CIRCLE) {
-		this.showAnimation(this.south);
-	}
-	else {
-		this.showAnimation(this.north);
-	}
-}
-demo.wizardry.Person.prototype.showIdle = function() {
-	this.showStill(this.currentAnimation,this.currentAnimation.currentFrame);
-}
-demo.wizardry.Person.prototype.render = function() {
-	var totalSpeed = demo.wizardry.MathHelper.magnitude(this.speedX,this.speedY);
-	if(totalSpeed < 1) {
-		this.showIdle();
-	}
-	else {
-		this.showWalk();
-	}
-	demo.wizardry.Entity.prototype.render.call(this);
-}
-demo.wizardry.Person.prototype.__class__ = demo.wizardry.Person;
 hedge.display.CapsStyle = function() { }
 hedge.display.CapsStyle.__name__ = ["hedge","display","CapsStyle"];
 hedge.display.CapsStyle.prototype.__class__ = hedge.display.CapsStyle;
@@ -638,29 +474,6 @@ hedge.events.KeyboardEvent.prototype.clone = function() {
 	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
 }
 hedge.events.KeyboardEvent.prototype.__class__ = hedge.events.KeyboardEvent;
-demo.wizardry.Game = function() { }
-demo.wizardry.Game.__name__ = ["demo","wizardry","Game"];
-demo.wizardry.Game.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) demo.wizardry.Game.prototype[k] = hedge.display.Sprite.prototype[k];
-demo.wizardry.Game.instance = null;
-demo.wizardry.Game.prototype.entities = null;
-demo.wizardry.Game.prototype.scene = null;
-demo.wizardry.Game.prototype.createExplosion = function(x,y) {
-	var explosion = new demo.wizardry.Explosion();
-	explosion.setX(x);
-	explosion.setY(y);
-	this.addEntity(explosion);
-}
-demo.wizardry.Game.prototype.addEntity = function(entity) {
-	this.entities.push(entity);
-	this.scene.addChild(entity);
-}
-demo.wizardry.Game.prototype.removeEntity = function(entity) {
-	demo.wizardry.ArrayHelper.removeFromArray(entity,this.entities);
-	if(entity.kinGroup != null) demo.wizardry.ArrayHelper.removeFromArray(entity,entity.kinGroup);
-	this.scene.removeChild(entity);
-}
-demo.wizardry.Game.prototype.__class__ = demo.wizardry.Game;
 hedge.geom.Point = function(x,y) { if( x === $_ ) return; {
 	if(y == null) y = 0;
 	if(x == null) x = 0;
@@ -671,53 +484,6 @@ hedge.geom.Point.__name__ = ["hedge","geom","Point"];
 hedge.geom.Point.prototype.x = null;
 hedge.geom.Point.prototype.y = null;
 hedge.geom.Point.prototype.__class__ = hedge.geom.Point;
-if(!demo.gamepad) demo.gamepad = {}
-demo.gamepad.GamepadInput = function() { }
-demo.gamepad.GamepadInput.__name__ = ["demo","gamepad","GamepadInput"];
-demo.gamepad.GamepadInput.prototype._isDown = null;
-demo.gamepad.GamepadInput.prototype._isPressed = null;
-demo.gamepad.GamepadInput.prototype._isReleased = null;
-demo.gamepad.GamepadInput.prototype._downTicks = null;
-demo.gamepad.GamepadInput.prototype._upTicks = null;
-demo.gamepad.GamepadInput.prototype.getIsDown = function() {
-	return this._isDown;
-}
-demo.gamepad.GamepadInput.prototype.getIsPressed = function() {
-	return this._isPressed;
-}
-demo.gamepad.GamepadInput.prototype.getIsReleased = function() {
-	return this._isReleased;
-}
-demo.gamepad.GamepadInput.prototype.getDownTicks = function() {
-	return this._downTicks;
-}
-demo.gamepad.GamepadInput.prototype.getUpTicks = function() {
-	return this._upTicks;
-}
-demo.gamepad.GamepadInput.prototype.__class__ = demo.gamepad.GamepadInput;
-demo.gamepad.GamepadMultiInput = function() { }
-demo.gamepad.GamepadMultiInput.__name__ = ["demo","gamepad","GamepadMultiInput"];
-demo.gamepad.GamepadMultiInput.prototype._isDown = null;
-demo.gamepad.GamepadMultiInput.prototype._isPressed = null;
-demo.gamepad.GamepadMultiInput.prototype._isReleased = null;
-demo.gamepad.GamepadMultiInput.prototype._downTicks = null;
-demo.gamepad.GamepadMultiInput.prototype._upTicks = null;
-demo.gamepad.GamepadMultiInput.prototype.getIsDown = function() {
-	return this._isDown;
-}
-demo.gamepad.GamepadMultiInput.prototype.getIsPressed = function() {
-	return this._isPressed;
-}
-demo.gamepad.GamepadMultiInput.prototype.getIsReleased = function() {
-	return this._isReleased;
-}
-demo.gamepad.GamepadMultiInput.prototype.getDownTicks = function() {
-	return this._downTicks;
-}
-demo.gamepad.GamepadMultiInput.prototype.getUpTicks = function() {
-	return this._upTicks;
-}
-demo.gamepad.GamepadMultiInput.prototype.__class__ = demo.gamepad.GamepadMultiInput;
 Reflect = function() { }
 Reflect.__name__ = ["Reflect"];
 Reflect.hasField = function(o,field) {
@@ -828,20 +594,6 @@ Reflect.makeVarArgs = function(f) {
 	}
 }
 Reflect.prototype.__class__ = Reflect;
-demo.wizardry.Explosion = function(p) { if( p === $_ ) return; {
-	demo.wizardry.Entity.call(this);
-}}
-demo.wizardry.Explosion.__name__ = ["demo","wizardry","Explosion"];
-demo.wizardry.Explosion.__super__ = demo.wizardry.Entity;
-for(var k in demo.wizardry.Entity.prototype ) demo.wizardry.Explosion.prototype[k] = demo.wizardry.Entity.prototype[k];
-demo.wizardry.Explosion.prototype.update = function() {
-	if(this.currentFrame == this.totalFrames) this.destroy();
-	demo.wizardry.Entity.prototype.update.call(this);
-}
-demo.wizardry.Explosion.prototype.__class__ = demo.wizardry.Explosion;
-hedge.display.PixelSnapping = function() { }
-hedge.display.PixelSnapping.__name__ = ["hedge","display","PixelSnapping"];
-hedge.display.PixelSnapping.prototype.__class__ = hedge.display.PixelSnapping;
 ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -1025,6 +777,9 @@ Type.enumIndex = function(e) {
 	return e[1];
 }
 Type.prototype.__class__ = Type;
+hedge.display.PixelSnapping = function() { }
+hedge.display.PixelSnapping.__name__ = ["hedge","display","PixelSnapping"];
+hedge.display.PixelSnapping.prototype.__class__ = hedge.display.PixelSnapping;
 if(typeof js=='undefined') js = {}
 js.Boot = function() { }
 js.Boot.__name__ = ["js","Boot"];
@@ -1274,31 +1029,6 @@ haxe.Firebug.trace = function(v,inf) {
 	console[type]((inf == null?"":inf.fileName + ":" + inf.lineNumber + " : ") + Std.string(v));
 }
 haxe.Firebug.prototype.__class__ = haxe.Firebug;
-demo.wizardry.Wizard = function() { }
-demo.wizardry.Wizard.__name__ = ["demo","wizardry","Wizard"];
-demo.wizardry.Wizard.__super__ = demo.wizardry.Person;
-for(var k in demo.wizardry.Person.prototype ) demo.wizardry.Wizard.prototype[k] = demo.wizardry.Person.prototype[k];
-demo.wizardry.Wizard.prototype.spellCharge = null;
-demo.wizardry.Wizard.prototype.chargeToFire = null;
-demo.wizardry.Wizard.prototype.targets = null;
-demo.wizardry.Wizard.prototype.addFireball = function() {
-	var fireBall = new demo.wizardry.FireBall();
-	fireBall.setPosition(this.getX(),this.getY());
-	fireBall.angle = this.angle;
-	fireBall.targets = this.targets;
-	demo.wizardry.Game.instance.addEntity(fireBall);
-}
-demo.wizardry.Wizard.prototype.attemptFire = function() {
-	if(this.spellCharge < this.chargeToFire == false) {
-		this.addFireball();
-		this.spellCharge = 0;
-	}
-}
-demo.wizardry.Wizard.prototype.update = function() {
-	this.spellCharge++;
-	demo.wizardry.Person.prototype.update.call(this);
-}
-demo.wizardry.Wizard.prototype.__class__ = demo.wizardry.Wizard;
 if(!hedge.jquery) hedge.jquery = {}
 if(!hedge.jquery.events) hedge.jquery.events = {}
 hedge.jquery.events.ResizeElement = function(p) { if( p === $_ ) return; {
@@ -1492,102 +1222,6 @@ hedge.Setup.RGB_String_to_HEX = function(color) {
 	return Std.parseInt(values[0]) << 16 | Std.parseInt(values[1]) << 8 | Std.parseInt(values[2]);
 }
 hedge.Setup.prototype.__class__ = hedge.Setup;
-demo.wizardry.FireBall = function(p) { if( p === $_ ) return; {
-	demo.wizardry.Entity.call(this);
-	this.strength = 10;
-	this.speed = 6;
-	this.radius = 5;
-}}
-demo.wizardry.FireBall.__name__ = ["demo","wizardry","FireBall"];
-demo.wizardry.FireBall.__super__ = demo.wizardry.Entity;
-for(var k in demo.wizardry.Entity.prototype ) demo.wizardry.FireBall.prototype[k] = demo.wizardry.Entity.prototype[k];
-demo.wizardry.FireBall.prototype.speed = null;
-demo.wizardry.FireBall.prototype.angle = null;
-demo.wizardry.FireBall.prototype.speedX = null;
-demo.wizardry.FireBall.prototype.speedY = null;
-demo.wizardry.FireBall.prototype.strength = null;
-demo.wizardry.FireBall.prototype.ball = null;
-demo.wizardry.FireBall.prototype.targets = null;
-demo.wizardry.FireBall.prototype.update = function() {
-	this.move();
-	if(this.checkForCollisions() == false) {
-		this.checkOutOfBounds();
-		demo.wizardry.Entity.prototype.update.call(this);
-	}
-}
-demo.wizardry.FireBall.prototype.checkForCollisions = function() {
-	{
-		var _g = 0, _g1 = this.targets;
-		while(_g < _g1.length) {
-			var i = _g1[_g];
-			++_g;
-			if(this.checkCollision(i)) {
-				i.hit(this.strength);
-				this.destroy();
-				return true;
-			}
-		}
-	}
-	return false;
-}
-demo.wizardry.FireBall.prototype.move = function() {
-	this.speedX = Math.sin(this.angle) * this.speed;
-	this.speedY = Math.cos(this.angle) * this.speed;
-	{
-		var _g = this;
-		_g.setX(_g.getX() + this.speedX);
-	}
-	{
-		var _g = this;
-		_g.setY(_g.getY() + this.speedY);
-	}
-	this.ball.setRotation(-this.angle * demo.wizardry.MathHelper.RADIANS_TO_DEGREES);
-}
-demo.wizardry.FireBall.prototype.checkOutOfBounds = function() {
-	if(this.getX() < demo.wizardry.Config.leftBound || this.getX() > demo.wizardry.Config.rightBound || this.getY() < demo.wizardry.Config.topBound || this.getY() > demo.wizardry.Config.bottomBound) {
-		this.destroy();
-	}
-}
-demo.wizardry.FireBall.prototype.__class__ = demo.wizardry.FireBall;
-demo.wizardry.PlayerWizard = function() { }
-demo.wizardry.PlayerWizard.__name__ = ["demo","wizardry","PlayerWizard"];
-demo.wizardry.PlayerWizard.__super__ = demo.wizardry.Wizard;
-for(var k in demo.wizardry.Wizard.prototype ) demo.wizardry.PlayerWizard.prototype[k] = demo.wizardry.Wizard.prototype[k];
-demo.wizardry.PlayerWizard.prototype.gamepad = null;
-demo.wizardry.PlayerWizard.prototype.moveTargetX = null;
-demo.wizardry.PlayerWizard.prototype.moveTargetY = null;
-demo.wizardry.PlayerWizard.prototype.setPosition = function(x,y) {
-	this.setX(this.moveTargetX = x);
-	this.setY(this.moveTargetY = y);
-}
-demo.wizardry.PlayerWizard.prototype.update = function() {
-	if(this.gamepad != null) {
-		if(this.gamepad.any) {
-			this.moveTargetX += Math.sin(this.gamepad.angle) * this.speed;
-			this.moveTargetY += Math.cos(this.gamepad.angle) * this.speed;
-			this.moveTargetX = demo.wizardry.MathHelper.constrain(this.moveTargetX,demo.wizardry.Config.leftBound,demo.wizardry.Config.rightBound);
-			this.moveTargetY = demo.wizardry.MathHelper.constrain(this.moveTargetY,demo.wizardry.Config.topBound,demo.wizardry.Config.bottomBound);
-		}
-		if(this.gamepad._fire1) {
-			this.attemptFire();
-		}
-	}
-	this.speedX = (this.moveTargetX - this.getX()) * 0.2;
-	this.speedY = (this.moveTargetY - this.getY()) * 0.2;
-	{
-		var _g = this;
-		_g.setX(_g.getX() + this.speedX);
-	}
-	{
-		var _g = this;
-		_g.setY(_g.getY() + this.speedY);
-	}
-	if(this.gamepad != null && this.gamepad.any) {
-		this.angle = Math.atan2(this.speedX,this.speedY);
-	}
-	demo.wizardry.Wizard.prototype.update.call(this);
-}
-demo.wizardry.PlayerWizard.prototype.__class__ = demo.wizardry.PlayerWizard;
 hedge.display.FillType = function() { }
 hedge.display.FillType.__name__ = ["hedge","display","FillType"];
 hedge.display.FillType.prototype.__class__ = hedge.display.FillType;
@@ -1666,20 +1300,6 @@ haxe.rtti.Meta.getFields = function(t) {
 	return meta == null?meta:meta.fields;
 }
 haxe.rtti.Meta.prototype.__class__ = haxe.rtti.Meta;
-if(!hedge.ui) hedge.ui = {}
-hedge.ui.Keyboard = function() { }
-hedge.ui.Keyboard.__name__ = ["hedge","ui","Keyboard"];
-hedge.ui.Keyboard.__super__ = hedge.Object;
-for(var k in hedge.Object.prototype ) hedge.ui.Keyboard.prototype[k] = hedge.Object.prototype[k];
-hedge.ui.Keyboard.capsLock = null;
-hedge.ui.Keyboard.numLock = null;
-hedge.ui.Keyboard.getCapsLock = function() {
-	return false;
-}
-hedge.ui.Keyboard.getNumLock = function() {
-	return false;
-}
-hedge.ui.Keyboard.prototype.__class__ = hedge.ui.Keyboard;
 hedge.Lib = function() { }
 hedge.Lib.__name__ = ["hedge","Lib"];
 hedge.Lib.attachToStage = function(displayobject) {
@@ -1690,89 +1310,6 @@ hedge.Lib.prototype.__class__ = hedge.Lib;
 hedge.display.GradientType = function() { }
 hedge.display.GradientType.__name__ = ["hedge","display","GradientType"];
 hedge.display.GradientType.prototype.__class__ = hedge.display.GradientType;
-demo.gamepad.Gamepad = function() { }
-demo.gamepad.Gamepad.__name__ = ["demo","gamepad","Gamepad"];
-demo.gamepad.Gamepad.prototype._up = null;
-demo.gamepad.Gamepad.prototype._down = null;
-demo.gamepad.Gamepad.prototype._left = null;
-demo.gamepad.Gamepad.prototype._right = null;
-demo.gamepad.Gamepad.prototype._fire1 = null;
-demo.gamepad.Gamepad.prototype._fire2 = null;
-demo.gamepad.Gamepad.prototype._upLeft = null;
-demo.gamepad.Gamepad.prototype._downLeft = null;
-demo.gamepad.Gamepad.prototype._upRight = null;
-demo.gamepad.Gamepad.prototype._downRight = null;
-demo.gamepad.Gamepad.prototype._anyDirection = null;
-demo.gamepad.Gamepad.prototype._x = null;
-demo.gamepad.Gamepad.prototype._y = null;
-demo.gamepad.Gamepad.prototype._targetX = null;
-demo.gamepad.Gamepad.prototype._targetY = null;
-demo.gamepad.Gamepad.prototype._angle = null;
-demo.gamepad.Gamepad.prototype._rotation = null;
-demo.gamepad.Gamepad.prototype._magnitude = null;
-demo.gamepad.Gamepad.prototype.setX = function(value) {
-	this._x = value;
-	this._targetX = value;
-	this._angle = Math.atan2(this.getX(),this.getY());
-	this._rotation = this.getAngle() * 57.29577951308232;
-	return this.getX();
-}
-demo.gamepad.Gamepad.prototype.setY = function(value) {
-	this._y = value;
-	this._targetY = value;
-	this._angle = Math.atan2(this.getX(),this.getY());
-	this._rotation = this.getAngle() * 57.29577951308232;
-	return this.getY();
-}
-demo.gamepad.Gamepad.prototype.getAngle = function() {
-	return this._angle;
-}
-demo.gamepad.Gamepad.prototype.getX = function() {
-	return this._x;
-}
-demo.gamepad.Gamepad.prototype.getY = function() {
-	return this._y;
-}
-demo.gamepad.Gamepad.prototype.getUp = function() {
-	return this._up;
-}
-demo.gamepad.Gamepad.prototype.getDown = function() {
-	return this._down;
-}
-demo.gamepad.Gamepad.prototype.getLeft = function() {
-	return this._left;
-}
-demo.gamepad.Gamepad.prototype.getRight = function() {
-	return this._right;
-}
-demo.gamepad.Gamepad.prototype.getUpLeft = function() {
-	return this._upLeft;
-}
-demo.gamepad.Gamepad.prototype.getDownLeft = function() {
-	return this._downLeft;
-}
-demo.gamepad.Gamepad.prototype.getUpRight = function() {
-	return this._upRight;
-}
-demo.gamepad.Gamepad.prototype.getDownRight = function() {
-	return this._downRight;
-}
-demo.gamepad.Gamepad.prototype.getFire1 = function() {
-	return this._fire1;
-}
-demo.gamepad.Gamepad.prototype.getFire2 = function() {
-	return this._fire2;
-}
-demo.gamepad.Gamepad.prototype.getAnyDirection = function() {
-	return this._anyDirection;
-}
-demo.gamepad.Gamepad.prototype.getMagnitude = function() {
-	return this._magnitude;
-}
-demo.gamepad.Gamepad.prototype.getRotation = function() {
-	return this._rotation;
-}
-demo.gamepad.Gamepad.prototype.__class__ = demo.gamepad.Gamepad;
 DemoMain = function() { }
 DemoMain.__name__ = ["DemoMain"];
 DemoMain.main = function() {
@@ -1852,34 +1389,6 @@ hedge.display.Stage.__name__ = ["hedge","display","Stage"];
 hedge.display.Stage.__super__ = hedge.display.DisplayObjectContainer;
 for(var k in hedge.display.DisplayObjectContainer.prototype ) hedge.display.Stage.prototype[k] = hedge.display.DisplayObjectContainer.prototype[k];
 hedge.display.Stage.prototype.__class__ = hedge.display.Stage;
-demo.wizardry.Villager = function() { }
-demo.wizardry.Villager.__name__ = ["demo","wizardry","Villager"];
-demo.wizardry.Villager.__super__ = demo.wizardry.Person;
-for(var k in demo.wizardry.Person.prototype ) demo.wizardry.Villager.prototype[k] = demo.wizardry.Person.prototype[k];
-demo.wizardry.Villager.prototype.moveTargetX = null;
-demo.wizardry.Villager.prototype.moveTargetY = null;
-demo.wizardry.Villager.prototype.setRandomPosition = function() {
-	this.moveTargetX = demo.wizardry.MathHelper.random(demo.wizardry.Config.leftBound,demo.wizardry.Config.rightBound);
-	this.moveTargetY = demo.wizardry.MathHelper.random(demo.wizardry.Config.topBound,demo.wizardry.Config.bottomBound);
-}
-demo.wizardry.Villager.prototype.update = function() {
-	this.angle = demo.wizardry.MathHelper.getAngle(this.moveTargetX,this.moveTargetY,this.getX(),this.getY());
-	this.speedX = Math.sin(this.angle) * this.speed;
-	this.speedY = Math.cos(this.angle) * this.speed;
-	{
-		var _g = this;
-		_g.setX(_g.getX() + this.speedX);
-	}
-	{
-		var _g = this;
-		_g.setY(_g.getY() + this.speedY);
-	}
-	if(demo.wizardry.MathHelper.getDistance(this.getX(),this.getY(),this.moveTargetX,this.moveTargetY) < 15) {
-		this.setRandomPosition();
-	}
-	demo.wizardry.Person.prototype.update.call(this);
-}
-demo.wizardry.Villager.prototype.__class__ = demo.wizardry.Villager;
 haxe.Log = function() { }
 haxe.Log.__name__ = ["haxe","Log"];
 haxe.Log.trace = function(v,infos) {
@@ -2226,68 +1735,9 @@ hedge.display.Bitmap.prototype.setBitmapData = function(value) {
 	return value;
 }
 hedge.display.Bitmap.prototype.__class__ = hedge.display.Bitmap;
-demo.wizardry.Config = function() { }
-demo.wizardry.Config.__name__ = ["demo","wizardry","Config"];
-demo.wizardry.Config.prototype.__class__ = demo.wizardry.Config;
 hedge.display.LineType = function() { }
 hedge.display.LineType.__name__ = ["hedge","display","LineType"];
 hedge.display.LineType.prototype.__class__ = hedge.display.LineType;
-demo.wizardry.ArrayHelper = function() { }
-demo.wizardry.ArrayHelper.__name__ = ["demo","wizardry","ArrayHelper"];
-demo.wizardry.ArrayHelper.removeFromArray = function(object,array) {
-	array.remove(object);
-}
-demo.wizardry.ArrayHelper.prototype.__class__ = demo.wizardry.ArrayHelper;
-demo.wizardry.MathHelper = function() { }
-demo.wizardry.MathHelper.__name__ = ["demo","wizardry","MathHelper"];
-demo.wizardry.MathHelper.random = function(from,to) {
-	if(to == null) to = 1;
-	if(from == null) from = 0;
-	return Math.random() * (to - from) + from;
-}
-demo.wizardry.MathHelper.randomInt = function(equalOrGreaterThan,lessThan) {
-	if(lessThan == null) lessThan = 1;
-	if(equalOrGreaterThan == null) equalOrGreaterThan = 0;
-	return Math.floor(demo.wizardry.MathHelper.random(equalOrGreaterThan,lessThan));
-}
-demo.wizardry.MathHelper.getDistance = function(x1,y1,x2,y2) {
-	var dx = x1 - x2;
-	var dy = y1 - y2;
-	return Math.sqrt(dx * dx + dy * dy);
-}
-demo.wizardry.MathHelper.constrain = function(value,min,max) {
-	if(max == null) max = 1;
-	if(min == null) min = 0;
-	if(value > max) {
-		return max;
-	}
-	else if(value < min) {
-		return min;
-	}
-	return value;
-}
-demo.wizardry.MathHelper.limitRadians = function(angle) {
-	if(angle >= 0) {
-		while(angle > Math.PI) {
-			angle -= demo.wizardry.MathHelper.TWO_PI;
-		}
-	}
-	else {
-		while(angle < -Math.PI) {
-			angle += demo.wizardry.MathHelper.TWO_PI;
-		}
-	}
-	return angle;
-}
-demo.wizardry.MathHelper.getAngle = function(x1,y1,x2,y2) {
-	var dx = x1 - x2;
-	var dy = y1 - y2;
-	return Math.atan2(dx,dy);
-}
-demo.wizardry.MathHelper.magnitude = function(dx,dy) {
-	return Math.sqrt(dx * dx + dy * dy);
-}
-demo.wizardry.MathHelper.prototype.__class__ = demo.wizardry.MathHelper;
 hedge.events.MouseEvent = function(type,bubbles,cancelable,localX,localY,relatedObject,ctrlKey,altKey,shiftKey,buttonDown,delta,commandKey,controlKey,clickCount) { if( type === $_ ) return; {
 	if(clickCount == null) clickCount = 0;
 	if(controlKey == null) controlKey = false;
@@ -2338,31 +1788,6 @@ js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
 js.Lib.prototype.__class__ = js.Lib;
-demo.wizardry.EvilWizard = function() { }
-demo.wizardry.EvilWizard.__name__ = ["demo","wizardry","EvilWizard"];
-demo.wizardry.EvilWizard.__super__ = demo.wizardry.Wizard;
-for(var k in demo.wizardry.Wizard.prototype ) demo.wizardry.EvilWizard.prototype[k] = demo.wizardry.Wizard.prototype[k];
-demo.wizardry.EvilWizard.prototype.targetVillager = null;
-demo.wizardry.EvilWizard.prototype.findTargetVillager = function() {
-	this.targetVillager = demo.wizardry.Game.instance.villiagers[demo.wizardry.MathHelper.randomInt(0,demo.wizardry.Game.instance.villiagers.length)];
-}
-demo.wizardry.EvilWizard.prototype.update = function() {
-	if(this.targetVillager.isDestroyed) this.findTargetVillager();
-	this.angle = demo.wizardry.MathHelper.getAngle(this.targetVillager.getX(),this.targetVillager.getY(),this.getX(),this.getY());
-	this.speedX = Math.sin(this.angle) * this.speed;
-	this.speedY = Math.cos(this.angle) * this.speed;
-	{
-		var _g = this;
-		_g.setX(_g.getX() + this.speedX);
-	}
-	{
-		var _g = this;
-		_g.setY(_g.getY() + this.speedY);
-	}
-	this.attemptFire();
-	demo.wizardry.Wizard.prototype.update.call(this);
-}
-demo.wizardry.EvilWizard.prototype.__class__ = demo.wizardry.EvilWizard;
 hedge.jquery.events.EnterFrame = function() { }
 hedge.jquery.events.EnterFrame.__name__ = ["hedge","jquery","events","EnterFrame"];
 hedge.jquery.events.EnterFrame.interval = null;
@@ -2494,15 +1919,8 @@ hedge.text.TextFieldType.DYNAMIC = "dynamic";
 hedge.text.TextFieldType.INPUT = "input";
 hedge.display.GradientType.LINEAR = "linear";
 hedge.display.GradientType.RADIAL = "radial";
-demo.wizardry.Config.leftBound = 0;
-demo.wizardry.Config.rightBound = 1000;
-demo.wizardry.Config.topBound = 0;
-demo.wizardry.Config.bottomBound = 700;
 hedge.display.LineType.PLAIN = "plain";
 hedge.display.LineType.GRADIENT = "gradient";
-demo.wizardry.MathHelper.TWO_PI = Math.PI * 2;
-demo.wizardry.MathHelper.EIGHTH_CIRCLE = Math.PI / 4;
-demo.wizardry.MathHelper.RADIANS_TO_DEGREES = 180 / Math.PI;
 hedge.events.MouseEvent.CLICK = "click";
 js.Lib.onerror = null;
 hedge.jquery.events.EnterFrame.dataHash = new Hash();

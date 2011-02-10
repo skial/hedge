@@ -1,0 +1,7 @@
+-js ./bin/BunnyBlitTest/BunnyBlit.js
+-cp ./src
+-D bunnyBlit
+-lib raphaelExtern
+-main DemoMain
+--macro keep(['Type', 'Reflect'])
+--dead-code-elimination

@@ -3,9 +3,13 @@
 import haxe.Firebug;
 import haxe.rtti.Meta;
 #if js
+#if bunnyBlit
 import demo.bunnyBlitTest.BlitTest;
-import demo.bunnyLandBlitTest.BunnyLandBlitTest;
-import demo.wizardry.Main;
+#elseif bunnyLand
+	import demo.bunnyLandBlitTest.BunnyLandBlitTest;
+#elseif wizardry
+	import demo.wizardry.Main;
+#end
 import js.Lib;
 import hedge.display.Sprite;
 import hedge.events.MouseEvent;
