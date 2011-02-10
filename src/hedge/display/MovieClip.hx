@@ -20,13 +20,7 @@ class MovieClip extends Sprite {
 	public var totalFrames:Int;
 	public var trackAsMenu:Bool;
 	
-	public var __running__:Bool;
 	public var __timers__:Array<Dynamic>;
-	public var __counter__:Int;
-	public var __interval__:Float;
-	
-	public var __bitmap__:Bitmap;
-	public var __bitmapdata__:BitmapData;
 	
 	public var __movieclip__:MovieclipStructure;
 	
@@ -44,14 +38,10 @@ class MovieClip extends Sprite {
 				__layers__ = __movieclip__.movieclipLayers;
 				__frames__ = __movieclip__.movieclipLayers[0].labelFrames;
 				
-				/*__bitmapdata__ = new BitmapData(new JQuery(__frames__[0].frameData).width(), new JQuery(__frames__[0].frameData).height(), true, 0xFF000000);
-				__bitmap__ = new Bitmap(__bitmapdata__);*/
-				
 				break;
 			}
 		}
 		
-		//if (__movieclip__ != null) addChild(__bitmap__);
 		if (__movieclip__ != null) {
 			__timers__ = new Array<Dynamic>();
 			for (i in __layers__) {
@@ -66,14 +56,14 @@ class MovieClip extends Sprite {
 																	true, 
 																	0xFF000000)
 															 ),
-															 labelTimerPosition:null};
+															 labelTimerPosition:null,
+															 labelCounter:0 };
+				mclb.labelBitmap.name = mclb.labelName;
 				addChild(mclb.labelBitmap);
-				mclb.labelTimerPosition = __timers__.push(untyped setTimeout(function() { __self__.__updateRender__(mclb); }, i.labelFrames[0].framePause))-1;
+				mclb.labelTimerPosition = __timers__.push(untyped setTimeout(function() { __self__.__updateRender__(mclb); }, 0)) - 1;
 			}
 		}
 		
-		__running__ = false;
-		__counter__ = 0;
 	}
 	
 	public function gotoAndPlay(frame:Dynamic, ?scene:String = null):Void {
@@ -110,36 +100,16 @@ class MovieClip extends Sprite {
 	
 	//	OVERRIDE
 	
-	/*override public function addChild(child:DisplayObject):DisplayObject {
-		__checkRunning__();
-		return super.addChild(child);
-	}
-	
-	override public function addChildAt(child:DisplayObject, index:Int):DisplayObject {
-		__checkRunning__();
-		return super.addChildAt(child, index);
-	}*/
-	
 	//	INTERNAL
 	
-	private inline function __checkRunning__():Void {
-		if (__running__ == false) {
-			__running__ = true;
-			__timer__ = untyped setTimeout(__updateRender__, __interval__);
-		}
-	}
-	
 	private function __updateRender__(layer:MovieclipLayerBitmap):Void {
-		trace(layer.labelName);
-		trace(layer.labelTimerPosition);
-		/*__bitmapdata__.__context__.drawImage(__frames__[__counter__].frameData, 0, 0);
-		__interval__ = Std.parseFloat(__frames__[__counter__].framePause) * 1000;
-		__counter__ == __frames__.length - 1 ? __counter__ = 0 : ++__counter__;
-		__timer__ = untyped setTimeout(__updateRender__, __interval__);*/
+		var __self__ = this;
+		layer.labelBitmap.bitmapData.__context__.drawImage(layer.labelFrames[layer.labelCounter].frameData, 0, 0);
+		layer.labelCounter == layer.labelFrames.length - 1 ? layer.labelCounter = 0 : ++layer.labelCounter;
+		__timers__[layer.labelTimerPosition] = untyped setTimeout(untyped setTimeout(function() { __self__.__updateRender__(layer); }, Std.parseFloat(layer.labelFrames[layer.labelCounter].framePause) * 1000));
 	}
 	
 	private function __stopRender__():Void {
-		__running__ = false;
 		//untyped clearTimeout(__timer__);
 	}
 	

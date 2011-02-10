@@ -48,6 +48,7 @@ typedef MovieclipLayer = {
 typedef MovieclipLayerBitmap = { > MovieclipLayer,
 	var labelBitmap:Bitmap;
 	var labelTimerPosition:Int;
+	var labelCounter:Int;
 }
 
 typedef MovieclipFrame = {

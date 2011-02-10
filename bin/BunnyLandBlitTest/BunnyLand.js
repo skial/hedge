@@ -382,26 +382,23 @@ hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
 				var i = _g1[_g];
 				++_g;
 				var __self__ = [this];
-				var mclb = [{ labelName : i.labelName, labelFrames : i.labelFrames, labelBitmap : new hedge.display.Bitmap(new hedge.display.BitmapData(new $(i.labelFrames[0].frameData).width(),new $(i.labelFrames[0].frameData).height(),true,-16777216)), labelTimerPosition : null}];
+				var mclb = [{ labelName : i.labelName, labelFrames : i.labelFrames, labelBitmap : new hedge.display.Bitmap(new hedge.display.BitmapData(new $(i.labelFrames[0].frameData).width(),new $(i.labelFrames[0].frameData).height(),true,-16777216)), labelTimerPosition : null, labelCounter : 0}];
+				mclb[0].labelBitmap.setName(mclb[0].labelName);
 				this.addChild(mclb[0].labelBitmap);
 				mclb[0].labelTimerPosition = this.__timers__.push(setTimeout(function(mclb,__self__) {
 					return function() {
 						__self__[0].__updateRender__(mclb[0]);
 					}
-				}(mclb,__self__),i.labelFrames[0].framePause)) - 1;
+				}(mclb,__self__),0)) - 1;
 			}
 		}
 	}
-	this.__running__ = false;
-	this.__counter__ = 0;
 }}
 hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
 hedge.display.MovieClip.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
 hedge.display.MovieClip.prototype.currentFrame = null;
-hedge.display.MovieClip.prototype.__running__ = null;
 hedge.display.MovieClip.prototype.__timers__ = null;
-hedge.display.MovieClip.prototype.__counter__ = null;
 hedge.display.MovieClip.prototype.__movieclip__ = null;
 hedge.display.MovieClip.prototype.__frames__ = null;
 hedge.display.MovieClip.prototype.__layers__ = null;
@@ -415,8 +412,13 @@ hedge.display.MovieClip.prototype.stop = function() {
 	null;
 }
 hedge.display.MovieClip.prototype.__updateRender__ = function(layer) {
-	haxe.Log.trace(layer.labelName,{ fileName : "MovieClip.hx", lineNumber : 133, className : "hedge.display.MovieClip", methodName : "__updateRender__"});
-	haxe.Log.trace(layer.labelTimerPosition,{ fileName : "MovieClip.hx", lineNumber : 134, className : "hedge.display.MovieClip", methodName : "__updateRender__"});
+	var __self__ = this;
+	layer.labelBitmap.getBitmapData().__context__.drawImage(layer.labelFrames[layer.labelCounter].frameData,0,0);
+	if(layer.labelCounter == layer.labelFrames.length - 1) layer.labelCounter = 0;
+	else ++layer.labelCounter;
+	this.__timers__[layer.labelTimerPosition] = setTimeout(setTimeout(function() {
+		__self__.__updateRender__(layer);
+	},Std.parseFloat(layer.labelFrames[layer.labelCounter].framePause) * 1000));
 }
 hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
 demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
