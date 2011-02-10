@@ -6,6 +6,7 @@
 package hedge.display;
 import hedge.canvas.CanvasRenderingContext2D;
 import hedge.display.DisplayObject;
+import hedge.Setup;
 
 class MovieClip extends Sprite {
 	
@@ -19,37 +20,77 @@ class MovieClip extends Sprite {
 	public var totalFrames:Int;
 	public var trackAsMenu:Bool;
 	
-	private var __timeline__:JQuery;
-	private var __frames__:JQuery;
+	public var __running__:Bool;
+	public var __timer__:Dynamic;
+	public var __counter__:Int;
+	public var __interval__:Float;
 	
-	private var __running__:Bool;
-	private var __timer__:Dynamic;
-	private var __counter__:Int;
-	private var __interval__:Float;
+	public var __bitmap__:Bitmap;
+	public var __bitmapdata__:BitmapData;
 	
-	private var __bitmap__:Bitmap;
-	private var __bitmapdata__:BitmapData;
+	public var __movieclip__:MovieclipStructure;
 	
-	private var __array__:Array<Dynamic>;
+	private var __frames__:Array<MovieclipFrame>;
+	private var __layers__:Array<MovieclipLayer>;
 
 	public function new() {
 		super();
-		__timeline__ = new JQuery('div[data-link="' + Type.getClassName(Type.getClass(this)) + '"]');
-		trace(__timeline__.attr('data-link'));
-		__frames__ = __timeline__.children('img');
+		
+		__movieclip__ = { movieclipLink:null, movieclipLayers:new Array<MovieclipLayer>() };
+		
+		trace(Type.getClassName(Type.getClass(this)));
+		for (i in Setup.__movieclips__) {
+			if (i.movieclipLink == Type.getClassName(Type.getClass(this))) {
+				__movieclip__ = i;
+				
+				__frames__ = __movieclip__.movieclipLayers[0].labelFrames;
+				
+				__bitmapdata__ = new BitmapData(new JQuery(__frames__[0].frameData).width(), new JQuery(__frames__[0].frameData).height(), true, 0xFF000000);
+				__bitmap__ = new Bitmap(__bitmapdata__);
+				
+				break;
+			}
+		}
+		
+		trace(__movieclip__);
+		trace(__movieclip__ != null);
+		
+		if (__movieclip__ != null) addChild(__bitmap__);
+		
+		/*var tmp:JQuery;
+		var movie = new JQuery('div[data-link="' + Type.getClassName(Type.getClass(this)) + '"]');
+		var layers:JQuery = movie.children('div');
+		var frames:JQuery;
+		
+		__movieclip__.movieclipLink = movie.attr('data-link');
+		
+		for (i in 0...layers.length) {
+			var mcl:MovieclipLayer = { labelName:null, labelFrames:new Array<MovieclipFrame>() };
+			
+			tmp = new JQuery(layers[i]);
+			mcl.labelName = tmp.attr('class');
+			
+			frames = tmp.children('img');
+			
+			for (j in 0...frames.length) {
+				var mcf:MovieclipFrame = { frameName:null, frameData:null, framePause:null };
+				
+				tmp = new JQuery(frames[j]);
+				
+				mcf.frameName = tmp.attr('class');
+				mcf.framePause = tmp.attr('data-pause');
+				mcf.frameData = tmp[0];
+				
+				mcl.labelFrames.push(mcf);
+			}
+			__movieclip__.movieclipLayers.push(mcl);
+		}
+		__frames__ = __movieclip__.movieclipLayers[0].labelFrames;
+		trace(__movieclip__);
+		trace(__movieclip__ != null);*/
 		
 		__running__ = false;
 		__counter__ = 0;
-		__array__ = new Array<Dynamic>();
-		
-		for (n in 0...__frames__.length) {
-			__array__.push( { image:new JQuery(__frames__[n]), pause:new JQuery(__frames__[n]).attr('data-pause') } );
-		}
-		
-		__bitmapdata__ = new BitmapData(__array__[0].image.width(), __array__[0].image.height(), true, 0xFF000000);
-		__bitmap__ = new Bitmap(__bitmapdata__);
-		
-		this.addChild(__bitmap__);
 	}
 	
 	public function gotoAndPlay(frame:Dynamic, ?scene:String = null):Void {
@@ -106,9 +147,9 @@ class MovieClip extends Sprite {
 	}
 	
 	private function __updateRender__():Void {
-		__bitmapdata__.__context__.drawImage(__array__[__counter__].image[0], 0, 0);
-		__interval__ = Std.parseFloat(__array__[__counter__].pause) * 1000;
-		__counter__ == __array__.length - 1 ? __counter__ = 0 : ++__counter__;
+		__bitmapdata__.__context__.drawImage(__frames__[__counter__].frameData, 0, 0);
+		__interval__ = Std.parseFloat(__frames__[__counter__].framePause) * 1000;
+		__counter__ == __frames__.length - 1 ? __counter__ = 0 : ++__counter__;
 		__timer__ = untyped setTimeout(__updateRender__, __interval__);
 	}
 	

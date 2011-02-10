@@ -11,6 +11,7 @@ import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
 import hedge.display.Stage;
 import hedge.events.Event;
+import hedge.jquery.events.EnterFrame;
 import hedge.jquery.events.ResizeElement;
 import JQuery;
 
@@ -98,8 +99,8 @@ class Setup {
 		__default__ = new DisplayObjectContainer();
 		__default__.name = 'default_parent_object';
 		
-		createJqueryEvents();
 		getAllMovieClips();
+		createJqueryEvents();
 		
 		_callback();
 	}
@@ -110,37 +111,42 @@ class Setup {
 		var movieclips = new JQuery('div.movieclip_timeline');
 		
 		var tmp:JQuery;
+		var movieclip:JQuery;
+		var layers:JQuery;
+		var frames:JQuery;
 		
 		for (i in 0...movieclips.length) {
-			var mcf:MovieclipFrame = { frameName:null, frameData:null, framePause:null };
-			var mcl:MovieclipLayer = { labelName:null, labelFrames:new Array<MovieclipFrame>() };
 			var mcs:MovieclipStructure = { movieclipLink:null, movieclipLayers:new Array<MovieclipLayer>() };
 			
-			tmp = new JQuery(movieclips[i]);
+			movieclip = new JQuery(movieclips[i]);
+			layers = movieclip.children('div');
 			
-			mcs.movieclipLink = tmp.attr('data-link');
-			//trace(tmp.children('div.label'));
-			tmp.children('div.label').each(function() {
-				tmp = untyped new JQuery(this);
+			mcs.movieclipLink = movieclip.attr('data-link');
+			
+			for (j in 0...layers.length) {
+				var mcl:MovieclipLayer = { labelName:null, labelFrames:new Array<MovieclipFrame>() };
 				
+				tmp = new JQuery(layers[j]);
 				mcl.labelName = tmp.attr('class');
-				//trace(tmp.children('img'));
 				
-				tmp.children('img').each(function() {
-					tmp = untyped new JQuery(this);
+				frames = tmp.children('img');
+				
+				for (k in 0...frames.length) {
+					var mcf:MovieclipFrame = { frameName:null, frameData:null, framePause:null };
+					
+					tmp = new JQuery(frames[k]);
 					
 					mcf.frameName = tmp.attr('class');
 					mcf.framePause = tmp.attr('data-pause');
 					mcf.frameData = tmp[0];
 					
 					mcl.labelFrames.push(mcf);
-				});
+				}
 				
 				mcs.movieclipLayers.push(mcl);
-			});
+			}
 			
 			__movieclips__.push(mcs);
-			trace(mcs.movieclipLayers);
 		}
 		
 	}

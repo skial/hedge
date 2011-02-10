@@ -16,10 +16,10 @@ class Person extends Entity {
 	public var speedX:Float;
 	public var speedY:Float;
 	
-	public var north:VillagerNorth;
-	public var south:VillagerSouth;
-	public var east:VillagerEast;
-	public var west:VillagerWest;
+	public var north:MovieClip;
+	public var south:MovieClip;
+	public var east:MovieClip;
+	public var west:MovieClip;
 	
 	public var animations:Array<MovieClip>;
 	
@@ -31,14 +31,14 @@ class Person extends Entity {
 		this.health = 100;
 		
 		animations = new Array<MovieClip>();
-		animations.push(north	= new VillagerNorth());
-		animations.push(south 	= new VillagerSouth());
-		animations.push(east 	= new VillagerEast());
-		animations.push(west 	= new VillagerWest());
+		animations.push(north);
+		animations.push(south);
+		animations.push(east);
+		animations.push(west);
 		
 		for (i in animations) {
 			this.removeChild(i);
-			i.stop();
+			//i.stop();
 		}
 		
 		showAnimation(south);

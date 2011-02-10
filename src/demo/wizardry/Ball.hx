@@ -6,7 +6,7 @@
 package demo.wizardry;
 import hedge.display.MovieClip;
 
-class VillagerSouth extends MovieClip {
+class Ball extends MovieClip {
 
 	public function new() {
 		super();

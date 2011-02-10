@@ -1,6 +1,5 @@
 ﻿package ;
 
-import demo.wizardry.VillagerEast;
 import haxe.Firebug;
 import haxe.rtti.Meta;
 #if js

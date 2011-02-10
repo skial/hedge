@@ -463,13 +463,89 @@ demo.wizardry.Gamepad.prototype.updateState = function() {
 	this.angle = Math.atan2(this.x,this.y);
 }
 demo.wizardry.Gamepad.prototype.__class__ = demo.wizardry.Gamepad;
-demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
+hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
+	this.__movieclip__ = { movieclipLink : null, movieclipLayers : new Array()};
+	haxe.Log.trace(Type.getClassName(Type.getClass(this)),{ fileName : "MovieClip.hx", lineNumber : 41, className : "hedge.display.MovieClip", methodName : "new"});
+	{
+		var _g = 0, _g1 = hedge.Setup.__movieclips__;
+		while(_g < _g1.length) {
+			var i = _g1[_g];
+			++_g;
+			if(i.movieclipLink == Type.getClassName(Type.getClass(this))) {
+				this.__movieclip__ = i;
+				this.__frames__ = this.__movieclip__.movieclipLayers[0].labelFrames;
+				this.__bitmapdata__ = new hedge.display.BitmapData(new $(this.__frames__[0].frameData).width(),new $(this.__frames__[0].frameData).height(),true,-16777216);
+				this.__bitmap__ = new hedge.display.Bitmap(this.__bitmapdata__);
+				break;
+			}
+		}
+	}
+	haxe.Log.trace(this.__movieclip__,{ fileName : "MovieClip.hx", lineNumber : 55, className : "hedge.display.MovieClip", methodName : "new"});
+	haxe.Log.trace(this.__movieclip__ != null,{ fileName : "MovieClip.hx", lineNumber : 56, className : "hedge.display.MovieClip", methodName : "new"});
+	if(this.__movieclip__ != null) this.addChild(this.__bitmap__);
+	this.__running__ = false;
+	this.__counter__ = 0;
+}}
+hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
+hedge.display.MovieClip.__super__ = hedge.display.Sprite;
+for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
+hedge.display.MovieClip.prototype.currentFrame = null;
+hedge.display.MovieClip.prototype.__running__ = null;
+hedge.display.MovieClip.prototype.__timer__ = null;
+hedge.display.MovieClip.prototype.__counter__ = null;
+hedge.display.MovieClip.prototype.__interval__ = null;
+hedge.display.MovieClip.prototype.__bitmap__ = null;
+hedge.display.MovieClip.prototype.__bitmapdata__ = null;
+hedge.display.MovieClip.prototype.__movieclip__ = null;
+hedge.display.MovieClip.prototype.__frames__ = null;
+hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
+	null;
+}
+hedge.display.MovieClip.prototype.play = function() {
+	null;
+}
+hedge.display.MovieClip.prototype.stop = function() {
+	null;
+}
+hedge.display.MovieClip.prototype.addChild = function(child) {
+	if(this.__running__ == false) {
+		haxe.Log.trace("added",{ fileName : "MovieClip.hx", lineNumber : 144, className : "hedge.display.MovieClip", methodName : "__checkRunning__"});
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+	return hedge.display.Sprite.prototype.addChild.call(this,child);
+}
+hedge.display.MovieClip.prototype.addChildAt = function(child,index) {
+	if(this.__running__ == false) {
+		haxe.Log.trace("added",{ fileName : "MovieClip.hx", lineNumber : 144, className : "hedge.display.MovieClip", methodName : "__checkRunning__"});
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+	return hedge.display.Sprite.prototype.addChildAt.call(this,child,index);
+}
+hedge.display.MovieClip.prototype.__checkRunning__ = function() {
+	if(this.__running__ == false) {
+		haxe.Log.trace("added",{ fileName : "MovieClip.hx", lineNumber : 144, className : "hedge.display.MovieClip", methodName : "__checkRunning__"});
+		this.__running__ = true;
+		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+	}
+}
+hedge.display.MovieClip.prototype.__updateRender__ = function() {
+	this.__bitmapdata__.__context__.drawImage(this.__frames__[this.__counter__].frameData,0,0);
+	this.__interval__ = Std.parseFloat(this.__frames__[this.__counter__].framePause) * 1000;
+	if(this.__counter__ == this.__frames__.length - 1) this.__counter__ = 0;
+	else ++this.__counter__;
+	this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+}
+hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
+demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
+	hedge.display.MovieClip.call(this);
 	this.radius = 16;
 }}
 demo.wizardry.Entity.__name__ = ["demo","wizardry","Entity"];
-demo.wizardry.Entity.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.Sprite.prototype[k];
+demo.wizardry.Entity.__super__ = hedge.display.MovieClip;
+for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.Entity.prototype[k] = hedge.display.MovieClip.prototype[k];
 demo.wizardry.Entity.prototype.radius = null;
 demo.wizardry.Entity.prototype.kinGroup = null;
 demo.wizardry.Entity.prototype.isDestroyed = null;
@@ -492,17 +568,16 @@ demo.wizardry.Person = function(p) { if( p === $_ ) return; {
 	demo.wizardry.Entity.call(this);
 	this.health = 100;
 	this.animations = new Array();
-	this.animations.push(this.north = new demo.wizardry.VillagerNorth());
-	this.animations.push(this.south = new demo.wizardry.VillagerSouth());
-	this.animations.push(this.east = new demo.wizardry.VillagerEast());
-	this.animations.push(this.west = new demo.wizardry.VillagerWest());
+	this.animations.push(this.north);
+	this.animations.push(this.south);
+	this.animations.push(this.east);
+	this.animations.push(this.west);
 	{
 		var _g = 0, _g1 = this.animations;
 		while(_g < _g1.length) {
 			var i = _g1[_g];
 			++_g;
 			this.removeChild(i);
-			i.stop();
 		}
 	}
 	this.showAnimation(this.south);
@@ -573,82 +648,6 @@ demo.wizardry.Person.prototype.render = function() {
 	demo.wizardry.Entity.prototype.render.call(this);
 }
 demo.wizardry.Person.prototype.__class__ = demo.wizardry.Person;
-hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
-	hedge.display.Sprite.call(this);
-	this.__timeline__ = new $("div[data-link=\"" + Type.getClassName(Type.getClass(this)) + "\"]");
-	haxe.Log.trace(this.__timeline__.attr("data-link"),{ fileName : "MovieClip.hx", lineNumber : 38, className : "hedge.display.MovieClip", methodName : "new"});
-	this.__frames__ = this.__timeline__.children("img");
-	this.__running__ = false;
-	this.__counter__ = 0;
-	this.__array__ = new Array();
-	{
-		var _g1 = 0, _g = this.__frames__.length;
-		while(_g1 < _g) {
-			var n = _g1++;
-			this.__array__.push({ image : new $(this.__frames__[n]), pause : new $(this.__frames__[n]).attr("data-pause")});
-		}
-	}
-	this.__bitmapdata__ = new hedge.display.BitmapData(this.__array__[0].image.width(),this.__array__[0].image.height(),true,-16777216);
-	this.__bitmap__ = new hedge.display.Bitmap(this.__bitmapdata__);
-	this.addChild(this.__bitmap__);
-}}
-hedge.display.MovieClip.__name__ = ["hedge","display","MovieClip"];
-hedge.display.MovieClip.__super__ = hedge.display.Sprite;
-for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
-hedge.display.MovieClip.prototype.currentFrame = null;
-hedge.display.MovieClip.prototype.__timeline__ = null;
-hedge.display.MovieClip.prototype.__frames__ = null;
-hedge.display.MovieClip.prototype.__running__ = null;
-hedge.display.MovieClip.prototype.__timer__ = null;
-hedge.display.MovieClip.prototype.__counter__ = null;
-hedge.display.MovieClip.prototype.__interval__ = null;
-hedge.display.MovieClip.prototype.__bitmap__ = null;
-hedge.display.MovieClip.prototype.__bitmapdata__ = null;
-hedge.display.MovieClip.prototype.__array__ = null;
-hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
-	null;
-}
-hedge.display.MovieClip.prototype.play = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.stop = function() {
-	null;
-}
-hedge.display.MovieClip.prototype.addChild = function(child) {
-	if(this.__running__ == false) {
-		this.__running__ = true;
-		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-	}
-	return hedge.display.Sprite.prototype.addChild.call(this,child);
-}
-hedge.display.MovieClip.prototype.addChildAt = function(child,index) {
-	if(this.__running__ == false) {
-		this.__running__ = true;
-		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-	}
-	return hedge.display.Sprite.prototype.addChildAt.call(this,child,index);
-}
-hedge.display.MovieClip.prototype.__checkRunning__ = function() {
-	if(this.__running__ == false) {
-		this.__running__ = true;
-		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-	}
-}
-hedge.display.MovieClip.prototype.__updateRender__ = function() {
-	this.__bitmapdata__.__context__.drawImage(this.__array__[this.__counter__].image[0],0,0);
-	this.__interval__ = Std.parseFloat(this.__array__[this.__counter__].pause) * 1000;
-	if(this.__counter__ == this.__array__.length - 1) this.__counter__ = 0;
-	else ++this.__counter__;
-	this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-}
-hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
-demo.wizardry.VillagerWest = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
-}}
-demo.wizardry.VillagerWest.__name__ = ["demo","wizardry","VillagerWest"];
-demo.wizardry.VillagerWest.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerWest.prototype[k] = hedge.display.MovieClip.prototype[k];
-demo.wizardry.VillagerWest.prototype.__class__ = demo.wizardry.VillagerWest;
 hedge.events.Event = function(type,bubbles,cancelable) { if( type === $_ ) return; {
 	if(cancelable == null) cancelable = false;
 	if(bubbles == null) bubbles = false;
@@ -703,13 +702,6 @@ hedge.events.KeyboardEvent.prototype.clone = function() {
 	return new hedge.events.KeyboardEvent(this.type,this.bubbles,this.cancelable,this.charCode,this.keyCode,this.keyLocation,this.ctrlKey,this.altKey,this.shiftKey);
 }
 hedge.events.KeyboardEvent.prototype.__class__ = hedge.events.KeyboardEvent;
-demo.wizardry.VillagerSouth = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
-}}
-demo.wizardry.VillagerSouth.__name__ = ["demo","wizardry","VillagerSouth"];
-demo.wizardry.VillagerSouth.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerSouth.prototype[k] = hedge.display.MovieClip.prototype[k];
-demo.wizardry.VillagerSouth.prototype.__class__ = demo.wizardry.VillagerSouth;
 demo.wizardry.Game = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
 	demo.wizardry.Game.instance = this;
@@ -1405,13 +1397,6 @@ js.Boot.__init = function() {
 	$closure = js.Boot.__closure;
 }
 js.Boot.prototype.__class__ = js.Boot;
-demo.wizardry.VillagerEast = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
-}}
-demo.wizardry.VillagerEast.__name__ = ["demo","wizardry","VillagerEast"];
-demo.wizardry.VillagerEast.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerEast.prototype[k] = hedge.display.MovieClip.prototype[k];
-demo.wizardry.VillagerEast.prototype.__class__ = demo.wizardry.VillagerEast;
 if(typeof haxe=='undefined') haxe = {}
 haxe.Firebug = function() { }
 haxe.Firebug.__name__ = ["haxe","Firebug"];
@@ -1524,40 +1509,48 @@ hedge.Setup.init = function(_callback,fps,stageName) {
 	hedge.Setup.__stage__.__jq__ = hedge.Setup.__jq__;
 	hedge.Setup.__default__ = new hedge.display.DisplayObjectContainer();
 	hedge.Setup.__default__.setName("default_parent_object");
-	hedge.Setup.createJqueryEvents();
 	hedge.Setup.getAllMovieClips();
+	hedge.Setup.createJqueryEvents();
 	_callback();
 }
 hedge.Setup.getAllMovieClips = function() {
 	var movieclips = new $("div.movieclip_timeline");
 	var tmp;
+	var movieclip;
+	var layers;
+	var frames;
 	{
 		var _g1 = 0, _g = movieclips.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var mcf = [{ frameName : null, frameData : null, framePause : null}];
-			var mcl = [{ labelName : null, labelFrames : new Array()}];
-			var mcs = [{ movieclipLink : null, movieclipLayers : new Array()}];
-			tmp = new $(movieclips[i]);
-			mcs[0].movieclipLink = tmp.attr("data-link");
-			tmp.children("div.label").each(function(mcs,mcl,mcf) {
-				return function() {
-					tmp = new $(this);
-					mcl[0].labelName = tmp.attr("class");
-					tmp.children("img").each(function(mcl,mcf) {
-						return function() {
-							tmp = new $(this);
-							mcf[0].frameName = tmp.attr("class");
-							mcf[0].framePause = tmp.attr("data-pause");
-							mcf[0].frameData = tmp[0];
-							mcl[0].labelFrames.push(mcf[0]);
+			var mcs = { movieclipLink : null, movieclipLayers : new Array()};
+			movieclip = new $(movieclips[i]);
+			layers = movieclip.children("div");
+			mcs.movieclipLink = movieclip.attr("data-link");
+			{
+				var _g3 = 0, _g2 = layers.length;
+				while(_g3 < _g2) {
+					var j = _g3++;
+					var mcl = { labelName : null, labelFrames : new Array()};
+					tmp = new $(layers[j]);
+					mcl.labelName = tmp.attr("class");
+					frames = tmp.children("img");
+					{
+						var _g5 = 0, _g4 = frames.length;
+						while(_g5 < _g4) {
+							var k = _g5++;
+							var mcf = { frameName : null, frameData : null, framePause : null};
+							tmp = new $(frames[k]);
+							mcf.frameName = tmp.attr("class");
+							mcf.framePause = tmp.attr("data-pause");
+							mcf.frameData = tmp[0];
+							mcl.labelFrames.push(mcf);
 						}
-					}(mcl,mcf));
-					mcs[0].movieclipLayers.push(mcl[0]);
+					}
+					mcs.movieclipLayers.push(mcl);
 				}
-			}(mcs,mcl,mcf));
-			hedge.Setup.__movieclips__.push(mcs[0]);
-			haxe.Log.trace(mcs[0],{ fileName : "Setup.hx", lineNumber : 143, className : "hedge.Setup", methodName : "getAllMovieClips"});
+			}
+			hedge.Setup.__movieclips__.push(mcs);
 		}
 	}
 }
@@ -1781,13 +1774,6 @@ StringBuf.prototype.toString = function() {
 }
 StringBuf.prototype.b = null;
 StringBuf.prototype.__class__ = StringBuf;
-demo.wizardry.VillagerNorth = function(p) { if( p === $_ ) return; {
-	hedge.display.MovieClip.call(this);
-}}
-demo.wizardry.VillagerNorth.__name__ = ["demo","wizardry","VillagerNorth"];
-demo.wizardry.VillagerNorth.__super__ = hedge.display.MovieClip;
-for(var k in hedge.display.MovieClip.prototype ) demo.wizardry.VillagerNorth.prototype[k] = hedge.display.MovieClip.prototype[k];
-demo.wizardry.VillagerNorth.prototype.__class__ = demo.wizardry.VillagerNorth;
 if(!hedge.text) hedge.text = {}
 hedge.text.TextFieldType = function() { }
 hedge.text.TextFieldType.__name__ = ["hedge","text","TextFieldType"];
