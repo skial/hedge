@@ -278,9 +278,6 @@ hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 	this.__jq__.trigger(hedge.Setup.RESIZE_ELEMENT,[{ x : child.getX(), y : child.getY(), w : child.getWidth(), h : child.getHeight(), p : this}]);
 	return child;
 }
-hedge.display.DisplayObjectContainer.prototype.addChildAt = function(child,index) {
-	return new hedge.display.DisplayObject();
-}
 hedge.display.DisplayObjectContainer.prototype.removeChild = function(child) {
 	return new hedge.display.DisplayObject();
 }
@@ -363,25 +360,38 @@ demo.wizardry.Gamepad.prototype.angle = null;
 demo.wizardry.Gamepad.prototype.__class__ = demo.wizardry.Gamepad;
 hedge.display.MovieClip = function(p) { if( p === $_ ) return; {
 	hedge.display.Sprite.call(this);
-	this.__movieclip__ = { movieclipLink : null, movieclipLayers : new Array()};
-	haxe.Log.trace(Type.getClassName(Type.getClass(this)),{ fileName : "MovieClip.hx", lineNumber : 41, className : "hedge.display.MovieClip", methodName : "new"});
 	{
 		var _g = 0, _g1 = hedge.Setup.__movieclips__;
 		while(_g < _g1.length) {
 			var i = _g1[_g];
 			++_g;
 			if(i.movieclipLink == Type.getClassName(Type.getClass(this))) {
+				this.__movieclip__ = { movieclipLink : null, movieclipLayers : new Array()};
 				this.__movieclip__ = i;
+				this.__layers__ = this.__movieclip__.movieclipLayers;
 				this.__frames__ = this.__movieclip__.movieclipLayers[0].labelFrames;
-				this.__bitmapdata__ = new hedge.display.BitmapData(new $(this.__frames__[0].frameData).width(),new $(this.__frames__[0].frameData).height(),true,-16777216);
-				this.__bitmap__ = new hedge.display.Bitmap(this.__bitmapdata__);
 				break;
 			}
 		}
 	}
-	haxe.Log.trace(this.__movieclip__,{ fileName : "MovieClip.hx", lineNumber : 55, className : "hedge.display.MovieClip", methodName : "new"});
-	haxe.Log.trace(this.__movieclip__ != null,{ fileName : "MovieClip.hx", lineNumber : 56, className : "hedge.display.MovieClip", methodName : "new"});
-	if(this.__movieclip__ != null) this.addChild(this.__bitmap__);
+	if(this.__movieclip__ != null) {
+		this.__timers__ = new Array();
+		{
+			var _g = 0, _g1 = this.__layers__;
+			while(_g < _g1.length) {
+				var i = _g1[_g];
+				++_g;
+				var __self__ = [this];
+				var mclb = [{ labelName : i.labelName, labelFrames : i.labelFrames, labelBitmap : new hedge.display.Bitmap(new hedge.display.BitmapData(new $(i.labelFrames[0].frameData).width(),new $(i.labelFrames[0].frameData).height(),true,-16777216)), labelTimerPosition : null}];
+				this.addChild(mclb[0].labelBitmap);
+				mclb[0].labelTimerPosition = this.__timers__.push(setTimeout(function(mclb,__self__) {
+					return function() {
+						__self__[0].__updateRender__(mclb[0]);
+					}
+				}(mclb,__self__),i.labelFrames[0].framePause)) - 1;
+			}
+		}
+	}
 	this.__running__ = false;
 	this.__counter__ = 0;
 }}
@@ -390,13 +400,11 @@ hedge.display.MovieClip.__super__ = hedge.display.Sprite;
 for(var k in hedge.display.Sprite.prototype ) hedge.display.MovieClip.prototype[k] = hedge.display.Sprite.prototype[k];
 hedge.display.MovieClip.prototype.currentFrame = null;
 hedge.display.MovieClip.prototype.__running__ = null;
-hedge.display.MovieClip.prototype.__timer__ = null;
+hedge.display.MovieClip.prototype.__timers__ = null;
 hedge.display.MovieClip.prototype.__counter__ = null;
-hedge.display.MovieClip.prototype.__interval__ = null;
-hedge.display.MovieClip.prototype.__bitmap__ = null;
-hedge.display.MovieClip.prototype.__bitmapdata__ = null;
 hedge.display.MovieClip.prototype.__movieclip__ = null;
 hedge.display.MovieClip.prototype.__frames__ = null;
+hedge.display.MovieClip.prototype.__layers__ = null;
 hedge.display.MovieClip.prototype.gotoAndStop = function(frame,scene) {
 	null;
 }
@@ -406,35 +414,9 @@ hedge.display.MovieClip.prototype.play = function() {
 hedge.display.MovieClip.prototype.stop = function() {
 	null;
 }
-hedge.display.MovieClip.prototype.addChild = function(child) {
-	if(this.__running__ == false) {
-		haxe.Log.trace("added",{ fileName : "MovieClip.hx", lineNumber : 144, className : "hedge.display.MovieClip", methodName : "__checkRunning__"});
-		this.__running__ = true;
-		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-	}
-	return hedge.display.Sprite.prototype.addChild.call(this,child);
-}
-hedge.display.MovieClip.prototype.addChildAt = function(child,index) {
-	if(this.__running__ == false) {
-		haxe.Log.trace("added",{ fileName : "MovieClip.hx", lineNumber : 144, className : "hedge.display.MovieClip", methodName : "__checkRunning__"});
-		this.__running__ = true;
-		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-	}
-	return hedge.display.Sprite.prototype.addChildAt.call(this,child,index);
-}
-hedge.display.MovieClip.prototype.__checkRunning__ = function() {
-	if(this.__running__ == false) {
-		haxe.Log.trace("added",{ fileName : "MovieClip.hx", lineNumber : 144, className : "hedge.display.MovieClip", methodName : "__checkRunning__"});
-		this.__running__ = true;
-		this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
-	}
-}
-hedge.display.MovieClip.prototype.__updateRender__ = function() {
-	this.__bitmapdata__.__context__.drawImage(this.__frames__[this.__counter__].frameData,0,0);
-	this.__interval__ = Std.parseFloat(this.__frames__[this.__counter__].framePause) * 1000;
-	if(this.__counter__ == this.__frames__.length - 1) this.__counter__ = 0;
-	else ++this.__counter__;
-	this.__timer__ = setTimeout($closure(this,"__updateRender__"),this.__interval__);
+hedge.display.MovieClip.prototype.__updateRender__ = function(layer) {
+	haxe.Log.trace(layer.labelName,{ fileName : "MovieClip.hx", lineNumber : 133, className : "hedge.display.MovieClip", methodName : "__updateRender__"});
+	haxe.Log.trace(layer.labelTimerPosition,{ fileName : "MovieClip.hx", lineNumber : 134, className : "hedge.display.MovieClip", methodName : "__updateRender__"});
 }
 hedge.display.MovieClip.prototype.__class__ = hedge.display.MovieClip;
 demo.wizardry.Entity = function(p) { if( p === $_ ) return; {
@@ -1533,7 +1515,7 @@ hedge.Setup.__counter__ = null;
 hedge.Setup.init = function(_callback,fps,stageName) {
 	if(stageName == null) stageName = "Stage";
 	if(fps == null) fps = 30;
-	hedge.Setup.__storage__ = new $("<div>").attr("id","storage").css({ display : "none", width : "100%", height : "100%"});
+	hedge.Setup.__storage__ = new $("<div>").attr("id","storage").css({ display : "block", width : "100%", height : "100%"});
 	hedge.Setup.__jq__ = new $("div#" + stageName);
 	hedge.Setup.__jq__.css(hedge.Setup.__attr__({ width : "100%", height : "100%", left : "0px", top : "0px", position : "relative"})).css("background-color",hedge.Setup.RGB_to_String(16777215)).css("z-index",0).attr(hedge.Setup.__data__({ version : 0.1, project : "hedge", haXe : "http://www.haxe.org"})).append(hedge.Setup.__storage__);
 	hedge.Setup.setFrameRate(fps);

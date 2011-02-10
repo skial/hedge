@@ -21,7 +21,7 @@ class MovieClip extends Sprite {
 	public var trackAsMenu:Bool;
 	
 	public var __running__:Bool;
-	public var __timer__:Dynamic;
+	public var __timers__:Array<Dynamic>;
 	public var __counter__:Int;
 	public var __interval__:Float;
 	
@@ -36,58 +36,41 @@ class MovieClip extends Sprite {
 	public function new() {
 		super();
 		
-		__movieclip__ = { movieclipLink:null, movieclipLayers:new Array<MovieclipLayer>() };
-		
-		trace(Type.getClassName(Type.getClass(this)));
 		for (i in Setup.__movieclips__) {
 			if (i.movieclipLink == Type.getClassName(Type.getClass(this))) {
+				__movieclip__ = { movieclipLink:null, movieclipLayers:new Array<MovieclipLayer>() };
 				__movieclip__ = i;
 				
+				__layers__ = __movieclip__.movieclipLayers;
 				__frames__ = __movieclip__.movieclipLayers[0].labelFrames;
 				
-				__bitmapdata__ = new BitmapData(new JQuery(__frames__[0].frameData).width(), new JQuery(__frames__[0].frameData).height(), true, 0xFF000000);
-				__bitmap__ = new Bitmap(__bitmapdata__);
+				/*__bitmapdata__ = new BitmapData(new JQuery(__frames__[0].frameData).width(), new JQuery(__frames__[0].frameData).height(), true, 0xFF000000);
+				__bitmap__ = new Bitmap(__bitmapdata__);*/
 				
 				break;
 			}
 		}
 		
-		trace(__movieclip__);
-		trace(__movieclip__ != null);
-		
-		if (__movieclip__ != null) addChild(__bitmap__);
-		
-		/*var tmp:JQuery;
-		var movie = new JQuery('div[data-link="' + Type.getClassName(Type.getClass(this)) + '"]');
-		var layers:JQuery = movie.children('div');
-		var frames:JQuery;
-		
-		__movieclip__.movieclipLink = movie.attr('data-link');
-		
-		for (i in 0...layers.length) {
-			var mcl:MovieclipLayer = { labelName:null, labelFrames:new Array<MovieclipFrame>() };
-			
-			tmp = new JQuery(layers[i]);
-			mcl.labelName = tmp.attr('class');
-			
-			frames = tmp.children('img');
-			
-			for (j in 0...frames.length) {
-				var mcf:MovieclipFrame = { frameName:null, frameData:null, framePause:null };
-				
-				tmp = new JQuery(frames[j]);
-				
-				mcf.frameName = tmp.attr('class');
-				mcf.framePause = tmp.attr('data-pause');
-				mcf.frameData = tmp[0];
-				
-				mcl.labelFrames.push(mcf);
+		//if (__movieclip__ != null) addChild(__bitmap__);
+		if (__movieclip__ != null) {
+			__timers__ = new Array<Dynamic>();
+			for (i in __layers__) {
+				// unfortunately we need to reference (this) for setTimeout to work, also to access __updateRender__ & mclb. Wrapped in a closure.
+				var __self__ = this;
+				var mclb:MovieclipLayerBitmap = { labelName:i.labelName, 
+															 labelFrames:i.labelFrames, 
+															 labelBitmap:new Bitmap(
+																new BitmapData(
+																	new JQuery(i.labelFrames[0].frameData).width(), 
+																	new JQuery(i.labelFrames[0].frameData).height(), 
+																	true, 
+																	0xFF000000)
+															 ),
+															 labelTimerPosition:null};
+				addChild(mclb.labelBitmap);
+				mclb.labelTimerPosition = __timers__.push(untyped setTimeout(function() { __self__.__updateRender__(mclb); }, i.labelFrames[0].framePause))-1;
 			}
-			__movieclip__.movieclipLayers.push(mcl);
 		}
-		__frames__ = __movieclip__.movieclipLayers[0].labelFrames;
-		trace(__movieclip__);
-		trace(__movieclip__ != null);*/
 		
 		__running__ = false;
 		__counter__ = 0;
@@ -127,7 +110,7 @@ class MovieClip extends Sprite {
 	
 	//	OVERRIDE
 	
-	override public function addChild(child:DisplayObject):DisplayObject {
+	/*override public function addChild(child:DisplayObject):DisplayObject {
 		__checkRunning__();
 		return super.addChild(child);
 	}
@@ -135,7 +118,7 @@ class MovieClip extends Sprite {
 	override public function addChildAt(child:DisplayObject, index:Int):DisplayObject {
 		__checkRunning__();
 		return super.addChildAt(child, index);
-	}
+	}*/
 	
 	//	INTERNAL
 	
@@ -146,16 +129,18 @@ class MovieClip extends Sprite {
 		}
 	}
 	
-	private function __updateRender__():Void {
-		__bitmapdata__.__context__.drawImage(__frames__[__counter__].frameData, 0, 0);
+	private function __updateRender__(layer:MovieclipLayerBitmap):Void {
+		trace(layer.labelName);
+		trace(layer.labelTimerPosition);
+		/*__bitmapdata__.__context__.drawImage(__frames__[__counter__].frameData, 0, 0);
 		__interval__ = Std.parseFloat(__frames__[__counter__].framePause) * 1000;
 		__counter__ == __frames__.length - 1 ? __counter__ = 0 : ++__counter__;
-		__timer__ = untyped setTimeout(__updateRender__, __interval__);
+		__timer__ = untyped setTimeout(__updateRender__, __interval__);*/
 	}
 	
 	private function __stopRender__():Void {
 		__running__ = false;
-		untyped clearTimeout(__timer__);
+		//untyped clearTimeout(__timer__);
 	}
 	
 }

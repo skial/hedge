@@ -38,7 +38,7 @@ class Person extends Entity {
 		
 		for (i in animations) {
 			this.removeChild(i);
-			//i.stop();
+			i.stop();
 		}
 		
 		showAnimation(south);

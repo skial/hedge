@@ -6,7 +6,7 @@
 package hedge;
 import haxe.Md5;
 import haxe.rtti.Meta;
-import hedge.display.BitmapData;
+import hedge.display.Bitmap;
 import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
 import hedge.display.Stage;
@@ -45,6 +45,11 @@ typedef MovieclipLayer = {
 	var labelFrames:Array<MovieclipFrame>;
 }
 
+typedef MovieclipLayerBitmap = { > MovieclipLayer,
+	var labelBitmap:Bitmap;
+	var labelTimerPosition:Int;
+}
+
 typedef MovieclipFrame = {
 	var frameName:String;
 	var frameData:Dynamic;
@@ -81,7 +86,7 @@ class Setup {
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
 		// create default holder
-		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'none', width:'100%', height:'100%' } );
+		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'block', width:'100%', height:'100%' } );
 		
 		__jq__ = new JQuery('div#' + stageName);
 		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ) )
