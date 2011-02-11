@@ -101,6 +101,7 @@ hedge.display.DisplayObject.prototype.initialize = function() {
 	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
 	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"})).attr("data-originalName",this.__originalName__);
 	this.setParent(hedge.Setup.__default__);
+	this.__jq__.data("__self__",this);
 }
 hedge.display.DisplayObject.prototype.generateJQuery = function() {
 	hedge.Setup.__storage__.append(this.__jq__ = new $("<div>"));
@@ -153,10 +154,10 @@ hedge.display.DisplayObject.prototype.setMask = function(value) {
 	return this.getMask();
 }
 hedge.display.DisplayObject.prototype.getName = function() {
-	return this.__jq__.attr("id");
+	return this.__jq__.attr("class");
 }
 hedge.display.DisplayObject.prototype.setName = function(value) {
-	this.__jq__.attr("id",value);
+	this.__jq__.attr("class",value);
 	return value;
 }
 hedge.display.DisplayObject.prototype.getOpaqueBackground = function() {
@@ -271,6 +272,9 @@ hedge.display.DisplayObjectContainer.prototype.addChild = function(child) {
 }
 hedge.display.DisplayObjectContainer.prototype.getChildAt = function(index) {
 	return new hedge.display.DisplayObject();
+}
+hedge.display.DisplayObjectContainer.prototype.getChildByName = function(name) {
+	return this.__jq__.find("." + name).data("__self__");
 }
 hedge.display.DisplayObjectContainer.prototype.removeChild = function(child) {
 	child.__jq__.appendTo(hedge.Setup.__storage__);
@@ -398,7 +402,12 @@ hedge.display.MovieClip.prototype.play = function() {
 	null;
 }
 hedge.display.MovieClip.prototype.stop = function() {
-	null;
+	var _g = 0, _g1 = this.__timers__;
+	while(_g < _g1.length) {
+		var i = _g1[_g];
+		++_g;
+		clearTimeout(i);
+	}
 }
 hedge.display.MovieClip.prototype.__updateRender__ = function(layer) {
 	var __self__ = this;
@@ -440,6 +449,10 @@ demo.wizardry.Entity.prototype.__class__ = demo.wizardry.Entity;
 demo.wizardry.Person = function(p) { if( p === $_ ) return; {
 	demo.wizardry.Entity.call(this);
 	this.health = 100;
+	this.north = this.getChildByName("North");
+	this.south = this.getChildByName("South");
+	this.east = this.getChildByName("East");
+	this.west = this.getChildByName("West");
 	this.animations = new Array();
 	this.animations.push(this.north);
 	this.animations.push(this.south);
@@ -450,8 +463,9 @@ demo.wizardry.Person = function(p) { if( p === $_ ) return; {
 		while(_g < _g1.length) {
 			var i = _g1[_g];
 			++_g;
-			this.removeChild(i);
+			haxe.Log.trace(i,{ fileName : "Person.hx", lineNumber : 45, className : "demo.wizardry.Person", methodName : "new"});
 			i.stop();
+			this.removeChild(i);
 		}
 	}
 	this.showAnimation(this.south);

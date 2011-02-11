@@ -30,6 +30,11 @@ class Person extends Entity {
 		
 		this.health = 100;
 		
+		north = cast getChildByName('North');
+		south = cast getChildByName('South');
+		east 	= cast getChildByName('East');
+		west 	= cast getChildByName('West');
+		
 		animations = new Array<MovieClip>();
 		animations.push(north);
 		animations.push(south);

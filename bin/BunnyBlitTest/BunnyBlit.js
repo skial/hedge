@@ -104,6 +104,7 @@ hedge.display.DisplayObject.prototype.initialize = function() {
 	this.__originalName__ = this.setName(hedge.Setup.generateInstanceName());
 	this.__jq__.attr("id",this.getName()).css(hedge.Setup.__attr__({ width : "0px", height : "0px", left : "0px", top : "0px"})).attr("data-originalName",this.__originalName__);
 	this.setParent(hedge.Setup.__default__);
+	this.__jq__.data("__self__",this);
 }
 hedge.display.DisplayObject.prototype.generateJQuery = function() {
 	hedge.Setup.__storage__.append(this.__jq__ = new $("<div>"));
@@ -156,10 +157,10 @@ hedge.display.DisplayObject.prototype.setMask = function(value) {
 	return this.getMask();
 }
 hedge.display.DisplayObject.prototype.getName = function() {
-	return this.__jq__.attr("id");
+	return this.__jq__.attr("class");
 }
 hedge.display.DisplayObject.prototype.setName = function(value) {
-	this.__jq__.attr("id",value);
+	this.__jq__.attr("class",value);
 	return value;
 }
 hedge.display.DisplayObject.prototype.getOpaqueBackground = function() {

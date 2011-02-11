@@ -45,7 +45,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function getChildByName(name:String):DisplayObject {
-		return new DisplayObject();
+		return __jq__.find('.' + name).data('__self__');
 	}
 	
 	public function getChildIndex(child:DisplayObject):Int {
@@ -110,16 +110,6 @@ class DisplayObjectContainer extends InteractiveObject {
 	
 	private function getTextSnapshot():TextSnapshot {
 		return textSnapshot;
-	}
-	
-	// INTERNAL LISTENER METHODS	
-	
-	private function onChildAdded(e):Void {
-		
-	}
-	
-	private function onChildRemoved(e):Void {
-		
 	}
 	
 }

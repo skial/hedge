@@ -95,7 +95,9 @@ class MovieClip extends Sprite {
 	}
 	
 	public function stop():Void {
-		
+		for (i in __timers__) {
+			untyped clearTimeout(i);
+		}
 	}
 	
 	//	OVERRIDE
@@ -107,10 +109,6 @@ class MovieClip extends Sprite {
 		layer.labelBitmap.bitmapData.__context__.drawImage(layer.labelFrames[layer.labelCounter].frameData, 0, 0);
 		layer.labelCounter == layer.labelFrames.length - 1 ? layer.labelCounter = 0 : ++layer.labelCounter;
 		__timers__[layer.labelTimerPosition] = untyped setTimeout(untyped setTimeout(function() { __self__.__updateRender__(layer); }, Std.parseFloat(layer.labelFrames[layer.labelCounter].framePause) * 1000));
-	}
-	
-	private function __stopRender__():Void {
-		//untyped clearTimeout(__timer__);
 	}
 	
 }

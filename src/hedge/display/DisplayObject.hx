@@ -66,7 +66,6 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	/* INTERNAL FUNCTIONS */
 	
-	// method name might give you a hint to what it does
 	private function initialize():Void {
 		this.generateJQuery();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
@@ -75,6 +74,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 					  .attr('data-originalName', this.__originalName__);
 		
 		this.parent = Setup.__default__;
+		this.__jq__.data('__self__', this);
 	}
 	
 	// provide to be overriden
@@ -144,11 +144,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getName():String {
-		return __jq__.attr('id');
+		return __jq__.attr('class');
 	}
 	
 	private function setName(value:String):String {
-		__jq__.attr('id', value);
+		__jq__.attr('class', value);
 		return value;
 	}
 	
