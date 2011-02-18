@@ -35,9 +35,9 @@ class DemoMain {
 		#if js
 			// Setup.init params : callback method, frame rate for enterframe event, then stage id
 			#if bunnyBlit
-				Setup.init(launch, 15, 'bunnyBlit');
+				Setup.init(launch, 30, 'bunnyBlit');
 			#elseif bunnyLand 
-				Setup.init(launch, 15, 'bunnyLand');
+				Setup.init(launch, 30, 'bunnyLand');
 			#elseif wizardry
 				Setup.init(launch, 15, 'wizardry');
 			#end
@@ -89,7 +89,7 @@ class Examples extends Sprite {
 		submitAmount.name = 'submitAmount';
 		
 		submitText = new TextField();
-		submitText.text = 'submit';
+		submitText.text = 'change';
 		submitText.name = 'submitText';
 		
 		submitAmount.x = 640 - (submitAmount.width + 5);
@@ -107,6 +107,9 @@ class Examples extends Sprite {
 		this.addChild(bunnyAmount);
 		this.addChild(submitAmount);
 		submitAmount.addChild(submitText);
+		
+		bunnyClass.numBunnies = 3000;
+		bunnyAmount.text = '' + 3000;
 	}
 	
 	public function onBunnyClick(e:Dynamic):Void {
@@ -117,7 +120,7 @@ class Examples extends Sprite {
 		if (amount > max) {
 			bunnyAmount.text = ''+max;
 		}
-		if (amount < 0) {
+		if (amount <= 0) {
 			bunnyAmount.text = '1';
 		}
 		bunnyClass.numBunnies = Std.parseInt(bunnyAmount.text);

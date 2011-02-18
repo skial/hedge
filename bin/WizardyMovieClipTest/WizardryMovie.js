@@ -463,8 +463,6 @@ demo.wizardry.Person = function(p) { if( p === $_ ) return; {
 		while(_g < _g1.length) {
 			var i = _g1[_g];
 			++_g;
-			haxe.Log.trace(i,{ fileName : "Person.hx", lineNumber : 45, className : "demo.wizardry.Person", methodName : "new"});
-			i.stop();
 			this.removeChild(i);
 		}
 	}

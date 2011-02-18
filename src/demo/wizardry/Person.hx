@@ -43,7 +43,7 @@ class Person extends Entity {
 		
 		for (i in animations) {
 			this.removeChild(i);
-			i.stop();
+			//i.stop(); // does not have stop() as each hedge Movieclip treats each layer as a bitmap object
 		}
 		
 		showAnimation(south);

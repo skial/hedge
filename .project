@@ -18,6 +18,7 @@
 	</buildSpec>
 	<natures>
 		<nature>com.powerflasher.fdt.core.FlashNature</nature>
+		<nature>eclihx.core.haxenature</nature>
 		<nature>com.powerflasher.fdt.haxe.core.nature</nature>
 	</natures>
 </projectDescription>

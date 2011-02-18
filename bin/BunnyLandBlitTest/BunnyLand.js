@@ -1792,7 +1792,7 @@ DemoMain.main = function() {
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
 	}
-	hedge.Setup.init($closure(DemoMain,"launch"),15,"bunnyLand");
+	hedge.Setup.init($closure(DemoMain,"launch"),30,"bunnyLand");
 }
 DemoMain.launch = function() {
 	hedge.Lib.attachToStage(new Examples());
@@ -1819,7 +1819,7 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.submitAmount.getGraphics().endFill();
 	this.submitAmount.setName("submitAmount");
 	this.submitText = new hedge.text.TextField();
-	this.submitText.setText("submit");
+	this.submitText.setText("change");
 	this.submitText.setName("submitText");
 	this.submitAmount.setX(640 - (this.submitAmount.getWidth() + 5));
 	this.submitAmount.setY(480 - (this.submitAmount.getHeight() + 5));
@@ -1832,6 +1832,8 @@ Examples = function(p) { if( p === $_ ) return; {
 	this.addChild(this.bunnyAmount);
 	this.addChild(this.submitAmount);
 	this.submitAmount.addChild(this.submitText);
+	this.bunnyClass.numBunnies = 3000;
+	this.bunnyAmount.setText("" + 3000);
 }}
 Examples.__name__ = ["Examples"];
 Examples.__super__ = hedge.display.Sprite;
@@ -1850,7 +1852,7 @@ Examples.prototype.onBunnyClick = function(e) {
 	if(amount > this.max) {
 		this.bunnyAmount.setText("" + this.max);
 	}
-	if(amount < 0) {
+	if(amount <= 0) {
 		this.bunnyAmount.setText("1");
 	}
 	this.bunnyClass.numBunnies = Std.parseInt(this.bunnyAmount.getText());
@@ -2397,7 +2399,7 @@ hedge.display.CapsStyle.NONE = "none";
 hedge.events.Event.ENTER_FRAME = "enterFrame";
 hedge.events.KeyboardEvent.KEY_DOWN = "keydown";
 hedge.events.KeyboardEvent.KEY_UP = "keyup";
-demo.bunnyLandBlitTest.BunnyLandBlitTest.numBunnies = 24000;
+demo.bunnyLandBlitTest.BunnyLandBlitTest.numBunnies = 34000;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.gravity = 1;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.maxZ = 0;
 demo.bunnyLandBlitTest.BunnyLandBlitTest.minZ = -10000;
