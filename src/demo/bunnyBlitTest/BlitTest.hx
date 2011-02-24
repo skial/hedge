@@ -5,7 +5,6 @@
 
 package demo.bunnyBlitTest;
 
-import hedge.Setup;
 import hedge.display.Sprite;
 import hedge.display.Bitmap;
 import hedge.display.BitmapData;
@@ -39,11 +38,7 @@ class BlitTest extends Sprite {
 		
 		bunnies = new Array<BlitBunny>();
 		var bunnyAsset:BitmapData;
-		#if js
 		bunnyAsset = new BitmapData(26, 37, true, null, 'img#wabbit_alpha');
-		#elseif flash9
-		
-		#end
 		
 		for (i in 0...numBunnies) {
 			bunny = {

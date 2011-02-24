@@ -3,21 +3,19 @@
 import haxe.Firebug;
 import haxe.rtti.Meta;
 #if js
-#if bunnyBlit
-import demo.bunnyBlitTest.BlitTest;
-#elseif bunnyLand
-	import demo.bunnyLandBlitTest.BunnyLandBlitTest;
-#elseif wizardry
-	import demo.wizardry.Main;
-#end
+	#if bunnyBlit
+	import demo.bunnyBlitTest.BlitTest;
+	#elseif bunnyLand
+		import demo.bunnyLandBlitTest.BunnyLandBlitTest;
+	#elseif wizardry
+		import demo.wizardry.Main;
+	#end
 import js.Lib;
 import hedge.display.Sprite;
 import hedge.events.MouseEvent;
 import hedge.text.TextField;
 import hedge.text.TextFieldType;
 import hedge.Setup;
-#elseif flash9
-
 #end
 
 /**
@@ -41,16 +39,14 @@ class DemoMain {
 			#elseif wizardry
 				Setup.init(launch, 15, 'wizardry');
 			#end
-		#elseif flash9
-		launch();
 		#end
 	}
 	
 	static function launch() {
 		#if !wizardry
 			hedge.Lib.attachToStage(new Examples());
-		#else
-			hedge.Lib.attachToStage(new Main());
+		/*#else
+			hedge.Lib.attachToStage(new Main());*/
 		#end
 	}
 	

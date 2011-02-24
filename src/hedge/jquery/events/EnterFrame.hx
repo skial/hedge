@@ -41,7 +41,7 @@ class EnterFrame {
 		interval = 1000 / Setup.frameRate;
 	}
 	
-	public inline static function runEnterFrame():Void {
+	public static function runEnterFrame():Void {
 		if (eventLength != 0) {
 			i = eventLength;
 			while (i > 0) {
