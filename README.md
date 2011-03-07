@@ -1,10 +1,5 @@
 # hedge - *a javascript implementation of the Flash9 haXe api.*
 ***
-## reason
-This project started because I've never had to use a substantial amount of javascript. Now extern files have been released by [andyli](https://github.com/andyli) I can jump straight in. 
-
-This is more a reason for me to keep learning new libs / features. I will keep adding classes / methods when I need / get around to them. I will also add a list of classes / methods that have been added to the wiki [TODO].
-
 For a more **finished flash to javascript / html(5) library**, take a look at [jeash](https://launchpad.net/jeash).
 ***
 ## contribute
