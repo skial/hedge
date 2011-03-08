@@ -9,6 +9,10 @@ import js.Dom;
 
 class Twig {
 	
+	/*
+	 * ELEMENT DATA ASSOCIATION
+	 */
+	
 	private static var CACHE:Array<Dynamic> = new Array<Dynamic>();
 	private static var CACHE_COUNTER:Int = 0;
 	private static var CACHE_ID:Int = 0;
@@ -64,6 +68,68 @@ class Twig {
 			Reflect.deleteField(CACHE[CACHE_ID], key);
 			
 		}
+		
+	}
+	
+	/*
+	 * (G/S)ET ELEMENT ATTRIBUTE
+	 */
+	
+	public static function attr(element:HtmlDom, name:String, ?value:String = null):String {
+		
+		// get
+		if (value == null) {
+			
+			return element.getAttribute(name);
+			
+		// set
+		} else {
+			
+			element.setAttribute(name, value);
+			return value;
+			
+		}
+		
+	}
+	
+	public static function removeAttr(element:HtmlDom, name:String):Void {
+		// removeAttribute not offically supported by haxe
+		untyped element.removeAttribute(name);
+	}
+	
+	/*
+	 * (G/S)ET ELEMENT STYLES
+	 */
+	
+	public static function css(element:HtmlDom, name:String, ?value:Dynamic = null):String {
+		
+		// get
+		if (value == null) {
+			
+			return Reflect.field(element.style, name);
+			
+		// set
+		} else {
+			
+			Reflect.setField(element.style, name, value);
+			return value;
+			
+		}
+		
+	}
+	
+	public static function cssMap(element:HtmlDom, map:Dynamic):Void {
+		
+		var _t:String = '';
+		
+		for (n in Reflect.fields(map)) {
+			
+			//Reflect.setField(element.style, n, Reflect.field(map, n));
+			_t += '' + n + ':' + Reflect.field(map, n) + '; ';
+			
+		}
+		
+		element.style.cssText = _t;
 		
 	}
 	

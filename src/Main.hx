@@ -8,7 +8,7 @@ using hedge.Twig;
 class Main {
 
 	public static function main() {
-		Firebug.redirectTraces();
+		//Firebug.redirectTraces();
 		
 		Lib.document.getElementById('bunnyBlit').data('hello', 'world');
 		trace(Lib.document.getElementById('bunnyBlit').data('hello'));
@@ -21,6 +21,13 @@ class Main {
 		Lib.document.getElementById('bunnyBlit').removeData('hello');
 		Lib.document.getElementById('wabbit_alpha').removeData();
 		trace(Reflect.field(Twig, 'CACHE'));
+		
+		Lib.document.getElementById('skialbainn').attr('class', 'hello world');
+		Lib.document.getElementById('skialbainn').attr('data-bob', 'smithy');
+		Lib.document.getElementById('skialbainn').removeAttr('class');
+		
+		Lib.document.getElementById('skialbainn').css('width', '100px');
+		Lib.document.getElementById('skialbainn').cssMap( { width:'100%', height:'250px' } );
 	}
 
 }
