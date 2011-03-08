@@ -1,8 +1,9 @@
 package ;
 import haxe.Firebug;
 import js.Lib;
-import twig.Storage;
-using twig.Storage;
+
+import hedge.Twig;
+using hedge.Twig;
 
 class Main {
 
@@ -15,11 +16,11 @@ class Main {
 		Lib.document.getElementById('wabbit_alpha').data('skial', 'bainn');
 		Lib.document.getElementById('wabbit_alpha').data('structure', {a:1, b:2, c:3});
 		trace(Lib.document.getElementById('wabbit_alpha').data('skial'));
-		trace(Storage.cache);
+		trace(Reflect.field(Twig, 'CACHE'));
 		
 		Lib.document.getElementById('bunnyBlit').removeData('hello');
 		Lib.document.getElementById('wabbit_alpha').removeData();
-		trace(Storage.cache);
+		trace(Reflect.field(Twig, 'CACHE'));
 	}
 
 }

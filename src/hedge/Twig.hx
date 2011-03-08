@@ -3,14 +3,15 @@
  * @author Skial Bainn
  */
 
-package twig;
+package hedge;
+
 import js.Dom;
 
-class Storage {
+class Twig {
 	
-	public static var cache:Array<Dynamic> = new Array<Dynamic>();
-	private static var counter:Int = 0;
-	private static var id:Int = 0;
+	private static var CACHE:Array<Dynamic> = new Array<Dynamic>();
+	private static var CACHE_COUNTER:Int = 0;
+	private static var CACHE_ID:Int = 0;
 	
 	private static inline var TWIG_ID:String = 'TWIG_ID';
 
@@ -20,27 +21,27 @@ class Storage {
 		if (!Reflect.hasField(element, TWIG_ID)) {
 			// if false set one up
 			
-			Reflect.setField(element, TWIG_ID, counter);
-			id = counter;
-			cache.insert(id, { } );
+			Reflect.setField(element, TWIG_ID, CACHE_COUNTER);
+			CACHE_ID = CACHE_COUNTER;
+			CACHE.insert(CACHE_ID, { } );
 			
-			++counter;
+			++CACHE_COUNTER;
 			
 		} else {
 			// if true grab TWIG_ID
 			
-			id = Reflect.field(element, TWIG_ID);
+			CACHE_ID = Reflect.field(element, TWIG_ID);
 		}
 		
 		// get data
 		if (value == null) {
 			
-			return Reflect.field(cache[id], key);
+			return Reflect.field(CACHE[CACHE_ID], key);
 			
 		// set data
 		} else {
 			
-			Reflect.setField(cache[id], key, value);
+			Reflect.setField(CACHE[CACHE_ID], key, value);
 			return value;
 			
 		}
@@ -50,17 +51,17 @@ class Storage {
 	public static function removeData(element:HtmlDom, ?key:String = null):Void {
 		
 		// assumes element has TWIG_ID already - this might change.
-		id = Reflect.field(element, TWIG_ID);
+		CACHE_ID = Reflect.field(element, TWIG_ID);
 		
 		// delete all if no key is given
 		if (key == null) {
 			
-			cache[id] = null;
+			CACHE[CACHE_ID] = null;
 		
 		// delete data associated to key
 		} else {
 			
-			Reflect.deleteField(cache[id], key);
+			Reflect.deleteField(CACHE[CACHE_ID], key);
 			
 		}
 		
