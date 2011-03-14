@@ -8,6 +8,8 @@ import hedge.display.DisplayObject;
 import hedge.display.InteractiveObject;
 import hedge.geom.Rectangle;
 import hedge.Setup;
+import hedge.Twig;
+import hedge.TwigType;
 
 class TextField extends InteractiveObject {
 	
@@ -54,7 +56,8 @@ class TextField extends InteractiveObject {
 	public function new() {
 		super();
 		// TODO values below - once all working, move to one line as most will = false
-		this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
+		//this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
+		this.__jq__.cssMap( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
 		this.background = false;
 		this.border = false;
 		this.wordWrap = false;
@@ -198,7 +201,8 @@ class TextField extends InteractiveObject {
 	
 	private function setType(value:String):String {
 		if (value == TextFieldType.DYNAMIC) {
-			this.__jq__.attr( { readonly:'readonly' } );
+			//this.__jq__.attr( { readonly:'readonly' } );
+			this.__jq__.attr('readonly', 'readonly');
 		} else if (value == TextFieldType.INPUT) {
 			this.__jq__.removeAttr('readonly');
 		}
@@ -219,7 +223,8 @@ class TextField extends InteractiveObject {
 	//	OVERRIDE METHODS
 	
 	private override function generateJQuery():Void {
-		Setup.__storage__.append(this.__jq__ = new JQuery('<textarea>'));
+		//Setup.__storage__.append(this.__jq__ = new JQuery('<textarea>'));
+		Setup.__storage__.append(this.__jq__ = new Twig('textarea', TwigType.CREATE_ELEMENT));
 	}
 	
 	private override function setWidth(value:Float):Float {

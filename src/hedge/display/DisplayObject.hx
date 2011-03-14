@@ -7,6 +7,8 @@ package hedge.display;
 import hedge.events.EventDispatcher;
 import hedge.geom.Rectangle;
 import hedge.Setup;
+import hedge.Twig;
+import hedge.TwigType;
 
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
@@ -70,7 +72,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.generateJQuery();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
 		// width and height need to be set to 0
-		this.__jq__.attr('id', this.name).css( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) )
+		this.__jq__.attr('id', this.name).cssMap( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) )
 					  .attr('data-originalName', this.__originalName__);
 		
 		this.parent = Setup.__default__;
@@ -79,7 +81,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	// provide to be overriden
 	private function generateJQuery():Void {
-		Setup.__storage__.append(this.__jq__ = new JQuery('<div>'));
+		//Setup.__storage__.append(this.__jq__ = new JQuery('<div>'));
+		Setup.__storage__.append(this.__jq__ = new Twig('div', TwigType.CREATE_ELEMENT));
 	}
 	
 	private function getMouseX():Float {
@@ -236,7 +239,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getX():Float {
-		return __jq__.position().left;
+		//return __jq__.position().left;
+		return __jq__.left();
 	}
 	
 	private function setX(value:Float):Float {
@@ -245,7 +249,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getY():Float {
-		return __jq__.position().top;
+		//return __jq__.position().top;
+		return __jq__.top();
 	}
 	
 	private function setY(value:Float):Float {

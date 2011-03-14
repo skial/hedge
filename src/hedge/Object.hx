@@ -4,13 +4,16 @@
  */
 
 package hedge;
+import js.Dom;
+import hedge.Twig;
 
 class Object implements Dynamic {
 	
 	//public static var constructor:Object;
 	//public static var prototype:Object; // causes __jq__hx to crash - todo
 	
-	public var __jq__:JQuery;
+	//public var __jq__:JQuery;
+	public var __jq__:Twig;
 	
 	public function new() {
 		

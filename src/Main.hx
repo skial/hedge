@@ -28,6 +28,10 @@ class Main {
 		
 		Lib.document.getElementById('skialbainn').css('width', '100px');
 		Lib.document.getElementById('skialbainn').cssMap( { width:'100%', height:'250px' } );
+		
+		Lib.document.body.appendChild(Lib.document.createElement('canvas'));
+		
+		Lib.document.getElementById('skialbainn').bind('skial', function() { } );
 	}
 
 }

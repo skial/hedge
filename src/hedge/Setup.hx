@@ -14,6 +14,8 @@ import hedge.events.Event;
 import hedge.jquery.events.EnterFrame;
 import hedge.jquery.events.ResizeElement;
 import JQuery;
+import js.Dom;
+import hedge.Twig;
 
 using StringTools;
 
@@ -72,8 +74,10 @@ class Setup {
 	
 	// INTERNAL PROPERTIES / ADVANCED PUBLIC PROPERTIES
 	
-	public static var __jq__:JQuery;
-	public static var __storage__:JQuery;
+	//public static var __jq__:JQuery;
+	public static var __jq__:Twig;
+	//public static var __storage__:JQuery;
+	public static var __storage__:Twig;
 	public static var __stage__:Stage;
 	public static var __default__:DisplayObjectContainer;
 	
@@ -87,20 +91,30 @@ class Setup {
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
 		// create default holder
-		__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'block', width:'100%', height:'100%' } );
+		//__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'block', width:'100%', height:'100%' } );
+		__storage__ = new Twig('div', TwigType.CREATE_ELEMENT).attr('id', 'storage').cssMap( { display:'none', width:'100%', height:'100%' } );
 		
-		__jq__ = new JQuery('div#' + stageName);
+		/*__jq__ = new JQuery('div#' + stageName);
 		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ) )
 				.css('background-color', RGB_to_String(0xFFFFFF))
 				.css('z-index', 0)
 				.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) )
+				.append(__storage__);*/
+		
+		__jq__ = new Twig(stageName, TwigType.FIND_ID)
+				.cssMap(__attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ))
+				.attrMap(__data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ))
+				.css('background-color', RGB_to_String(0xFFFFFF))
+				.css('z-index', 0)
 				.append(__storage__);
 				
 		frameRate = fps;
 		
 		__stage__ = new Stage();
-		__stage__.name = stageName;
 		__stage__.__jq__ = __jq__;
+		__stage__.name = stageName;
+		
+		Twig.root = __stage__.__jq__.element;
 		
 		__default__ = new DisplayObjectContainer();
 		__default__.name = 'default_parent_object';

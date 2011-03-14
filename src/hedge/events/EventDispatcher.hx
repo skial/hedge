@@ -10,6 +10,8 @@ import js.Lib;
 import haxe.Timer;
 import hedge.Object;
 import hedge.Setup;
+import hedge.Twig;
+import hedge.TwigType;
 
 class EventDispatcher extends Object, implements IEventDispatcher {
 	
@@ -22,8 +24,10 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		// event priority does not exist in javascript as far as im aware - ignore it or throw error
 		// no weak reference also - ignore or throw error
 		if (type != Event.ENTER_FRAME) {
-			__jq__.bind(type, { }, listener);
+			//__jq__.bind(type, { }, listener);
+			__jq__.bind(type, listener);
 		} else {
+			trace('enterframe');
 			EnterFrame.addListener(this.__originalName__, listener);
 		}
 	}

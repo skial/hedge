@@ -4,8 +4,10 @@
  */
 
 package hedge.display;
-import hedge.canvas.CanvasRenderingContext2D;
-import hedge.canvas.ImageData;
+import hedge.html5.Canvas;
+import hedge.html5.CanvasRenderingContext2D;
+import hedge.html5.Image;
+import hedge.html5.ImageData;
 import hedge.events.MouseEvent;
 import hedge.filters.BitmapFilter;
 import hedge.geom.ColorTransform;
@@ -16,6 +18,10 @@ import hedge.utils.ByteArray;
 import hedge.Setup;
 import js.Lib;
 import js.Dom;
+import hedge.Twig;
+import hedge.TwigType;
+
+using Std;
 
 class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
@@ -28,11 +34,13 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	public var transparent	:Bool;
 	public var width(getWidth, null)		:Int;
 	
-	public var __canvas__	:JQuery;
+	//public var __canvas__	:JQuery;
+	public var __canvas__	:Twig;
 	public var __context__	:CanvasRenderingContext2D;
 	public var __id__			:String;
 	public var __fillColor__:Int;
-	public var __source__	:JQuery;
+	//public var __source__	:JQuery;
+	public var __source__	:Image;
 
 	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0x00FFFFFF, ?cssSelector:String = null):Void {
 		this.width 				= width;
@@ -40,22 +48,28 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		this.transparent 		= transparent 	== null ? true 								: transparent;
 		this.__fillColor__ 	= fillColor 	== null ? 0x00FFFFFF 						: fillColor;
 		this.__id__				= Setup.generateInstanceName();
-		this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
+		//this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
+		this.__source__ 		= cssSelector	== null ? null									: untyped new Twig(cssSelector, TwigType.FIND_ID).element;
 		
-		__canvas__ = new JQuery('<canvas>')
+		//__canvas__ = new JQuery('<canvas>')
+		__canvas__ = new Twig('canvas', TwigType.CREATE_ELEMENT)
 			.addClass('bitmapdata')
-			.attr( { id:__id__, width:width, height:height } );
+			//.attr( { id:__id__, width:width, height:height } );
+			.attrMap( { id:__id__, width:width, height:height } );
 		
-		__canvas__.bind('mouseenter', onCanvasEnter);
-		__canvas__.bind('mouseleave', onCanvasLeave);
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		Setup.__storage__.append(__canvas__);
+			
+		__canvas__.bind('mouseenter', onCanvasEnter);
+		__canvas__.bind('mouseleave', onCanvasLeave);
 		
-		__context__ = untyped __canvas__[0].getContext('2d');
+		__context__ = untyped __canvas__.element.getContext('2d');
+		
 		if (cssSelector == null) {
 			this.fillRect(new Rectangle(0, 0, width, height), this.__fillColor__);
 		} else {
-			__context__.drawImage(this.__source__[0], 0, 0);
+			//__context__.drawImage(this.__source__[0], 0, 0);
+			__context__.drawImage(this.__source__, 0, 0);
 		}
 	}
 	
@@ -82,7 +96,8 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	}
 	
 	public function copyPixels(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false) {
-		this.__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
+		//this.__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
+		this.__context__.drawImage(untyped sourceBitmapData.__canvas__.element, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
 	}
 	
 	public function dispose() {
@@ -96,7 +111,7 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	public function fillRect(rect:Rectangle, color:Int) {
 		__context__.fillStyle = this.transparent == true ? Setup.canvas_RGBA_to_String(color) : Setup.RGB_to_String(color);
-		__context__.fillRect(rect.x, rect.y, rect.width, rect.height);
+		__context__.fillRect(rect.x.int(), rect.y.int(), rect.width.int(), rect.height.int());
 	}
 	
 	public function floodFill(x:Int, y:Int, color:Int) {
@@ -189,7 +204,8 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	}
 	
 	private function onCanvasEnter(e:MouseEvent):Void {
-		__canvas__.attr( { tabindex:0 }).focus();
+		//__canvas__.attr( { tabindex:0 }).focus();
+		__canvas__.attr('tabindex', 0).focus();
 	}
 	
 	private function onCanvasLeave(e:MouseEvent):Void {

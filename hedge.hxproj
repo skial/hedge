@@ -38,7 +38,7 @@
     <hidden path="bin\yuicompressor-2.4.2.jar" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>haxe Wizardry.hxml</preBuildCommand>
+  <preBuildCommand>haxe BunnyBlit.hxml</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->

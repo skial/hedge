@@ -8,6 +8,8 @@ import hedge.events.EventDispatcher;
 import hedge.geom.Point;
 import hedge.text.TextSnapshot;
 import hedge.Setup;
+import hedge.Twig;
+import hedge.TwigType;
 
 class DisplayObjectContainer extends InteractiveObject {
 	
@@ -18,7 +20,8 @@ class DisplayObjectContainer extends InteractiveObject {
 
 	public function new() {
 		super();
-		__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
+		//__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
+		__jq__.bind(Setup.RESIZE_ELEMENT, {});
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {

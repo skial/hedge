@@ -8,6 +8,8 @@ import hedge.geom.Matrix;
 import hedge.Object;
 import hedge.Setup;
 import Raphael;
+import hedge.Twig;
+import hedge.TwigType;
 
 class Graphics extends Object {
 	
@@ -73,11 +75,12 @@ class Graphics extends Object {
 		this.parent = parent;
 		this.path = '';
 		
-		parent.__jq__.append(__jq__ = new JQuery('<div>'));
-		__jq__.attr('id', parent.__originalName__ + '-graphics')
-				.css( Setup.__attr__( { width:'100%', height:'100%' } ) )
+		//parent.__jq__.append(__jq__ = new JQuery('<div>'));
+		__jq__ = new Twig('div', TwigType.CREATE_ELEMENT)
+				.attr('id', parent.__originalName__ + '-graphics')
+				.cssMap( Setup.__attr__( { width:'100%', height:'100%' } ) )
 				.css('background-color', 'transparent');
-		
+		parent.__jq__.append(__jq__);
 		__raphael__ = new Raphael(parent.__originalName__ + '-graphics', '100%', '100%');
 	}
 	

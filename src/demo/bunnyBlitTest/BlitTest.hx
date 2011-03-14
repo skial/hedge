@@ -38,7 +38,8 @@ class BlitTest extends Sprite {
 		
 		bunnies = new Array<BlitBunny>();
 		var bunnyAsset:BitmapData;
-		bunnyAsset = new BitmapData(26, 37, true, null, 'img#wabbit_alpha');
+		//bunnyAsset = new BitmapData(26, 37, true, null, 'img#wabbit_alpha');
+		bunnyAsset = new BitmapData(26, 37, true, null, 'wabbit_alpha');
 		
 		for (i in 0...numBunnies) {
 			bunny = {

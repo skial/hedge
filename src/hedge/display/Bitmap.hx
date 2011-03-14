@@ -4,6 +4,9 @@
  */
 
 package hedge.display;
+import hedge.Twig;
+import hedge.TwigType;
+using hedge.Twig;
 
 class Bitmap extends DisplayObject {
 	
