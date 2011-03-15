@@ -36,6 +36,8 @@
     <hidden path="bin\shrinksafe.jar" />
     <hidden path="bin\js.jar" />
     <hidden path="bin\yuicompressor-2.4.2.jar" />
+    <hidden path="src\hedge\TwigOLD.hx" />
+    <hidden path="src\hedge\TwigType.hx" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand>haxe BunnyBlit.hxml</preBuildCommand>

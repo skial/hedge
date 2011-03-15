@@ -1,37 +1,38 @@
 package ;
 import haxe.Firebug;
+import hedge.display.Sprite;
+import hedge.Setup;
 import js.Lib;
 
 import hedge.Twig;
-using hedge.Twig;
 
-class Main {
+class Main extends Sprite {
 
 	public static function main() {
-		//Firebug.redirectTraces();
+		Firebug.redirectTraces();
 		
-		Lib.document.getElementById('bunnyBlit').data('hello', 'world');
-		trace(Lib.document.getElementById('bunnyBlit').data('hello'));
-		Lib.document.getElementById('bunnyBlit').data('bob', 'smith');
-		Lib.document.getElementById('wabbit_alpha').data('skial', 'bainn');
-		Lib.document.getElementById('wabbit_alpha').data('structure', {a:1, b:2, c:3});
-		trace(Lib.document.getElementById('wabbit_alpha').data('skial'));
-		trace(Reflect.field(Twig, 'CACHE'));
+		Setup.init(run, 30, 'TEST');
+	}
+	
+	public static function run():Void {
+		var m = new Main();
+		var a = new Sprite();
+		var b = new Sprite();
+		hedge.Lib.attachToStage(m);
+		m.addChild(a);
+		a.addChild(b);
 		
-		Lib.document.getElementById('bunnyBlit').removeData('hello');
-		Lib.document.getElementById('wabbit_alpha').removeData();
-		trace(Reflect.field(Twig, 'CACHE'));
+		a.name = 'FIRST';
+		b.name = 'SECOND';
 		
-		Lib.document.getElementById('skialbainn').attr('class', 'hello world');
-		Lib.document.getElementById('skialbainn').attr('data-bob', 'smithy');
-		Lib.document.getElementById('skialbainn').removeAttr('class');
-		
-		Lib.document.getElementById('skialbainn').css('width', '100px');
-		Lib.document.getElementById('skialbainn').cssMap( { width:'100%', height:'250px' } );
-		
-		Lib.document.body.appendChild(Lib.document.createElement('canvas'));
-		
-		Lib.document.getElementById('skialbainn').bind('skial', function() { } );
+		trace('FIRST parent name is | ' + a.parent.name);
+		trace('SECOND parent name is | ' + b.parent.name);
+	}
+	
+	public function new () {
+		super();
+		this.name = 'MAIN';
+		trace('MAIN parent name is | ' + this.parent.name);
 	}
 
 }

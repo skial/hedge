@@ -13,11 +13,11 @@ class TEMPLATE {
 		
 	}
 	
-	public function setup(data:Dynamic, namespaces:Array<String>, eventHandle:Dynamic) {
+	public function setup(data:Dynamic, eventHandle:Dynamic) {
 		
 	}
 	
-	public function teardown(namespaces:Array<String>) {
+	public function teardown() {
 		
 	}
 	

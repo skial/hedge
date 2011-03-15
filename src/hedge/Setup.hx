@@ -92,7 +92,7 @@ class Setup {
 	//public static var __storage__:Twig;
 	public static var __storage__:HtmlDom;
 	public static var __stage__:Stage;
-	public static var __default__:DisplayObjectContainer;
+	//public static var __default__:DisplayObjectContainer;
 	
 	public static var __movieclips__:Array<MovieclipStructure> = new Array<MovieclipStructure>();
 	
@@ -138,10 +138,10 @@ class Setup {
 		__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		
-		//Twig.root = __stage__.__jq__.element;
+		Lib.current = __stage__;
 		
-		__default__ = new DisplayObjectContainer();
-		__default__.name = 'default_parent_object';
+		/*__default__ = new DisplayObjectContainer();
+		__default__.name = 'default_parent_object';*/
 		
 		//getAllMovieClips();
 		//createJqueryEvents();
@@ -286,7 +286,7 @@ class Setup {
 	}
 	
 	public static function generateInstanceName():String {
-		return 'instance' + ((__counter__++) - 1);
+		return 'instance' + ((__counter__++));
 	}
 	
 	public static function RGB_to_String(color:Int):String {

@@ -39,7 +39,7 @@ class Stage extends DisplayObjectContainer {
 		__originalName__ = 'Stage';
 		//__jq__ = new JQuery('div#Stage');
 		//__jq__ = new Twig('Stage', TwigType.FIND_ID);
-		__ele__ = Lib.document.getElementById('Stage');
+		//__ele__ = Lib.document.getElementById('Stage');
 	}
 	
 	public function invalidate() {

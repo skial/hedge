@@ -21,6 +21,7 @@ class Bitmap extends DisplayObject {
 		this.bitmapData 		= bitmapData;
 		this.pixelSnapping 	= pixelSnapping;
 		this.smoothing 		= smoothing;
+		this.__ele__.className = 'bitmap ';
 	}
 	
 	// INTERNAL METHODS

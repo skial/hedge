@@ -4,6 +4,8 @@
  */
 
 package demo.bunnyLandBlitTest;
+
+import haxe.Firebug;
 import demo.gamepad.Gamepad;
 import hedge.display.Bitmap;
 import hedge.display.BitmapData;
@@ -11,6 +13,8 @@ import hedge.display.Sprite;
 import hedge.events.Event;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
+import hedge.Lib;
+import hedge.Setup;
 
 class BlitBunny {
 	public var speedX:Float;
@@ -51,6 +55,15 @@ class BunnyLandBlitTest extends Sprite {
 	
 	public var bunnyAsset:BitmapData;
 	public var grassAsset:BitmapData;
+	
+	public static function main() {
+		Firebug.redirectTraces();
+		Setup.init(run, 30, 'bunnyLand');
+	}
+	
+	public static function run():Void {
+		Lib.current.addChild(new BunnyLandBlitTest());
+	}
 
 	public function new() {
 		super();
@@ -67,7 +80,8 @@ class BunnyLandBlitTest extends Sprite {
 		ground = new BitmapData(maxX, maxY);
 		//ground.lock();
 		
-		grassAsset = new BitmapData(32, 32, false, null, 'img#outdoor');
+		//grassAsset = new BitmapData(32, 32, false, null, 'img#outdoor');
+		grassAsset = new BitmapData(32, 32, false, null, 'outdoor');
 		var sourceRect:Rectangle = new Rectangle(0, 0, 32, 32);
 		var destPoint:Point = new Point();
 		
@@ -128,9 +142,12 @@ class BunnyLandBlitTest extends Sprite {
 		
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		
-		ground.__canvas__.attr( { id:'bitmapdataGround' } );
+		/*ground.__canvas__.attr( { id:'bitmapdataGround' } );
 		grassAsset.__canvas__.attr( { id:'bitmapdataGrassAsset' } );
-		bunnyAsset.__canvas__.attr( { id:'bitmapdataBunnyAsset' } );
+		bunnyAsset.__canvas__.attr( { id:'bitmapdataBunnyAsset' } );*/
+		ground.__canvas__.setAttribute('id', 'bitmapdataGround');
+		grassAsset.__canvas__.setAttribute('id', 'bitmapdataGrassAsset');
+		bunnyAsset.__canvas__.setAttribute('id', 'bitmapdataBunnyAsset');
 	}
 	
 	public function onEnterFrame(e:Event):Void {

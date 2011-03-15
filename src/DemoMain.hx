@@ -37,16 +37,17 @@ class DemoMain {
 			#elseif bunnyLand 
 				Setup.init(launch, 30, 'bunnyLand');
 			#elseif wizardry
-				Setup.init(launch, 15, 'wizardry');
+				Setup.init(launch, 30, 'wizardry');
 			#end
 		#end
 	}
 	
 	static function launch() {
+		var _e = null;
 		#if !wizardry
-			hedge.Lib.attachToStage(new Examples());
-		/*#else
-			hedge.Lib.attachToStage(new Main());*/
+			_e = new Examples();
+			//hedge.Lib.attachToStage(_e);
+			hedge.Lib.current.addChild(_e);
 		#end
 	}
 	
@@ -64,20 +65,24 @@ class Examples extends Sprite {
 	public function new() {
 		super();
 		
+		this.name = 'Examples';
+		
 		bunnyOne = #if bunnyBlit new BlitTest(); max = 3000; #elseif bunnyLand new BunnyLandBlitTest(); max = 34000; #end
 		bunnyOne.name = 'blit';
 		bunnyClass = #if bunnyBlit BlitTest; #elseif bunnyLand BunnyLandBlitTest; #end
 		
-		bunnyAmount = new TextField();
+		trace('examples parent name | ' + this.parent.name);
+		
+		/*bunnyAmount = new TextField();
 		bunnyAmount.type = TextFieldType.INPUT;
 		bunnyAmount.background = true;
 		bunnyAmount.border = true;
 		bunnyAmount.width = 50;
 		bunnyAmount.height = 20;
 		bunnyAmount.text = ''+max;
-		bunnyAmount.name = 'bunnyAmount';
+		bunnyAmount.name = 'bunnyAmount';*/
 		
-		submitAmount = new Sprite();
+		/*submitAmount = new Sprite();
 		submitAmount.graphics.beginFill(0x009FEC);
 		submitAmount.graphics.lineStyle(1, 0x000000);
 		submitAmount.graphics.drawRect(0, 0, 98, 20);
@@ -97,18 +102,20 @@ class Examples extends Sprite {
 		submitText.x = 25;
 		submitText.y = 2;
 		
-		submitAmount.addEventListener(MouseEvent.CLICK, onBunnyClick);
+		submitAmount.addEventListener(MouseEvent.CLICK, onBunnyClick);*/
 		
 		this.addChild(bunnyOne);
-		this.addChild(bunnyAmount);
+		
+		trace('bunnyone parents name | ' + bunnyOne.parent.name);
+		/*this.addChild(bunnyAmount);
 		this.addChild(submitAmount);
 		submitAmount.addChild(submitText);
 		
 		bunnyClass.numBunnies = 3000;
-		bunnyAmount.text = '' + 3000;
+		bunnyAmount.text = '' + 3000;*/
 	}
 	
-	public function onBunnyClick(e:Dynamic):Void {
+	/*public function onBunnyClick(e:Dynamic):Void {
 		if (bunnyAmount.text == null) {
 			bunnyAmount.text = ''+max;
 		}
@@ -120,6 +127,6 @@ class Examples extends Sprite {
 			bunnyAmount.text = '1';
 		}
 		bunnyClass.numBunnies = Std.parseInt(bunnyAmount.text);
-	}
+	}*/
 	
 }

@@ -83,7 +83,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.parent = Setup.__default__;
 		this.__jq__.data('__self__', this);*/
 		
-		this.parent = Setup.__default__;
+		this.parent = this.stage;
 		
 		__ele__.setAttribute('id', this.name);
 		__ele__.setAttribute('data-originalName', this.__originalName__);
@@ -167,12 +167,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function getName():String {
 		//return __jq__.attr('class');
-		return __ele__.className;
+		return __ele__.getAttribute('id');
 	}
 	
 	private function setName(value:String):String {
 		//__jq__.attr('class', value);
-		__ele__.className += ' ' + value;
+		__ele__.setAttribute('id', value);
 		return value;
 	}
 	
@@ -232,6 +232,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function getVisible():Bool {
 		//return __jq__.data('visible') == null ? true : __jq__.data('visible');
+		// TODO replace __ele__ with this displayobject
 		return __ele__.data('visible') == null ? true : __ele__.data('visible');
 	}
 	

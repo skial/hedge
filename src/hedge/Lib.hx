@@ -14,6 +14,8 @@ class Lib {
 		return untyped v;
 	}*/
 	
+	public static var current:Stage;
+	
 	public static function attachToStage(displayobject:DisplayObject):Stage {
 		Setup.__stage__.addChild(displayobject);
 		return Setup.__stage__;
