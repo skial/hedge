@@ -13,7 +13,8 @@ class Object implements Dynamic {
 	//public static var prototype:Object; // causes __jq__hx to crash - todo
 	
 	//public var __jq__:JQuery;
-	public var __jq__:Twig;
+	//public var __jq__:Twig;
+	public var __ele__:HtmlDom;
 	
 	public function new() {
 		

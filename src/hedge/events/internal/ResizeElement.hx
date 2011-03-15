@@ -3,7 +3,7 @@
  * @author Skial Bainn
  */
 
-package hedge.jquery.events;
+package hedge.events.internal;
 
 import hedge.Setup;
 

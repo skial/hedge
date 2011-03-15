@@ -35,37 +35,47 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	public var width(getWidth, null)		:Int;
 	
 	//public var __canvas__	:JQuery;
-	public var __canvas__	:Twig;
+	//public var __canvas__	:Twig;
+	public var __canvas__	:HtmlDom;
 	public var __context__	:CanvasRenderingContext2D;
 	public var __id__			:String;
 	public var __fillColor__:Int;
 	//public var __source__	:JQuery;
 	public var __source__	:Image;
 
-	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0x00FFFFFF, ?cssSelector:String = null):Void {
+	public function new(width:Int, height:Int, ?transparent:Bool = true, ?fillColor:Int = 0x00FFFFFF, ?elementId:String = null):Void {
 		this.width 				= width;
 		this.height 			= height;
 		this.transparent 		= transparent 	== null ? true 								: transparent;
 		this.__fillColor__ 	= fillColor 	== null ? 0x00FFFFFF 						: fillColor;
 		this.__id__				= Setup.generateInstanceName();
 		//this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
-		this.__source__ 		= cssSelector	== null ? null									: untyped new Twig(cssSelector, TwigType.FIND_ID).element;
+		//this.__source__ 		= elementId	== null ? null									: untyped new Twig(elementId, TwigType.FIND_ID).element;
+		this.__source__ 		= elementId	== null ? null									: untyped Lib.document.getElementById(elementId);
 		
 		//__canvas__ = new JQuery('<canvas>')
-		__canvas__ = new Twig('canvas', TwigType.CREATE_ELEMENT)
+		/*__canvas__ = new Twig('canvas', TwigType.CREATE_ELEMENT)
 			.addClass('bitmapdata')
 			//.attr( { id:__id__, width:width, height:height } );
-			.attrMap( { id:__id__, width:width, height:height } );
+			.attrMap( { id:__id__, width:width, height:height } );*/
+		
+		__canvas__ = Lib.document.createElement('canvas');
+		__canvas__.className += 'bitmapdata';
+		__canvas__.setAttribute('id', __id__);
+		__canvas__.setAttribute('width', width.string());
+		__canvas__.setAttribute('height', height.string());
 		
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
-		Setup.__storage__.append(__canvas__);
+		//Setup.__storage__.append(__canvas__);
+		Setup.__storage__.appendChild(__canvas__);
 			
-		__canvas__.bind('mouseenter', onCanvasEnter);
-		__canvas__.bind('mouseleave', onCanvasLeave);
+		/*__canvas__.bind('mouseenter', onCanvasEnter);
+		__canvas__.bind('mouseleave', onCanvasLeave);*/
 		
-		__context__ = untyped __canvas__.element.getContext('2d');
+		//__context__ = untyped __canvas__.element.getContext('2d');
+		__context__ = untyped __canvas__.getContext('2d');
 		
-		if (cssSelector == null) {
+		if (elementId == null) {
 			this.fillRect(new Rectangle(0, 0, width, height), this.__fillColor__);
 		} else {
 			//__context__.drawImage(this.__source__[0], 0, 0);
@@ -79,7 +89,8 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	public function clone():BitmapData {
 		var _b = new BitmapData(this.width, this.height, this.transparent, this.__fillColor__, this.__id__ + '_clone');
-		_b.draw(this.__canvas__[0]);
+		//_b.draw(this.__canvas__[0]);
+		_b.draw(this.__canvas__);
 		return _b;
 	}
 	
@@ -97,7 +108,8 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	public function copyPixels(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null, mergeAlpha:Bool = false) {
 		//this.__context__.drawImage(sourceBitmapData.__canvas__[0], sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
-		this.__context__.drawImage(untyped sourceBitmapData.__canvas__.element, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
+		//this.__context__.drawImage(untyped sourceBitmapData.__canvas__.element, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
+		this.__context__.drawImage(untyped sourceBitmapData.__canvas__, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y, sourceRect.width, sourceRect.height);
 	}
 	
 	public function dispose() {

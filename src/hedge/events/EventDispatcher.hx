@@ -4,7 +4,7 @@
  */
 
 package hedge.events;
-import hedge.jquery.events.EnterFrame;
+import hedge.events.internal.EnterFrame;
 import JQuery;
 import js.Lib;
 import haxe.Timer;
@@ -12,6 +12,8 @@ import hedge.Object;
 import hedge.Setup;
 import hedge.Twig;
 import hedge.TwigType;
+
+using hedge.Twig;
 
 class EventDispatcher extends Object, implements IEventDispatcher {
 	
@@ -25,7 +27,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		// no weak reference also - ignore or throw error
 		if (type != Event.ENTER_FRAME) {
 			//__jq__.bind(type, { }, listener);
-			__jq__.bind(type, listener);
+			//__jq__.bind(type, listener);
 		} else {
 			trace('enterframe');
 			EnterFrame.addListener(this.__originalName__, listener);
@@ -41,14 +43,15 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	}
 	
 	public function hasEventListener(type:String):Bool {
-		var events:Array<String> = __jq__.data('events');
+		//var events:Array<String> = __jq__.data('events');
+		var events:Array<String> = __ele__.data('events');
 		return Reflect.hasField(events, type);
 	}
 	
 	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false) {
 		// ignore useCapture - reason above - method addEventListener
 		if (type != Event.ENTER_FRAME) {
-			__jq__.unbind(type, listener);
+			//__jq__.unbind(type, listener);
 		} else {
 			EnterFrame.removeListener(this.__originalName__, listener);
 		}

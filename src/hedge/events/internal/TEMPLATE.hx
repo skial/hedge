@@ -21,11 +21,11 @@ class TEMPLATE {
 		
 	}
 	
-	public function add(handleObj:HandleObj) {
+	public function add(handleObj:EventData) {
 		
 	}
 	
-	public function remove(handleObj:HandleObj) {
+	public function remove(handleObj:EventData) {
 		
 	}
 	

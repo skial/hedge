@@ -7,6 +7,7 @@ package hedge.display;
 import hedge.geom.Matrix;
 import hedge.Object;
 import hedge.Setup;
+import js.Lib;
 import Raphael;
 import hedge.Twig;
 import hedge.TwigType;
@@ -76,11 +77,15 @@ class Graphics extends Object {
 		this.path = '';
 		
 		//parent.__jq__.append(__jq__ = new JQuery('<div>'));
-		__jq__ = new Twig('div', TwigType.CREATE_ELEMENT)
+		/*__jq__ = new Twig('div', TwigType.CREATE_ELEMENT)
 				.attr('id', parent.__originalName__ + '-graphics')
 				.cssMap( Setup.__attr__( { width:'100%', height:'100%' } ) )
-				.css('background-color', 'transparent');
-		parent.__jq__.append(__jq__);
+				.css('background-color', 'transparent');*/
+		__ele__ = Lib.document.createElement('div');
+		__ele__.setAttribute('id', parent.__originalName__ + '-graphics');
+		__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
+		//parent.__jq__.append(__jq__);
+		parent.__ele__.appendChild(__ele__);
 		__raphael__ = new Raphael(parent.__originalName__ + '-graphics', '100%', '100%');
 	}
 	
@@ -176,7 +181,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
@@ -190,7 +195,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
@@ -204,7 +209,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
@@ -218,7 +223,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
 	}
 	
 	public function endFill() {
@@ -227,7 +232,7 @@ class Graphics extends Object {
 			this.checkFill();
 			this.checkLineStyle();
 			
-			this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
+			//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
 		}
 	}
 	

@@ -10,6 +10,10 @@ import hedge.text.TextSnapshot;
 import hedge.Setup;
 import hedge.Twig;
 import hedge.TwigType;
+import js.Lib;
+
+using hedge.Twig;
+using Std;
 
 class DisplayObjectContainer extends InteractiveObject {
 	
@@ -21,13 +25,15 @@ class DisplayObjectContainer extends InteractiveObject {
 	public function new() {
 		super();
 		//__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
-		__jq__.bind(Setup.RESIZE_ELEMENT, {});
+		//__jq__.bind(Setup.RESIZE_ELEMENT, {});
+		
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
-		child.__jq__.appendTo(this.__jq__);
+		//child.__jq__.appendTo(this.__jq__);
+		__ele__.appendChild(child.__ele__);
 		child.parent = this;
-		__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:child.x, y:child.y, w:child.width, h:child.height, p:this } ]);
+		//__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:child.x, y:child.y, w:child.width, h:child.height, p:this } ]);
 		return child;
 	}
 	
@@ -48,7 +54,8 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function getChildByName(name:String):DisplayObject {
-		return __jq__.find('.' + name).data('__self__');
+		//return __jq__.find('.' + name).data('__self__');
+		return Lib.document.getElementById(name).data('__self__');
 	}
 	
 	public function getChildIndex(child:DisplayObject):Int {
@@ -60,9 +67,10 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function removeChild(child:DisplayObject):DisplayObject {
-		child.__jq__.appendTo(Setup.__storage__);
+		//child.__jq__.appendTo(Setup.__storage__);
+		Setup.__storage__.appendChild(child.__ele__);
 		child.parent = Setup.__default__;
-		__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:0, y:0, w:0, h:0, p:this } ]);
+		//__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:0, y:0, w:0, h:0, p:this } ]);
 		return child;
 	}
 	

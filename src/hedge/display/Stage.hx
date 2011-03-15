@@ -10,6 +10,7 @@ import hedge.geom.Rectangle;
 import hedge.text.TextSnapshot;
 import hedge.Twig;
 import hedge.TwigType;
+import js.Lib;
 
 class Stage extends DisplayObjectContainer {
 	
@@ -37,7 +38,8 @@ class Stage extends DisplayObjectContainer {
 		}
 		__originalName__ = 'Stage';
 		//__jq__ = new JQuery('div#Stage');
-		__jq__ = new Twig('Stage', TwigType.FIND_ID);
+		//__jq__ = new Twig('Stage', TwigType.FIND_ID);
+		__ele__ = Lib.document.getElementById('Stage');
 	}
 	
 	public function invalidate() {

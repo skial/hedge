@@ -9,6 +9,10 @@ import hedge.geom.Rectangle;
 import hedge.Setup;
 import hedge.Twig;
 import hedge.TwigType;
+import js.Lib;
+
+using hedge.Twig;
+using Std;
 
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
@@ -69,20 +73,33 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	/* INTERNAL FUNCTIONS */
 	
 	private function initialize():Void {
-		this.generateJQuery();
+		//this.generateJQuery();
+		this.generateElement();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
 		// width and height need to be set to 0
-		this.__jq__.attr('id', this.name).cssMap( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) )
+		/*this.__jq__.attr('id', this.name).cssMap( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) )
 					  .attr('data-originalName', this.__originalName__);
 		
 		this.parent = Setup.__default__;
-		this.__jq__.data('__self__', this);
+		this.__jq__.data('__self__', this);*/
+		
+		this.parent = Setup.__default__;
+		
+		__ele__.setAttribute('id', this.name);
+		__ele__.setAttribute('data-originalName', this.__originalName__);
+		__ele__.style.cssText = 'overflow:hidden; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
+		__ele__.data('__self__', this);
 	}
 	
 	// provide to be overriden
-	private function generateJQuery():Void {
+	/*private function generateJQuery():Void {
 		//Setup.__storage__.append(this.__jq__ = new JQuery('<div>'));
 		Setup.__storage__.append(this.__jq__ = new Twig('div', TwigType.CREATE_ELEMENT));
+	}*/
+	
+	private function generateElement():Void {
+		__ele__ = Lib.document.createElement('div');
+		Setup.__storage__.appendChild(__ele__);
 	}
 	
 	private function getMouseX():Float {
@@ -111,11 +128,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getAlpha():Float {
-		return __jq__.css('opacity');
+		//return __jq__.css('opacity');
+		return untyped __ele__.style.opacity;
 	}
 	
 	private function setAlpha(value:Float):Float {
-		__jq__.css('opacity', value);
+		//__jq__.css('opacity', value);
+		untyped __ele__.style.opacity = value;
 		return value;
 	}
 	
@@ -147,11 +166,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getName():String {
-		return __jq__.attr('class');
+		//return __jq__.attr('class');
+		return __ele__.className;
 	}
 	
 	private function setName(value:String):String {
-		__jq__.attr('class', value);
+		//__jq__.attr('class', value);
+		__ele__.className += ' ' + value;
 		return value;
 	}
 	
@@ -210,51 +231,64 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getVisible():Bool {
-		return __jq__.data('visible') == null ? true : __jq__.data('visible');
+		//return __jq__.data('visible') == null ? true : __jq__.data('visible');
+		return __ele__.data('visible') == null ? true : __ele__.data('visible');
 	}
 	
 	private function setVisible(value:Bool):Bool {
-		__jq__.css('display', value == false ? 'none' : 'block')
+		/*__jq__.css('display', value == false ? 'none' : 'block')
 				.css('visibility', value == false ? 'hidden' : 'visible')
 				.data('visible', value);
-		return __jq__.data('visible');
+		return __jq__.data('visible');*/
+		__ele__.style.display = value == false ? 'none' : 'block';
+		__ele__.style.visibility = value == false ? 'hidden' : 'visible';
+		__ele__.data('visible', value);
+		return value;
 	}
 	
 	private function getHeight():Float {
-		return __jq__.data('height') == null ? __jq__.height() : __jq__.data('height');
+		//return __jq__.data('height') == null ? __jq__.height() : __jq__.data('height');
+		return __ele__.data('height') == null ? __ele__.style.height : __ele__.data('height');
 	}
 	
 	private function setHeight(value:Float):Float {
-		__jq__.height(value);
+		//__jq__.height(value);
+		__ele__.style.height = '' + value + 'px';
 		return value;
 	}
 	
 	private function getWidth():Float {
-		return __jq__.width();
+		//return __jq__.width();
+		return __ele__.style.width.parseFloat();
 	}
 	
 	private function setWidth(value:Float):Float {
-		__jq__.width(value);
+		//__jq__.width(value);
+		__ele__.style.width = '' + value + 'px';
 		return value;
 	}
 	
 	private function getX():Float {
 		//return __jq__.position().left;
-		return __jq__.left();
+		//return __jq__.left();
+		return __ele__.style.left.parseFloat();
 	}
 	
 	private function setX(value:Float):Float {
-		__jq__.css('left', '' + value + 'px');
+		//__jq__.css('left', '' + value + 'px');
+		__ele__.style.left = '' + value + 'px';
 		return value;
 	}
 	
 	private function getY():Float {
 		//return __jq__.position().top;
-		return __jq__.top();
+		//return __jq__.top();
+		return __ele__.style.top.parseFloat();
 	}
 	
 	private function setY(value:Float):Float {
-		__jq__.css('top', '' + value + 'px');
+		//__jq__.css('top', '' + value + 'px');
+		__ele__.style.top = '' + value + 'px';
 		return value;
 	}
 	

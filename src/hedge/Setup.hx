@@ -11,12 +11,13 @@ import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
 import hedge.display.Stage;
 import hedge.events.Event;
-import hedge.jquery.events.EnterFrame;
-import hedge.jquery.events.ResizeElement;
+import hedge.events.internal.EnterFrame;
+import hedge.events.internal.ResizeElement;
 import JQuery;
 import js.Dom;
 import hedge.Twig;
 
+using Std;
 using StringTools;
 
 typedef HandleObj = {
@@ -27,6 +28,16 @@ typedef HandleObj = {
 	var guid:Float;
 	var selector:String;
 	var origHandler:Dynamic;
+}
+
+typedef EventData = {
+	var type:String;
+	var data:Dynamic;
+	//var namespace:String;
+	var handler:Dynamic;
+	//var guid:Float;
+	//var selector:String;
+	var originalhandler:Dynamic;
 }
 
 typedef ChildProperties = {
@@ -75,9 +86,11 @@ class Setup {
 	// INTERNAL PROPERTIES / ADVANCED PUBLIC PROPERTIES
 	
 	//public static var __jq__:JQuery;
-	public static var __jq__:Twig;
+	//public static var __jq__:Twig;
+	public static var __ele__:HtmlDom;
 	//public static var __storage__:JQuery;
-	public static var __storage__:Twig;
+	//public static var __storage__:Twig;
+	public static var __storage__:HtmlDom;
 	public static var __stage__:Stage;
 	public static var __default__:DisplayObjectContainer;
 	
@@ -92,7 +105,10 @@ class Setup {
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
 		// create default holder
 		//__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'block', width:'100%', height:'100%' } );
-		__storage__ = new Twig('div', TwigType.CREATE_ELEMENT).attr('id', 'storage').cssMap( { display:'none', width:'100%', height:'100%' } );
+		//__storage__ = new Twig('div', TwigType.CREATE_ELEMENT).attr('id', 'storage').cssMap( { display:'none', width:'100%', height:'100%' } );
+		__storage__ = js.Lib.document.createElement('div');
+		__storage__.setAttribute('id', 'storage');
+		__storage__.style.cssText = 'display:none; width:100%; height:100%;';
 		
 		/*__jq__ = new JQuery('div#' + stageName);
 		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ) )
@@ -101,26 +117,34 @@ class Setup {
 				.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) )
 				.append(__storage__);*/
 		
-		__jq__ = new Twig(stageName, TwigType.FIND_ID)
+		/*__jq__ = new Twig(stageName, TwigType.FIND_ID)
 				.cssMap(__attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ))
 				.attrMap(__data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ))
 				.css('background-color', RGB_to_String(0xFFFFFF))
 				.css('z-index', 0)
-				.append(__storage__);
-				
-		frameRate = fps;
+				.append(__storage__);*/
+		
+		__ele__ = js.Lib.document.getElementById(stageName);
+		__ele__.setAttribute('data-version', 0.1.string());
+		__ele__.setAttribute('data-project', 'hedge');
+		__ele__.setAttribute('data-haXe', 'http://www.haxe.org/');
+		__ele__.style.cssText = 'overflow:hidden; visibility:visible; width:100%; height:100%; left:0px; top:0px; position:relative; background-color:' + RGB_to_String(0xFFFFFF) + '; z-index:0;';
+		__ele__.appendChild(__storage__);
+		
+		//frameRate = fps;
 		
 		__stage__ = new Stage();
-		__stage__.__jq__ = __jq__;
+		//__stage__.__jq__ = __jq__;
+		__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		
-		Twig.root = __stage__.__jq__.element;
+		//Twig.root = __stage__.__jq__.element;
 		
 		__default__ = new DisplayObjectContainer();
 		__default__.name = 'default_parent_object';
 		
-		getAllMovieClips();
-		createJqueryEvents();
+		//getAllMovieClips();
+		//createJqueryEvents();
 		
 		_callback();
 	}
@@ -195,34 +219,42 @@ class Setup {
 	}
 	
 	public static function getVersion():Float {
-		return __jq__.attr('data-version');
+		//return __jq__.attr('data-version');
+		return __ele__.getAttribute('data-version').parseFloat();
 	}
 	public static function setVersion(value:Float):Float { 
-		__jq__.attr('data-version', value); 
+		//__jq__.attr('data-version', value); 
+		__ele__.setAttribute('data-version', value.string());
 		return value;
 	}
 	
 	public static function getProject():String { 
-		return __jq__.attr('data-project'); 
+		//return __jq__.attr('data-project');
+		return __ele__.getAttribute('data-project');
 	}
 	public static function setProject(value:String):String { 
-		__jq__.attr('data-project', value);
+		//__jq__.attr('data-project', value);
+		__ele__.setAttribute('data-project', value);
 		return value; 
 	}
 	
 	public static function getBackgroundColor():Int { 
-		return RGB_String_to_HEX(__jq__.css('background-color')); 
+		//return RGB_String_to_HEX(__jq__.css('background-color')); 
+		return RGB_String_to_HEX(__ele__.style.backgroundColor);
 	}
 	public static function setBackgroundColor(value:Int):Int { 
-		__jq__.css('background-color', RGB_to_String(value));
+		//__jq__.css('background-color', RGB_to_String(value));
+		__ele__.style.backgroundColor = RGB_to_String(value);
 		return value;
 	}
 	
 	public static function getFrameRate():Int { 
-		return __jq__.attr('data-frameRate'); 
+		//return __jq__.attr('data-frameRate'); 
+		return __ele__.getAttribute('data-frameRate').parseInt();
 	}
 	public static function setFrameRate(value:Int):Int { 
-		__jq__.attr('data-frameRate', value);
+		//__jq__.attr('data-frameRate', value);
+		__ele__.setAttribute('data-frameRate', value.string());
 		return value;
 	}
 	

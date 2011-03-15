@@ -229,40 +229,7 @@ class Twig implements Dynamic {
 	
 	private static inline var TWIG_ID:String = 'TWIG_ID';
 
-	/*public static function data(element:Dynamic, key:String, ?value:Dynamic = null):Dynamic {
-		
-		// check element for TWIG_ID
-		if (!Reflect.hasField(element, TWIG_ID)) {
-			// if false set one up
-			
-			Reflect.setField(element, TWIG_ID, CACHE_COUNTER);
-			CACHE_ID = CACHE_COUNTER;
-			CACHE.insert(CACHE_ID, { } );
-			
-			++CACHE_COUNTER;
-			
-		} else {
-			// if true grab TWIG_ID
-			
-			CACHE_ID = Reflect.field(element, TWIG_ID);
-		}
-		
-		// get data
-		if (value == null) {
-			
-			return Reflect.field(CACHE[CACHE_ID], key);
-			
-		// set data
-		} else {
-			
-			Reflect.setField(CACHE[CACHE_ID], key, value);
-			return value;
-			
-		}
-		
-	}*/
-	
-	public function data(key:String, ?value:Dynamic = null):Dynamic {
+	public static function data(element:Dynamic, key:String, ?value:Dynamic = null):Dynamic {
 		
 		// check element for TWIG_ID
 		if (!Reflect.hasField(element, TWIG_ID)) {
@@ -295,26 +262,40 @@ class Twig implements Dynamic {
 		
 	}
 	
-	/*public static function removeData(element:Dynamic, ?key:String = null):Void {
+	/*public function data(key:String, ?value:Dynamic = null):Dynamic {
 		
-		// assumes element has TWIG_ID already - this might change.
-		CACHE_ID = Reflect.field(element, TWIG_ID);
-		
-		// delete all if no key is given
-		if (key == null) {
+		// check element for TWIG_ID
+		if (!Reflect.hasField(element, TWIG_ID)) {
+			// if false set one up
 			
-			CACHE[CACHE_ID] = null;
+			Reflect.setField(element, TWIG_ID, CACHE_COUNTER);
+			CACHE_ID = CACHE_COUNTER;
+			CACHE.insert(CACHE_ID, { } );
+			
+			++CACHE_COUNTER;
+			
+		} else {
+			// if true grab TWIG_ID
+			
+			CACHE_ID = Reflect.field(element, TWIG_ID);
+		}
 		
-		// delete data associated to key
+		// get data
+		if (value == null) {
+			
+			return Reflect.field(CACHE[CACHE_ID], key);
+			
+		// set data
 		} else {
 			
-			Reflect.deleteField(CACHE[CACHE_ID], key);
+			Reflect.setField(CACHE[CACHE_ID], key, value);
+			return value;
 			
 		}
 		
 	}*/
 	
-	public function removeData(?key:String = null):Void {
+	public static function removeData(element:Dynamic, ?key:String = null):Void {
 		
 		// assumes element has TWIG_ID already - this might change.
 		CACHE_ID = Reflect.field(element, TWIG_ID);
@@ -332,6 +313,25 @@ class Twig implements Dynamic {
 		}
 		
 	}
+	
+	/*public function removeData(?key:String = null):Void {
+		
+		// assumes element has TWIG_ID already - this might change.
+		CACHE_ID = Reflect.field(element, TWIG_ID);
+		
+		// delete all if no key is given
+		if (key == null) {
+			
+			CACHE[CACHE_ID] = null;
+		
+		// delete data associated to key
+		} else {
+			
+			Reflect.deleteField(CACHE[CACHE_ID], key);
+			
+		}
+		
+	}*/
 	
 	/*
 	 * (G/S)ET ELEMENT ATTRIBUTE
@@ -566,7 +566,7 @@ class Twig implements Dynamic {
 		
 		_e.path = useCapture ? _e.path.reverse() : _e.path;
 		
-		var _p:String = useCapture ? 'CAPTURE' : 'TARGET';
+		var _p:String = useCapture ? 'C' : 'T';
 		
 		this.data(_p + eventType, _e);
 		
