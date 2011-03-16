@@ -72,8 +72,8 @@ typedef MovieclipFrame = {
 
 class Setup {
 	
-	private static var __events__:Array<Dynamic> = [ResizeElement,
-	];
+	/*private static var __events__:Array<Dynamic> = [ResizeElement,
+	];*/
 	
 	// PUBLIC PROPERTIES	
 	

@@ -18,10 +18,10 @@ using hedge.Twig;
 
 typedef HedgeEventStructure = {
 	var path:Array<DisplayObject>;
-	var handler:Dynamic;
-	var displayObject:DisplayObject;
-	var capture:Bool;
-	var type:String;
+	var listener:Dynamic;
+	//var displayObject:DisplayObject;
+	//var capture:Bool;
+	//var type:String;
 }
 
 class EventDispatcher extends Object, implements IEventDispatcher {
@@ -64,10 +64,10 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 			
 		 */
 		
-		var _event = 	{ 	type:type,
-								handler:listener,
-								path:[this],
-								capture:useCapture};
+		var _event:HedgeEventStructure = {
+			listener:listener,
+			path:[untyped this]
+		}
 		
 		var _temp = this;
 		
@@ -99,6 +99,84 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	}
 	
 	public function dispatchEvent(event:Event):Bool {
+		
+		/*
+			Only Event.ACTIVATE .DEACTIVATE .ENTER_FRAME and .RENDER have a target phase only.
+			All other events targeting the display list have a capture and target phase and
+			might have a bubbling phase.
+		*/
+		
+		var _data:HedgeEventStructure = null;
+		var _access = null;
+		var _temp = null;
+		
+		event.target = event.target == null ? this : event.target;
+		
+		#if INCLUDE_HEDGE_EVENT_CAPTURE
+		if (event.useCapture) {
+			
+			event.eventPhase = EventPhase.CAPTURING_PHASE;
+			
+			_access = event.type + '_c';
+			_data = untyped this.data(_access);
+			
+			if (_data != null) {
+				
+				for (n in _data.path) {
+					
+					_temp = n.data(_access);
+					
+					if (_temp != null) {
+						
+						event.currentTarget = n;
+						
+						_temp.listener(event);
+						
+					}
+					
+				}
+				
+			} else {
+				
+				return false;
+				
+			}
+			
+		}
+		#end
+		
+		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
+		if (event.bubbles) {
+			
+			_access = event.type + '_t';
+			_data = untyped this.data(_access);
+			
+			if (_data != null) {
+				
+				for (n in _data.path) {
+					
+					_temp = n.data(_access);
+					
+					if (_temp != null) {
+						
+						event.eventPhase = event.target == n ? EventPhase.AT_TARGET : EventPhase.BUBBLING_PHASE;
+						event.currentTarget = n;
+						
+						_temp.listener(event);
+						
+					}
+					
+				}
+				
+			} else {
+				
+				return false;
+				
+			}
+			
+		}
+		#end
+		
 		//event.target = event.target == null ? this : event.target;
 		/*if (__jq__.data(event.type).length != 0) {
 			trace(Type.getClassName(Type.getClass(event)));

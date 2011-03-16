@@ -8,13 +8,16 @@ import hedge.Object;
 
 class Event extends Object {
 	
-	// properties below all read only - todo
+	// TODO properties all read only
 	public var bubbles:Bool;
 	public var cancelable:Bool;
 	public var currentTarget:Dynamic;
 	public var eventPhase:Dynamic;
 	public var target:Dynamic;
 	public var type:String;
+	
+	// hedge
+	public var useCapture:Bool;
 
 	public function new(type:String, ?bubbles:Bool = false, ?cancelable:Bool = false) {
 		super();
