@@ -13,44 +13,6 @@ using Std;
 class Twig implements Dynamic {
 	
 	/*
-	 * (G/S)ET (FORM) ELEMENT VALUE
-	 */
-	
-	/*public static function val(element:Dynamic, ?value:Dynamic = null):Dynamic {
-		
-		// get
-		if (value == null) {
-			
-			return element.nodeValue;
-			
-		// set
-		} else {
-			
-			element.nodeValue = value;
-			return element;
-			
-		}
-		
-	}*/
-	
-	public function val(?value:Dynamic = null):Dynamic {
-		
-		// get
-		if (value == null) {
-			
-			return element.nodeValue;
-			
-		// set
-		} else {
-			
-			element.nodeValue = value;
-			return this;
-			
-		}
-		
-	}
-	
-	/*
 	 * ELEMENT <-> DATA ASSOCIATION
 	 */
 	

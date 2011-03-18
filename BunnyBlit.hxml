@@ -2,7 +2,6 @@
 -cp ./src
 -lib raphaelExtern
 -main demo.bunnyBlitTest.BlitTest
---macro keep(['Type', 'Reflect'])
 --dead-code-elimination
 
 --next

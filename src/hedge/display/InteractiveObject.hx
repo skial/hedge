@@ -18,8 +18,8 @@ class InteractiveObject extends DisplayObject {
 	public function new() {
 		super();
 		//throw 'you cant create a new ineractiveobject';
-		/*this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		this.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);*/
+		this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		this.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 	}
 	
 	//	INTERNAL METHODS

@@ -44,7 +44,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var __originalName__:String;
 
 	public function new() {
-		super();
+		super(null);
 		this.initialize();
 	}
 	

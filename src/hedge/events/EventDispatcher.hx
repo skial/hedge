@@ -17,7 +17,7 @@ import hedge.TwigType;
 using hedge.Twig;
 
 typedef HedgeEventStructure = {
-	var path:Array<DisplayObject>;
+	var path:Array<EventDispatcher>;
 	var listener:Dynamic;
 	//var displayObject:DisplayObject;
 	//var capture:Bool;
@@ -66,36 +66,34 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		
 		var _event:HedgeEventStructure = {
 			listener:listener,
-			path:[untyped this]
+			path:null
 		}
 		
-		var _temp = this;
+		/*var _temp = this;
 		
-		while (true) {
-			if (_temp == Setup.__stage__) {
-				break;
-			}
-			if (_temp.parent != null) {
-				_event.path.push(_temp.parent);
-				_temp = _temp.parent;
-			} else {
-				break;
-			}
+		while (_temp != Setup.__stage__) {
+			
+			trace(_temp.__ele__.getAttribute('id'));
+			trace(_temp.__ele__.parentNode.getAttribute('id'));
+			trace(Setup.__stage__.__ele__.getAttribute('id'));
+			
+			_event.path.push(_temp);
+			_temp = _temp.parent;
+			
 		}
 		
 		if (useCapture) {
 			_event.path.reverse();
-		}
+		}*/
 		
 		var _access = type + '_' + (useCapture?'c':'t');
 		var _type = this.data(_access);
 		
 		if (_type == null) {
 			this.data(_access, _event);
-		} /*else {
-			// throw '_event already set remove previous event
-		}*/
-		
+		} else {
+			throw '_event already set remove previous event';
+		}
 	}
 	
 	public function dispatchEvent(event:Event):Bool {
@@ -105,20 +103,31 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 			All other events targeting the display list have a capture and target phase and
 			might have a bubbling phase.
 		*/
-		
 		var _data:HedgeEventStructure = null;
 		var _access = null;
 		var _temp = null;
 		
-		event.target = event.target == null ? this : event.target;
+		event.target = event.target == null ? this.__ele__ : event.target;
+		
+		#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
+		
+		
+		
+		/*if (useCapture) {
+			_event.path.reverse();
+		}*/
+		#end
 		
 		#if INCLUDE_HEDGE_EVENT_CAPTURE
+		
 		if (event.useCapture) {
 			
 			event.eventPhase = EventPhase.CAPTURING_PHASE;
 			
 			_access = event.type + '_c';
 			_data = untyped this.data(_access);
+			
+			checkPath(_data.path);
 			
 			if (_data != null) {
 				
@@ -146,10 +155,13 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		#end
 		
 		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
-		if (event.bubbles) {
-			
-			_access = event.type + '_t';
-			_data = untyped this.data(_access);
+		
+		_access = event.type + '_t';
+		_data = untyped this.data(_access);
+		
+		if (_data != null) _data.path = checkPath(_data.path);
+		
+		if (event.bubbles && _data != null) {
 			
 			if (_data != null) {
 				
@@ -171,6 +183,26 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 			} else {
 				
 				return false;
+				
+			}
+			
+		} else {
+			
+			event.eventPhase = EventPhase.AT_TARGET;
+			
+			if (_data != null) {
+				
+				_temp = _data.path[0].data(_access);
+				
+				if (_temp != null) {
+					
+					event.currentTarget = _data.path[0];
+					
+					_temp.listener(event);
+					
+				}
+				
+			} else {
 				
 			}
 			
@@ -202,5 +234,38 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	public function willTrigger(type:String):Bool {
 		return true;
 	}
+	
+	#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
+	private function checkPath(array:Array<EventDispatcher>):Array<EventDispatcher> {
+		
+		var _temp = this;
+		
+		if (array == null) {
+			
+			array = new Array<EventDispatcher>();
+			
+			while (true) {
+				
+				/*trace(_temp.__ele__.getAttribute('id'));
+				trace(_temp.__ele__.parentNode.getAttribute('id'));*/
+				
+				array.push(_temp.__ele__.data('__self__'));
+				_temp = _temp.parent;
+				
+				if (_temp.__originalName__ == 'Stage') {
+					
+					array.push(_temp);
+					break;
+					
+				}
+				
+			}
+			
+		}
+		
+		return array;
+		
+	}
+	#end
 	
 }

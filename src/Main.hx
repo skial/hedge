@@ -1,6 +1,7 @@
 package ;
 import haxe.Firebug;
 import hedge.display.Sprite;
+import hedge.events.internal.DisplayEvent;
 import hedge.Setup;
 import js.Lib;
 
@@ -11,28 +12,25 @@ class Main extends Sprite {
 	public static function main() {
 		Firebug.redirectTraces();
 		
-		Setup.init(run, 30, 'TEST');
+		Setup.init(run, 30);
 	}
 	
 	public static function run():Void {
 		var m = new Main();
-		var a = new Sprite();
-		var b = new Sprite();
-		hedge.Lib.attachToStage(m);
-		m.addChild(a);
-		a.addChild(b);
-		
-		a.name = 'FIRST';
-		b.name = 'SECOND';
-		
-		trace('FIRST parent name is | ' + a.parent.name);
-		trace('SECOND parent name is | ' + b.parent.name);
+		hedge.Lib.current.addChild(m);
+	}
+	
+	public function onResize(e:DisplayEvent):Void {
+		trace('hello');
 	}
 	
 	public function new () {
 		super();
-		this.name = 'MAIN';
-		trace('MAIN parent name is | ' + this.parent.name);
+		height = width = 100;
+		graphics.beginFill(0xff60cc);
+		graphics.drawRect(0, 0, 50, 75);
+		graphics.endFill();
+		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, onResize);
 	}
 
 }

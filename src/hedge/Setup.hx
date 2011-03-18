@@ -11,8 +11,10 @@ import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
 import hedge.display.Stage;
 import hedge.events.Event;
+import hedge.events.internal.DisplayEvent;
 import hedge.events.internal.EnterFrame;
 import hedge.events.internal.ResizeElement;
+import hedge.geom.Rectangle;
 import JQuery;
 import js.Dom;
 import hedge.Twig;
@@ -195,7 +197,7 @@ class Setup {
 		
 	}
 	
-	public static function createJqueryEvents():Void {
+	/*public static function createJqueryEvents():Void {
 		var _class;
 		var _meta;
 		var _fields;
@@ -216,7 +218,7 @@ class Setup {
 			//trace(_name[_name.length-1]);
 		}
 		//Reflect.deleteField(Setup, 'createJqueryEvents');
-	}
+	}*/
 	
 	public static function getVersion():Float {
 		//return __jq__.attr('data-version');
@@ -316,8 +318,16 @@ class Setup {
 		return (((Std.parseInt(values[3])) << 24) | ((Std.parseInt(values[0])) << 16) | ((Std.parseInt(values[1])) << 8) | ((Std.parseInt(values[2]))));
 	}
 	
-	// EVENTS
+	public static function triggerResize(target:Dynamic, x:Float, y:Float, width:Float, height:Float):Void {
+		//var _rect:Rectangle = new Rectangle(x, y, width, Std.parseFloat(untyped height));
+		var _rect:Rectangle = new Rectangle(x, y, width, height);
+		var _event = new DisplayEvent(DisplayEvent.RESIZE_ELEMENT, true, true, _rect);
+		_event.target = target;
+		target.dispatchEvent(_event);
+	}
 	
-	public static var RESIZE_ELEMENT:String = 'ResizeElement';
-	
+	public static inline function resizeDiplay(e:DisplayEvent):Void {
+		trace('hello');
+		
+	}
 }

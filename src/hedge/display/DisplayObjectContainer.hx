@@ -5,7 +5,9 @@
 
 package hedge.display;
 import hedge.events.EventDispatcher;
+import hedge.events.internal.DisplayEvent;
 import hedge.geom.Point;
+import hedge.geom.Rectangle;
 import hedge.text.TextSnapshot;
 import hedge.Setup;
 import hedge.Twig;
@@ -27,13 +29,18 @@ class DisplayObjectContainer extends InteractiveObject {
 		//__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
 		//__jq__.bind(Setup.RESIZE_ELEMENT, {});
 		
+		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
+		/*trace('{this} name is | ' + this.name);
+		trace('added child\'s name is | ' + child.name);*/
 		//child.__jq__.appendTo(this.__jq__);
 		__ele__.appendChild(child.__ele__);
 		child.parent = this;
 		//__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:child.x, y:child.y, w:child.width, h:child.height, p:this } ]);
+		/*trace('triggered event resize from addchild');*/
+		Setup.triggerResize(this, child.x, child.y, child.width, child.height);
 		return child;
 	}
 	
@@ -69,7 +76,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	public function removeChild(child:DisplayObject):DisplayObject {
 		//child.__jq__.appendTo(Setup.__storage__);
 		Setup.__storage__.appendChild(child.__ele__);
-		child.parent = Setup.__default__;
+		//child.parent = Setup.__default__;
 		//__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:0, y:0, w:0, h:0, p:this } ]);
 		return child;
 	}

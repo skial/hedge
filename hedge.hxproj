@@ -40,7 +40,7 @@
     <hidden path="src\hedge\TwigType.hx" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>haxe BunnyBlit.hxml</preBuildCommand>
+  <preBuildCommand>haxe Test.hxml</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->

@@ -217,11 +217,11 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	private function onCanvasEnter(e:MouseEvent):Void {
 		//__canvas__.attr( { tabindex:0 }).focus();
-		__canvas__.attr('tabindex', 0).focus();
+		//__canvas__.attr('tabindex', 0).focus();
 	}
 	
 	private function onCanvasLeave(e:MouseEvent):Void {
-		__canvas__.removeAttr('tabindex').blur();
+		//__canvas__.removeAttr('tabindex').blur();
 	}
 	
 }

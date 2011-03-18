@@ -47,13 +47,12 @@ class BlitTest extends Sprite {
 	
 	public function new() {
 		super();
-		
 		bunnies = new Array<BlitBunny>();
 		var bunnyAsset:BitmapData;
 		//bunnyAsset = new BitmapData(26, 37, true, null, 'img#wabbit_alpha');
 		bunnyAsset = new BitmapData(26, 37, true, null, 'wabbit_alpha');
 		
-		for (i in 0...numBunnies) {
+		/*for (i in 0...numBunnies) {
 			bunny = {
 				position:new Point(),
 				bitmapData:bunnyAsset,
@@ -62,7 +61,7 @@ class BlitTest extends Sprite {
 			}
 			
 			bunnies[i] = bunny;
-		}
+		}*/
 		bitmap = new Bitmap(new BitmapData(maxX, maxY, true));
 		this.addChild(bitmap);
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);

@@ -4,7 +4,9 @@
  */
 
 package hedge.display;
+import hedge.events.internal.DisplayEvent;
 import hedge.geom.Matrix;
+import hedge.geom.Rectangle;
 import hedge.Object;
 import hedge.Setup;
 import js.Lib;
@@ -182,6 +184,7 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(parent, x, y, radius + line_thickness, radius + line_thickness);
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
@@ -196,6 +199,7 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(parent, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
@@ -210,6 +214,7 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(parent, x, y, width + line_thickness, height + line_thickness);
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
@@ -224,6 +229,7 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(parent, x, y, width + line_thickness, height - line_thickness);
 	}
 	
 	public function endFill() {
@@ -233,6 +239,7 @@ class Graphics extends Object {
 			this.checkLineStyle();
 			
 			//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
+			Setup.triggerResize(parent, __element__.getBBox().x, __element__.getBBox().y, __element__.getBBox().width, __element__.getBBox().height);
 		}
 	}
 	
