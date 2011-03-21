@@ -25,7 +25,7 @@ class Twig implements Dynamic {
 	
 	private static inline var TWIG_ID:String = 'TWIG_ID';
 
-	public static function data(element:Dynamic, key:String, ?value:Dynamic = null):Dynamic {
+	public static function data(element:HtmlDom, key:String, ?value:Dynamic = null):Dynamic {
 		
 		// check element for TWIG_ID
 		if (!Reflect.hasField(element, TWIG_ID)) {
@@ -91,7 +91,7 @@ class Twig implements Dynamic {
 		
 	}*/
 	
-	public static function removeData(element:Dynamic, ?key:String = null):Void {
+	public static function removeData(element:HtmlDom, ?key:String = null):Void {
 		
 		// assumes element has TWIG_ID already - this might change.
 		CACHE_ID = Reflect.field(element, TWIG_ID);

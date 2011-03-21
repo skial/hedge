@@ -38,7 +38,7 @@ class BlitTest extends Sprite {
 	
 	public static function main() {
 		Firebug.redirectTraces();
-		Setup.init(run, 30, 'bunnyBlit');
+		Setup.init(run, 30);
 	}
 	
 	public static function run():Void {

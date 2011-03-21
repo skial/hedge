@@ -29,7 +29,6 @@ class DisplayObjectContainer extends InteractiveObject {
 		//__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
 		//__jq__.bind(Setup.RESIZE_ELEMENT, {});
 		
-		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
@@ -128,6 +127,13 @@ class DisplayObjectContainer extends InteractiveObject {
 	
 	private function getTextSnapshot():TextSnapshot {
 		return textSnapshot;
+	}
+	
+	//	OVERRIDE
+	
+	override private function initialize():Void 	{
+		super.initialize();
+		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 	}
 	
 }

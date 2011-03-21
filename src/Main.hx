@@ -30,6 +30,7 @@ class Main extends Sprite {
 		graphics.beginFill(0xff60cc);
 		graphics.drawRect(0, 0, 50, 75);
 		graphics.endFill();
+		this.name = 'awesome';
 		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, onResize);
 	}
 

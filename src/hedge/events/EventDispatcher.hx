@@ -9,22 +9,14 @@ import hedge.events.internal.EnterFrame;
 import JQuery;
 import js.Lib;
 import haxe.Timer;
-import hedge.Object;
+import hedge.Hobject;
 import hedge.Setup;
 import hedge.Twig;
 import hedge.TwigType;
 
 using hedge.Twig;
 
-typedef HedgeEventStructure = {
-	var path:Array<EventDispatcher>;
-	var listener:Dynamic;
-	//var displayObject:DisplayObject;
-	//var capture:Bool;
-	//var type:String;
-}
-
-class EventDispatcher extends Object, implements IEventDispatcher {
+class EventDispatcher extends Hobject, implements IEventDispatcher {
 	
 	public function new(?target:IEventDispatcher = null) {
 		super();
@@ -64,11 +56,11 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 			
 		 */
 		
-		var _event:HedgeEventStructure = {
+		var _event = {
 			listener:listener,
 			path:null
 		}
-		
+		trace(this);
 		/*var _temp = this;
 		
 		while (_temp != Setup.__stage__) {
@@ -103,7 +95,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 			All other events targeting the display list have a capture and target phase and
 			might have a bubbling phase.
 		*/
-		var _data:HedgeEventStructure = null;
+		var _data = null;
 		var _access = null;
 		var _temp = null;
 		
@@ -156,16 +148,16 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		
 		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
 		
-		_access = event.type + '_t';
+		/*_access = event.type + '_t';
 		_data = untyped this.data(_access);
 		
-		if (_data != null) _data.path = checkPath(_data.path);
+		//if (_data != null) _data.path = checkPath(_data.path);
 		
 		if (event.bubbles && _data != null) {
 			
 			if (_data != null) {
 				
-				for (n in _data.path) {
+				for (n in cast(_data.path) {
 					
 					_temp = n.data(_access);
 					
@@ -206,7 +198,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 				
 			}
 			
-		}
+		}*/
 		#end
 		
 		//event.target = event.target == null ? this : event.target;
@@ -222,7 +214,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		return Reflect.hasField(events, type);
 	}
 	
-	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false) {
+	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {
 		// ignore useCapture - reason above - method addEventListener
 		/*if (type != Event.ENTER_FRAME) {
 			//__jq__.unbind(type, listener);
@@ -236,7 +228,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	}
 	
 	#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
-	private function checkPath(array:Array<EventDispatcher>):Array<EventDispatcher> {
+	/*private function checkPath(array:Array<EventDispatcher>):Array<EventDispatcher> {
 		
 		var _temp = this;
 		
@@ -245,9 +237,6 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 			array = new Array<EventDispatcher>();
 			
 			while (true) {
-				
-				/*trace(_temp.__ele__.getAttribute('id'));
-				trace(_temp.__ele__.parentNode.getAttribute('id'));*/
 				
 				array.push(_temp.__ele__.data('__self__'));
 				_temp = _temp.parent;
@@ -265,7 +254,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		
 		return array;
 		
-	}
+	}*/
 	#end
 	
 }

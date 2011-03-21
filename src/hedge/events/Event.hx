@@ -4,9 +4,9 @@
  */
 
 package hedge.events;
-import hedge.Object;
+import hedge.Hobject;
 
-class Event extends Object {
+class Event extends Hobject {
 	
 	// TODO properties all read only
 	public var bubbles:Bool;

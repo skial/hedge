@@ -2,9 +2,3 @@
 -cp ./src
 -lib raphaelExtern
 -main demo.bunnyBlitTest.BlitTest
---dead-code-elimination
-
---next
-
--cmd java.exe -jar C:/yuicompressor-2.4.2.jar -o bin/BunnyBlitTest/BunnyBlit.yahoo.js bin/BunnyBlitTest/BunnyBlit.js
--cmd java.exe -jar C:/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js_output_file bin/BunnyBlitTest/BunnyBlit.google.js --js bin/BunnyBlitTest/BunnyBlit.js

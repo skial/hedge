@@ -38,9 +38,10 @@
     <hidden path="bin\yuicompressor-2.4.2.jar" />
     <hidden path="src\hedge\TwigOLD.hx" />
     <hidden path="src\hedge\TwigType.hx" />
+    <hidden path=".hxtypes" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>haxe Test.hxml</preBuildCommand>
+  <preBuildCommand>haxe BunnyBlit.hxml</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->

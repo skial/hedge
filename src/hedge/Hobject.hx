@@ -7,7 +7,7 @@ package hedge;
 import js.Dom;
 import hedge.Twig;
 
-class Object implements Dynamic {
+class Hobject implements Dynamic {
 	
 	//public static var constructor:Object;
 	//public static var prototype:Object; // causes __jq__hx to crash - todo
@@ -24,7 +24,7 @@ class Object implements Dynamic {
 		return false;
 	}
 	
-	public function isPrototypeOf(theClass:Object):Bool {
+	public function isPrototypeOf(theClass:Hobject):Bool {
 		return false;
 	}
 	
@@ -40,11 +40,11 @@ class Object implements Dynamic {
 		return '';
 	}*/
 	
-	public function valueOf():Object {
+	public function valueOf():Hobject {
 		return this;
 	}
 	
-	/*public function __self__():Object {
+	/*public function __self__():Hobject {
 		return this;
 	}*/
 	

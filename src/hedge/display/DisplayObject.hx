@@ -4,11 +4,13 @@
  */
 
 package hedge.display;
+import hedge.events.Event;
 import hedge.events.EventDispatcher;
 import hedge.geom.Rectangle;
 import hedge.Setup;
 import hedge.Twig;
 import hedge.TwigType;
+import hedge.events.EventPhase;
 import js.Lib;
 
 using hedge.Twig;
@@ -83,7 +85,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.parent = Setup.__default__;
 		this.__jq__.data('__self__', this);*/
 		
-		this.parent = this.stage;
+		this.stage = Setup.__stage__;
+		this.parent = Setup.__stage__;
 		
 		__ele__.setAttribute('id', this.name);
 		__ele__.setAttribute('data-originalName', this.__originalName__);
@@ -249,7 +252,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function getHeight():Float {
 		//return __jq__.data('height') == null ? __jq__.height() : __jq__.data('height');
-		return __ele__.data('height') == null ? __ele__.style.height : __ele__.data('height');
+		return __ele__.style.height.parseFloat();
 	}
 	
 	private function setHeight(value:Float):Float {
@@ -292,5 +295,208 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		__ele__.style.top = '' + value + 'px';
 		return value;
 	}
+	
+	// OVERRIDE
+	
+	override public function addEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false, ?priority:Int = 0, ?useWeakReference:Bool = false):Void 	{
+		
+		/*
+			
+			-----------------------------------------------------------------
+			| type | listener | ?useCapture | ?priority | ?useWeakReference |
+			-----------------------------------------------------------------
+				|			|				|				TODO				 TODO
+				V			V				V
+			---------------------------------		array ------------------------------ reverse if ?useCapture is true
+			|	event containter	|	 path	  | --->	|	this	|	this.parent	|	parent.parent	|	...  |	stage/root	|
+			---------------------------------		-------------------------------------------------------------------
+								|
+								V
+			---------------------------------
+			|				CACHE					  |
+			---------------------------------		---------------------------------------------------------------------
+			|	       eventType_c		 	  | ---> |	This depends on ?useCapture. Only one event can exist for each	  |
+			---------------------------------		|	event phase (capture or target/bubbling). Currently thinking if  |
+			|			 eventType_t			  | ---> |	I should allow you to overwrite a event or stay strict to flash. |
+			---------------------------------		---------------------------------------------------------------------
+			
+		 */
+		
+		var _event:DisplayEventStructure = {
+			listener:listener,
+			path:null
+		}
+		
+		var _temp = this;
+		
+		_event.path = checkPath(_event.path);
+		
+		if (useCapture) {
+			_event.path.reverse();
+		}
+		
+		var _access = type + '_' + (useCapture?'c':'t');
+		var _type = this.__ele__.data(_access);
+		
+		if (_type == null) {
+			this.__ele__.data(_access, _event);
+		} else {
+			throw '_event already set remove previous event';
+		}
+		
+		/*trace(' | add event');
+		trace(' | name : ' + this.name);
+		trace(' | type : ' + type);
+		trace('---');*/
+		
+	}
+	
+	override public function dispatchEvent(event:Event):Bool {
+		
+		var _data:DisplayEventStructure = null;
+		var _access = null;
+		var _temp = null;
+		
+		event.target = event.target == null ? this : event.target;
+		
+		#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
+		
+		
+		
+		/*if (useCapture) {
+			_event.path.reverse();
+		}*/
+		#end
+		
+		#if INCLUDE_HEDGE_EVENT_CAPTURE
+		
+		if (event.useCapture) {
+			trace(' | event phase : capture');
+			event.eventPhase = EventPhase.CAPTURING_PHASE;
+			
+			_access = event.type + '_c';
+			_data = untyped this.__ele__.data(_access);
+			
+			if (_data == null) {
+				return false;
+			}
+			
+			checkPath(_data.path);
+			
+			//if (_data != null) {
+				
+				for (n in _data.path) {
+					
+					_temp = n.__ele__.data(_access);
+					
+					if (_temp != null) {
+						
+						event.currentTarget = n;
+						
+						_temp.listener(event);
+						
+					}
+					
+				}
+				
+			/*} else {
+				
+				return false;
+				
+			}*/
+			
+		}
+		#end
+		
+		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
+		
+		_access = event.type + '_t';
+		_data = untyped this.__ele__.data(_access);
+		
+		//if (_data != null) _data.path = checkPath(_data.path);
+		
+		if (_data == null) {
+			return false;
+		}
+		
+		if (event.bubbles) {
+			trace(' | event phase : bubbles');
+			
+			for (n in _data.path) {
+				
+				_temp = cast(n, DisplayObject).__ele__.data(_access);
+				
+				if (_temp != null) {
+					
+					event.eventPhase = event.target == n ? EventPhase.AT_TARGET : EventPhase.BUBBLING_PHASE;
+					event.currentTarget = n;
+					
+					_temp.listener(event);
+					
+				}
+				
+			}
+			
+		} else {
+			trace(' | event phase : target');
+			event.eventPhase = EventPhase.AT_TARGET;
+			
+			if (_data != null) {
+				
+				_temp = _data.path[0].__ele__.data(_access);
+				
+				if (_temp != null) {
+					
+					event.currentTarget = _data.path[0];
+					
+					_temp.listener(event);
+					
+				}
+				
+			} else {
+				
+			}
+			
+		}
+		#end
+		
+		trace(' | dispatch event');
+		trace(' | event type : ' + event.type);
+		trace(' | name : ' + this.name);
+		trace(' | target name : ' + cast(event.target, DisplayObject).name);
+		trace('---');
+		
+		return true;
+	}
+	
+	#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
+	private function checkPath(array:Array<DisplayObject>):Array<DisplayObject> {
+		
+		var _temp = this;
+		var _array = new Array<DisplayObject>();
+		
+		if (array == null) {
+			
+			while (true) {
+				_array.push(_temp);
+				_temp = _temp.parent;
+				
+				if (_temp.__originalName__ == 'Stage') {
+					
+					_array.push(_temp);
+					break;
+					
+				}
+				
+			}
+			
+		} else {
+			_array = array;
+		}
+		
+		return _array;
+		
+	}
+	#end
 	
 }
