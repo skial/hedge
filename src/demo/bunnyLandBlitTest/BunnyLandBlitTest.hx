@@ -97,7 +97,8 @@ class BunnyLandBlitTest extends Sprite {
 		
 		//	BUNNIES
 		
-		bunnyAsset = new BitmapData(26, 37, false, null, 'img#wabbit_alpha');
+		//bunnyAsset = new BitmapData(26, 37, false, null, 'img#wabbit_alpha');
+		bunnyAsset = new BitmapData(26, 37, false, null, 'wabbit_alpha');
 		bunnies = new Array<BlitBunny>();
 		
 		var bunny:BlitBunny;

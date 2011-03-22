@@ -41,7 +41,7 @@
     <hidden path=".hxtypes" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>haxe BunnyBlit.hxml</preBuildCommand>
+  <preBuildCommand>haxe BunnyLand.hxml</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="True" />
   <!-- Other project options -->

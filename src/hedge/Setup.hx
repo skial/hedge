@@ -12,7 +12,7 @@ import hedge.display.DisplayObjectContainer;
 import hedge.display.Stage;
 import hedge.events.Event;
 import hedge.events.internal.DisplayEvent;
-import hedge.events.internal.EnterFrame;
+import hedge.events.internal.HedgeEnterFrame;
 import hedge.events.internal.ResizeElement;
 import hedge.geom.Rectangle;
 import JQuery;
@@ -48,6 +48,11 @@ typedef BasicEventStructure = {
 
 typedef DisplayEventStructure = { > BasicEventStructure,
 	var path:Array<DisplayObject>;
+}
+
+typedef EnterFrameEventStructure = {
+	var listener:Event->Void;
+	var target:DisplayObject;
 }
 
 typedef ChildProperties = {
@@ -150,6 +155,8 @@ class Setup {
 		__stage__.parent = null;
 		
 		Lib.current = __stage__;
+		
+		HedgeEnterFrame.init();
 		
 		/*__default__ = new DisplayObjectContainer();
 		__default__.name = 'default_parent_object';*/
@@ -328,28 +335,21 @@ class Setup {
 	}
 	
 	public static function triggerResize(target:DisplayObject, x:Float, y:Float, width:Float, height:Float):Void {
-		var _rect:Rectangle = new Rectangle(x, y, width, Std.parseFloat(untyped height));
-		//var _rect:Rectangle = new Rectangle(x, y, width, height);
+		var _rect:Rectangle = new Rectangle(x, y, Std.parseFloat(untyped width), Std.parseFloat(untyped height));
 		var _event = new DisplayEvent(DisplayEvent.RESIZE_ELEMENT, true, true, _rect);
 		_event.target = target == null ? _event.target : target;
 		target.dispatchEvent(_event);
 	}
 	
 	public static function resizeDiplay(e:DisplayEvent):Void {
-		untyped console.log(e);
 		var newWidth = e.rectangle.width + e.rectangle.x;
 		var newHeight = e.rectangle.height + e.rectangle.y;
-		trace(newWidth);
-		trace(newHeight);
-		trace(cast(e.target, DisplayObject).width);
-		trace(cast(e.target, DisplayObject).height);
+		
 		if (cast(e.target, DisplayObject).width < newWidth) {
-			trace('new width');
 			cast(e.target, DisplayObject).width = cast(e.target, DisplayObject).width + (newWidth - cast(e.target, DisplayObject).width);
 		}
 		
 		if (cast(e.target, DisplayObject).height < newHeight) {
-			trace('new height');
 			cast(e.target, DisplayObject).height = cast(e.target, DisplayObject).height + (newHeight - cast(e.target, DisplayObject).height);
 		}
 	}

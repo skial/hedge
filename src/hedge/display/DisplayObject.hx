@@ -300,6 +300,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	override public function addEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false, ?priority:Int = 0, ?useWeakReference:Bool = false):Void 	{
 		
+		super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		
 		/*
 			
 			-----------------------------------------------------------------
@@ -344,14 +346,26 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			throw '_event already set remove previous event';
 		}
 		
-		/*trace(' | add event');
+		#if HEDGE_EVENT_DEBUG
+		trace(' | ADDED EVENT');
 		trace(' | name : ' + this.name);
 		trace(' | type : ' + type);
-		trace('---');*/
+		trace('---');
+		#end
 		
 	}
 	
 	override public function dispatchEvent(event:Event):Bool {
+		
+		/*
+			
+			----------------------------------------------------------------------------------------
+			|	Only Event.ACTIVATE .DEACTIVATE .ENTER_FRAME and .RENDER have a target phase only.	|
+			|	All other events targeting the display list have a capture and target phase and		|
+			|	might have a bubbling phase.																			|
+			----------------------------------------------------------------------------------------
+			
+		*/
 		
 		var _data:DisplayEventStructure = null;
 		var _access = null;
@@ -359,19 +373,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		event.target = event.target == null ? this : event.target;
 		
-		#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
-		
-		
-		
-		/*if (useCapture) {
-			_event.path.reverse();
-		}*/
-		#end
-		
 		#if INCLUDE_HEDGE_EVENT_CAPTURE
 		
 		if (event.useCapture) {
-			trace(' | event phase : capture');
+			#if HEDGE_EVENT_DEBUG
+			trace(' | event phase : CAPTURE');
+			#end
+			
 			event.eventPhase = EventPhase.CAPTURING_PHASE;
 			
 			_access = event.type + '_c';
@@ -383,27 +391,21 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			
 			checkPath(_data.path);
 			
-			//if (_data != null) {
+			_data.path.reverse();
+			
+			for (n in _data.path) {
 				
-				for (n in _data.path) {
+				_temp = n.__ele__.data(_access);
+				
+				if (_temp != null) {
 					
-					_temp = n.__ele__.data(_access);
+					event.currentTarget = n;
 					
-					if (_temp != null) {
-						
-						event.currentTarget = n;
-						
-						_temp.listener(event);
-						
-					}
+					_temp.listener(event);
 					
 				}
 				
-			/*} else {
-				
-				return false;
-				
-			}*/
+			}
 			
 		}
 		#end
@@ -413,14 +415,14 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		_access = event.type + '_t';
 		_data = untyped this.__ele__.data(_access);
 		
-		//if (_data != null) _data.path = checkPath(_data.path);
-		
 		if (_data == null) {
 			return false;
 		}
 		
 		if (event.bubbles) {
-			trace(' | event phase : bubbles');
+			#if HEDGE_EVENT_DEBUG
+			trace(' | event phase : BUBBLE');
+			#end
 			
 			for (n in _data.path) {
 				
@@ -438,33 +440,32 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			}
 			
 		} else {
-			trace(' | event phase : target');
+			#if HEDGE_EVENT_DEBUG
+			trace(' | event phase : TARGET');
+			#end
+			
 			event.eventPhase = EventPhase.AT_TARGET;
 			
-			if (_data != null) {
+			_temp = _data.path[0].__ele__.data(_access);
+			
+			if (_temp != null) {
 				
-				_temp = _data.path[0].__ele__.data(_access);
+				event.currentTarget = _data.path[0];
 				
-				if (_temp != null) {
-					
-					event.currentTarget = _data.path[0];
-					
-					_temp.listener(event);
-					
-				}
-				
-			} else {
+				_temp.listener(event);
 				
 			}
 			
 		}
 		#end
 		
-		trace(' | dispatch event');
+		#if HEDGE_EVENT_DEBUG
+		trace(' | DISPATCH EVENT');
 		trace(' | event type : ' + event.type);
 		trace(' | name : ' + this.name);
 		trace(' | target name : ' + cast(event.target, DisplayObject).name);
 		trace('---');
+		#end
 		
 		return true;
 	}
@@ -474,6 +475,14 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		var _temp = this;
 		var _array = new Array<DisplayObject>();
+		
+		if (_temp.__originalName__ == 'Stage') {
+			
+			_array.push(_temp);
+			
+			return _array;
+			
+		}
 		
 		if (array == null) {
 			
