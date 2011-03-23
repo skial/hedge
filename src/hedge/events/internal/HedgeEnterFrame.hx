@@ -48,7 +48,7 @@ class HedgeEnterFrame {
 		
 	}
 	
-	public static function remove(name:String, listener:Dynamic):Void {
+	public static function remove(efes:EnterFrameEventStructure):Void {
 		/*if (dataHash.exists(name) == true) {
 			dataArray.remove(listener);
 			dataHash.remove(name); // this might not work... need to test
@@ -57,6 +57,22 @@ class HedgeEnterFrame {
 			}
 			eventLength = dataArray.length;
 		}*/
+		
+		var kill:EnterFrameEventStructure = null;
+		
+		for (n in array) {
+			
+			if (n == efes) {
+				
+				kill = n;
+				break;
+				
+			}
+			
+		}
+		
+		array.remove(kill);
+		
 	}
 	
 	public inline static function determineFrameRate():Void {

@@ -44,6 +44,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var y(getY, setY):Float;
 	
 	public var __originalName__:String;
+	public var __ancestorPath__:Array<DisplayObject>;
 
 	public function new() {
 		super(null);
@@ -87,6 +88,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		this.stage = Setup.__stage__;
 		this.parent = Setup.__stage__;
+		
+		this.__ancestorPath__ = Setup.createAncestorPath(this);
 		
 		__ele__.setAttribute('id', this.name);
 		__ele__.setAttribute('data-originalName', this.__originalName__);
@@ -324,18 +327,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			
 		 */
 		
-		var _event:DisplayEventStructure = {
+		var _event:EventStructure = {
 			listener:listener,
-			path:null
+			target:this
 		}
 		
 		var _temp = this;
-		
-		_event.path = checkPath(_event.path);
-		
-		if (useCapture) {
-			_event.path.reverse();
-		}
 		
 		var _access = type + '_' + (useCapture?'c':'t');
 		var _type = this.__ele__.data(_access);
@@ -343,7 +340,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		if (_type == null) {
 			this.__ele__.data(_access, _event);
 		} else {
-			throw '_event already set remove previous event';
+			throw '_event[' + type + '] already set - you need to remove the previous event';
 		}
 		
 		#if HEDGE_EVENT_DEBUG
@@ -352,6 +349,22 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		trace(' | type : ' + type);
 		trace('---');
 		#end
+		
+	}
+	
+	override public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {
+		
+		// TODO make sure removeEventListener is working correctly
+		super.removeEventListener(type, listener, useCapture);
+		
+		var _access = type + '_' + (useCapture?'c':'t');
+		var _type = this.__ele__.data(_access);
+		
+		if (_type == null) {
+			return;
+		} else {
+			this.__ele__.removeData(_access);
+		}
 		
 	}
 	
@@ -367,7 +380,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			
 		*/
 		
-		var _data:DisplayEventStructure = null;
+		var _data:EventStructure = null;
 		var _access = null;
 		var _temp = null;
 		
@@ -385,15 +398,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			_access = event.type + '_c';
 			_data = untyped this.__ele__.data(_access);
 			
-			if (_data == null) {
-				return false;
-			}
+			var _array:Array<DisplayObject> = __ancestorPath__;
+			_array.reverse();
 			
-			checkPath(_data.path);
-			
-			_data.path.reverse();
-			
-			for (n in _data.path) {
+			for (n in _array) {
 				
 				_temp = n.__ele__.data(_access);
 				
@@ -415,16 +423,16 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		_access = event.type + '_t';
 		_data = untyped this.__ele__.data(_access);
 		
-		if (_data == null) {
-			return false;
-		}
-		
 		if (event.bubbles) {
 			#if HEDGE_EVENT_DEBUG
 			trace(' | event phase : BUBBLE');
 			#end
 			
-			for (n in _data.path) {
+			if (__ancestorPath__ == null) {
+				return false;
+			}
+			
+			for (n in __ancestorPath__) {
 				
 				_temp = cast(n, DisplayObject).__ele__.data(_access);
 				
@@ -446,11 +454,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			
 			event.eventPhase = EventPhase.AT_TARGET;
 			
-			_temp = _data.path[0].__ele__.data(_access);
+			_temp = __ancestorPath__[0].__ele__.data(_access);
 			
 			if (_temp != null) {
 				
-				event.currentTarget = _data.path[0];
+				event.currentTarget = __ancestorPath__[0];
 				
 				_temp.listener(event);
 				
@@ -469,43 +477,5 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		return true;
 	}
-	
-	#if (INCLUDE_HEDGE_EVENT_CAPTURE || !EXCLUDE_HEDGE_EVENT_BUBBLE)
-	private function checkPath(array:Array<DisplayObject>):Array<DisplayObject> {
-		
-		var _temp = this;
-		var _array = new Array<DisplayObject>();
-		
-		if (_temp.__originalName__ == 'Stage') {
-			
-			_array.push(_temp);
-			
-			return _array;
-			
-		}
-		
-		if (array == null) {
-			
-			while (true) {
-				_array.push(_temp);
-				_temp = _temp.parent;
-				
-				if (_temp.__originalName__ == 'Stage') {
-					
-					_array.push(_temp);
-					break;
-					
-				}
-				
-			}
-			
-		} else {
-			_array = array;
-		}
-		
-		return _array;
-		
-	}
-	#end
 	
 }

@@ -42,6 +42,11 @@ typedef EventData = {
 	var originalhandler:Dynamic;
 }
 
+typedef EventStructure = {
+	var listener:Event->Dynamic;
+	var target:Dynamic;
+}
+
 typedef BasicEventStructure = {	
 	var listener:Dynamic;
 }
@@ -153,6 +158,7 @@ class Setup {
 		__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		__stage__.parent = null;
+		__stage__.removeEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 		
 		Lib.current = __stage__;
 		
@@ -352,5 +358,41 @@ class Setup {
 		if (cast(e.target, DisplayObject).height < newHeight) {
 			cast(e.target, DisplayObject).height = cast(e.target, DisplayObject).height + (newHeight - cast(e.target, DisplayObject).height);
 		}
+	}
+	
+	public static function createAncestorPath(target:DisplayObject):Array<DisplayObject> {
+		
+		var _temp = target;
+		var _array = new Array<DisplayObject>();
+		
+		if (_temp.__originalName__ == 'Stage') {
+			
+			_array.push(_temp);
+			
+			return _array;
+			
+		}
+		
+		//if (array == null) {
+			
+			while (true) {
+				_array.push(_temp);
+				_temp = _temp.parent;
+				
+				if (_temp.__originalName__ == 'Stage') {
+					
+					_array.push(_temp);
+					break;
+					
+				}
+				
+			}
+			
+		/*} else {
+			_array = array;
+		}*/
+		
+		return _array;
+		
 	}
 }

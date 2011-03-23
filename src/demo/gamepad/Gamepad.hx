@@ -48,7 +48,6 @@ class Gamepad {
 	public var ease:Float;
 
 	public function new(stage:Stage, isCircle:Bool, ?ease:Float = 0.2, ?autoStep:Bool = true) {
-		trace('Remember to hit "Control > Disable Keyboard Shorcuts" in the Flash IDE & stand-alone Flash player!');
 		
 		this._x = this._y = this._targetX = this._targetY = this._angle = this._rotation = this._magnitude = 0;
 		

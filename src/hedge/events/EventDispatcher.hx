@@ -28,6 +28,7 @@ class EventDispatcher extends Hobject, implements IEventDispatcher {
 			
 			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
 			HedgeEnterFrame.add(efes);
+			return;
 			
 		}
 		
@@ -44,6 +45,14 @@ class EventDispatcher extends Hobject, implements IEventDispatcher {
 	}
 	
 	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {
+		
+		if (type == Event.ENTER_FRAME) {
+			
+			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
+			HedgeEnterFrame.remove(efes);
+			return;
+			
+		}
 		
 	}
 	

@@ -14,8 +14,8 @@ class KeyboardEvent extends Event {
 	public var keyLocation:Int;
 	public var shiftKey:Bool;
 	
-	public static inline var KEY_DOWN:String = 'keydown'; //	originally 'keyDown'
-	public static inline var KEY_UP:String = 'keyup';		//	originally 'keyUp'
+	public static inline var KEY_DOWN:String = 'keyDown';
+	public static inline var KEY_UP:String = 'keyUp';
 
 	public function new(	type:String,
 								?bubbles:Bool = true,
@@ -25,9 +25,9 @@ class KeyboardEvent extends Event {
 								?keyLocationValue:Int = 0,
 								?ctrlKeyValue:Bool = false,
 								?altKeyValue:Bool = false,
-								?shiftKeyValue:Bool = false,
+								?shiftKeyValue:Bool = false/*,
 								?controlKeyValue:Bool = false,
-								?commandKeyValue:Bool = false) {
+								?commandKeyValue:Bool = false*/) {
 		this.type = type;
 		this.bubbles = bubbles;
 		this.cancelable = cancelable;
