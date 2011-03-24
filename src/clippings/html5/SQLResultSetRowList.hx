@@ -4,7 +4,7 @@
  * @author : tong / disktree - https://github.com/tong
  */
 
-package hedge.html5;
+package clippings.html5;
 
 typedef SQLResultSetRowList = {
 	var length(default,null) : Int;

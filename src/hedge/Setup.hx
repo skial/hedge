@@ -17,7 +17,7 @@ import hedge.events.internal.ResizeElement;
 import hedge.geom.Rectangle;
 import JQuery;
 import js.Dom;
-import hedge.Twig;
+import clippings.Twig;
 
 using Std;
 using StringTools;
@@ -376,7 +376,7 @@ class Setup {
 		//if (array == null) {
 			
 			while (true) {
-				_array.push(_temp);
+				//_array.push(_temp);
 				_temp = _temp.parent;
 				
 				if (_temp.__originalName__ == 'Stage') {

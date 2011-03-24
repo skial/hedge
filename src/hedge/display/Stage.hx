@@ -4,12 +4,12 @@
  */
 
 package hedge.display;
+
 import hedge.display.DisplayObject;
 import hedge.events.Event;
 import hedge.geom.Rectangle;
 import hedge.text.TextSnapshot;
-import hedge.Twig;
-import hedge.TwigType;
+import clippings.Twig;
 import js.Lib;
 
 class Stage extends DisplayObjectContainer {

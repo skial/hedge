@@ -4,17 +4,17 @@
  */
 
 package hedge.display;
-import hedge.events.internal.DisplayEvent;
+
 import hedge.geom.Matrix;
 import hedge.geom.Rectangle;
-import hedge.Hobject;
+
+import hedge.events.internal.DisplayEvent;
+import hedge.Object;
 import hedge.Setup;
 import js.Lib;
 import Raphael;
-import hedge.Twig;
-import hedge.TwigType;
 
-class Graphics extends Hobject {
+class Graphics extends Object {
 	
 	public var __raphael__:Raphael;
 	public var __element__:RaphaelElement;

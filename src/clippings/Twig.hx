@@ -3,11 +3,11 @@
  * @author Skial Bainn
  */
 
-package hedge;
+package clippings;
 
 import js.Dom;
 
-using hedge.Twig;
+using clippings.Twig;
 using Std;
 
 class Twig implements Dynamic {

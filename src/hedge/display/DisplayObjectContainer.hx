@@ -4,17 +4,17 @@
  */
 
 package hedge.display;
+
 import hedge.events.EventDispatcher;
-import hedge.events.internal.DisplayEvent;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.text.TextSnapshot;
+
+import hedge.events.internal.DisplayEvent;
 import hedge.Setup;
-import hedge.Twig;
-import hedge.TwigType;
 import js.Lib;
 
-using hedge.Twig;
+using clippings.Twig;
 using Std;
 
 class DisplayObjectContainer extends InteractiveObject {

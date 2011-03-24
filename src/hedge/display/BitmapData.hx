@@ -4,10 +4,7 @@
  */
 
 package hedge.display;
-import hedge.html5.Canvas;
-import hedge.html5.CanvasRenderingContext2D;
-import hedge.html5.Image;
-import hedge.html5.ImageData;
+
 import hedge.events.MouseEvent;
 import hedge.filters.BitmapFilter;
 import hedge.geom.ColorTransform;
@@ -15,11 +12,14 @@ import hedge.geom.Matrix;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.utils.ByteArray;
+
+import clippings.html5.Canvas;
+import clippings.html5.CanvasRenderingContext2D;
+import clippings.html5.Image;
+import clippings.html5.ImageData;
 import hedge.Setup;
 import js.Lib;
 import js.Dom;
-import hedge.Twig;
-import hedge.TwigType;
 
 using Std;
 
@@ -35,7 +35,6 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	public var width(getWidth, null)		:Int;
 	
 	//public var __canvas__	:JQuery;
-	//public var __canvas__	:Twig;
 	public var __canvas__	:HtmlDom;
 	public var __context__	:CanvasRenderingContext2D;
 	public var __id__			:String;
@@ -50,11 +49,9 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		this.__fillColor__ 	= fillColor 	== null ? 0x00FFFFFF 						: fillColor;
 		this.__id__				= Setup.generateInstanceName();
 		//this.__source__ 		= cssSelector	== null ? null									: new JQuery(cssSelector);
-		//this.__source__ 		= elementId	== null ? null									: untyped new Twig(elementId, TwigType.FIND_ID).element;
 		this.__source__ 		= elementId	== null ? null									: untyped Lib.document.getElementById(elementId);
 		
-		//__canvas__ = new JQuery('<canvas>')
-		/*__canvas__ = new Twig('canvas', TwigType.CREATE_ELEMENT)
+		/*__canvas__ = new JQuery('<canvas>')
 			.addClass('bitmapdata')
 			//.attr( { id:__id__, width:width, height:height } );
 			.attrMap( { id:__id__, width:width, height:height } );*/
@@ -68,11 +65,6 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		//Setup.__storage__.append(__canvas__);
 		Setup.__storage__.appendChild(__canvas__);
-			
-		/*__canvas__.bind('mouseenter', onCanvasEnter);
-		__canvas__.bind('mouseleave', onCanvasLeave);*/
-		untyped __canvas__.onmouseover = onCanvasEnter;
-		untyped __canvas__.onmouseout = onCanvasLeave;
 		
 		//__context__ = untyped __canvas__.element.getContext('2d');
 		__context__ = untyped __canvas__.getContext('2d');
@@ -215,19 +207,6 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 	
 	private function getWidth():Int {
 		return width;
-	}
-	
-	private function onCanvasEnter(e:MouseEvent):Void {
-		//__canvas__.attr( { tabindex:0 }).focus();
-		//__canvas__.attr('tabindex', 0).focus();
-		__canvas__.setAttribute('tabindex', '0');
-		__canvas__.focus();
-	}
-	
-	private function onCanvasLeave(e:MouseEvent):Void {
-		//__canvas__.removeAttr('tabindex').blur();
-		untyped __canvas__.removeAttribute('tabindex');
-		__canvas__.blur();
 	}
 	
 }

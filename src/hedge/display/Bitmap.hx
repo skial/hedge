@@ -4,9 +4,6 @@
  */
 
 package hedge.display;
-import hedge.Twig;
-import hedge.TwigType;
-using hedge.Twig;
 
 class Bitmap extends DisplayObject {
 	
@@ -23,6 +20,8 @@ class Bitmap extends DisplayObject {
 		this.smoothing 		= smoothing;
 		this.__ele__.className = 'bitmap ';
 	}
+	
+	//	OVERRIDE METHODS
 	
 	// INTERNAL METHODS
 	

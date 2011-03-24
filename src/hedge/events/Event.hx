@@ -4,9 +4,10 @@
  */
 
 package hedge.events;
-import hedge.Hobject;
 
-class Event extends Hobject {
+import hedge.Object;
+
+class Event extends Object {
 	
 	// TODO properties all read only
 	public var bubbles:Bool;
@@ -17,7 +18,9 @@ class Event extends Hobject {
 	public var type:String;
 
 	public function new(type:String, ?bubbles:Bool = false, ?cancelable:Bool = false) {
+		
 		super();
+		
 		this.type = type;
 		this.bubbles = bubbles;
 		this.cancelable = cancelable;

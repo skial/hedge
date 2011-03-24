@@ -1,37 +1,53 @@
 package ;
+import flash.events.Event;
+import flash.events.MouseEvent;
 import haxe.Firebug;
-import hedge.display.Sprite;
-import hedge.events.internal.DisplayEvent;
+import flash.display.Sprite;
+import flash.events.KeyboardEvent;
+#if js
 import hedge.Setup;
 import js.Lib;
-
-import hedge.Twig;
+#end
 
 class Main extends Sprite {
 
 	public static function main() {
 		Firebug.redirectTraces();
 		
+		#if js
 		Setup.init(run, 30);
+		#else
+		run();
+		#end
 	}
 	
 	public static function run():Void {
-		var m = new Main();
+		var m:Main = new Main();
+		#if js
 		hedge.Lib.current.addChild(m);
-	}
-	
-	public function onResize(e:DisplayEvent):Void {
-		trace('hello');
+		#else
+		flash.Lib.current.addChild(m);
+		#end
 	}
 	
 	public function new () {
 		super();
-		height = width = 100;
-		graphics.beginFill(0xff60cc);
-		graphics.drawRect(0, 0, 50, 75);
+		
+		graphics.beginFill(0xFF0000);
+		graphics.lineStyle(1, 0x000000);
+		graphics.drawCircle(20, 20, 20);
 		graphics.endFill();
-		this.name = 'awesome';
-		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, onResize);
+		
+		this.x = 100;
+		this.y = 100;
+		
+		//this.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
+		flash.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
+		flash.Lib.current.stage.focus = flash.Lib.current.stage;
+	}
+	
+	public function moveBall(e:Event):Void {
+		this.x += 10;
 	}
 
 }

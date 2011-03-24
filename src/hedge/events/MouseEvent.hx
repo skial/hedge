@@ -29,10 +29,7 @@ class MouseEvent extends Event {
 								?altKey:Bool = false,
 								?shiftKey:Bool = false,
 								?buttonDown:Bool = false,
-								?delta:Int = 0,
-								?commandKey:Bool = false,
-								?controlKey:Bool = false,
-								?clickCount:Int = 0) {
+								?delta:Int = 0) {
 		
 		this.type = type;
 		this.bubbles = bubbles;
@@ -45,15 +42,12 @@ class MouseEvent extends Event {
 		this.shiftKey = shiftKey;
 		this.buttonDown = buttonDown;
 		this.delta = delta;
-		this.commandKey = commandKey;
-		this.controlKey = controlKey;
-		this.clickCount = clickCount;
 		super(this.type, this.bubbles, this.cancelable);
 	}
 	
 	override public function clone():Event {
 		return new MouseEvent(	this.type, this.bubbles, this.cancelable, this.localX, this.localY, this.relatedObject, this.ctrlKey, this.altKey,
-										this.shiftKey, this.buttonDown, this.delta, this.commandKey, this.controlKey, this.clickCount);
+										this.shiftKey, this.buttonDown, this.delta);
 	}
 	
 	/*override public function toString():String {

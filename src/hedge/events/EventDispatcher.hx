@@ -4,19 +4,17 @@
  */
 
 package hedge.events;
+
 import hedge.display.DisplayObject;
+
 import hedge.events.internal.HedgeEnterFrame;
 import JQuery;
 import js.Lib;
 import haxe.Timer;
-import hedge.Hobject;
+import hedge.Object;
 import hedge.Setup;
-import hedge.Twig;
-import hedge.TwigType;
 
-using hedge.Twig;
-
-class EventDispatcher extends Hobject, implements IEventDispatcher {
+class EventDispatcher extends Object, implements IEventDispatcher {
 	
 	public function new(?target:IEventDispatcher = null) {
 		super();
@@ -39,9 +37,7 @@ class EventDispatcher extends Hobject, implements IEventDispatcher {
 	}
 	
 	public function hasEventListener(type:String):Bool {
-		//var events:Array<String> = __jq__.data('events');
-		var events:Array<String> = __ele__.data('events');
-		return Reflect.hasField(events, type);
+		return true;
 	}
 	
 	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {

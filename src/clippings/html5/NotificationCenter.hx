@@ -4,7 +4,7 @@
  * @author : tong / disktree - https://github.com/tong
  */
 
-package hedge.html5;
+package clippings.html5;
 
 @:native("window.webkitNotifications") extern class NotificationCenter {
 	static function createNotification( iconUrl : String, title : String, body : String ) : Notification;

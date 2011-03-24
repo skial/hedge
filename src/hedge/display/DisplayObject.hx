@@ -8,12 +8,10 @@ import hedge.events.Event;
 import hedge.events.EventDispatcher;
 import hedge.geom.Rectangle;
 import hedge.Setup;
-import hedge.Twig;
-import hedge.TwigType;
 import hedge.events.EventPhase;
 import js.Lib;
 
-using hedge.Twig;
+using clippings.Twig;
 using Std;
 
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
@@ -299,7 +297,19 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return value;
 	}
 	
-	// OVERRIDE
+	//	INTERNAL METHODS
+	
+	private function onDisplayMouseEnter(e):Void {
+		this.__ele__.setAttribute('tabindex', '0');
+		this.__ele__.focus();
+	}
+	
+	private function onDisplayMouseLeave(e):Void {
+		untyped this.__ele__.removeAttribute('tabindex');
+		this.__ele__.blur();
+	}
+	
+	// OVERRIDE METHODS
 	
 	override public function addEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false, ?priority:Int = 0, ?useWeakReference:Bool = false):Void 	{
 		
@@ -418,19 +428,37 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		}
 		#end
 		
+		
+		
 		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
 		
 		_access = event.type + '_t';
 		_data = untyped this.__ele__.data(_access);
 		
-		if (event.bubbles) {
+		if (__ancestorPath__ == null) {
+			return false;
+		}
+		
+		#if HEDGE_EVENT_DEBUG
+		trace(' | event phase : TARGET');
+		#end
+		
+		event.eventPhase = EventPhase.AT_TARGET;
+		
+		_temp = this.__ele__.data(_access);
+		
+		if (_temp != null) {
+			
+			event.currentTarget = this;
+			
+			_temp.listener(event);
+			
+		}
+		
+		//if (event.bubbles) {
 			#if HEDGE_EVENT_DEBUG
 			trace(' | event phase : BUBBLE');
 			#end
-			
-			if (__ancestorPath__ == null) {
-				return false;
-			}
 			
 			for (n in __ancestorPath__) {
 				
@@ -438,7 +466,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 				
 				if (_temp != null) {
 					
-					event.eventPhase = event.target == n ? EventPhase.AT_TARGET : EventPhase.BUBBLING_PHASE;
+					//event.eventPhase = event.target == n ? EventPhase.AT_TARGET : EventPhase.BUBBLING_PHASE;
+					event.eventPhase = EventPhase.BUBBLING_PHASE;
 					event.currentTarget = n;
 					
 					_temp.listener(event);
@@ -447,7 +476,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 				
 			}
 			
-		} else {
+		/*} else {
 			#if HEDGE_EVENT_DEBUG
 			trace(' | event phase : TARGET');
 			#end
@@ -464,9 +493,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 				
 			}
 			
-		}
+		}*/
 		#end
-		
+		trace('event[' + event.type + '] dispatch');
 		#if HEDGE_EVENT_DEBUG
 		trace(' | DISPATCH EVENT');
 		trace(' | event type : ' + event.type);

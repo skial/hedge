@@ -4,9 +4,10 @@
  */
 
 package hedge.ui;
-import hedge.Hobject;
 
-class Keyboard extends Hobject {
+import hedge.Object;
+
+class Keyboard extends Object {
 	
 	public static var capsLock	(getCapsLock, 	null):Bool;
 	public static var numLock	(getNumLock, 	null):Bool;

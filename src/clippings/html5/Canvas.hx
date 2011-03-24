@@ -4,7 +4,8 @@
  * @author : tong / disktree - https://github.com/tong
  */
 
-package hedge.html5;
+package clippings.html5;
+
 import js.Dom;
 
 typedef Canvas = {>HtmlDom,
