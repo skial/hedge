@@ -18,7 +18,7 @@ class Object implements Dynamic {
 	public var __ele__:HtmlDom;
 	
 	public function new() {
-		
+		this.initialize();
 	}
 	
 	public function hasOwnProperty(name:String):Bool {
@@ -48,5 +48,11 @@ class Object implements Dynamic {
 	/*public function __self__():Hobject {
 		return this;
 	}*/
+	
+	//	INTERNAL
+	
+	private function initialize():Void {
+		
+	}
 	
 }

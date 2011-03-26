@@ -133,6 +133,12 @@ class DisplayObjectContainer extends InteractiveObject {
 	
 	override private function initialize():Void 	{
 		super.initialize();
+		this.initializeDisplayObjectContainer();
+	}
+	
+	//	INTERNAL
+	
+	private function initializeDisplayObjectContainer():Void {
 		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 	}
 	

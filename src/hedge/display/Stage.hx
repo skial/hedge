@@ -8,6 +8,7 @@ package hedge.display;
 import hedge.display.DisplayObject;
 import hedge.events.Event;
 import hedge.geom.Rectangle;
+import hedge.Setup;
 import hedge.text.TextSnapshot;
 import clippings.Twig;
 import js.Lib;
@@ -29,17 +30,7 @@ class Stage extends DisplayObjectContainer {
 	public var stageWidth:Int;
 
 	public function new() {
-		/* this is a rubbish way to stop the stage from creating another
-		 * div with the same name but allowing full access to all methods
-		 * and properties
-		 */ 
-		if (1 > 2) {
-			super();
-		}
-		__originalName__ = 'Stage';
-		//__jq__ = new JQuery('div#Stage');
-		//__jq__ = new Twig('Stage', TwigType.FIND_ID);
-		//__ele__ = Lib.document.getElementById('Stage');
+		super();
 	}
 	
 	public function invalidate() {
@@ -50,24 +41,20 @@ class Stage extends DisplayObjectContainer {
 		return true;
 	}
 	
-	/* OVERRIDE FUNCTIONS */
+	/* OVERRIDE METHODS */
 	
-	/*override public function addChild(child:DisplayObject):DisplayObject {
-		new JQuery('<div></div>').attr('id', child.name).css(child.__values__()).appendTo('div#' + this.name);
-		child.parent = this;
-		return child;
-	}*/
-	
-	/*override public function addChildAt(child:DisplayObject, index:Int):DisplayObject {
-		return super.addChildAt(child, index);
+	override private function initialize():Void {
+		this.initializeStage();
+		this.__ancestorPath__ = Setup.createAncestorPath(this);
+		this.initializeInterativeObject();
+		this.initializeDisplayObjectContainer();
 	}
 	
-	override public function removeChild(child:DisplayObject):DisplayObject {
-		return super.removeChild(child);
-	}
+	//	INTERNAL METHODS
 	
-	override public function removeChildAt(index:Int):DisplayObject {
-		return super.removeChildAt(index);
-	}*/
+	private function initializeStage():Void {
+		this.__ele__ = Setup.__ele__;
+		this.__originalName__ = 'Stage';
+	}
 	
 }

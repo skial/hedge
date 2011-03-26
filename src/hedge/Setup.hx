@@ -9,6 +9,8 @@ import haxe.rtti.Meta;
 import hedge.display.Bitmap;
 import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
+import hedge.display.InteractiveObject;
+import hedge.display.Sprite;
 import hedge.display.Stage;
 import hedge.events.Event;
 import hedge.events.internal.DisplayEvent;
@@ -118,14 +120,13 @@ class Setup {
 	
 	// INTERNAL PROPERTIES
 	
-	private static var __counter__:Int;
+	private static var __counter__:Int = 0;
 	
 	// PUBLIC METHODS
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
 		// create default holder
 		//__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'block', width:'100%', height:'100%' } );
-		//__storage__ = new Twig('div', TwigType.CREATE_ELEMENT).attr('id', 'storage').cssMap( { display:'none', width:'100%', height:'100%' } );
 		__storage__ = js.Lib.document.createElement('div');
 		__storage__.setAttribute('id', 'storage');
 		__storage__.style.cssText = 'display:none; width:100%; height:100%;';
@@ -135,13 +136,6 @@ class Setup {
 				.css('background-color', RGB_to_String(0xFFFFFF))
 				.css('z-index', 0)
 				.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) )
-				.append(__storage__);*/
-		
-		/*__jq__ = new Twig(stageName, TwigType.FIND_ID)
-				.cssMap(__attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ))
-				.attrMap(__data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ))
-				.css('background-color', RGB_to_String(0xFFFFFF))
-				.css('z-index', 0)
 				.append(__storage__);*/
 		
 		__ele__ = js.Lib.document.getElementById(stageName);
@@ -155,7 +149,7 @@ class Setup {
 		
 		__stage__ = new Stage();
 		//__stage__.__jq__ = __jq__;
-		__stage__.__ele__ = __ele__;
+		//__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		__stage__.parent = null;
 		__stage__.removeEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
@@ -310,7 +304,7 @@ class Setup {
 	}
 	
 	public static function generateInstanceName():String {
-		return 'instance' + ((__counter__++));
+		return 'instance' + (__counter__++);
 	}
 	
 	public static function RGB_to_String(color:Int):String {

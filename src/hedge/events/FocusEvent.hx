@@ -4,11 +4,27 @@
  */
 
 package hedge.events;
+import hedge.display.InteractiveObject;
 
 class FocusEvent extends Event {
+	
+	public var keyCode:Int;
+	public var relatedObject:InteractiveObject;
+	public var shiftKey:Bool;
 
-	public function new() {
-		
+	public function new(	type:String,
+								?bubbles:Bool = true,
+								?cancelable:Bool = false,
+								?relatedObject:InteractiveObject = null,
+								?shiftKey:Bool = false,
+								?keyCode:Int = 0) {
+		this.type = type;
+		this.bubbles = bubbles;
+		this.cancelable = cancelable;
+		this.relatedObject = relatedObject;
+		this.shiftKey = shiftKey;
+		this.keyCode = keyCode;
+		super(this.type, this.bubbles, this.cancelable);
 	}
 	
 	public static inline var FOCUS_IN:String = 'focusIn';

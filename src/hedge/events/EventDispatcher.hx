@@ -56,4 +56,12 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		return true;
 	}
 	
+	//	OVERRIDE METHODS
+	
+	//	INTERNAL METHODS
+	
+	private function initializeEventDispatcher():Void {
+		
+	}
+	
 }

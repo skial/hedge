@@ -41,9 +41,7 @@ class Main extends Sprite {
 		this.x = 100;
 		this.y = 100;
 		
-		//this.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
 		flash.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
-		flash.Lib.current.stage.focus = flash.Lib.current.stage;
 	}
 	
 	public function moveBall(e:Event):Void {

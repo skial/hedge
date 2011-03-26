@@ -46,7 +46,6 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 
 	public function new() {
 		super(null);
-		this.initialize();
 	}
 	
 	public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle {
@@ -71,9 +70,14 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	/* OVERRIDE FUNCTIONS */
 	
+	override private function initialize():Void {
+		super.initialize();
+		this.initializeDisplayObject();
+	}
+	
 	/* INTERNAL FUNCTIONS */
 	
-	private function initialize():Void {
+	public function initializeDisplayObject():Void {
 		//this.generateJQuery();
 		this.generateElement();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
@@ -87,12 +91,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.stage = Setup.__stage__;
 		this.parent = Setup.__stage__;
 		
-		this.__ancestorPath__ = Setup.createAncestorPath(this);
+		this.__ele__.setAttribute('id', this.name);
+		this.__ele__.setAttribute('data-originalName', this.__originalName__);
+		this.__ele__.style.cssText = 'overflow:hidden; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
+		this.__ele__.data('__self__', this);
 		
-		__ele__.setAttribute('id', this.name);
-		__ele__.setAttribute('data-originalName', this.__originalName__);
-		__ele__.style.cssText = 'overflow:hidden; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
-		__ele__.data('__self__', this);
+		this.__ancestorPath__ = Setup.createAncestorPath(this);
 	}
 	
 	// provide to be overriden
@@ -396,6 +400,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		event.target = event.target == null ? this : event.target;
 		
+		if (__ancestorPath__ == null) {
+			return false;
+		}
+		
 		#if INCLUDE_HEDGE_EVENT_CAPTURE
 		
 		if (event.useCapture) {
@@ -428,16 +436,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		}
 		#end
 		
-		
-		
-		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
-		
 		_access = event.type + '_t';
 		_data = untyped this.__ele__.data(_access);
-		
-		if (__ancestorPath__ == null) {
-			return false;
-		}
 		
 		#if HEDGE_EVENT_DEBUG
 		trace(' | event phase : TARGET');
@@ -455,47 +455,29 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			
 		}
 		
-		//if (event.bubbles) {
-			#if HEDGE_EVENT_DEBUG
-			trace(' | event phase : BUBBLE');
-			#end
+		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
+		
+		#if HEDGE_EVENT_DEBUG
+		trace(' | event phase : BUBBLE');
+		#end
+		
+		for (n in __ancestorPath__) {
 			
-			for (n in __ancestorPath__) {
-				
-				_temp = cast(n, DisplayObject).__ele__.data(_access);
-				
-				if (_temp != null) {
-					
-					//event.eventPhase = event.target == n ? EventPhase.AT_TARGET : EventPhase.BUBBLING_PHASE;
-					event.eventPhase = EventPhase.BUBBLING_PHASE;
-					event.currentTarget = n;
-					
-					_temp.listener(event);
-					
-				}
-				
-			}
-			
-		/*} else {
-			#if HEDGE_EVENT_DEBUG
-			trace(' | event phase : TARGET');
-			#end
-			
-			event.eventPhase = EventPhase.AT_TARGET;
-			
-			_temp = __ancestorPath__[0].__ele__.data(_access);
+			_temp = cast(n, DisplayObject).__ele__.data(_access);
 			
 			if (_temp != null) {
 				
-				event.currentTarget = __ancestorPath__[0];
+				event.eventPhase = EventPhase.BUBBLING_PHASE;
+				event.currentTarget = n;
 				
 				_temp.listener(event);
 				
 			}
 			
-		}*/
+		}
+		
 		#end
-		trace('event[' + event.type + '] dispatch');
+		
 		#if HEDGE_EVENT_DEBUG
 		trace(' | DISPATCH EVENT');
 		trace(' | event type : ' + event.type);
