@@ -20,11 +20,12 @@ class Sprite extends DisplayObjectContainer {
 	
 	/* INTERNAL VARIABLES */
 	
-	private var _g:Graphics;
+	private var __graphics__:Graphics;
+	
+	public var __graphicRectangle__:Rectangle;
 
 	public function new() {
 		super();
-		//_g = new Graphics(this);
 	}
 	
 	public function startDrag(lockCenter:Bool = false, bounds:Rectangle = null) {
@@ -37,12 +38,42 @@ class Sprite extends DisplayObjectContainer {
 	
 	/* OVERRIDE FUNCTIONS */
 	
-	/*override private function setName(value:String):String {
-		//new JQuery('div#' + name + '-graphics').attr('id', value + '-graphics');
-		return super.setName(value);
-	}*/
+	override private function setHeight(value:Float):Float {
+		this.__displayObjectRectangle__.height = value;
+		this.__ele__.style.height = '' + (this.__graphicRectangle__.height > this.__displayObjectRectangle__.height ? value + (this.__graphicRectangle__.height - value) : value) + 'px';
+		return value;
+	}
+	
+	override private function setWidth(value:Float):Float {
+		this.__displayObjectRectangle__.width = value;
+		this.__ele__.style.width = '' + (this.__graphicRectangle__.width > this.__displayObjectRectangle__.width ? value + (this.__graphicRectangle__.width - value) : value) + 'px';
+		return value;
+	}
+	
+	override private function setX(value:Float):Float {
+		this.__displayObjectRectangle__.x = value;
+		this.__ele__.style.left = '' + (this.__graphicRectangle__.x < this.__displayObjectRectangle__.x && this.__graphicRectangle__.x != 0 ? this.__graphicRectangle__.x : value) + 'px';
+		return value;
+	}
+	
+	override private function setY(value:Float):Float {
+		this.__displayObjectRectangle__.y = value;
+		this.__ele__.style.top = '' + (this.__graphicRectangle__.y < this.__displayObjectRectangle__.y && this.__graphicRectangle__.y != 0 ? this.__graphicRectangle__.y : value ) + 'px';
+		return value;
+	}
 	
 	/* INTERNAL FUNCTIONS */
+	
+	override private function initialize():Void {
+		super.initialize();
+		this.initializeSprite();
+	}
+	
+	private function initializeSprite():Void {
+		this.__graphics__ = new Graphics(this);
+		this.__graphics__.__raphael__.setSize(this.width, this.height);
+		this.__graphicRectangle__ = new Rectangle(this.x, this.y, this.width, this.height);
+	}
 	
 	private function getButtonMode():Bool {
 		return buttonMode;
@@ -63,10 +94,8 @@ class Sprite extends DisplayObjectContainer {
 	}
 	
 	private function getGraphics():Graphics {
-		/*if (new JQuery('div#' + this.name).has('div#' + this.name + '-graphics').length == 0) {
-			new JQuery('<div></div>').attr('id', (this.name + '-graphics')).css( { width:'100%', height:'100%' } ).appendTo('div#' + this.name);
-		}*/
-		return _g == null ? _g = new Graphics(this) : _g;
+		//return _g == null ? _g = new Graphics(this) : _g;
+		return this.__graphics__;
 	}
 	
 	private function getHitArea():Sprite {

@@ -10,6 +10,7 @@ import hedge.geom.Rectangle;
 import hedge.Setup;
 import hedge.events.EventPhase;
 import js.Lib;
+import hedge.events.internal.HedgeEnterFrame;
 
 using clippings.Twig;
 using Std;
@@ -43,6 +44,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	public var __originalName__:String;
 	public var __ancestorPath__:Array<DisplayObject>;
+	
+	#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
+	private var __mouseX__:Float;
+	private var __mouseY__:Float;
+	#end
+	
+	public var __displayObjectRectangle__:Rectangle;
 
 	public function new() {
 		super(null);
@@ -78,15 +86,16 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	/* INTERNAL FUNCTIONS */
 	
 	public function initializeDisplayObject():Void {
-		//this.generateJQuery();
-		this.generateElement();
-		this.__originalName__ = this.name = Setup.generateInstanceName();
-		// width and height need to be set to 0
-		/*this.__jq__.attr('id', this.name).cssMap( Setup.__attr__( { width:'0px', height:'0px', left:'0px', top:'0px' } ) )
-					  .attr('data-originalName', this.__originalName__);
 		
-		this.parent = Setup.__default__;
-		this.__jq__.data('__self__', this);*/
+		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
+		this.__mouseX__ = 0;
+		this.__mouseY__ = 0;
+		#end
+		
+		this.__displayObjectRectangle__ = new Rectangle(0, 0, 0, 0);
+		
+		this.__generateHedgeDisplayObjectElement__();
+		this.__originalName__ = this.name = Setup.generateInstanceName();
 		
 		this.stage = Setup.__stage__;
 		this.parent = Setup.__stage__;
@@ -96,26 +105,39 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__ele__.style.cssText = 'overflow:hidden; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
 		this.__ele__.data('__self__', this);
 		
+		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
+		this.__ele__.bind('mousemove', __hedgeOnDisplayObjectMouseMove__);
+		#end
+		
 		this.__ancestorPath__ = Setup.createAncestorPath(this);
 	}
 	
-	// provide to be overriden
-	/*private function generateJQuery():Void {
-		//Setup.__storage__.append(this.__jq__ = new JQuery('<div>'));
-		Setup.__storage__.append(this.__jq__ = new Twig('div', TwigType.CREATE_ELEMENT));
-	}*/
+	#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
+	private function __hedgeOnDisplayObjectMouseMove__(e):Void {
+		this.__mouseX__ = e.offsetX;
+		this.__mouseY__ = e.offsety;
+	}
+	#end
 	
-	private function generateElement():Void {
-		__ele__ = Lib.document.createElement('div');
+	private function __generateHedgeDisplayObjectElement__():Void {
+		this.__ele__ = Lib.document.createElement('div');
 		Setup.__storage__.appendChild(__ele__);
 	}
 	
 	private function getMouseX():Float {
-		return mouseX;
+		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
+		return this.__mouseX__;
+		#else
+		return this.mouseX;
+		#end
 	}
 	
 	private function getMouseY():Float {
-		return mouseY;
+		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
+		return this.__mouseY__;
+		#else
+		return this.mouseY;
+		#end
 	}
 	
 	private function getRoot():DisplayObject {
@@ -136,13 +158,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getAlpha():Float {
-		//return __jq__.css('opacity');
-		return untyped __ele__.style.opacity;
+		return untyped this.__ele__.style.opacity;
 	}
 	
 	private function setAlpha(value:Float):Float {
-		//__jq__.css('opacity', value);
-		untyped __ele__.style.opacity = value;
+		untyped this.__ele__.style.opacity = value;
 		return value;
 	}
 	
@@ -174,13 +194,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getName():String {
-		//return __jq__.attr('class');
-		return __ele__.getAttribute('id');
+		return this.__ele__.getAttribute('id');
 	}
 	
 	private function setName(value:String):String {
-		//__jq__.attr('class', value);
-		__ele__.setAttribute('id', value);
+		this.__ele__.setAttribute('id', value);
 		return value;
 	}
 	
@@ -239,85 +257,72 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getVisible():Bool {
-		//return __jq__.data('visible') == null ? true : __jq__.data('visible');
 		// TODO replace __ele__ with this displayobject
-		return __ele__.data('visible') == null ? true : __ele__.data('visible');
+		return this.__ele__.data('visible') == null ? true : this.__ele__.data('visible');
 	}
 	
 	private function setVisible(value:Bool):Bool {
-		/*__jq__.css('display', value == false ? 'none' : 'block')
-				.css('visibility', value == false ? 'hidden' : 'visible')
-				.data('visible', value);
-		return __jq__.data('visible');*/
-		__ele__.style.display = value == false ? 'none' : 'block';
-		__ele__.style.visibility = value == false ? 'hidden' : 'visible';
-		__ele__.data('visible', value);
+		this.__ele__.style.display = value == false ? 'none' : 'block';
+		this.__ele__.style.visibility = value == false ? 'hidden' : 'visible';
+		this.__ele__.data('visible', value);
 		return value;
 	}
 	
 	private function getHeight():Float {
-		//return __jq__.data('height') == null ? __jq__.height() : __jq__.data('height');
-		return __ele__.style.height.parseFloat();
+		//return this.__ele__.style.height.parseFloat();
+		return this.__displayObjectRectangle__.height;
 	}
 	
 	private function setHeight(value:Float):Float {
-		//__jq__.height(value);
-		__ele__.style.height = '' + value + 'px';
+		this.__displayObjectRectangle__.height = value;
+		this.__ele__.style.height = '' + value + 'px';
 		return value;
 	}
 	
 	private function getWidth():Float {
-		//return __jq__.width();
-		return __ele__.style.width.parseFloat();
+		//return this.__ele__.style.width.parseFloat();
+		return this.__displayObjectRectangle__.width;
 	}
 	
 	private function setWidth(value:Float):Float {
-		//__jq__.width(value);
-		__ele__.style.width = '' + value + 'px';
+		this.__displayObjectRectangle__.width = value;
+		this.__ele__.style.width = '' + value + 'px';
 		return value;
 	}
 	
 	private function getX():Float {
-		//return __jq__.position().left;
-		//return __jq__.left();
-		return __ele__.style.left.parseFloat();
+		//return this.__ele__.style.left.parseFloat();
+		return this.__displayObjectRectangle__.x;
 	}
 	
 	private function setX(value:Float):Float {
-		//__jq__.css('left', '' + value + 'px');
-		__ele__.style.left = '' + value + 'px';
+		this.__displayObjectRectangle__.x = value;
+		this.__ele__.style.left = '' + value + 'px';
 		return value;
 	}
 	
 	private function getY():Float {
-		//return __jq__.position().top;
-		//return __jq__.top();
-		return __ele__.style.top.parseFloat();
+		//return this.__ele__.style.top.parseFloat();
+		return this.__displayObjectRectangle__.y;
 	}
 	
 	private function setY(value:Float):Float {
-		//__jq__.css('top', '' + value + 'px');
-		__ele__.style.top = '' + value + 'px';
+		this.__displayObjectRectangle__.y = value;
+		this.__ele__.style.top = '' + value + 'px';
 		return value;
-	}
-	
-	//	INTERNAL METHODS
-	
-	private function onDisplayMouseEnter(e):Void {
-		this.__ele__.setAttribute('tabindex', '0');
-		this.__ele__.focus();
-	}
-	
-	private function onDisplayMouseLeave(e):Void {
-		untyped this.__ele__.removeAttribute('tabindex');
-		this.__ele__.blur();
 	}
 	
 	// OVERRIDE METHODS
 	
 	override public function addEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false, ?priority:Int = 0, ?useWeakReference:Bool = false):Void 	{
 		
-		super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		//super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		if (type == Event.ENTER_FRAME) {
+			
+			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
+			HedgeEnterFrame.add(efes);
+			return;
+		}
 		
 		/*
 			
@@ -369,7 +374,15 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	override public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {
 		
 		// TODO make sure removeEventListener is working correctly
-		super.removeEventListener(type, listener, useCapture);
+		//super.removeEventListener(type, listener, useCapture);
+		
+		if (type == Event.ENTER_FRAME) {
+			
+			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
+			HedgeEnterFrame.remove(efes);
+			return;
+			
+		}
 		
 		var _access = type + '_' + (useCapture?'c':'t');
 		var _type = this.__ele__.data(_access);

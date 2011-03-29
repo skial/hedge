@@ -8,6 +8,9 @@ package hedge.display;
 import hedge.events.FocusEvent;
 import hedge.events.KeyboardEvent;
 import hedge.events.MouseEvent;
+import js.Dom;
+
+using clippings.Twig;
 
 class InteractiveObject extends DisplayObject {
 	
@@ -33,19 +36,19 @@ class InteractiveObject extends DisplayObject {
 	//	INTERNAL METHODS
 	
 	private function initializeInterativeObject():Void {
-		untyped __ele__.onclick = onHedgeClick;
-		untyped __ele__.ondblclick = onHedgeDoubleClick;
-		untyped __ele__.onfocus = onHedgeFocusIn;
-		untyped __ele__.onblur = onHedgeFocusOut;
-		untyped __ele__.onkeydown = onHedgeKeyDown;
+		this.__ele__.bind('click', onHedgeClick);
+		this.__ele__.bind('dblclick', onHedgeDoubleClick);
+		this.__ele__.bind('focus', onHedgeFocusIn);
+		this.__ele__.bind('blur', onHedgeFocusOut);
+		this.__ele__.bind('keydown', onHedgeKeyDown);
 		// TODO keyFocusChange
-		untyped __ele__.onkeyup = onHedgeKeyUp;
-		untyped __ele__.onmousedown = onHedgeMouseDown;
+		this.__ele__.bind('keyup', onHedgeKeyUp);
+		this.__ele__.bind('mousedown', onHedgeMouseDown);
 		// TODO mouseFocusChange
-		untyped __ele__.onmousemove = onHedgeMouseMove;
-		untyped __ele__.onmouseout = onHedgeMouseOut;
-		untyped __ele__.onmouseover = onHedgeMouseOver;
-		untyped __ele__.onmouseup = onHedgeMouseUp;
+		this.__ele__.bind('mousemove', onHedgeMouseMove);
+		this.__ele__.bind('mouseout', onHedgeMouseOut);
+		this.__ele__.bind('mouseover', onHedgeMouseOver);
+		this.__ele__.bind('mouseup', onHedgeMouseUp);
 		// TODO mouseWheel
 		// TODO rollOut same as mouseOut ?
 		// TODO rollOver same as mouseOver ?
@@ -55,93 +58,93 @@ class InteractiveObject extends DisplayObject {
 	}
 	
 	private function onHedgeClick(e):Void {
-		var event:MouseEvent = new MouseEvent(MouseEvent.CLICK, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.CLICK, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
 		event.target = this;
 		// TODO event.stageX
 		// TODO event.stageY
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeDoubleClick(e):Void {
-		var event:MouseEvent = new MouseEvent(MouseEvent.DOUBLE_CLICK, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.DOUBLE_CLICK, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
 		event.target = this;
 		// TODO event.stageX
 		// TODO event.stageY
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeFocusIn(e):Void {
 		var event:FocusEvent = new FocusEvent(FocusEvent.FOCUS_IN, true, false, null, false, 0);
 		event.target = this;
 		// TODO relatedObject
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeFocusOut(e):Void {
 		var event:FocusEvent = new FocusEvent(FocusEvent.FOCUS_OUT, true, false, null, false, 0);
 		event.target = this;
 		// TODO relatedObject
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeKeyDown(e):Void {
 		var event:KeyboardEvent = new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, false, e.charCode, e.keyCode, e.keyLocation, e.ctrlKey, e.altKey, e.shiftKey);
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeKeyUp(e):Void {
 		var event:KeyboardEvent = new KeyboardEvent(KeyboardEvent.KEY_UP, true, false, e.charCode, e.keyCode, e.keyLocation, e.ctrlKey, e.altKey, e.shiftKey);
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeMouseDown(e):Void {
-		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_DOWN, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_DOWN, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
 		// TODO event.stageX
 		// TODO event.stageY
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeMouseMove(e):Void {
-		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_MOVE, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, false, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_MOVE, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, false, 0);
 		// TODO event.stageX
 		// TODO event.stageY
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeMouseOut(e):Void {
-		untyped __ele__.removeAttribute('tabindex');
-		__ele__.blur();
+		untyped this.__ele__.removeAttribute('tabindex');
+		this.__ele__.blur();
 		
-		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_OUT, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, false, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_OUT, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, false, 0);
 		// TODO event.stageX
 		// TODO event.stageY
 		// TODO relatedObject
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeMouseOver(e):Void {
-		__ele__.setAttribute('tabindex', '0');
-		__ele__.focus();
+		this.__ele__.setAttribute('tabindex', '0');
+		this.__ele__.focus();
 		
-		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_OVER, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, false, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_OVER, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, false, 0);
 		// TODO event.stageX
 		// TODO event.stageY
 		// TODO relatedObject
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 	private function onHedgeMouseUp(e):Void {
-		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_UP, true, false, e.layerX, e.layerY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
+		var event:MouseEvent = new MouseEvent(MouseEvent.MOUSE_UP, true, false, e.offsetX, e.offsetY, null, e.ctrlKey, e.altKey, e.shiftKey, true, 0);
 		// TODO event.stageX
 		// TODO event.stageY
 		event.target = this;
-		dispatchEvent(event);
+		this.dispatchEvent(event);
 	}
 	
 }

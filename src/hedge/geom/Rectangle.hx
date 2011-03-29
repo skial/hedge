@@ -27,7 +27,7 @@ class Rectangle {
 	}
 	
 	public function clone():Rectangle {
-		return new Rectangle();
+		return new Rectangle(this.x, this.y, this.width, this.height);
 	}
 	
 	public function contains(x:Float, y:Float):Bool {

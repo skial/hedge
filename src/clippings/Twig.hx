@@ -6,6 +6,7 @@
 package clippings;
 
 import js.Dom;
+import js.Lib;
 
 using clippings.Twig;
 using Std;
@@ -58,39 +59,6 @@ class Twig implements Dynamic {
 		
 	}
 	
-	/*public function data(key:String, ?value:Dynamic = null):Dynamic {
-		
-		// check element for TWIG_ID
-		if (!Reflect.hasField(element, TWIG_ID)) {
-			// if false set one up
-			
-			Reflect.setField(element, TWIG_ID, CACHE_COUNTER);
-			CACHE_ID = CACHE_COUNTER;
-			CACHE.insert(CACHE_ID, { } );
-			
-			++CACHE_COUNTER;
-			
-		} else {
-			// if true grab TWIG_ID
-			
-			CACHE_ID = Reflect.field(element, TWIG_ID);
-		}
-		
-		// get data
-		if (value == null) {
-			
-			return Reflect.field(CACHE[CACHE_ID], key);
-			
-		// set data
-		} else {
-			
-			Reflect.setField(CACHE[CACHE_ID], key, value);
-			return value;
-			
-		}
-		
-	}*/
-	
 	public static function removeData(element:HtmlDom, ?key:String = null):Void {
 		
 		// assumes element has TWIG_ID already - this might change.
@@ -110,22 +78,32 @@ class Twig implements Dynamic {
 		
 	}
 	
-	/*public function removeData(?key:String = null):Void {
+	public static function bind(element:HtmlDom, event:String, handler:Dynamic):Void {
 		
-		// assumes element has TWIG_ID already - this might change.
-		CACHE_ID = Reflect.field(element, TWIG_ID);
-		
-		// delete all if no key is given
-		if (key == null) {
+		if (Lib.isIE) {
 			
-			CACHE[CACHE_ID] = null;
-		
-		// delete data associated to key
+			untyped element.attachEvent('on' + event, handler);
+			
 		} else {
 			
-			Reflect.deleteField(CACHE[CACHE_ID], key);
+			untyped element.addEventListener(event, handler, false);
 			
 		}
 		
-	}*/
+	}
+	
+	public static function unbind(element:HtmlDom, event:String, handler:Dynamic):Void {
+		
+		if (Lib.isIE) {
+			
+			untyped element.detachEvent('on' + event, handler);
+			
+		} else {
+			
+			untyped element.removeEventListener(event, handler, false);
+			
+		}
+		
+	}
+	
 }

@@ -15,7 +15,7 @@ import hedge.display.Stage;
 import hedge.events.Event;
 import hedge.events.internal.DisplayEvent;
 import hedge.events.internal.HedgeEnterFrame;
-import hedge.events.internal.ResizeElement;
+import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import JQuery;
 import js.Dom;
@@ -24,50 +24,14 @@ import clippings.Twig;
 using Std;
 using StringTools;
 
-typedef HandleObj = {
-	var type:String;
-	var data:Dynamic;
-	var namespace:String;
-	var handler:Dynamic;
-	var guid:Float;
-	var selector:String;
-	var origHandler:Dynamic;
-}
-
-typedef EventData = {
-	var type:String;
-	var data:Dynamic;
-	//var namespace:String;
-	var handler:Dynamic;
-	//var guid:Float;
-	//var selector:String;
-	var originalhandler:Dynamic;
-}
-
 typedef EventStructure = {
 	var listener:Event->Dynamic;
 	var target:Dynamic;
 }
 
-typedef BasicEventStructure = {	
-	var listener:Dynamic;
-}
-
-typedef DisplayEventStructure = { > BasicEventStructure,
-	var path:Array<DisplayObject>;
-}
-
 typedef EnterFrameEventStructure = {
 	var listener:Event->Void;
 	var target:DisplayObject;
-}
-
-typedef ChildProperties = {
-	var x:Float;
-	var y:Float;
-	var w:Float;
-	var h:Float;
-	var p:DisplayObject;
 }
 
 typedef MovieclipStructure = {
@@ -94,9 +58,6 @@ typedef MovieclipFrame = {
 
 class Setup {
 	
-	/*private static var __events__:Array<Dynamic> = [ResizeElement,
-	];*/
-	
 	// PUBLIC PROPERTIES	
 	
 	public static var backgroundColor(getBackgroundColor, setBackgroundColor):Int;
@@ -107,14 +68,9 @@ class Setup {
 	
 	// INTERNAL PROPERTIES / ADVANCED PUBLIC PROPERTIES
 	
-	//public static var __jq__:JQuery;
-	//public static var __jq__:Twig;
 	public static var __ele__:HtmlDom;
-	//public static var __storage__:JQuery;
-	//public static var __storage__:Twig;
 	public static var __storage__:HtmlDom;
 	public static var __stage__:Stage;
-	//public static var __default__:DisplayObjectContainer;
 	
 	public static var __movieclips__:Array<MovieclipStructure> = new Array<MovieclipStructure>();
 	
@@ -125,18 +81,11 @@ class Setup {
 	// PUBLIC METHODS
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
-		// create default holder
-		//__storage__ = new JQuery('<div>').attr('id', 'storage').css( { display:'block', width:'100%', height:'100%' } );
+		// create default storage
 		__storage__ = js.Lib.document.createElement('div');
+		//untyped __storage__ = js.Lib.document.createDocumentFragment();
 		__storage__.setAttribute('id', 'storage');
-		__storage__.style.cssText = 'display:none; width:100%; height:100%;';
-		
-		/*__jq__ = new JQuery('div#' + stageName);
-		__jq__.css( __attr__( { width:'100%', height:'100%', left:'0px', top:'0px', position:'relative' } ) )
-				.css('background-color', RGB_to_String(0xFFFFFF))
-				.css('z-index', 0)
-				.attr( __data__( { version:0.1, project:'hedge', haXe:'http://www.haxe.org' } ) )
-				.append(__storage__);*/
+		__storage__.style.cssText = 'position:absolute; width:100%; height:100%; left:-10000px;';
 		
 		__ele__ = js.Lib.document.getElementById(stageName);
 		__ele__.setAttribute('data-version', 0.1.string());
@@ -148,7 +97,6 @@ class Setup {
 		//frameRate = fps;
 		
 		__stage__ = new Stage();
-		//__stage__.__jq__ = __jq__;
 		//__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		__stage__.parent = null;
@@ -157,9 +105,6 @@ class Setup {
 		Lib.current = __stage__;
 		
 		HedgeEnterFrame.init();
-		
-		/*__default__ = new DisplayObjectContainer();
-		__default__.name = 'default_parent_object';*/
 		
 		//getAllMovieClips();
 		//createJqueryEvents();
@@ -344,13 +289,14 @@ class Setup {
 	public static function resizeDiplay(e:DisplayEvent):Void {
 		var newWidth = e.rectangle.width + e.rectangle.x;
 		var newHeight = e.rectangle.height + e.rectangle.y;
+		var target = cast(e.target, DisplayObject);
 		
-		if (cast(e.target, DisplayObject).width < newWidth) {
-			cast(e.target, DisplayObject).width = cast(e.target, DisplayObject).width + (newWidth - cast(e.target, DisplayObject).width);
+		if (target.width < newWidth) {
+			target.width = target.width + (newWidth - target.width);
 		}
 		
-		if (cast(e.target, DisplayObject).height < newHeight) {
-			cast(e.target, DisplayObject).height = cast(e.target, DisplayObject).height + (newHeight - cast(e.target, DisplayObject).height);
+		if (target.height < newHeight) {
+			target.height = target.height + (newHeight - target.height);
 		}
 	}
 	
@@ -367,26 +313,44 @@ class Setup {
 			
 		}
 		
-		//if (array == null) {
+		while (true) {
+			_temp = _temp.parent;
 			
-			while (true) {
-				//_array.push(_temp);
-				_temp = _temp.parent;
+			if (_temp.__originalName__ == 'Stage') {
 				
-				if (_temp.__originalName__ == 'Stage') {
-					
-					_array.push(_temp);
-					break;
-					
-				}
+				_array.push(_temp);
+				break;
 				
 			}
 			
-		/*} else {
-			_array = array;
-		}*/
+		}
 		
 		return _array;
 		
 	}
+	
+	// http://www.quirksmode.org/js/findpos.html
+	
+	public static function calculateStagePosition():Point {
+		untyped {
+			var currentX = 0;
+			var currentY = 0;
+			var object = __stage__.__ele__;
+			
+			if (object.offsetParent) {
+				
+				do {
+					
+					currentX += object.offsetLeft;
+					currentY += object.offsetTop;
+					
+				} while (object = object.offsetParent);
+				
+			}
+			
+			return new Point(currentX, currentY);
+		}
+		
+	}
+	
 }

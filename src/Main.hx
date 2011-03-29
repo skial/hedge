@@ -1,9 +1,9 @@
 package ;
-import flash.events.Event;
-import flash.events.MouseEvent;
+import hedge.events.Event;
+import hedge.events.MouseEvent;
 import haxe.Firebug;
-import flash.display.Sprite;
-import flash.events.KeyboardEvent;
+import hedge.display.Sprite;
+import hedge.events.KeyboardEvent;
 #if js
 import hedge.Setup;
 import js.Lib;
@@ -23,11 +23,8 @@ class Main extends Sprite {
 	
 	public static function run():Void {
 		var m:Main = new Main();
-		#if js
 		hedge.Lib.current.addChild(m);
-		#else
-		flash.Lib.current.addChild(m);
-		#end
+		untyped console.log(m.graphics.__element__.getBBox());
 	}
 	
 	public function new () {
@@ -35,16 +32,17 @@ class Main extends Sprite {
 		
 		graphics.beginFill(0xFF0000);
 		graphics.lineStyle(1, 0x000000);
-		graphics.drawCircle(20, 20, 20);
+		graphics.drawCircle(0, 0, 20);
 		graphics.endFill();
 		
 		this.x = 100;
 		this.y = 100;
 		
-		flash.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
+		hedge.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
+		untyped console.log(this.graphics.__element__.getBBox());
 	}
 	
-	public function moveBall(e:Event):Void {
+	public function moveBall(e:KeyboardEvent):Void {
 		this.x += 10;
 	}
 

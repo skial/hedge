@@ -18,8 +18,9 @@ class Graphics extends Object {
 	
 	public var __raphael__:Raphael;
 	public var __element__:RaphaelElement;
+	public var __rectangle__:Rectangle;
 	
-	public var parent:DisplayObject;
+	public var __holder__:DisplayObject;
 	public var path:String;
 	public var fill_color:Int;
 	public var fill_alpha:Float;
@@ -72,23 +73,9 @@ class Graphics extends Object {
 	
 	// SVG path data at - http://www.w3.org/TR/SVG/paths.html#PathData
 	
-	public function new(parent:DisplayObject) {
+	public function new(__holder__:DisplayObject) {
+		this.__holder__ = __holder__;
 		super();
-		
-		this.parent = parent;
-		this.path = '';
-		
-		//parent.__jq__.append(__jq__ = new JQuery('<div>'));
-		/*__jq__ = new Twig('div', TwigType.CREATE_ELEMENT)
-				.attr('id', parent.__originalName__ + '-graphics')
-				.cssMap( Setup.__attr__( { width:'100%', height:'100%' } ) )
-				.css('background-color', 'transparent');*/
-		__ele__ = Lib.document.createElement('div');
-		__ele__.setAttribute('id', parent.__originalName__ + '-graphics');
-		__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
-		//parent.__jq__.append(__jq__);
-		parent.__ele__.appendChild(__ele__);
-		__raphael__ = new Raphael(parent.__originalName__ + '-graphics', '100%', '100%');
 	}
 	
 	public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false) {
@@ -131,6 +118,137 @@ class Graphics extends Object {
 		}
 	}
 	
+	public function clear() {
+		// TODO need to update display object size
+		__raphael__.clear();
+	}
+	
+	public function curveTo(controlX:Float, controlY:Float, anchorX:Float, anchorY:Float) {
+		path += 'Q' + controlX + ' ' + controlY + ' ' + anchorX + ' ' + anchorY;
+	}
+	
+	public function drawCircle(x:Float, y:Float, radius:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		
+		__element__ = __raphael__.circle(x, y, radius);
+		
+		this.checkFill();
+		this.checkLineStyle();
+		
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(__holder__, x-radius, y-radius, (radius*2) + line_thickness, (radius*2) + line_thickness);
+	}
+	
+	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		width = Math.round(width/2) - this.line_thickness;
+		height = Math.round(height/2) - this.line_thickness;
+		
+		__element__ = __raphael__.ellipse(x+width, y+height, width, height);
+		
+		this.checkFill();
+		this.checkLineStyle();
+		
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(__holder__, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
+	}
+	
+	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		width = width - this.line_thickness;
+		height = height - this.line_thickness;
+		
+		__element__ = __raphael__.rect(x, y, width, height);
+		
+		this.checkFill();
+		this.checkLineStyle();
+		
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(__holder__, x, y, width + line_thickness, height + line_thickness);
+	}
+	
+	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
+		x = x + this.line_thickness;
+		y = y + this.line_thickness;
+		width = width - this.line_thickness;
+		height = height - this.line_thickness;
+		
+		__element__ = __raphael__.rect(x, y, width, height, radius);
+		
+		this.checkFill();
+		this.checkLineStyle();
+		
+		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
+		Setup.triggerResize(__holder__, x, y, width + line_thickness, height - line_thickness);
+	}
+	
+	public function endFill() {
+		
+		if (this.path != '' || this.path == null) {
+			__element__ = __raphael__.path(path += ' z');
+			this.checkFill();
+			this.checkLineStyle();
+			
+			//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
+			Setup.triggerResize(__holder__, __element__.getBBox().x, __element__.getBBox().y, __element__.getBBox().width, __element__.getBBox().height);
+		}
+		
+	}
+	
+	public function lineGradientStyle(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focusPointRatio:Float = 0) {
+		this.lineType = LineType.GRADIENT;
+		// todo
+		this.line_gradient_type = type;
+		this.line_gradient_colors = colors;
+		this.line_gradient_alphas = alphas;
+		this.line_gradient_ratios = ratios;
+		this.line_gradient_matrix = matrix;
+		this.line_gradient_spread = spreadMethod;
+		this.line_gradient_interpolation = interpolationMethod;
+		this.line_gradient_focus = focusPointRatio;
+	}
+	
+	public function lineStyle(thickness:Float = null, color:Int = 0xFFFFFF, alpha:Float = 1.0, pixelHinting:Bool = false, scaleMode:String = 'normal', caps:String = 'none', joints:String = 'miter', miterLimit:Float = 3) {
+		this.lineType = LineType.PLAIN;
+		this.line_thickness = thickness;
+		this.line_color = color;
+		this.line_alpha = alpha;
+		// pixelhinting
+		// scalemode
+		this.line_caps = caps;
+		this.line_joints = joints;
+		this.line_limit = miterLimit;
+	}
+	
+	public function lineTo(x:Float, y:Float) {
+		path += 'L' + x + ' ' + y;
+	}
+	
+	public function moveTo(x:Float, y:Float) {
+		path += 'M' + x + ' ' + y;
+	}
+	
+	//	OVERRIDE METHODS
+	
+	override private function initialize():Void {
+		super.initialize();
+		initializeGraphics();
+	}
+	
+	//	INTERNAL METHODS
+	
+	private function initializeGraphics():Void {
+		this.path = '';
+		/*this.__ele__ = Lib.document.createElement('div');
+		this.__ele__.setAttribute('id', this.__holder__.__originalName__ + '-graphics');
+		this.__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
+		this.__holder__.__ele__.appendChild(this.__ele__);*/
+		this.__raphael__ = new Raphael(this.__holder__.__ele__, '100%', '100%');
+	}
+	
 	private function checkFill():Void {
 		this.fillType = this.fillType == null ? FillType.FLOOD : this.fillType;
 		switch (this.fillType) {
@@ -165,109 +283,6 @@ class Graphics extends Object {
 		}
 	}
 	
-	public function clear() {
-		// TODO need to update display object size
-		__raphael__.clear();
-	}
-	
-	public function curveTo(controlX:Float, controlY:Float, anchorX:Float, anchorY:Float) {
-		path += 'Q' + controlX + ' ' + controlY + ' ' + anchorX + ' ' + anchorY;
-	}
-	
-	public function drawCircle(x:Float, y:Float, radius:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		
-		__element__ = __raphael__.circle(x, y, radius);
-		
-		this.checkFill();
-		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(parent, x, y, radius + line_thickness, radius + line_thickness);
-	}
-	
-	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		width = Math.round(width/2) - this.line_thickness;
-		height = Math.round(height/2) - this.line_thickness;
-		
-		__element__ = __raphael__.ellipse(x+width, y+height, width, height);
-		
-		this.checkFill();
-		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(parent, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
-	}
-	
-	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		width = width - this.line_thickness;
-		height = height - this.line_thickness;
-		
-		__element__ = __raphael__.rect(x, y, width, height);
-		
-		this.checkFill();
-		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(parent, x, y, width + line_thickness, height + line_thickness);
-	}
-	
-	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		width = width - this.line_thickness;
-		height = height - this.line_thickness;
-		
-		__element__ = __raphael__.rect(x, y, width, height, radius);
-		
-		this.checkFill();
-		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(parent, x, y, width + line_thickness, height - line_thickness);
-	}
-	
-	public function endFill() {
-		if (this.path != '' || this.path == null) {
-			__element__ = __raphael__.path(path += ' z');
-			this.checkFill();
-			this.checkLineStyle();
-			
-			//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
-			Setup.triggerResize(parent, __element__.getBBox().x, __element__.getBBox().y, __element__.getBBox().width, __element__.getBBox().height);
-		}
-	}
-	
-	public function lineGradientStyle(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focusPointRatio:Float = 0) {
-		this.lineType = LineType.GRADIENT;
-		// todo
-		this.line_gradient_type = type;
-		this.line_gradient_colors = colors;
-		this.line_gradient_alphas = alphas;
-		this.line_gradient_ratios = ratios;
-		this.line_gradient_matrix = matrix;
-		this.line_gradient_spread = spreadMethod;
-		this.line_gradient_interpolation = interpolationMethod;
-		this.line_gradient_focus = focusPointRatio;
-	}
-	
-	public function lineStyle(thickness:Float = null, color:Int = 0xFFFFFF, alpha:Float = 1.0, pixelHinting:Bool = false, scaleMode:String = 'normal', caps:String = 'none', joints:String = 'miter', miterLimit:Float = 3) {
-		this.lineType = LineType.PLAIN;
-		this.line_thickness = thickness;
-		this.line_color = color;
-		this.line_alpha = alpha;
-		// pixelhinting
-		// scalemode
-		this.line_caps = caps;
-		this.line_joints = joints;
-		this.line_limit = miterLimit;
-	}
-	
 	private function checkLineStyle():Void {
 		this.lineType = this.lineType == null ? LineType.PLAIN : this.lineType;
 		switch (this.lineType) {
@@ -285,14 +300,6 @@ class Graphics extends Object {
 			default:
 				
 		}
-	}
-	
-	public function lineTo(x:Float, y:Float) {
-		path += 'L' + x + ' ' + y;
-	}
-	
-	public function moveTo(x:Float, y:Float) {
-		path += 'M' + x + ' ' + y;
 	}
 	
 }

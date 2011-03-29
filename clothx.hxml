@@ -1,0 +1,15 @@
+-swf9 ./bin/clothx/clothx.swf
+-swf-version 10
+-swf-header 500:400:31:ffffff
+-cp ./src
+-lib clothx
+-main demo.clothx.ClothSim
+
+--next
+
+-js ./bin/clothx/clothx.js
+-cp ./src
+-lib clothx
+-lib raphaelExtern
+-main demo.clothx.ClothSim
+--remap flash:hedge

@@ -26,19 +26,11 @@ class DisplayObjectContainer extends InteractiveObject {
 
 	public function new() {
 		super();
-		//__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
-		//__jq__.bind(Setup.RESIZE_ELEMENT, {});
-		
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
-		/*trace('{this} name is | ' + this.name);
-		trace('added child\'s name is | ' + child.name);*/
-		//child.__jq__.appendTo(this.__jq__);
 		__ele__.appendChild(child.__ele__);
 		child.parent = this;
-		//__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:child.x, y:child.y, w:child.width, h:child.height, p:this } ]);
-		/*trace('triggered event resize from addchild');*/
 		Setup.triggerResize(this, child.x, child.y, child.width, child.height);
 		return child;
 	}
@@ -60,7 +52,6 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function getChildByName(name:String):DisplayObject {
-		//return __jq__.find('.' + name).data('__self__');
 		return Lib.document.getElementById(name).data('__self__');
 	}
 	

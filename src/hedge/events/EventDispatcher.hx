@@ -22,13 +22,12 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	
 	public function addEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false, ?priority:Int = 0, ?useWeakReference:Bool = false):Void {
 		
-		if (type == Event.ENTER_FRAME) {
+		/*if (type == Event.ENTER_FRAME) {
 			
 			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
 			HedgeEnterFrame.add(efes);
-			return;
 			
-		}
+		}*/
 		
 	}
 	
@@ -42,13 +41,12 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 	
 	public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {
 		
-		if (type == Event.ENTER_FRAME) {
+		/*if (type == Event.ENTER_FRAME) {
 			
 			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
 			HedgeEnterFrame.remove(efes);
-			return;
 			
-		}
+		}*/
 		
 	}
 	
