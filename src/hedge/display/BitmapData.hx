@@ -64,7 +64,7 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		
 		// put bitmapdata in default location - <div id="bmdh"></div>, if assigned to bitmap, move to new location
 		//Setup.__storage__.append(__canvas__);
-		Setup.__storage__.appendChild(__canvas__);
+		Setup.__normalStorage__.appendChild(__canvas__);
 		
 		//__context__ = untyped __canvas__.element.getContext('2d');
 		__context__ = untyped __canvas__.getContext('2d');

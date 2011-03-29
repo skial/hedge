@@ -6,6 +6,7 @@
 package hedge.display;
 import hedge.events.Event;
 import hedge.events.EventDispatcher;
+import hedge.events.internal.DisplayEvent;
 import hedge.geom.Rectangle;
 import hedge.Setup;
 import hedge.events.EventPhase;
@@ -121,7 +122,40 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function __generateHedgeDisplayObjectElement__():Void {
 		this.__ele__ = Lib.document.createElement('div');
-		Setup.__storage__.appendChild(__ele__);
+		Setup.__normalStorage__.appendChild(__ele__);
+	}
+	
+	public function __triggerResize__(reference:Rectangle):Void {
+		var _event = new DisplayEvent(DisplayEvent.RESIZE_ELEMENT, true, true, reference);
+		_event.target = this;
+		this.dispatchEvent(_event);
+	}
+	
+	public function __resizeDisplayObject__(e:DisplayEvent):Void {
+		
+		#if HEDGE_EVENT_DEBUG
+		trace(' | EVENT HANDLER TRIGGERED');
+		trace(' | event type : ' + e.type);
+		trace(' | target name : ' + cast(e.target, DisplayObject).name);
+		trace('---');
+		#end
+		
+		var target = cast(e.target, DisplayObject);
+		var newWidth = e.rectangle.width + e.rectangle.x;
+		var newHeight = e.rectangle.height + e.rectangle.y;
+		
+		if (target.width < newWidth) {
+			
+			target.width = target.width + (newWidth - target.width);
+			
+		}
+		
+		if (target.height < newHeight) {
+			
+			target.height = target.height + (newHeight - target.height);
+			
+		}
+		
 	}
 	
 	private function getMouseX():Float {
@@ -269,45 +303,45 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getHeight():Float {
-		//return this.__ele__.style.height.parseFloat();
-		return this.__displayObjectRectangle__.height;
+		return this.__ele__.style.height.parseFloat();
+		//return this.__displayObjectRectangle__.height;
 	}
 	
 	private function setHeight(value:Float):Float {
-		this.__displayObjectRectangle__.height = value;
+		//this.__displayObjectRectangle__.height = value;
 		this.__ele__.style.height = '' + value + 'px';
 		return value;
 	}
 	
 	private function getWidth():Float {
-		//return this.__ele__.style.width.parseFloat();
-		return this.__displayObjectRectangle__.width;
+		return this.__ele__.style.width.parseFloat();
+		//return this.__displayObjectRectangle__.width;
 	}
 	
 	private function setWidth(value:Float):Float {
-		this.__displayObjectRectangle__.width = value;
+		//this.__displayObjectRectangle__.width = value;
 		this.__ele__.style.width = '' + value + 'px';
 		return value;
 	}
 	
 	private function getX():Float {
-		//return this.__ele__.style.left.parseFloat();
-		return this.__displayObjectRectangle__.x;
+		return this.__ele__.style.left.parseFloat();
+		//return this.__displayObjectRectangle__.x;
 	}
 	
 	private function setX(value:Float):Float {
-		this.__displayObjectRectangle__.x = value;
+		//this.__displayObjectRectangle__.x = value;
 		this.__ele__.style.left = '' + value + 'px';
 		return value;
 	}
 	
 	private function getY():Float {
-		//return this.__ele__.style.top.parseFloat();
-		return this.__displayObjectRectangle__.y;
+		return this.__ele__.style.top.parseFloat();
+		//return this.__displayObjectRectangle__.y;
 	}
 	
 	private function setY(value:Float):Float {
-		this.__displayObjectRectangle__.y = value;
+		//this.__displayObjectRectangle__.y = value;
 		this.__ele__.style.top = '' + value + 'px';
 		return value;
 	}
@@ -397,6 +431,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	override public function dispatchEvent(event:Event):Bool {
 		
+		#if HEDGE_EVENT_DEBUG
+		trace(' | DISPATCH STARTED');
+		trace('---');
+		#end
+		
 		/*
 			
 			----------------------------------------------------------------------------------------
@@ -454,6 +493,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		#if HEDGE_EVENT_DEBUG
 		trace(' | event phase : TARGET');
+		trace(' | event type : ' + event.type);
+		trace(' | target name : ' + cast(event.target, DisplayObject).name);
+		trace('---');
 		#end
 		
 		event.eventPhase = EventPhase.AT_TARGET;
@@ -472,6 +514,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		#if HEDGE_EVENT_DEBUG
 		trace(' | event phase : BUBBLE');
+		trace(' | event type : ' + event.type);
+		trace(' | target name : ' + cast(event.target, DisplayObject).name);
+		trace('---');
 		#end
 		
 		for (n in __ancestorPath__) {
@@ -492,10 +537,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#end
 		
 		#if HEDGE_EVENT_DEBUG
-		trace(' | DISPATCH EVENT');
-		trace(' | event type : ' + event.type);
-		trace(' | name : ' + this.name);
-		trace(' | target name : ' + cast(event.target, DisplayObject).name);
+		trace(' | DISPATCH FINISHED');
 		trace('---');
 		#end
 		

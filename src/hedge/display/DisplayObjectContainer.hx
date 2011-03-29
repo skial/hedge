@@ -31,7 +31,8 @@ class DisplayObjectContainer extends InteractiveObject {
 	public function addChild(child:DisplayObject):DisplayObject {
 		__ele__.appendChild(child.__ele__);
 		child.parent = this;
-		Setup.triggerResize(this, child.x, child.y, child.width, child.height);
+		this.__triggerResize__(child.__displayObjectRectangle__);
+		//Setup.triggerResize(this, child.__displayObjectRectangle__);
 		return child;
 	}
 	
@@ -64,10 +65,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function removeChild(child:DisplayObject):DisplayObject {
-		//child.__jq__.appendTo(Setup.__storage__);
-		Setup.__storage__.appendChild(child.__ele__);
-		//child.parent = Setup.__default__;
-		//__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:0, y:0, w:0, h:0, p:this } ]);
+		Setup.__normalStorage__.appendChild(child.__ele__);
 		return child;
 	}
 	
@@ -130,7 +128,8 @@ class DisplayObjectContainer extends InteractiveObject {
 	//	INTERNAL
 	
 	private function initializeDisplayObjectContainer():Void {
-		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
+		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, this.__resizeDisplayObject__);
+		//this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 	}
 	
 }

@@ -6,8 +6,10 @@
 package hedge.display;
 import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
+import hedge.events.internal.DisplayEvent;
 import hedge.geom.Rectangle;
 import hedge.Setup;
+import js.Lib;
 
 class Sprite extends DisplayObjectContainer {
 	
@@ -37,6 +39,16 @@ class Sprite extends DisplayObjectContainer {
 	}
 	
 	/* OVERRIDE FUNCTIONS */
+	
+	override private function __generateHedgeDisplayObjectElement__():Void {
+		this.__ele__ = Lib.document.createElement('div');
+		Setup.__graphicStorage__.appendChild(__ele__);
+	}
+	
+	override public function removeChild(child:DisplayObject):DisplayObject {
+		Setup.__graphicStorage__.appendChild(child.__ele__);
+		return child;
+	}
 	
 	override private function setHeight(value:Float):Float {
 		this.__displayObjectRectangle__.height = value;
@@ -94,7 +106,6 @@ class Sprite extends DisplayObjectContainer {
 	}
 	
 	private function getGraphics():Graphics {
-		//return _g == null ? _g = new Graphics(this) : _g;
 		return this.__graphics__;
 	}
 	

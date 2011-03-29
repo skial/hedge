@@ -69,7 +69,8 @@ class Setup {
 	// INTERNAL PROPERTIES / ADVANCED PUBLIC PROPERTIES
 	
 	public static var __ele__:HtmlDom;
-	public static var __storage__:HtmlDom;
+	public static var __normalStorage__:HtmlDom;
+	public static var __graphicStorage__:HtmlDom;
 	public static var __stage__:Stage;
 	
 	public static var __movieclips__:Array<MovieclipStructure> = new Array<MovieclipStructure>();
@@ -81,18 +82,20 @@ class Setup {
 	// PUBLIC METHODS
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
-		// create default storage
-		__storage__ = js.Lib.document.createElement('div');
-		//untyped __storage__ = js.Lib.document.createDocumentFragment();
-		__storage__.setAttribute('id', 'storage');
-		__storage__.style.cssText = 'position:absolute; width:100%; height:100%; left:-10000px;';
+		// create graphic storage
+		__graphicStorage__ = js.Lib.document.createElement('div');
+		__graphicStorage__.setAttribute('id', 'graphicStorage');
+		__graphicStorage__.style.cssText = 'position:absolute; width:100%; height:100%; left:-10000px;';
+		
+		// create normal storage
+		untyped __normalStorage__ = js.Lib.document.createDocumentFragment();
 		
 		__ele__ = js.Lib.document.getElementById(stageName);
 		__ele__.setAttribute('data-version', 0.1.string());
 		__ele__.setAttribute('data-project', 'hedge');
 		__ele__.setAttribute('data-haXe', 'http://www.haxe.org/');
 		__ele__.style.cssText = 'overflow:hidden; visibility:visible; width:100%; height:100%; left:0px; top:0px; position:relative; background-color:' + RGB_to_String(0xFFFFFF) + '; z-index:0;';
-		__ele__.appendChild(__storage__);
+		__ele__.appendChild(__graphicStorage__);
 		
 		//frameRate = fps;
 		
@@ -100,7 +103,7 @@ class Setup {
 		//__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		__stage__.parent = null;
-		__stage__.removeEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
+		__stage__.removeEventListener(DisplayEvent.RESIZE_ELEMENT, __stage__.__resizeDisplayObject__);
 		
 		Lib.current = __stage__;
 		
@@ -279,17 +282,16 @@ class Setup {
 		return (((Std.parseInt(values[3])) << 24) | ((Std.parseInt(values[0])) << 16) | ((Std.parseInt(values[1])) << 8) | ((Std.parseInt(values[2]))));
 	}
 	
-	public static function triggerResize(target:DisplayObject, x:Float, y:Float, width:Float, height:Float):Void {
-		var _rect:Rectangle = new Rectangle(x, y, Std.parseFloat(untyped width), Std.parseFloat(untyped height));
-		var _event = new DisplayEvent(DisplayEvent.RESIZE_ELEMENT, true, true, _rect);
+	/*public static function triggerResize(target:DisplayObject, reference:Rectangle):Void {
+		var _event = new DisplayEvent(DisplayEvent.RESIZE_ELEMENT, true, true, reference);
 		_event.target = target == null ? _event.target : target;
 		target.dispatchEvent(_event);
 	}
 	
 	public static function resizeDiplay(e:DisplayEvent):Void {
+		var target = cast(e.target, DisplayObject);
 		var newWidth = e.rectangle.width + e.rectangle.x;
 		var newHeight = e.rectangle.height + e.rectangle.y;
-		var target = cast(e.target, DisplayObject);
 		
 		if (target.width < newWidth) {
 			target.width = target.width + (newWidth - target.width);
@@ -298,7 +300,7 @@ class Setup {
 		if (target.height < newHeight) {
 			target.height = target.height + (newHeight - target.height);
 		}
-	}
+	}*/
 	
 	public static function createAncestorPath(target:DisplayObject):Array<DisplayObject> {
 		

@@ -24,7 +24,6 @@ class Main extends Sprite {
 	public static function run():Void {
 		var m:Main = new Main();
 		hedge.Lib.current.addChild(m);
-		untyped console.log(m.graphics.__element__.getBBox());
 	}
 	
 	public function new () {
@@ -39,7 +38,6 @@ class Main extends Sprite {
 		this.y = 100;
 		
 		hedge.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
-		untyped console.log(this.graphics.__element__.getBBox());
 	}
 	
 	public function moveBall(e:KeyboardEvent):Void {

@@ -20,7 +20,7 @@ class Graphics extends Object {
 	public var __element__:RaphaelElement;
 	public var __rectangle__:Rectangle;
 	
-	public var __holder__:DisplayObject;
+	public var __holder__:Sprite;
 	public var path:String;
 	public var fill_color:Int;
 	public var fill_alpha:Float;
@@ -73,7 +73,7 @@ class Graphics extends Object {
 	
 	// SVG path data at - http://www.w3.org/TR/SVG/paths.html#PathData
 	
-	public function new(__holder__:DisplayObject) {
+	public function new(__holder__:Sprite) {
 		this.__holder__ = __holder__;
 		super();
 	}
@@ -137,7 +137,12 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(__holder__, x-radius, y-radius, (radius*2) + line_thickness, (radius*2) + line_thickness);
+		//Setup.triggerResize(__holder__, x-radius, y-radius, (radius*2) + line_thickness, (radius*2) + line_thickness);
+		this.__rectangle__.x = x - radius;
+		this.__rectangle__.y = y - radius;
+		this.__rectangle__.width = this.__rectangle__.height = (radius * 2) + line_thickness;
+		//Setup.triggerResize(this.__holder__, this.__rectangle__);
+		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
@@ -152,7 +157,9 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(__holder__, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
+		//Setup.triggerResize(__holder__, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
+		//Setup.triggerResize(this.__holder__, this.__rectangle__);
+		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
@@ -167,7 +174,9 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(__holder__, x, y, width + line_thickness, height + line_thickness);
+		//Setup.triggerResize(__holder__, x, y, width + line_thickness, height + line_thickness);
+		//Setup.triggerResize(this.__holder__, this.__rectangle__);
+		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
@@ -182,7 +191,9 @@ class Graphics extends Object {
 		this.checkLineStyle();
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
-		Setup.triggerResize(__holder__, x, y, width + line_thickness, height - line_thickness);
+		//Setup.triggerResize(__holder__, x, y, width + line_thickness, height - line_thickness);
+		//Setup.triggerResize(this.__holder__, this.__rectangle__);
+		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function endFill() {
@@ -193,7 +204,9 @@ class Graphics extends Object {
 			this.checkLineStyle();
 			
 			//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
-			Setup.triggerResize(__holder__, __element__.getBBox().x, __element__.getBBox().y, __element__.getBBox().width, __element__.getBBox().height);
+			//Setup.triggerResize(__holder__, __element__.getBBox().x, __element__.getBBox().y, __element__.getBBox().width, __element__.getBBox().height);
+			//Setup.triggerResize(this.__holder__, this.__rectangle__);
+			this.__holder__.__triggerResize__(this.__rectangle__);
 		}
 		
 	}
@@ -242,6 +255,7 @@ class Graphics extends Object {
 	
 	private function initializeGraphics():Void {
 		this.path = '';
+		this.__rectangle__ = this.__holder__.__graphicRectangle__ = this.__holder__.__displayObjectRectangle__;
 		/*this.__ele__ = Lib.document.createElement('div');
 		this.__ele__.setAttribute('id', this.__holder__.__originalName__ + '-graphics');
 		this.__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
