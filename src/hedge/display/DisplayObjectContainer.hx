@@ -10,7 +10,7 @@ import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.text.TextSnapshot;
 
-import hedge.events.internal.DisplayEvent;
+import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.Setup;
 import js.Lib;
 
@@ -31,7 +31,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	public function addChild(child:DisplayObject):DisplayObject {
 		__ele__.appendChild(child.__ele__);
 		child.parent = this;
-		this.__triggerResize__(child.__displayObjectRectangle__);
+		this.__triggerResize__(child.__originalRectangle__);
 		//Setup.triggerResize(this, child.__displayObjectRectangle__);
 		return child;
 	}
@@ -128,7 +128,8 @@ class DisplayObjectContainer extends InteractiveObject {
 	//	INTERNAL
 	
 	private function initializeDisplayObjectContainer():Void {
-		this.addEventListener(DisplayEvent.RESIZE_ELEMENT, this.__resizeDisplayObject__);
+		//this.addEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, this.__resizeDisplayObject__);
+		this.addEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
 		//this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
 	}
 	

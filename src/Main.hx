@@ -1,9 +1,8 @@
 package ;
-import hedge.events.Event;
-import hedge.events.MouseEvent;
+import flash.events.MouseEvent;
 import haxe.Firebug;
-import hedge.display.Sprite;
-import hedge.events.KeyboardEvent;
+import flash.display.Sprite;
+import flash.events.KeyboardEvent;
 #if js
 import hedge.Setup;
 import js.Lib;
@@ -23,21 +22,26 @@ class Main extends Sprite {
 	
 	public static function run():Void {
 		var m:Main = new Main();
-		hedge.Lib.current.addChild(m);
+		m.name = 'm';
+		flash.Lib.current.addChild(m);
 	}
 	
 	public function new () {
 		super();
 		
-		graphics.beginFill(0xFF0000);
-		graphics.lineStyle(1, 0x000000);
-		graphics.drawCircle(0, 0, 20);
+		graphics.lineStyle(1, 0x400080);
+		graphics.beginFill(0x800080);
+		graphics.drawRect(0, 0, 100, 100);
 		graphics.endFill();
+		var n = new Sprite();
+		n.name = 'n';
+		n.width = n.height = 100;
+		this.addChild(n);
 		
-		this.x = 100;
-		this.y = 100;
+		this.x = 75;
+		this.y = 125;
 		
-		hedge.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
+		flash.Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, moveBall);
 	}
 	
 	public function moveBall(e:KeyboardEvent):Void {

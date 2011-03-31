@@ -13,7 +13,7 @@ import hedge.display.InteractiveObject;
 import hedge.display.Sprite;
 import hedge.display.Stage;
 import hedge.events.Event;
-import hedge.events.internal.DisplayEvent;
+import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.events.internal.HedgeEnterFrame;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
@@ -103,7 +103,7 @@ class Setup {
 		//__stage__.__ele__ = __ele__;
 		__stage__.name = stageName;
 		__stage__.parent = null;
-		__stage__.removeEventListener(DisplayEvent.RESIZE_ELEMENT, __stage__.__resizeDisplayObject__);
+		__stage__.removeEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
 		
 		Lib.current = __stage__;
 		

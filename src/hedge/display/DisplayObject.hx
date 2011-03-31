@@ -6,7 +6,7 @@
 package hedge.display;
 import hedge.events.Event;
 import hedge.events.EventDispatcher;
-import hedge.events.internal.DisplayEvent;
+import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.geom.Rectangle;
 import hedge.Setup;
 import hedge.events.EventPhase;
@@ -51,7 +51,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	private var __mouseY__:Float;
 	#end
 	
-	public var __displayObjectRectangle__:Rectangle;
+	public var __originalRectangle__:Rectangle;
+	
+	public var __offsetX__:Float;
+	public var __offsetY__:Float;
+	public var __offsetW__:Float;
+	public var __offsetH__:Float;
 
 	public function new() {
 		super(null);
@@ -93,7 +98,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__mouseY__ = 0;
 		#end
 		
-		this.__displayObjectRectangle__ = new Rectangle(0, 0, 0, 0);
+		this.__originalRectangle__ = new Rectangle(0, 0, 0, 0);
+		
+		this.__offsetX__ = this.__offsetY__ = this.__offsetW__ = this.__offsetH__ = 0;
 		
 		this.__generateHedgeDisplayObjectElement__();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
@@ -103,7 +110,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		this.__ele__.setAttribute('id', this.name);
 		this.__ele__.setAttribute('data-originalName', this.__originalName__);
-		this.__ele__.style.cssText = 'overflow:hidden; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
+		this.__ele__.style.cssText = 'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
 		this.__ele__.data('__self__', this);
 		
 		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
@@ -126,36 +133,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	public function __triggerResize__(reference:Rectangle):Void {
-		var _event = new DisplayEvent(DisplayEvent.RESIZE_ELEMENT, true, true, reference);
+		var _event = new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_ELEMENT, true, true, reference);
 		_event.target = this;
 		this.dispatchEvent(_event);
-	}
-	
-	public function __resizeDisplayObject__(e:DisplayEvent):Void {
-		
-		#if HEDGE_EVENT_DEBUG
-		trace(' | EVENT HANDLER TRIGGERED');
-		trace(' | event type : ' + e.type);
-		trace(' | target name : ' + cast(e.target, DisplayObject).name);
-		trace('---');
-		#end
-		
-		var target = cast(e.target, DisplayObject);
-		var newWidth = e.rectangle.width + e.rectangle.x;
-		var newHeight = e.rectangle.height + e.rectangle.y;
-		
-		if (target.width < newWidth) {
-			
-			target.width = target.width + (newWidth - target.width);
-			
-		}
-		
-		if (target.height < newHeight) {
-			
-			target.height = target.height + (newHeight - target.height);
-			
-		}
-		
 	}
 	
 	private function getMouseX():Float {
@@ -303,46 +283,46 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function getHeight():Float {
-		return this.__ele__.style.height.parseFloat();
-		//return this.__displayObjectRectangle__.height;
+		//return this.__ele__.style.height.parseFloat();
+		return this.__originalRectangle__.height;
 	}
 	
 	private function setHeight(value:Float):Float {
-		//this.__displayObjectRectangle__.height = value;
-		this.__ele__.style.height = '' + value + 'px';
+		this.__originalRectangle__.height = value;
+		this.__ele__.style.height = '' + (value + this.__offsetY__) + 'px';
 		return value;
 	}
 	
 	private function getWidth():Float {
-		return this.__ele__.style.width.parseFloat();
-		//return this.__displayObjectRectangle__.width;
+		//return this.__ele__.style.width.parseFloat();
+		return this.__originalRectangle__.width;
 	}
 	
 	private function setWidth(value:Float):Float {
-		//this.__displayObjectRectangle__.width = value;
-		this.__ele__.style.width = '' + value + 'px';
+		this.__originalRectangle__.width = value;
+		this.__ele__.style.width = '' + (value + this.__offsetX__) + 'px';
 		return value;
 	}
 	
 	private function getX():Float {
-		return this.__ele__.style.left.parseFloat();
-		//return this.__displayObjectRectangle__.x;
+		//return this.__ele__.style.left.parseFloat();
+		return this.__originalRectangle__.x;
 	}
 	
 	private function setX(value:Float):Float {
-		//this.__displayObjectRectangle__.x = value;
-		this.__ele__.style.left = '' + value + 'px';
+		this.__originalRectangle__.x = value;
+		this.__ele__.style.left = '' + (value - this.__offsetX__) + 'px';
 		return value;
 	}
 	
 	private function getY():Float {
-		return this.__ele__.style.top.parseFloat();
-		//return this.__displayObjectRectangle__.y;
+		//return this.__ele__.style.top.parseFloat();
+		return this.__originalRectangle__.y;
 	}
 	
 	private function setY(value:Float):Float {
-		//this.__displayObjectRectangle__.y = value;
-		this.__ele__.style.top = '' + value + 'px';
+		this.__originalRectangle__.y = value;
+		this.__ele__.style.top = '' + (value - this.__offsetY__) + 'px';
 		return value;
 	}
 	

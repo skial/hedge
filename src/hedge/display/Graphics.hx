@@ -8,7 +8,7 @@ package hedge.display;
 import hedge.geom.Matrix;
 import hedge.geom.Rectangle;
 
-import hedge.events.internal.DisplayEvent;
+import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.Object;
 import hedge.Setup;
 import js.Lib;
@@ -175,6 +175,10 @@ class Graphics extends Object {
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
 		//Setup.triggerResize(__holder__, x, y, width + line_thickness, height + line_thickness);
+		this.__rectangle__.x = x;
+		this.__rectangle__.y = y;
+		this.__rectangle__.width = width + line_thickness;
+		this.__rectangle__.height = height + line_thickness;
 		//Setup.triggerResize(this.__holder__, this.__rectangle__);
 		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
@@ -255,12 +259,13 @@ class Graphics extends Object {
 	
 	private function initializeGraphics():Void {
 		this.path = '';
-		this.__rectangle__ = this.__holder__.__graphicRectangle__ = this.__holder__.__displayObjectRectangle__;
+		this.__rectangle__ = new Rectangle(this.__holder__.x, this.__holder__.y, this.__holder__.width, this.__holder__.height);
 		/*this.__ele__ = Lib.document.createElement('div');
 		this.__ele__.setAttribute('id', this.__holder__.__originalName__ + '-graphics');
 		this.__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
 		this.__holder__.__ele__.appendChild(this.__ele__);*/
 		this.__raphael__ = new Raphael(this.__holder__.__ele__, '100%', '100%');
+		untyped this.__raphael__.canvas.style.position = 'absolute';
 	}
 	
 	private function checkFill():Void {
