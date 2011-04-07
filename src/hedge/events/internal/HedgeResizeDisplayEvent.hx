@@ -37,20 +37,24 @@ class HedgeResizeDisplayEvent extends Event {
 		
 		var target:Sprite = cast(e.target, Sprite);
 		var rect:Rectangle = e.rectangle;
-		trace(target.name);
-		// the  + 1 is temp I hope... it fixes a problem with a current test case
-		/*var noffsetX:Float = (rect.x < 0 ? -rect.x : 0) + 1;
-		var noffsetY:Float = (rect.y < 0 ? -rect.x : 0) + 1;
+		var noffsetX:Float = 0;
+		var noffsetY:Float = 0;
+		var newWidth:Float = 0;
+		var newHeight:Float = 0;
+		
+		// the  + 1 is temp I hope... it fixes a problem with the current test case
+		noffsetX = (rect.x < 0 ? -rect.x + 1 : 0);
+		noffsetY = (rect.y < 0 ? -rect.y + 1 : 0);
 		
 		target.__offsetX__ = noffsetX > target.__offsetX__ ? noffsetX : target.__offsetX__;
 		target.__offsetY__ = noffsetY > target.__offsetY__ ? noffsetY : target.__offsetY__;
 		
 		if (target.graphics != null) {
-			target.graphics.__element__.translate(noffsetX, noffsetY);
-		}*/
+			target.graphics.__set__.translate(noffsetX, noffsetY);
+		}
 		
-		var newWidth = rect.width + rect.x;
-		var newHeight = rect.height + rect.y;
+		newWidth = rect.width + target.__offsetX__ + (rect.x > 0 ? rect.x : 0);
+		newHeight = rect.height + target.__offsetY__ + (rect.y > 0 ? rect.y : 0);
 		
 		if (target.width < newWidth) {
 			

@@ -17,8 +17,9 @@ import Raphael;
 class Graphics extends Object {
 	
 	public var __raphael__:Raphael;
-	public var __element__:RaphaelElement;
+	public var __shape__:RaphaelElement;
 	public var __rectangle__:Rectangle;
+	public var __set__:RaphaelSet;
 	
 	public var __holder__:Sprite;
 	public var path:String;
@@ -131,7 +132,8 @@ class Graphics extends Object {
 		x = x + this.line_thickness;
 		y = y + this.line_thickness;
 		
-		__element__ = __raphael__.circle(x, y, radius);
+		__shape__ = __raphael__.circle(x, y, radius);
+		__set__.push(__shape__);
 		
 		this.checkFill();
 		this.checkLineStyle();
@@ -151,7 +153,8 @@ class Graphics extends Object {
 		width = Math.round(width/2) - this.line_thickness;
 		height = Math.round(height/2) - this.line_thickness;
 		
-		__element__ = __raphael__.ellipse(x+width, y+height, width, height);
+		__shape__ = __raphael__.ellipse(x + width, y + height, width, height);
+		__set__.push(__shape__);
 		
 		this.checkFill();
 		this.checkLineStyle();
@@ -168,7 +171,8 @@ class Graphics extends Object {
 		width = width - this.line_thickness;
 		height = height - this.line_thickness;
 		
-		__element__ = __raphael__.rect(x, y, width, height);
+		__shape__ = __raphael__.rect(x, y, width, height);
+		__set__.push(__shape__);
 		
 		this.checkFill();
 		this.checkLineStyle();
@@ -189,7 +193,8 @@ class Graphics extends Object {
 		width = width - this.line_thickness;
 		height = height - this.line_thickness;
 		
-		__element__ = __raphael__.rect(x, y, width, height, radius);
+		__shape__ = __raphael__.rect(x, y, width, height, radius);
+		__set__.push(__shape__);
 		
 		this.checkFill();
 		this.checkLineStyle();
@@ -203,7 +208,9 @@ class Graphics extends Object {
 	public function endFill() {
 		
 		if (this.path != '' || this.path == null) {
-			__element__ = __raphael__.path(path += ' z');
+			__shape__ = __raphael__.path(path += ' z');
+			__set__.push(__shape__);
+			
 			this.checkFill();
 			this.checkLineStyle();
 			
@@ -265,7 +272,8 @@ class Graphics extends Object {
 		this.__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
 		this.__holder__.__ele__.appendChild(this.__ele__);*/
 		this.__raphael__ = new Raphael(this.__holder__.__ele__, '100%', '100%');
-		untyped this.__raphael__.canvas.style.position = 'absolute';
+		this.__set__ = this.__raphael__.set();
+		//untyped this.__raphael__.canvas.style.position = 'absolute';
 	}
 	
 	private function checkFill():Void {
@@ -274,7 +282,7 @@ class Graphics extends Object {
 			case FillType.BITMAPDATA:
 				throw 'beginBitmapFill is not implemented';
 			case FillType.FLOOD:
-				__element__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color))
+				__shape__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color))
 							  .attr('opacity', this.fill_alpha == null ? 1.0 : this.fill_alpha);
 			case FillType.GRADIENT:
 				// TODO - raphael gradient incompatible with flash code & cant recreate same result
@@ -292,10 +300,10 @@ class Graphics extends Object {
 				
 				switch (this.fill_gradient_type) {
 					case GradientType.LINEAR:
-						__element__.attr('fill', '0-' + color_alpha);
+						__shape__.attr('fill', '0-' + color_alpha);
 					case GradientType.RADIAL:
 						throw 'Gradient.RADIAL is not supported by Raphael__jq__ on any thing not a circle or ellipse';
-						__element__.attr('fill', 'r' + color_alpha);
+						__shape__.attr('fill', 'r' + color_alpha);
 				}
 			default:
 				
@@ -308,7 +316,7 @@ class Graphics extends Object {
 			case LineType.GRADIENT:
 				
 			case LineType.PLAIN:
-				__element__.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness)
+				__shape__.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness)
 							  .attr('stroke', this.line_color == null ? 'none' : Setup.RGB_to_String(this.line_color))
 							  .attr('stroke-opacity', this.line_alpha == null ? 1.0 : this.line_alpha)
 				// pixelhinting

@@ -53,10 +53,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	public var __originalRectangle__:Rectangle;
 	
-	public var __offsetX__:Float;
-	public var __offsetY__:Float;
-	public var __offsetW__:Float;
-	public var __offsetH__:Float;
+	public var __offsetX__(default,set__OffsetX__):Float;
+	public var __offsetY__(default,set__OffsetY__):Float;
 
 	public function new() {
 		super(null);
@@ -100,10 +98,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		this.__originalRectangle__ = new Rectangle(0, 0, 0, 0);
 		
-		this.__offsetX__ = this.__offsetY__ = this.__offsetW__ = this.__offsetH__ = 0;
-		
 		this.__generateHedgeDisplayObjectElement__();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
+		
+		this.__offsetX__ = this.__offsetY__ = 0;
 		
 		this.stage = Setup.__stage__;
 		this.parent = Setup.__stage__;
@@ -323,6 +321,18 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	private function setY(value:Float):Float {
 		this.__originalRectangle__.y = value;
 		this.__ele__.style.top = '' + (value - this.__offsetY__) + 'px';
+		return value;
+	}
+	
+	private function set__OffsetX__(value:Float):Float {
+		this.__offsetX__ = value;
+		this.width += value;
+		return value;
+	}
+	
+	private function set__OffsetY__(value:Float):Float {
+		this.__offsetY__ = value;
+		this.height += value;
 		return value;
 	}
 	

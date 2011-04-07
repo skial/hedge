@@ -38,6 +38,10 @@ class Main extends Sprite {
 		n.width = n.height = 100;
 		this.addChild(n);
 		
+		graphics.beginFill(0xFF0080);
+		graphics.drawCircle(0, 0, 20);
+		graphics.endFill();
+		
 		this.x = 75;
 		this.y = 125;
 		

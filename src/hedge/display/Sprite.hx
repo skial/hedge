@@ -50,34 +50,6 @@ class Sprite extends DisplayObjectContainer {
 		return child;
 	}
 	
-	/*override private function setHeight(value:Float):Float {
-		this.__displayObjectRectangle__.height = value;
-		this.__ele__.style.height = '' + (this.__graphicRectangle__.height > this.__displayObjectRectangle__.height ? value + (this.__graphicRectangle__.height - value) : value) + 'px';
-		//this.__ele__.style.height = '' + (this.__graphics__.__rectangle__.height > this.__displayObjectRectangle__.height ? value + (this.__graphics__.__rectangle__.height - value) : value) + 'px';
-		return value;
-	}
-	
-	override private function setWidth(value:Float):Float {
-		this.__displayObjectRectangle__.width = value;
-		this.__ele__.style.width = '' + (this.__graphicRectangle__.width > this.__displayObjectRectangle__.width ? value + (this.__graphicRectangle__.width - value) : value) + 'px';
-		//this.__ele__.style.width = '' + (this.__graphics__.__rectangle__.width > this.__displayObjectRectangle__.width ? value + (this.__graphics__.__rectangle__.width - value) : value) + 'px';
-		return value;
-	}
-	
-	override private function setX(value:Float):Float {
-		this.__displayObjectRectangle__.x = value;
-		this.__ele__.style.left = '' + (this.__graphicRectangle__.x < this.__displayObjectRectangle__.x && this.__graphicRectangle__.x != 0 ? this.__graphicRectangle__.x : value) + 'px';
-		//this.__ele__.style.left = '' + (this.__graphics__.__rectangle__.x < this.__displayObjectRectangle__.x && this.__graphics__.__rectangle__.x != 0 ? this.__graphics__.__rectangle__.x : value) + 'px';
-		return value;
-	}
-	
-	override private function setY(value:Float):Float {
-		this.__displayObjectRectangle__.y = value;
-		this.__ele__.style.top = '' + (this.__graphicRectangle__.y < this.__displayObjectRectangle__.y && this.__graphicRectangle__.y != 0 ? this.__graphicRectangle__.y : value ) + 'px';
-		//this.__ele__.style.top = '' + (this.__graphics__.__rectangle__.y < this.__displayObjectRectangle__.y && this.__graphics__.__rectangle__.y != 0 ? this.__graphics__.__rectangle__.y : value ) + 'px';
-		return value;
-	}*/
-	
 	override private function initializeDisplayObjectContainer():Void {
 		//super.initializeDisplayObjectContainer();
 		this.addEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
