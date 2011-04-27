@@ -1,14 +1,14 @@
--swf9 ./bin/clothx/clothx.swf
+-swf9 ../../../bin/clothx/clothx.swf
 -swf-version 10
 -swf-header 500:400:31:ffffff
--cp ./src
+-cp ../../
 -lib clothx
 -main demo.clothx.ClothSim
 
 --next
 
--js ./bin/clothx/clothx.js
--cp ./src
+-js ../../../bin/clothx/clothx.js
+-cp ../../
 -lib clothx
 -lib raphaelExtern
 -main demo.clothx.ClothSim

@@ -118,7 +118,7 @@ class Setup {
 	// INTERNAL METHODS / ADVANCED PUBLIC METHODS
 	
 	public static function getAllMovieClips():Void {
-		var movieclips = new JQuery('div.movieclip_timeline');
+		/*var movieclips = new JQuery('div.movieclip_timeline');
 		
 		var tmp:JQuery;
 		var movieclip:JQuery;
@@ -157,7 +157,7 @@ class Setup {
 			}
 			
 			__movieclips__.push(mcs);
-		}
+		}*/
 		
 	}
 	

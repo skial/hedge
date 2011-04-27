@@ -4,7 +4,7 @@
  */
 
 package hedge.display;
-import hedge.canvas.CanvasRenderingContext2D;
+import html5.CanvasRenderingContext2D;
 import hedge.display.DisplayObject;
 import hedge.Setup;
 

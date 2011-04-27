@@ -8,11 +8,9 @@ import hedge.display.DisplayObject;
 import hedge.display.InteractiveObject;
 import hedge.geom.Rectangle;
 import hedge.Setup;
-import hedge.Twig;
-import hedge.TwigType;
+import clippings.Twig;
 import js.Lib;
 
-using hedge.Twig;
 using Std;
 
 class TextField extends InteractiveObject {

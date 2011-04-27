@@ -1,5 +1,5 @@
--js ./bin/WizardyMovieClipTest/WizardryMovie.js
--cp ./src
+-js ../../../bin/WizardyMovieClipTest/WizardryMovie.js
+-cp ../../
 -D wizardry
 -lib raphaelExtern
 -main DemoMain

@@ -1,0 +1,10 @@
+-js ../../../bin/BunnyLandBlitTest/BunnyLand.js
+-cp ../../
+-lib raphaelExtern
+-main demo.bunnyLandBlitTest.BunnyLandBlitTest
+--dead-code-elimination
+
+--next
+
+-cmd java.exe -jar C:/yuicompressor-2.4.6.jar -o ../../../bin/BunnyLandBlitTest/BunnyLand.yahoo.js ../../../bin/BunnyLandBlitTest/BunnyLand.js
+-cmd java.exe -jar C:/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js_output_file ../../../bin/BunnyLandBlitTest/BunnyLand.google.js --js ../../../bin/BunnyLandBlitTest/BunnyLand.js
