@@ -17,7 +17,7 @@ import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.events.internal.HedgeEnterFrame;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
-import JQuery;
+//import JQuery;
 import js.Dom;
 import clippings.Twig;
 

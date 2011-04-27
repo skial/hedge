@@ -12,12 +12,13 @@ import hedge.geom.Matrix;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.utils.ByteArray;
-
-import clippings.html5.Canvas;
-import clippings.html5.CanvasRenderingContext2D;
-import clippings.html5.Image;
-import clippings.html5.ImageData;
 import hedge.Setup;
+
+import html5.Canvas;
+import html5.CanvasRenderingContext2D;
+import html5.Image;
+import html5.ImageData;
+
 import js.Lib;
 import js.Dom;
 

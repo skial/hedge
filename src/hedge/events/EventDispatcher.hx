@@ -8,7 +8,7 @@ package hedge.events;
 import hedge.display.DisplayObject;
 
 import hedge.events.internal.HedgeEnterFrame;
-import JQuery;
+//import JQuery;
 import js.Lib;
 import haxe.Timer;
 import hedge.Object;
