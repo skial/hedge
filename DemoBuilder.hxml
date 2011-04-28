@@ -1,0 +1,4 @@
+-neko demobuilder.n
+-lib mlib
+-cp ./src
+-main demobuilder.DemoBuilder

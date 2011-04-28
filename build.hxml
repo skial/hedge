@@ -1,0 +1,2 @@
+#-cmd haxe ./src/demo/textfield/BasicTextField.hxml
+-cmd haxe DemoBuilder.hxml

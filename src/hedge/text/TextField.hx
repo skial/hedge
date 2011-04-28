@@ -250,11 +250,6 @@ class TextField extends InteractiveObject {
 		Setup.__storage__.append(this.__jq__ = new Twig('textarea', TwigType.CREATE_ELEMENT));
 	}*/
 	
-	private override function generateElement():Void {
-		__ele__ = Lib.document.createElement('textarea');
-		Setup.__storage__.appendChild(__ele__);
-	}
-	
 	/*private override function setWidth(value:Float):Float {
 		this.__jq__.width(value);
 		this.__jq__.data('width', value);
