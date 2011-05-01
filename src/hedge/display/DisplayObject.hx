@@ -108,6 +108,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		this.__ele__.setAttribute('id', this.name);
 		this.__ele__.setAttribute('data-originalName', this.__originalName__);
+		
 		this.__ele__.style.cssText = 'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
 		this.__ele__.data('__self__', this);
 		
@@ -286,8 +287,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setHeight(value:Float):Float {
+		var t = this.__ele__.getStyle('border-top-width').parseInt();
+		t = t == null ? 0 : t;
+		
 		this.__originalRectangle__.height = value;
-		this.__ele__.style.height = '' + (value + this.__offsetY__) + 'px';
+		this.__ele__.style.height = '' + (value + this.__offsetY__ - (t*2)) + 'px';
 		return value;
 	}
 	
@@ -297,8 +301,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setWidth(value:Float):Float {
+		var t = this.__ele__.getStyle('border-top-width').parseInt();
+		t = t == null ? 0 : t;
+		
 		this.__originalRectangle__.width = value;
-		this.__ele__.style.width = '' + (value + this.__offsetX__) + 'px';
+		this.__ele__.style.width = '' + (value + this.__offsetX__ - (t*2)) + 'px';
 		return value;
 	}
 	

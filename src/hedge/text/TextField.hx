@@ -1,9 +1,5 @@
-/**
- * ...
- * @author Skial Bainn
- */
-
 package hedge.text;
+
 import hedge.display.DisplayObject;
 import hedge.display.InteractiveObject;
 import hedge.geom.Rectangle;
@@ -12,6 +8,7 @@ import clippings.Twig;
 import js.Lib;
 
 using Std;
+using clippings.Twig;
 
 class TextField extends InteractiveObject {
 	
@@ -60,7 +57,8 @@ class TextField extends InteractiveObject {
 		// TODO values below - once all working, move to one line as most will = false
 		//this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
 		//this.__jq__.cssMap( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
-		__ele__.style.cssText = 'overflow:none; padding:0px; resize:none; outline:none; border-width:1px;';
+		//this.__ele__.style.cssText += 'padding:0px; resize:none; outline:none;';
+		//'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;'
 		this.background = false;
 		this.border = false;
 		this.wordWrap = false;
@@ -69,7 +67,7 @@ class TextField extends InteractiveObject {
 	}
 	
 	public function appendText(newText:String):Void {
-		this.__jq__.val(this.text + newText);
+		//this.__jq__.val(this.text + newText);
 	}
 	
 	public function getCharBoundaries(charIndex:Int):Rectangle {
@@ -174,8 +172,10 @@ class TextField extends InteractiveObject {
 		/*this.__jq__.attr('data-border', value);
 		this.__jq__.css('border', value == true ? '1px solid ' + Setup.RGB_to_String(0x000000) : '0px none');
 		return this.__jq__.attr('data-border');*/
-		__ele__.setAttribute('data-border', value.string());
-		__ele__.style.border = value == true ? '1px solid ' + Setup.RGB_to_String(0x000000) : '0px none';
+		this.__ele__.setAttribute('data-border', value.string());
+		this.__ele__.style.border = value == true ? '1px solid black' : '0 none';
+		this.width = this.width;
+		this.height = this.height;
 		return value;
 	}
 	
@@ -205,18 +205,19 @@ class TextField extends InteractiveObject {
 	
 	private function getText():String {
 		//return this.__jq__.val();
-		return '';
+		return this.__ele__.innerHTML;
 	}
 	
 	private function setText(value:String):String {
 		/*this.__jq__.val(value);
 		return this.__jq__.val();*/
-		return '';
+		this.__ele__.innerHTML = value;
+		return value;
 	}
 	
 	private function getType():String {
 		//return this.__jq__.attr('data-type');
-		return '';
+		return this.__ele__.getAttribute('data-type');
 	}
 	
 	private function setType(value:String):String {
@@ -228,7 +229,16 @@ class TextField extends InteractiveObject {
 		}
 		this.__jq__.attr('data-type', value);
 		return this.__jq__.attr('data-type');*/
-		return '';
+		switch(value) {
+			case TextFieldType.DYNAMIC:
+				
+			case TextFieldType.INPUT:
+				this.__ele__.setAttribute('contentEditable', 'true');
+			default:
+			
+		}
+		this.__ele__.setAttribute('data-type', value);
+		return value;
 	}
 	
 	private function getWordWrap():Bool {

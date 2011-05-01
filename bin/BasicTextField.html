@@ -1,0 +1,46 @@
+﻿<!doctype html>
+<html style="width:100%; height:100%;">
+	
+<head>
+	<meta charset="utf-8">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>hedge | BasicTextField Test</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<link rel="stylesheet" href="css/style.css?v=2">
+	
+	<style type="text/css">
+		#embed { display:none; }
+		#holder { width:640px; height:480px; border:1px solid black; margin:auto; }
+	</style>
+	
+</head>
+
+<body style="width:100%; height:100%;">
+	
+	<div id="haxe:trace"></div>
+	
+	<div id="holder">
+		<div id="Stage"></div>
+		<p>mrdoob <a target="_blank" href="https://github.com/mrdoob/stats.js">Stats.js Library</a></p>
+	</div>
+	
+	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/raphael/1.5.2/raphael-min.js"></script>
+	<script type="text/javascript" src="lib/Stats.js"></script>
+	<script type="text/javascript" src="BasicTextField/BasicTextField.js"></script>
+	
+	<script type="text/javascript">
+		var stats = new Stats();
+		document.getElementById('Stage').appendChild( stats.domElement );
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		setInterval(function () {
+		stats.update();
+		}, 1000/60);
+	</script>
+	
+</body>
+
+</html>

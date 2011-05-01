@@ -1,5 +1,5 @@
 -js ../../../bin/BasicTextField/BasicTextField.js
 -cp ../../
 -lib raphaelExtern
--main demo.basictextfield.BasicTextField
+-main demo.basicTextField.BasicTextField
 --dead-code-elimination

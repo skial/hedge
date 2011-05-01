@@ -1,14 +1,18 @@
-package demo.basictextfield;
+package demo.basicTextField;
 
+import haxe.Firebug;
 import hedge.display.Sprite;
 import hedge.Lib;
 import hedge.Setup;
 import hedge.text.TextField;
 import hedge.text.TextFieldType;
 
+using clippings.Twig;
+
 class BasicTextField extends Sprite {
 	
 	static function main() {
+		Firebug.redirectTraces();
 		Setup.init(run, 30);
 	}
 	
@@ -28,6 +32,9 @@ class BasicTextField extends Sprite {
 		
 		input.type = TextFieldType.INPUT;
 		input.text = 'This is a editable textfield - click to edit this textfield';
+		
+		txt.y = input.y = 100;
+		input.x = 250;
 		
 		this.addChild(txt);
 		this.addChild(input);

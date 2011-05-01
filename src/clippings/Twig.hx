@@ -9,6 +9,7 @@ import js.Dom;
 import js.Lib;
 
 using clippings.Twig;
+using StringTools;
 using Std;
 
 class Twig implements Dynamic {
@@ -103,6 +104,60 @@ class Twig implements Dynamic {
 			untyped element.removeEventListener(event, handler, false);
 			
 		}
+		
+	}
+	
+	// from prototype.js camelize https://github.com/sstephenson/prototype/blob/master/src/prototype/lang/string.js#L560
+	// TODO convert to haXe
+	public static function camelize(value:String):String {
+		return untyped __js__("value.replace(/-+(.)?/g, function(match, chr) { return chr ? chr.toUpperCase() : ''; });");
+	}
+	
+	// smart! original source - https://gist.github.com/369133
+	public static function getStyle(element:HtmlDom, style:String):String {
+		var value:String = 'SNAPPED TWIG';
+		var search:String = style;
+		var defaultView = untyped element.ownerDocument.defaultView;
+		
+		// W3C standard way
+		if (untyped defaultView && defaultView.getComputedStyle) {
+			// sanitize property name to css notation (hypen separated words eg. font-Size)
+			
+			search = ~/([A-Z])/g.replace(search, '$1').toLowerCase();
+			value = untyped defaultView.getComputedStyle(element, null).getPropertyValue(search);
+			
+		} else if (untyped element.currentStyle) {
+			// IE
+			// sanitize property name to camelCase
+			
+			trace(search.camelize());
+			search = search.camelize();
+			value = untyped element.currentStyle[search];
+			
+			// convert other units to pixels on IE
+			if (~/^\d+(em|pt|%|ex)?$/i.match(value)) {
+				
+				var oldLeft = element.style.left;
+				var oldRsLeft = untyped element.runtimeStyle.left;
+				
+				untyped element.runtimeStyle.left = element.currentStyle.left;
+				untyped element.style.left = value || 0;
+				untyped value = element.style.pixelLeft + 'px';
+				element.style.left = oldLeft;
+				untyped element.runtimeStyle.left = oldRsLeft;
+				
+			}
+			
+		}
+		
+		// from prototype.js getStyle https://github.com/sstephenson/prototype/blob/master/src/prototype/dom/dom.js#L2263
+		if (untyped !value || value == 'auto') {
+			search = style == 'float' ? 'cssFloat' : style.camelize();
+			value = untyped element.style[search];
+		}
+		
+		// from prototype.js getStyle https://github.com/sstephenson/prototype/blob/master/src/prototype/dom/dom.js#L2270
+		return value == 'auto' ? null : value;
 		
 	}
 	
