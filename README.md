@@ -1,12 +1,9 @@
 # hedge - *a javascript implementation of the Flash9 haXe api.*
-* * *
 
 For a more **finished flash to javascript / html(5) library**, take a look at [jeash](https://launchpad.net/jeash).
-* * *
 
 ## contribute
 This project **encourages** contributions.
-* * *
 
 ## required javascript & haXe libraries
 + [jQuery](http://jquery.com)
@@ -15,7 +12,6 @@ This project **encourages** contributions.
 + [raphaelExtern](https://github.com/andyli/raphaelExternForHaxe)
 
 jQuery is used extensively through out the library. Raphaeljs is used only for the vector graphics. This could change.
-* * *
 
 ## examples
 I recommend using Chrome to view the examples. Chrome runs the quickest for me, then Safari, Opera, Firefox 4.0 *(beta)*.
@@ -28,7 +24,6 @@ Both examples are set to run at 30fps.
 You can compare demo **[1]** with the pure javascript version by [iain lobb](http://iainlobb.com/bunnies/bunnies.html).
 
 Examples [1] and [2]  also show a textfield and sprite button which are usable. Example [2] textfield and sprite button occasionally break and will stop rendering bunnies.
-* * *
 
 ## notes
 possible js libraries to use in place of certain flash9 areas.
