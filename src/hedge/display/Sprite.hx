@@ -42,11 +42,13 @@ class Sprite extends DisplayObjectContainer {
 	
 	override private function __generateHedgeDisplayObjectElement__():Void {
 		this.__ele__ = Lib.document.createElement('div');
-		Setup.__graphicStorage__.appendChild(__ele__);
+		//Setup.__graphicStorage__.appendChild(__ele__);
+		Setup.__storage__.appendChild(__ele__);
 	}
 	
 	override public function removeChild(child:DisplayObject):DisplayObject {
-		Setup.__graphicStorage__.appendChild(child.__ele__);
+		//Setup.__graphicStorage__.appendChild(child.__ele__);
+		Setup.__storage__.appendChild(child.__ele__);
 		return child;
 	}
 	

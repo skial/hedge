@@ -108,6 +108,7 @@ class Twig implements Dynamic {
 	}
 	
 	// from prototype.js camelize https://github.com/sstephenson/prototype/blob/master/src/prototype/lang/string.js#L560
+	// useful http://stackoverflow.com/questions/1955048/get-computed-font-size-for-dom-element-in-js
 	// TODO convert to haXe
 	public static function camelize(value:String):String {
 		return untyped __js__("value.replace(/-+(.)?/g, function(match, chr) { return chr ? chr.toUpperCase() : ''; });");

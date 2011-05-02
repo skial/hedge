@@ -4,6 +4,7 @@
  */
 
 package hedge.display;
+import hedge.D;
 import hedge.events.Event;
 import hedge.events.EventDispatcher;
 import hedge.events.internal.HedgeResizeDisplayEvent;
@@ -128,7 +129,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function __generateHedgeDisplayObjectElement__():Void {
 		this.__ele__ = Lib.document.createElement('div');
-		Setup.__normalStorage__.appendChild(__ele__);
+		//Setup.__normalStorage__.appendChild(__ele__);
+		Setup.__storage__.appendChild(__ele__);
 	}
 	
 	public function __triggerResize__(reference:Rectangle):Void {
@@ -292,7 +294,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		t = t == null ? 0 : t;
 		
 		this.__originalRectangle__.height = value;
-		this.__ele__.style.height = '' + (value + this.__offsetY__ - (t*2)) + 'px';
+		this.__ele__.style.height = '' + (value - this.__offsetY__ - (t*2)) + 'px';
 		return value;
 	}
 	
@@ -307,7 +309,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		t = t == null ? 0 : t;
 		
 		this.__originalRectangle__.width = value;
-		this.__ele__.style.width = '' + (value + this.__offsetX__ - (t*2)) + 'px';
+		this.__ele__.style.width = '' + (value - this.__offsetX__ - (t*2)) + 'px';
 		return value;
 	}
 	
@@ -396,10 +398,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		}
 		
 		#if HEDGE_EVENT_DEBUG
-		trace(' | ADDED EVENT');
-		trace(' | name : ' + this.name);
-		trace(' | type : ' + type);
-		trace('---');
+		D.t(' | ADDED EVENT');
+		D.t(' | DisplayObject::addEventListener->override');
+		D.t(' | name : ' + this.name);
+		D.t(' | type : ' + type);
+		D.t('---');
 		#end
 		
 	}
@@ -431,8 +434,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	override public function dispatchEvent(event:Event):Bool {
 		
 		#if HEDGE_EVENT_DEBUG
-		trace(' | DISPATCH STARTED');
-		trace('---');
+		D.t(' | DISPATCH STARTED');
+		D.t(' | DisplayObject::dispatchEvent->override');
+		D.t('---');
 		#end
 		
 		/*
@@ -459,7 +463,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		if (event.useCapture) {
 			#if HEDGE_EVENT_DEBUG
-			trace(' | event phase : CAPTURE');
+			D.t(' | event phase : CAPTURE');
 			#end
 			
 			event.eventPhase = EventPhase.CAPTURING_PHASE;
@@ -491,10 +495,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		_data = untyped this.__ele__.data(_access);
 		
 		#if HEDGE_EVENT_DEBUG
-		trace(' | event phase : TARGET');
-		trace(' | event type : ' + event.type);
-		trace(' | target name : ' + cast(event.target, DisplayObject).name);
-		trace('---');
+		D.t(' | event phase : TARGET');
+		D.t(' | event type : ' + event.type);
+		D.t(' | target name : ' + cast(event.target, DisplayObject).name);
+		D.t('---');
 		#end
 		
 		event.eventPhase = EventPhase.AT_TARGET;
@@ -512,10 +516,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
 		
 		#if HEDGE_EVENT_DEBUG
-		trace(' | event phase : BUBBLE');
-		trace(' | event type : ' + event.type);
-		trace(' | target name : ' + cast(event.target, DisplayObject).name);
-		trace('---');
+		D.t(' | event phase : BUBBLE');
+		D.t(' | event type : ' + event.type);
+		D.t(' | target name : ' + cast(event.target, DisplayObject).name);
+		D.t('---');
 		#end
 		
 		for (n in __ancestorPath__) {
@@ -536,8 +540,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#end
 		
 		#if HEDGE_EVENT_DEBUG
-		trace(' | DISPATCH FINISHED');
-		trace('---');
+		D.t(' | DISPATCH FINISHED');
+		D.t('---');
 		#end
 		
 		return true;

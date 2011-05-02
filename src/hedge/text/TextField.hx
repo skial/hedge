@@ -140,7 +140,7 @@ class TextField extends InteractiveObject {
 	
 	private function getBackground():Bool {
 		//return this.__jq__.attr('data-background');
-		return untyped __ele__.getAttribute('data-background');
+		return this.__ele__.getAttribute('data-background') == 'true' ? true : false;
 	}
 	
 	private function setBackground(value:Bool):Bool {
@@ -148,7 +148,7 @@ class TextField extends InteractiveObject {
 		this.__jq__.css('background', value == true ? '' + Setup.RGB_to_String(0xFFFFFF) : 'none');
 		return this.__jq__.attr('data-background');*/
 		__ele__.setAttribute('data-background', value.string());
-		__ele__.style.background = value == true ? Setup.RGB_to_String(0xFFFFFF) : 'none';
+		__ele__.style.background = value == false ? Setup.RGB_to_String(0xFFFFFF) : '';
 		return value;
 	}
 	
@@ -158,16 +158,17 @@ class TextField extends InteractiveObject {
 	}
 	
 	private function setBackgroundColor(value:Int):Int {
-		if (background == true) {
+		/*if (this.background == true) {
 			//this.__jq__.css('background-color', Setup.RGB_to_String(value));
-			__ele__.style.backgroundColor = Setup.RGB_to_String(value);
-		}
-		return this.getBackgroundColor();
+			this.__ele__.style.backgroundColor = Setup.RGB_to_String(value);
+		}*/
+		this.background == true ? this.__ele__.style.backgroundColor = Setup.RGB_to_String(value) : 'none';
+		return value;
 	}
 	
 	private function getBorder():Bool {
 		//return this.__jq__.attr('data-border');
-		return untyped __ele__.getAttribute('data-border');
+		return this.__ele__.getAttribute('data-border') == 'true' ? true : false;
 	}
 	
 	private function setBorder(value:Bool):Bool {
@@ -187,22 +188,26 @@ class TextField extends InteractiveObject {
 	}
 	
 	private function setBorderColor(value:Int):Int {
-		if (border == true) {
+		/*if (border == true) {
 			//this.__jq__.css('border-color', Setup.RGB_to_String(value));
-			__ele__.style.borderColor = Setup.RGB_to_String(value);
-		}
+			this.__ele__.style.borderColor = Setup.RGB_to_String(value);
+		}*/
+		
+		this.border == true ? this.__ele__.style.borderColor = Setup.RGB_to_String(value) : 'black';
+		
 		return value;
 	}
 	
 	private function getHtmlText():String {
 		//return this.__jq__.html();
-		return '';
+		return this.__ele__.innerHTML;
 	}
 	
 	private function setHtmlText(value:String):String {
 		/*this.__jq__.html(value);
 		return this.__jq__.html();*/
-		return '';
+		this.__ele__.innerHTML = value;
+		return value;
 	}
 	
 	private function getText():String {
@@ -252,7 +257,7 @@ class TextField extends InteractiveObject {
 		/*this.__jq__.css('white-space', value == true ? 'normal' : 'nowrap');
 		this.__jq__.attr('data-wordWrap', value);
 		return this.__jq__.attr('data-wordWrap');*/
-		return true;
+		return value;
 	}
 	
 	//	OVERRIDE METHODS

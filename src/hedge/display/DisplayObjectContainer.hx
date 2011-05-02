@@ -65,7 +65,8 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function removeChild(child:DisplayObject):DisplayObject {
-		Setup.__normalStorage__.appendChild(child.__ele__);
+		//Setup.__normalStorage__.appendChild(child.__ele__);
+		Setup.__storage__.appendChild(child.__ele__);
 		return child;
 	}
 	

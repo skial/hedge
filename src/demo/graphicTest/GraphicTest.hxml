@@ -1,0 +1,13 @@
+-js ../../../bin/graphicTest/GraphicTest.js
+-cp ../../
+-lib raphaelExtern
+-D HEDGE_EVENT_DEBUG
+-main demo.graphicTest.GraphicTest
+--dead-code-elimination
+
+--next
+
+-swf ../../../bin/graphicTest/GraphicTest.swf
+-cp ../../
+-main demo.graphicTest.GraphicTest
+--dead-code-elimination

@@ -36,6 +36,11 @@ class BasicTextField extends Sprite {
 		txt.y = input.y = 100;
 		input.x = 250;
 		
+		input.background = true;
+		input.backgroundColor = 0x91DFCA;
+		
+		txt.borderColor = 0x31CE74;
+		
 		this.addChild(txt);
 		this.addChild(input);
 		

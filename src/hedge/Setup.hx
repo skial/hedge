@@ -56,6 +56,8 @@ typedef MovieclipFrame = {
 	var framePause:String;
 }
 
+// TODO disable mozilla native editing controls http://stackoverflow.com/questions/2901759/how-to-i-disable-the-moz-resizing
+
 class Setup {
 	
 	// PUBLIC PROPERTIES	
@@ -69,8 +71,9 @@ class Setup {
 	// INTERNAL PROPERTIES / ADVANCED PUBLIC PROPERTIES
 	
 	public static var __ele__:HtmlDom;
-	public static var __normalStorage__:HtmlDom;
-	public static var __graphicStorage__:HtmlDom;
+	public static var __storage__:HtmlDom;
+	/*public static var __normalStorage__:HtmlDom;
+	public static var __graphicStorage__:HtmlDom;*/
 	public static var __stage__:Stage;
 	
 	public static var __movieclips__:Array<MovieclipStructure> = new Array<MovieclipStructure>();
@@ -82,20 +85,26 @@ class Setup {
 	// PUBLIC METHODS
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
+		
+		__storage__ = js.Lib.document.createElement('div');
+		__storage__.setAttribute('id', 'storage');
+		__storage__.style.cssText = 'position:absolute; width:100%; height:100%; left:-10000px;';
+		
 		// create graphic storage
-		__graphicStorage__ = js.Lib.document.createElement('div');
+		/*__graphicStorage__ = js.Lib.document.createElement('div');
 		__graphicStorage__.setAttribute('id', 'graphicStorage');
-		__graphicStorage__.style.cssText = 'position:absolute; width:100%; height:100%; left:-10000px;';
+		__graphicStorage__.style.cssText = 'position:absolute; width:100%; height:100%; left:-10000px;';*/
 		
 		// create normal storage
-		untyped __normalStorage__ = js.Lib.document.createDocumentFragment();
+		//untyped __normalStorage__ = js.Lib.document.createDocumentFragment();
 		
 		__ele__ = js.Lib.document.getElementById(stageName);
 		__ele__.setAttribute('data-version', 0.1.string());
 		__ele__.setAttribute('data-project', 'hedge');
 		__ele__.setAttribute('data-haXe', 'http://www.haxe.org/');
 		__ele__.style.cssText = 'overflow:hidden; visibility:visible; width:100%; height:100%; left:0px; top:0px; position:relative; background-color:' + RGB_to_String(0xFFFFFF) + '; z-index:0;';
-		__ele__.appendChild(__graphicStorage__);
+		//__ele__.appendChild(__graphicStorage__);
+		__ele__.appendChild(__storage__);
 		
 		//frameRate = fps;
 		
