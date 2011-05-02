@@ -52,12 +52,14 @@ class TextField extends InteractiveObject {
 	public var useRichTextClipboard:Bool;
 	public var wordWrap(getWordWrap, setWordWrap):Bool;
 	
+	// TODO keep text selection on focus change http://stackoverflow.com/questions/1592637/keep-text-selection-when-focus-changes
+	
 	public function new() {
 		super();
 		// TODO values below - once all working, move to one line as most will = false
 		//this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
 		//this.__jq__.cssMap( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
-		//this.__ele__.style.cssText += 'padding:0px; resize:none; outline:none;';
+		this.__ele__.style.cssText += 'padding:0px; resize:none; outline:none;';
 		//'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;'
 		this.background = false;
 		this.border = false;

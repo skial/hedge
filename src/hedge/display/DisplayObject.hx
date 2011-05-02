@@ -287,6 +287,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setHeight(value:Float):Float {
+		// TODO move to seperate func H
 		var t = this.__ele__.getStyle('border-top-width').parseInt();
 		t = t == null ? 0 : t;
 		
@@ -301,6 +302,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setWidth(value:Float):Float {
+		// TODO move to seperate func W
 		var t = this.__ele__.getStyle('border-top-width').parseInt();
 		t = t == null ? 0 : t;
 		

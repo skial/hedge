@@ -1298,6 +1298,7 @@ EReg.prototype.__class__ = EReg;
 hedge.text.TextField = function(p) {
 	if( p === $_ ) return;
 	hedge.display.InteractiveObject.call(this);
+	this.__ele__.style.cssText += "padding:0px; resize:none; outline:none;";
 	this.setBackground(false);
 	this.setBorder(false);
 	this.setWordWrap(false);
