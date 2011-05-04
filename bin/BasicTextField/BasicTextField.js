@@ -336,7 +336,7 @@ hedge.display.DisplayObject.prototype.setHeight = function(value) {
 	var t = Std.parseInt(clippings.Twig.getStyle(this.__ele__,"border-top-width"));
 	t = t == null?0:t;
 	this.__originalRectangle__.height = value;
-	this.__ele__.style.height = "" + (value + this.__offsetY__ - t * 2) + "px";
+	this.__ele__.style.height = "" + (value - this.__offsetY__ - t * 2) + "px";
 	return value;
 }
 hedge.display.DisplayObject.prototype.getWidth = function() {
@@ -346,7 +346,7 @@ hedge.display.DisplayObject.prototype.setWidth = function(value) {
 	var t = Std.parseInt(clippings.Twig.getStyle(this.__ele__,"border-top-width"));
 	t = t == null?0:t;
 	this.__originalRectangle__.width = value;
-	this.__ele__.style.width = "" + (value + this.__offsetX__ - t * 2) + "px";
+	this.__ele__.style.width = "" + (value - this.__offsetX__ - t * 2) + "px";
 	return value;
 }
 hedge.display.DisplayObject.prototype.getX = function() {
@@ -1124,7 +1124,6 @@ hedge.Setup.generateInstanceName = function() {
 	return "instance" + hedge.Setup.__counter__++;
 }
 hedge.Setup.RGB_to_String = function(color) {
-	haxe.Log.trace("rgb(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ")",{ fileName : "Setup.hx", lineNumber : 266, className : "hedge.Setup", methodName : "RGB_to_String"});
 	return "rgb(" + (color >> 16 & 255) + ", " + (color >> 8 & 255) + ", " + (color & 255) + ")";
 }
 hedge.Setup.RGB_String_to_HEX = function(color) {
@@ -1226,7 +1225,7 @@ clippings.Twig.getStyle = function(element,style) {
 		value = defaultView.getComputedStyle(element,null).getPropertyValue(search);
 	}
 	else if(element.currentStyle) {
-		haxe.Log.trace(clippings.Twig.camelize(search),{ fileName : "Twig.hx", lineNumber : 133, className : "clippings.Twig", methodName : "getStyle"});
+		haxe.Log.trace(clippings.Twig.camelize(search),{ fileName : "Twig.hx", lineNumber : 134, className : "clippings.Twig", methodName : "getStyle"});
 		search = clippings.Twig.camelize(search);
 		value = element.currentStyle[search];
 		if(new EReg("^\\d+(em|pt|%|ex)?$","i").match(value)) {
@@ -1459,7 +1458,7 @@ hedge.text.TextField.prototype.getWordWrap = function() {
 	return true;
 }
 hedge.text.TextField.prototype.setWordWrap = function(value) {
-	return true;
+	return value;
 }
 hedge.text.TextField.prototype.__class__ = hedge.text.TextField;
 hedge.display.Bitmap = function() { }
@@ -1552,9 +1551,6 @@ hedge.events.internal.HedgeResizeDisplayEvent.resizeDisplayObject = function(e) 
 	noffsetY = rect.y < 0?-rect.y + 1:0;
 	target.set__OffsetX__(noffsetX > target.__offsetX__?noffsetX:target.__offsetX__);
 	target.set__OffsetY__(noffsetY > target.__offsetY__?noffsetY:target.__offsetY__);
-	if(target.getGraphics() != null) {
-		target.getGraphics().__set__.translate(noffsetX,noffsetY);
-	}
 	newWidth = rect.width + target.__offsetX__ + (rect.x > 0?rect.x:0);
 	newHeight = rect.height + target.__offsetY__ + (rect.y > 0?rect.y:0);
 	if(target.getWidth() < newWidth) {
