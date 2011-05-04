@@ -5,8 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-	<script type="text/javascript" src="lib/raphael-min.js"></script>
+	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/raphael/1.5.2/raphael-min.js"></script>
 	<script type="text/javascript" src="lib/Stats.js"></script>
 	<style type="text/css">
 		html, body { height:100%; }
@@ -24,15 +23,15 @@
 		<img id="outdoor" 		src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAoZJREFUeNqEliFWBDEQRHfzwHADxBpusBqDwXAHDEdAI9HcgitwBxQOiUEgcRgMPdTMT1GZfczbty+TdHe6qyuV2V4+Xm+W52t/rMHJyzczNa7/h9O3u6edDGp8+3GmeVn6vBxrXP/1ehShFf3+6l3LLE3j/exZO51sFpvNmfao/7uXHTZE256/3hCxHk9Tcb0aBVJBq6sOgMy2DtEIVG2sOgIKpUIU2csSoOQyQaT0y0HhPKl6dfSV/uy/yVKEG234AxH+oM9kwOWN9bICHA0qWgtwVHhFxIjyvTLYFUmQKAA0OKAf4GoPJ6WK813dUWB6EtqyQ/QvMbwNEcgbrjF97U2mUZGCHMAB4geF+lGwzGrQtOd0dqz2frh+t/dSgM6brxm1hFW5Ny17CPKaMvrbc5geUaIfPt8CcUWnE+IVELPl+JCl51e/7fPnhfuPR1r8waY3Y8kxvOIkHU30uurqSNPGTB3GaHswzak4aRGwHCKlD5yU4+EPsZk3GGv3uKEKLiGjvI9nqI21+xlGxrGpGXroQhJgYtMO0cs9tao9hI+yRhtgsJ8PuUwsWlX8aEkI2fgaRJLCV5xG9HqvBVcuh3jEiqLl6Id5XeziClvtnmfthEHmcAeDfpK1TRl5D5GpIAIFdZkbLvO5yV573FxxvRw6TWCiyehoC5EIpnPJeBtcrIK7UdYEUQj1iIPTV0eE6BgocecF3WpKTfxxo9D60FHhVqvwZ9V9FrvZab9c7sul5mj6V0xUEDeaPmeY6VpEyi5HIa6jpDtf/Wuly7VXROLcvX4Dyy1YIOgoOr4wZ7HjNKnhiuh6Mn54j/egc8xBa6uCUzvFheW4qbGk4jacBhL6EWAANzZTBwPmqtMAAAAASUVORK5CYII=" 	width="32" height="32"/>
 	</div>
 	<div id="holder">
-		<div id="bunnyLand"></div>
-		<p>About 17fps(chrome) | Initial Bunnies 3000 | Max Bunnies 34000 | Use WASD or Arrow keys to move | Canvas size 4064 x 4064</p>
+		<div id="Stage"></div>
+		<p>About 17fps(chrome) | Initial Bunnies 3000 | Use WASD or Arrow keys to move | Canvas size 4064 x 4064</p>
 		<p>mrdoob <a target="_blank" href="https://github.com/mrdoob/stats.js">Stats.js Library</a></p>
 		<p><a target="_blank" href="https://github.com/skial/hedge/blob/master/src/demo/bunnyLandBlitTest/BunnyLandBlitTest.hx">Source Code</a></p>
 	</div>
 	<script type="text/javascript" src="BunnyLandBlitTest/BunnyLand.js"></script>
 	<script type="text/javascript">
 		var stats = new Stats();
-		$('div#holder').append( stats.domElement );
+		document.getElementById('Stage').appendChild( stats.domElement );
 		stats.domElement.style.position = 'absolute';
 		stats.domElement.style.top = '0px';
 		setInterval(function () {

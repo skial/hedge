@@ -5,8 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-	<script type="text/javascript" src="lib/raphael-min.js"></script>
+	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/raphael/1.5.2/raphael-min.js"></script>
 	<script type="text/javascript" src="lib/Stats.js"></script>
 	<style type="text/css">
 		html, body { height:100%; }
@@ -22,7 +21,7 @@
 		<img id="wabbit_alpha" 	src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAlCAYAAABcZvm2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWNJREFUeNrsV8sNwjAMbUqBBWACxB2pQ8AKcGALTsAJuDEFB1gBhuDAuWICmICPQh01pXWdJqEFcaglRGRbfonjPLuMc+5QwhjLGEJfZusjxZOL9akZKye9G98vPMfvsAx4qBfKwfzBL9s6uUHpI6U/u7+BKGkNb/H6umtk7MczF0HyfKS4zo/k/4AgTV8DOizrqX8oECgC+MGa8lGJp9sJDiAB8nyqYoglvJOPbP97IqoATGxWVZeXJlMQwYHA3piF8wJIblOVNBBxe3TPMLoHIKtxrbS7AAbBrA4Y5NaPAXf8LjN6wKZ0RaZOnlAFZnuXInVR4FTE6eYp0olPhhshtXsAwY3PquoAJNkIY33U7HTs7hYBwV24ItUKqDwgKF3VzAZ6k8HF+B1BMF8xRJbeJoqMXHZAAQ1kwoluURCdzepEugGEImBrIADB7I4lyfbJLlw92FKE6b5hVd+ktv4vAQYASMWxvlAAvcsAAAAASUVORK5CYII=" 	width="26" height="37"/>
 	</div>
 	<div id="holder">
-		<div id="bunnyBlit"></div>
+		<div id="Stage"></div>
 		<p>About 35fps(chrome) | Initial Bunnies 3000 | Max Bunnies 3000 | Canvas size 640 x 480</p>
 		<p>mrdoob <a target="_blank" href="https://github.com/mrdoob/stats.js">Stats.js Library</a></p>
 		<p><a target="_blank" href="https://github.com/skial/hedge/blob/master/src/demo/bunnyBlitTest/BlitTest.hx">Source Code</a></p>
@@ -30,7 +29,7 @@
 	<script type="text/javascript" src="BunnyBlitTest/BunnyBlit.js"></script>
 	<script type="text/javascript">
 		var stats = new Stats();
-		$('div#holder').append( stats.domElement );
+		document.getElementById('Stage').appendChild( stats.domElement );
 		stats.domElement.style.position = 'absolute';
 		stats.domElement.style.top = '0px';
 		setInterval(function () {
