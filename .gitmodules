@@ -1,3 +1,0 @@
-[submodule "src/html5"]
-	path = src/html5
-	url = git://github.com/skial/hx.html5.git
