@@ -18,8 +18,8 @@ I recommend using Chrome to view the examples. Chrome runs the quickest for me, 
 
 Both examples are set to run at 30fps.
 
-+ [1] [BunnyMark BlitTest](http://skial.github.com/hedge/BunnyBlitTest.html) | Runs at 35fps(chrome) about, with 3000 max bunnies. Canvas at 640x480.
-+ [2] [BunnyLand BlitTest](http://skial.github.com/hedge/BunnyLandBlitTest.html) | Runs at 20fps(chrome) about, with 34000 max bunnies. Canvas at 4046x4046.
++ [1] [BunnyMark BlitTest](http://skial.github.com/hedge/BunnyBlitTest.html) | Runs at 45fps(chrome) about, with 3000 max bunnies. Canvas at 640x480.
++ [2] [BunnyLand BlitTest](http://skial.github.com/hedge/BunnyLandBlitTest.html) | Runs at 50fps(chrome) about, with 300 max bunnies. Canvas at 4046x4046.
 
 You can compare demo **[1]** with the pure javascript version by [iain lobb](http://iainlobb.com/bunnies/bunnies.html).
 
