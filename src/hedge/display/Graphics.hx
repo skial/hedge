@@ -161,6 +161,10 @@ class Graphics extends Object {
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
 		//Setup.triggerResize(__holder__, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
+		this.__rectangle__.x = x;
+		this.__rectangle__.y = y;
+		this.__rectangle__.width = width + line_thickness;
+		this.__rectangle__.height = height + line_thickness;
 		//Setup.triggerResize(this.__holder__, this.__rectangle__);
 		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
@@ -201,6 +205,10 @@ class Graphics extends Object {
 		
 		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
 		//Setup.triggerResize(__holder__, x, y, width + line_thickness, height - line_thickness);
+		this.__rectangle__.x = x;
+		this.__rectangle__.y = y;
+		this.__rectangle__.width = width + line_thickness;
+		this.__rectangle__.height = height + line_thickness;
 		//Setup.triggerResize(this.__holder__, this.__rectangle__);
 		this.__holder__.__triggerResize__(this.__rectangle__);
 	}

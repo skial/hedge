@@ -444,7 +444,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			----------------------------------------------------------------------------------------
 			|	Only Event.ACTIVATE .DEACTIVATE .ENTER_FRAME and .RENDER have a target phase only.	|
 			|	All other events targeting the display list have a capture and target phase and		|
-			|	might have a bubbling phase.																			|
+			|	might have a bubbling phase.														|
 			----------------------------------------------------------------------------------------
 			
 		*/

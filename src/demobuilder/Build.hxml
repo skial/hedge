@@ -1,4 +1,4 @@
--js ../../../bin/@name/@name.js
+-js ../../../bin/@package/@name.js
 -cp ../../
 -lib raphaelExtern
 -main demo.@package.@name
