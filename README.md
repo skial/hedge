@@ -1,6 +1,6 @@
 # hedge - *a javascript implementation of the Flash9 haXe api.*
 
-For a more **finished flash to javascript / html(5) library**, take a look at [jeash](https://launchpad.net/jeash).
+For an alternative, more **finished flash to javascript / html(5) library**, take a look at [jeash](https://launchpad.net/jeash).
 
 ## contribute
 This project **encourages** contributions.

@@ -40,6 +40,7 @@ class Build extends Command {
 		var cls:String = File.getContent(TEMP_PATH + 'Template' + HX);
 		var cmd:String = File.getContent(TEMP_PATH + 'Build' + HXML);
 		var htm:String = File.getContent(TEMP_PATH + 'HTML' + HTML);
+		var swf:String = File.getContent(TEMP_PATH + 'SWF' + HTML);
 		var git:String = '*.js\r*.swf';
 		
 		var path_name:String = name.toLowerCase();
@@ -48,6 +49,7 @@ class Build extends Command {
 		cls = this.replaceMeta(cls, path_name, class_name);
 		cmd = this.replaceMeta(cmd, path_name, class_name);
 		htm = this.replaceMeta(htm, path_name, class_name);
+		swf = this.replaceMeta(swf, path_name, class_name);
 		
 		var src_folder = FileSys.createDirectory(DEMO_PATH + path_name);
 		var bin_folder = FileSys.createDirectory(BIN_PATH + class_name);
@@ -55,6 +57,7 @@ class Build extends Command {
 		var new_cls = File.write(DEMO_PATH + path_name + massive.neko.io.File.seperator + class_name + HX, true);
 		var new_cmd = File.write(DEMO_PATH + path_name + massive.neko.io.File.seperator + class_name + HXML, true);
 		var new_htm = File.write(BIN_PATH + class_name + HTML, true);
+		var new_swf = File.write(BIN_PATH + class_name + '-SWF' + HTML, true);
 		var new_git = File.write(BIN_PATH + class_name + massive.neko.io.File.seperator + GITIGNORE, true);
 		
 		this.print('Creating new demo folder and files.');
@@ -62,16 +65,19 @@ class Build extends Command {
 		new_cls.writeString(cls);
 		new_cmd.writeString(cmd);
 		new_htm.writeString(htm);
+		new_swf.writeString(swf);
 		new_git.writeString(git);
 		
 		new_cls.flush();
 		new_cmd.flush();
 		new_htm.flush();
+		new_swf.flush();
 		new_git.flush();
 		
 		new_cls.close();
 		new_cmd.close();
 		new_htm.close();
+		new_swf.close();
 		new_git.close();
 		
 		this.print('Finished creating new demo folder and files. Exiting.');

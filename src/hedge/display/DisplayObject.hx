@@ -110,7 +110,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__ele__.setAttribute('id', this.name);
 		this.__ele__.setAttribute('data-originalName', this.__originalName__);
 		
-		this.__ele__.style.cssText = 'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
+		this.__generateHedgeDisplayObjectCSS__();
 		this.__ele__.data('__self__', this);
 		
 		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
@@ -131,6 +131,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__ele__ = Lib.document.createElement('div');
 		//Setup.__normalStorage__.appendChild(__ele__);
 		Setup.__storage__.appendChild(__ele__);
+	}
+	
+	private function __generateHedgeDisplayObjectCSS__():Void {
+		this.__ele__.style.cssText = 'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
 	}
 	
 	public function __triggerResize__(reference:Rectangle):Void {

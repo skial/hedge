@@ -206,7 +206,7 @@ hedge.display.DisplayObject.prototype.initializeDisplayObject = function() {
 	this.setParent(hedge.Setup.__stage__);
 	this.__ele__.setAttribute("id",this.getName());
 	this.__ele__.setAttribute("data-originalName",this.__originalName__);
-	this.__ele__.style.cssText = "overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;";
+	this.__generateHedgeDisplayObjectCSS__();
 	clippings.Twig.data(this.__ele__,"__self__",this);
 	clippings.Twig.bind(this.__ele__,"mousemove",$closure(this,"__hedgeOnDisplayObjectMouseMove__"));
 	this.__ancestorPath__ = hedge.Setup.createAncestorPath(this);
@@ -218,6 +218,9 @@ hedge.display.DisplayObject.prototype.__hedgeOnDisplayObjectMouseMove__ = functi
 hedge.display.DisplayObject.prototype.__generateHedgeDisplayObjectElement__ = function() {
 	this.__ele__ = js.Lib.document.createElement("div");
 	hedge.Setup.__storage__.appendChild(this.__ele__);
+}
+hedge.display.DisplayObject.prototype.__generateHedgeDisplayObjectCSS__ = function() {
+	this.__ele__.style.cssText = "overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;";
 }
 hedge.display.DisplayObject.prototype.__triggerResize__ = function(reference) {
 	var _event = new hedge.events.internal.HedgeResizeDisplayEvent("hedgeResizeDisplay",true,true,reference);
@@ -1378,7 +1381,6 @@ EReg.prototype.customReplace = function(s,f) {
 EReg.prototype.__class__ = EReg;
 hedge.text.TextField = function(p) { if( p === $_ ) return; {
 	hedge.display.InteractiveObject.call(this);
-	this.__ele__.style.cssText += "padding:0px; resize:none; outline:none;";
 	this.setBackground(false);
 	this.setBorder(false);
 	this.setWordWrap(false);
@@ -1459,6 +1461,9 @@ hedge.text.TextField.prototype.getWordWrap = function() {
 }
 hedge.text.TextField.prototype.setWordWrap = function(value) {
 	return value;
+}
+hedge.text.TextField.prototype.__generateHedgeDisplayObjectCSS__ = function() {
+	this.__ele__.style.cssText = "overflow:hidden; white-space:nowrap; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px; padding:0px; resize:none; outline:none;";
 }
 hedge.text.TextField.prototype.__class__ = hedge.text.TextField;
 hedge.display.Bitmap = function() { }

@@ -1,19 +1,28 @@
 package demo.basicTextField;
 
 import haxe.Firebug;
-import hedge.display.Sprite;
-import hedge.Lib;
+#if js
 import hedge.Setup;
+import hedge.Lib;
+import hedge.display.Sprite;
 import hedge.text.TextField;
 import hedge.text.TextFieldType;
-
-using clippings.Twig;
+#else
+import flash.Lib;
+import flash.display.Sprite;
+import flash.text.TextField;
+import flash.text.TextFieldType;
+#end
 
 class BasicTextField extends Sprite {
 	
 	static function main() {
 		Firebug.redirectTraces();
+		#if js
 		Setup.init(run, 30);
+		#else
+		run();
+		#end
 	}
 	
 	static function run() {

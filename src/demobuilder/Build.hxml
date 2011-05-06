@@ -3,3 +3,9 @@
 -lib raphaelExtern
 -main demo.@package.@name
 --dead-code-elimination
+
+--next
+
+-swf ../../../bin/@package/@name.swf
+-cp ../../
+-main demo.@package.@name

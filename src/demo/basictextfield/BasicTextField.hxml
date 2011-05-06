@@ -3,3 +3,10 @@
 -lib raphaelExtern
 -main demo.basicTextField.BasicTextField
 --dead-code-elimination
+
+--next
+
+-swf ../../../bin/BasicTextField/BasicTextField.swf
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.basicTextField.BasicTextField

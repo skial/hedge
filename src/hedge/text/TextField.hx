@@ -59,7 +59,6 @@ class TextField extends InteractiveObject {
 		// TODO values below - once all working, move to one line as most will = false
 		//this.__jq__.css( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
 		//this.__jq__.cssMap( {overflow:'none', padding:'0px', resize:'none', outline:'none'} ).css('border-width', '1px');
-		this.__ele__.style.cssText += 'padding:0px; resize:none; outline:none;';
 		//'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;'
 		this.background = false;
 		this.border = false;
@@ -261,6 +260,11 @@ class TextField extends InteractiveObject {
 	}
 	
 	//	OVERRIDE METHODS
+	
+	// http://stackoverflow.com/questions/572298/css-how-to-stop-text-from-taking-up-more-than-1-line
+	override private function __generateHedgeDisplayObjectCSS__():Void {
+		this.__ele__.style.cssText = 'overflow:hidden; white-space:nowrap; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px; padding:0px; resize:none; outline:none;';
+	}
 	
 	/*private override function generateJQuery():Void {
 		//Setup.__storage__.append(this.__jq__ = new JQuery('<textarea>'));
