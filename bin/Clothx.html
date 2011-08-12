@@ -1,34 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html style="width:100%; height:100%;">
+	
 <head>
-	<title>hedge | Clothx</title>
+	<meta charset="utf-8">
+	
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
-	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/raphael/1.5.2/raphael-min.js"></script>
-	<script type="text/javascript" src="lib/Stats.js"></script>
+	<title>hedge | Bunny Land Blit Test</title>
+	
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<link rel="stylesheet" href="css/style.css?v=2"/>
+	<link rel="stylesheet" href="css/hedge.css?v=1"/>
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js?v=1"></script>	
+	
 	<style type="text/css">
 		html, body { height:100%; }
 		body { margin:0; }
 		#embed { display:none; }
-		#holder { width:500px; height:400px; border:1px solid black; margin:auto; }
+		#holder { width:640px; height:480px; border:1px solid black; margin:auto; }
 	</style>
+	
 </head>
+
 <body style="width:100%; height:100%;">
+	
 	<div id="haxe:trace"></div>
+	
 	<div id="holder">
 		<div id="Stage"></div>
 	</div>
+	
+	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/raphael/1.5.2/raphael-min.js"></script>
+	<script type="text/javascript" src="lib/Stats.js"></script>
 	<script type="text/javascript" src="clothx/clothx.js"></script>
+	
 	<script type="text/javascript">
 		var stats = new Stats();
-		$('div#holder').append( stats.domElement );
+		document.body.appendChild( stats.domElement );
 		stats.domElement.style.position = 'absolute';
 		stats.domElement.style.top = '0px';
 		setInterval(function () {
 		stats.update();
 		}, 1000/60);
 	</script>
+	
 </body>
+
 </html>

@@ -1,10 +1,11 @@
+--remap flash:hedge
 -js ../../../bin/BunnyBlitTest/BunnyBlit.js
 -cp ../../
 -lib raphaelExtern
 -main demo.bunnyBlitTest.BlitTest
---dead-code-elimination
+#--dead-code-elimination
 
---next
+#--next
 
--cmd java.exe -jar C:/yuicompressor-2.4.6.jar -o ../../../bin/BunnyBlitTest/BunnyBlit.yahoo.js ../../../bin/BunnyBlitTest/BunnyBlit.js
--cmd java.exe -jar C:/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js_output_file ../../../bin/BunnyBlitTest/BunnyBlit.google.js --js ../../../bin/BunnyBlitTest/BunnyBlit.js
+#-cmd java.exe -jar C:/yuicompressor-2.4.6.jar -o ../../../bin/BunnyBlitTest/BunnyBlit.yahoo.js ../../../bin/BunnyBlitTest/BunnyBlit.js
+#-cmd java.exe -jar C:/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js_output_file ../../../bin/BunnyBlitTest/BunnyBlit.google.js --js ../../../bin/BunnyBlitTest/BunnyBlit.js

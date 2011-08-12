@@ -1,5 +1,6 @@
 package html5;
 
+@:native("EntrySync")
 extern class EntrySync {
 	
 	var isFile(default,null) : Bool;

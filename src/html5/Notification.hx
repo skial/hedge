@@ -1,5 +1,6 @@
 package html5;
 
+@:native("Notification")
 extern class Notification {
 	function show() : Void;
 	function cancel() : Void;

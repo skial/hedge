@@ -7,7 +7,7 @@ package hedge.display;
 
 class Bitmap extends DisplayObject {
 	
-	private var bmd:BitmapData;
+	private var __bmd__:BitmapData;
 	
 	public var bitmapData(getBitmapData, setBitmapData):BitmapData;
 	public var pixelSnapping:String;
@@ -15,7 +15,7 @@ class Bitmap extends DisplayObject {
 
 	public function new(?bitmapData:BitmapData = null, ?pixelSnapping:String = PixelSnapping.AUTO, ?smoothing:Bool = false):Void {
 		super();
-		this.bitmapData 		= bitmapData;
+		this.bitmapData 	= bitmapData;
 		this.pixelSnapping 	= pixelSnapping;
 		this.smoothing 		= smoothing;
 	}
@@ -30,19 +30,18 @@ class Bitmap extends DisplayObject {
 	// INTERNAL METHODS
 	
 	private function initializeBitmap():Void {
-		this.__ele__.className = 'bitmap ';
+		this.__ele__.addClass('hBitmap');
 	}
 	
-	private function getBitmapData():BitmapData {
-		return this.bmd;
+	private inline function getBitmapData():BitmapData {
+		return this.__bmd__;
 	}
 	
 	private function setBitmapData(value:BitmapData):BitmapData {
-		this.width 	= value.width;
+		this.width = value.width;
 		this.height = value.height;
-		//__jq__.append(value.__canvas__);
-		this.__ele__.appendChild(value.__canvas__);
-		this.bmd = value;
+		this.__node__.appendChild(value.__node__);
+		this.__bmd__ = value;
 		return value;
 	}
 	

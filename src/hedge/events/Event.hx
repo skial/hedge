@@ -5,23 +5,29 @@
 
 package hedge.events;
 
-import hedge.Object;
+import jQuery.JQuery;
+import hedge.Setup;
+import js.Dom;
 
-class Event extends Object {
+class Event extends jQuery.Event {
 	
 	// TODO properties all read only
 	public var bubbles:Bool;
 	public var cancelable:Bool;
-	public var currentTarget:Dynamic;
 	public var eventPhase:Dynamic;
-	public var target:Dynamic;
-	public var type:String;
+	
+	public var target(getTarget, setTarget):Dynamic;	// already in jQuery.Event
+	public var currentTarget(getCurrentTarget, setCurrentTarget):Dynamic;	// already in jQuery.Event
+	//public var type:String;	// already in jQuery.Event
+	
+	private var _type:String;
+	private var _target:Dynamic;
+	private var _currentTarget:Dynamic;
 
 	public function new(type:String, ?bubbles:Bool = false, ?cancelable:Bool = false) {
-		
-		super();
-		
-		this.type = type;
+		super(Setup.PREFIX + type);
+		this._type = type;
+		//this.type = Setup.PREFIX + this._type;
 		this.bubbles = bubbles;
 		this.cancelable = cancelable;
 	}
@@ -34,48 +40,73 @@ class Event extends Object {
 		return '';
 	}
 	
-	public function isDefaultPrevented():Bool {
+	// already in jQuery.Event
+	/*public function isDefaultPrevented():Bool {
 		return true;
-	}
+	}*/
 	
-	public function stopImmediatePropagation() {
-		
-	}
-	
-	public function stopPropagation() {
-		
-	}
-	
-	/*public function toString():String {
+	// already in jQuery.Event
+	/*public function stopImmediatePropagation() {
 		
 	}*/
 	
-	public static inline var ACTIVATE:String = 'activate';
-	public static inline var ADDED:String = 'added';
-	public static inline var ADDED_TO_STAGE:String = 'addedToStage';
-	public static inline var CANCEL:String = 'cancel';
-	public static inline var CHANGE:String = 'change';
-	public static inline var CLOSE:String = 'close';
-	public static inline var COMPLETE:String = 'complete';
-	public static inline var CONNECT:String = 'connect';
-	public static inline var DEACTIVATE:String = 'deactivate';
-	public static inline var DISPLAYING:String = 'displaying';
-	public static inline var ENTER_FRAME:String = 'enterFrame';
-	public static inline var FULLSCREEN:String = 'fullScreen';
-	public static inline var ID3:String = 'id3';
-	public static inline var INIT:String = 'init';
-	public static inline var MOUSE_LEAVE:String = 'mouseLeave';
-	public static inline var OPEN:String = 'open';
-	public static inline var REMOVED:String = 'removed';
-	public static inline var REMOVED_FROM_STAGE:String = 'removedFromStage';
-	public static inline var RENDER:String = 'render';
-	public static inline var RESIZE:String = 'resize';
-	public static inline var SCROLL:String = 'scroll';
-	public static inline var SELECT:String = 'select';
-	public static inline var SOUND_COMPLETE:String = 'soundComplete';
-	public static inline var TAB_CHILDREN_CHANGE:String = 'tabChildrenChange';
-	public static inline var TAB_ENABLED_CHANGE:String = 'tabEnabledChange';
-	public static inline var TAB_INDEX_CHANGE:String = 'tabIndexChange';
-	public static inline var UNLOAD:String = 'unload';
+	// already in jQuery.Event
+	/*public function stopPropagation() {
+		
+	}*/
+	
+	public function toString():String {
+		return '[Event type="'+this._type+'" bubbles='+this.bubbles+' cancelable='+this.cancelable+' eventPhase=?]';
+	}
+	
+	public static var ACTIVATE:String = 'activate';
+	public static var ADDED:String = 'added';
+	public static var ADDED_TO_STAGE:String = 'addedToStage';
+	public static var CANCEL:String = 'cancel';
+	public static var CHANGE:String = 'change';
+	public static var CLOSE:String = 'close';
+	public static var COMPLETE:String = 'complete';
+	public static var CONNECT:String = 'connect';
+	public static var DEACTIVATE:String = 'deactivate';
+	public static var DISPLAYING:String = 'displaying';
+	public static var ENTER_FRAME:String = 'enterFrame';
+	public static var FULLSCREEN:String = 'fullScreen';
+	public static var ID3:String = 'id3';
+	public static var INIT:String = 'init';
+	public static var MOUSE_LEAVE:String = 'mouseLeave';
+	public static var OPEN:String = 'open';
+	public static var REMOVED:String = 'removed';
+	public static var REMOVED_FROM_STAGE:String = 'removedFromStage';
+	public static var RENDER:String = 'render';
+	public static var RESIZE:String = 'resize';
+	public static var SCROLL:String = 'scroll';
+	public static var SELECT:String = 'select';
+	public static var SOUND_COMPLETE:String = 'soundComplete';
+	public static var TAB_CHILDREN_CHANGE:String = 'tabChildrenChange';
+	public static var TAB_ENABLED_CHANGE:String = 'tabEnabledChange';
+	public static var TAB_INDEX_CHANGE:String = 'tabIndexChange';
+	public static var UNLOAD:String = 'unload';
+	
+	//	INTERNAL METHODS
+	
+	public function getTarget():Dynamic {
+		this._target = new JQuery(this.target).data('__self__');
+		return this._target;
+	}
+	
+	public function setTarget(value:Dynamic):Dynamic {
+		this._target = value;
+		return value;
+	}
+	
+	public function getCurrentTarget():Dynamic {
+		this._currentTarget = new JQuery(this.currentTarget).data('__self__');
+		return this._currentTarget;
+	}
+	
+	public function setCurrentTarget(value:Dynamic):Dynamic {
+		this._currentTarget = value;
+		return value;
+	}
 	
 }

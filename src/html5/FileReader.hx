@@ -1,5 +1,6 @@
 package html5;
 
+@:native("FileReader")
 extern class FileReader {
 	
 	static var EMPTY : Int;

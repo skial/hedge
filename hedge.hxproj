@@ -1,14 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project>
+<project version="2">
   <!-- Output SWF options -->
   <output>
-    <movie disabled="True" />
+    <movie outputType="Unknown" />
     <movie input="" />
     <movie path="bin\hedge.js" />
     <movie fps="0" />
     <movie width="0" />
     <movie height="0" />
-    <movie version="11" />
+    <movie version="10" />
+    <movie minorVersion="0" />
+    <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -25,14 +27,19 @@
   </build>
   <!-- haxelib libraries -->
   <haxelib>
-    <library name="raphaelExtern" />
     <library name="clothx" />
     <library name="mlib" />
+    <library name="raphaelExtern" />
+    <library name="hxColorToolkit" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
     <compile path="src\Main.hx" />
   </compileTargets>
+  <!-- Assets to embed into the output SWF -->
+  <library>
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+  </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="bin\shrinksafe.jar" />
@@ -41,6 +48,7 @@
     <hidden path="src\hedge\TwigOLD.hx" />
     <hidden path="src\hedge\TwigType.hx" />
     <hidden path=".hxtypes" />
+    <hidden path=".settings" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand>haxe build.hxml</preBuildCommand>
@@ -52,4 +60,6 @@
     <option testMovie="Custom" />
     <option testMovieCommand="" />
   </options>
+  <!-- Plugin storage -->
+  <storage />
 </project>

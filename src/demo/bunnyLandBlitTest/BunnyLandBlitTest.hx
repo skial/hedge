@@ -80,7 +80,6 @@ class BunnyLandBlitTest extends Sprite {
 		ground = new BitmapData(maxX, maxY);
 		//ground.lock();
 		
-		//grassAsset = new BitmapData(32, 32, false, null, 'img#outdoor');
 		grassAsset = new BitmapData(32, 32, false, null, 'outdoor');
 		var sourceRect:Rectangle = new Rectangle(0, 0, 32, 32);
 		var destPoint:Point = new Point();
@@ -97,7 +96,6 @@ class BunnyLandBlitTest extends Sprite {
 		
 		//	BUNNIES
 		
-		//bunnyAsset = new BitmapData(26, 37, false, null, 'img#wabbit_alpha');
 		bunnyAsset = new BitmapData(26, 37, false, null, 'wabbit_alpha');
 		bunnies = new Array<BlitBunny>();
 		
@@ -142,13 +140,6 @@ class BunnyLandBlitTest extends Sprite {
 		gamepad.useWASD();
 		
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-		
-		/*ground.__canvas__.attr( { id:'bitmapdataGround' } );
-		grassAsset.__canvas__.attr( { id:'bitmapdataGrassAsset' } );
-		bunnyAsset.__canvas__.attr( { id:'bitmapdataBunnyAsset' } );*/
-		ground.__canvas__.setAttribute('id', 'bitmapdataGround');
-		grassAsset.__canvas__.setAttribute('id', 'bitmapdataGrassAsset');
-		bunnyAsset.__canvas__.setAttribute('id', 'bitmapdataBunnyAsset');
 	}
 	
 	public function onEnterFrame(e:Event):Void {

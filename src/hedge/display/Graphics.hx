@@ -5,84 +5,107 @@
 
 package hedge.display;
 
+import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.geom.Matrix;
 import hedge.geom.Rectangle;
-
-import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.Object;
 import hedge.Setup;
+
+import js.Dom;
 import js.Lib;
+
 import Raphael;
+import jQuery.JQuery;
+
+// TODO http://caniuse.com/#cats=SVG
+// TODO http://www.w3.org/Graphics/SVG/ first edition
+// TODO http://www.w3.org/TR/2010/WD-SVG11-20100622/ second edition
+// TODO http://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html
+// TODO http://www.w3.org/TR/#tr_SVG list of svg documents
+// TODO http://en.wikipedia.org/wiki/Comparison_of_layout_engines_%28Scalable_Vector_Graphics%29
+// TODO http://www.codedread.com/svg-support.php
 
 class Graphics extends Object {
 	
-	public var __raphael__:Raphael;
-	public var __shape__:RaphaelElement;
-	public var __rectangle__:Rectangle;
-	public var __set__:RaphaelSet;
+	private var __parent__:DisplayObject;
+	private var __current__:Raphael;
+	private var __shape__:RaphaelElement;
+	private var __set__:Array<RaphaelElement>;
 	
-	public var __holder__:Sprite;
-	public var path:String;
-	public var fill_color:Int;
-	public var fill_alpha:Float;
+	private var depth:Int;
+	
+	private var path:String;
+	private var pathPW:Float;
+	private var pathPH:Float;
+	private var pathNW:Float;
+	private var pathNH:Float;
+	
+	private var shapeW:Float;
+	private var shapeH:Float;
+	private var shapeX:Float;
+	private var shapeY:Float;
+	
+	private var fill_color:Int;
+	private var fill_alpha:Float;
 	
 	//	GENERAL LINE VARIABLES
 	
-	public var lineType:String;
+	private var lineType:String;
 	
 	//	LINESTYLE
 	
-	public var line_thickness:Float;
-	public var line_color:Int;
-	public var line_alpha:Float;
-	public var line_caps:String;
-	public var line_joints:String;
-	public var line_limit:Float;
+	private var line_thickness:Float;
+	private var line_color:Int;
+	private var line_alpha:Float;
+	private var line_caps:String;
+	private var line_joints:String;
+	private var line_limit:Float;
 	
 	// LINE GRADIENT
 	
-	public var line_gradient_type:String;
-	public var line_gradient_colors:Array<Int>;
-	public var line_gradient_alphas:Array<Float>;
-	public var line_gradient_ratios:Array<Int>;
-	public var line_gradient_matrix:Matrix;
-	public var line_gradient_spread:String;
-	public var line_gradient_interpolation:String;
-	public var line_gradient_focus:Float;
+	private var line_gradient_type:String;
+	private var line_gradient_colors:Array<Int>;
+	private var line_gradient_alphas:Array<Float>;
+	private var line_gradient_ratios:Array<Int>;
+	private var line_gradient_matrix:Matrix;
+	private var line_gradient_spread:String;
+	private var line_gradient_interpolation:String;
+	private var line_gradient_focus:Float;
 	
 	//	GENERAL FILL VARIABLES
 	
-	public var fillType:String;
+	private var fillType:String;
 	
 	//	FILL GRADIENT
 	
-	public var fill_gradient_type:String;
-	public var fill_gradient_colors:Array<Int>;
-	public var fill_gradient_alphas:Array<Float>;
-	public var fill_gradient_ratios:Array<Int>;
-	public var fill_gradient_matrix:Matrix;
-	public var fill_gradient_spread:String;
-	public var fill_gradient_interpolation:String;
-	public var fill_gradient_focal:Float;
+	private var fill_gradient_type:String;
+	private var fill_gradient_colors:Array<Int>;
+	private var fill_gradient_alphas:Array<Float>;
+	private var fill_gradient_ratios:Array<Int>;
+	private var fill_gradient_matrix:Matrix;
+	private var fill_gradient_spread:String;
+	private var fill_gradient_interpolation:String;
+	private var fill_gradient_focal:Float;
 	
 	//	BITMAPDATA FILL
 	
-	public var bitmapdata_source:BitmapData;
-	public var bitmapdata_matrix:Matrix;
-	public var bitmapdata_repeat:Bool;
-	public var bitmapdata_smooth:Bool;
+	private var bitmapdata_source:BitmapData;
+	private var bitmapdata_matrix:Matrix;
+	private var bitmapdata_repeat:Bool;
+	private var bitmapdata_smooth:Bool;
 	
 	// SVG path data at - http://www.w3.org/TR/SVG/paths.html#PathData
 	
-	public function new(__holder__:Sprite) {
-		this.__holder__ = __holder__;
+	public function new(__holder__:DisplayObject) {
 		super();
+		
+		this.__parent__ = __holder__;
 	}
 	
 	public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix = null, repeat:Bool = true, smooth:Bool = false) {
 		// maybe use canvas...?
 		this.fillType = FillType.BITMAPDATA;
-		// todo
+		// TODO
 		this.bitmapdata_source = bitmap;
 		this.bitmapdata_matrix = matrix;
 		this.bitmapdata_repeat = repeat;
@@ -112,127 +135,124 @@ class Graphics extends Object {
 		throw 'This method is not complete - not recommend to use';
 		
 		if (this.fill_gradient_colors.length != this.fill_gradient_alphas.length) {
-			throw 'You must have an alpha value for each color value.';
+			throw 'You must have an alpha value for each colour value.';
 		}
 		if (this.fill_gradient_colors.length != this.fill_gradient_ratios.length) {
-			throw 'You must have an ratio value for each color value.';
+			throw 'You must have an ratio value for each colour value.';
 		}
 	}
 	
 	public function clear() {
-		// TODO need to update display object size
-		__raphael__.clear();
+		// TODO check IE vml tag is <vml> if you get my drift... bored!
+		this.__parent__.__ele__.children(Lib.isIE ? 'vml' : 'svg').remove();
 	}
 	
 	public function curveTo(controlX:Float, controlY:Float, anchorX:Float, anchorY:Float) {
-		path += 'Q' + controlX + ' ' + controlY + ' ' + anchorX + ' ' + anchorY;
+		// TODO add check path boundaries method or create new check...
+		this.path += 'Q' + controlX + ' ' + controlY + ' ' + anchorX + ' ' + anchorY;
 	}
 	
 	public function drawCircle(x:Float, y:Float, radius:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
+		x += this.line_thickness;
+		y += this.line_thickness;
 		
-		__shape__ = __raphael__.circle(x, y, radius);
-		__set__.push(__shape__);
+		this.checkCircleBoundaries(x, y, radius);
+		this.checkForCurrent();
+		
+		//this.__shape__ = this.__current__.circle((Setup.__stageWidth__ + x), (Setup.__stageHeight__ + y), radius);
+		this.__shape__ = this.__current__.circle(radius, radius, radius);
 		
 		this.checkFill();
 		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:radius + this.line_thickness, h:radius + this.line_thickness, p:this.parent } ]);
-		//Setup.triggerResize(__holder__, x-radius, y-radius, (radius*2) + line_thickness, (radius*2) + line_thickness);
-		this.__rectangle__.x = x - radius;
-		this.__rectangle__.y = y - radius;
-		this.__rectangle__.width = this.__rectangle__.height = (radius * 2) + line_thickness;
-		//Setup.triggerResize(this.__holder__, this.__rectangle__);
-		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		width = Math.round(width/2) - this.line_thickness;
-		height = Math.round(height/2) - this.line_thickness;
+		x += this.line_thickness;
+		y += this.line_thickness;
+		width = (width/2) - this.line_thickness;
+		height = (height / 2) - this.line_thickness;
 		
-		__shape__ = __raphael__.ellipse(x + width, y + height, width, height);
-		__set__.push(__shape__);
+		this.checkShapeBoundaries(x, y, width, height);
+		this.checkForCurrent();
+		
+		//this.__shape__ = this.__current__.ellipse((Setup.__stageWidth__ + x) + width, (Setup.__stageHeight__ + y) + height, width, height);
+		this.__shape__ = this.__current__.ellipse(x + width, y + height, width, height);
 		
 		this.checkFill();
 		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:(width * 2) + this.line_thickness, h:(height * 2) + this.line_thickness, p:this.parent } ]);
-		//Setup.triggerResize(__holder__, x, y, (width*2) + line_thickness, (height*2) + line_thickness);
-		this.__rectangle__.x = x;
-		this.__rectangle__.y = y;
-		this.__rectangle__.width = width + line_thickness;
-		this.__rectangle__.height = height + line_thickness;
-		//Setup.triggerResize(this.__holder__, this.__rectangle__);
-		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		width = width - this.line_thickness;
-		height = height - this.line_thickness;
+		x += this.line_thickness;
+		y += this.line_thickness;
+		width -= this.line_thickness;
+		height -= this.line_thickness;
 		
-		__shape__ = __raphael__.rect(x, y, width, height);
-		__set__.push(__shape__);
+		this.checkShapeBoundaries(x, y, width, height);
+		this.checkForCurrent();
+		
+		//this.__shape__ = this.__current__.rect((Setup.__stageWidth__ + x), (Setup.__stageHeight__ + y), width, height);
+		this.__shape__ = this.__current__.rect(0, 0, width, height);
 		
 		this.checkFill();
 		this.checkLineStyle();
 		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height + this.line_thickness, p:this.parent } ]);
-		//Setup.triggerResize(__holder__, x, y, width + line_thickness, height + line_thickness);
-		this.__rectangle__.x = x;
-		this.__rectangle__.y = y;
-		this.__rectangle__.width = width + line_thickness;
-		this.__rectangle__.height = height + line_thickness;
-		//Setup.triggerResize(this.__holder__, this.__rectangle__);
-		this.__holder__.__triggerResize__(this.__rectangle__);
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
-		x = x + this.line_thickness;
-		y = y + this.line_thickness;
-		width = width - this.line_thickness;
-		height = height - this.line_thickness;
+		x += this.line_thickness;
+		y += this.line_thickness;
+		width -= this.line_thickness;
+		height -= this.line_thickness;
 		
-		__shape__ = __raphael__.rect(x, y, width, height, radius);
-		__set__.push(__shape__);
+		this.checkShapeBoundaries(x, y, width, height);
+		this.checkForCurrent();
+		
+		//this.__shape__ = this.__current__.rect((Setup.__stageWidth__ + x), (Setup.__stageHeight__ + y), width, height, radius);
+		this.__shape__ = this.__current__.rect(x, y, width, height, radius);
 		
 		this.checkFill();
 		this.checkLineStyle();
-		
-		//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:x, y:y, w:width + this.line_thickness, h:height - this.line_thickness, p:this.parent } ]);
-		//Setup.triggerResize(__holder__, x, y, width + line_thickness, height - line_thickness);
-		this.__rectangle__.x = x;
-		this.__rectangle__.y = y;
-		this.__rectangle__.width = width + line_thickness;
-		this.__rectangle__.height = height + line_thickness;
-		//Setup.triggerResize(this.__holder__, this.__rectangle__);
-		this.__holder__.__triggerResize__(this.__rectangle__);
 	}
 	
 	public function endFill() {
-		
-		if (this.path != '' || this.path == null) {
-			__shape__ = __raphael__.path(path += ' z');
-			__set__.push(__shape__);
+		if (this.path != '' && this.path != null) {
+			this.path += ' z';
+			trace(this.pathPW);
+			trace(this.pathPH);
+			trace(this.pathNW);
+			trace(this.pathNH);
+			trace(this.path);
+			this.__current__ = new Raphael(this.__parent__.__node__, this.pathPW, this.pathPH);
+			new JQuery(this.__current__.canvas).css( { position:'absolute' } ).css('z-index', this.depth);
+			++this.depth;
+			this.__shape__ = this.__current__.path(this.path);
 			
 			this.checkFill();
 			this.checkLineStyle();
 			
-			//this.parent.__jq__.trigger(Setup.RESIZE_ELEMENT, [ { x:__element__.getBBox().x, y:__element__.getBBox().y, w:__element__.getBBox().width, h:__element__.getBBox().height, p:this.parent } ]);
-			//Setup.triggerResize(__holder__, __element__.getBBox().x, __element__.getBBox().y, __element__.getBBox().width, __element__.getBBox().height);
-			//Setup.triggerResize(this.__holder__, this.__rectangle__);
-			this.__holder__.__triggerResize__(this.__rectangle__);
+			this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 		}
 		
+		this.__current__ = null;
+		this.path = '';
+		this.pathNH = this.pathNW = this.pathPH = this.pathPW = 0;
+		this.shapeY = this.shapeX = this.shapeH = this.shapeW = 0;
+		
+		this.fill_color = null;
+		this.fill_alpha = null;
+		this.fillType = null;
+		this.fillType = null;
+		this.bitmapdata_source = null;
+		this.bitmapdata_matrix = null;
+		this.bitmapdata_repeat = null;
+		this.bitmapdata_smooth = null;
 	}
 	
 	public function lineGradientStyle(type:String, colors:Array<Int>, alphas:Array<Float>, ratios:Array<Int>, matrix:Matrix = null, spreadMethod:String = 'pad', interpolationMethod:String = 'rgb', focusPointRatio:Float = 0) {
 		this.lineType = LineType.GRADIENT;
-		// todo
+		// TODO
 		this.line_gradient_type = type;
 		this.line_gradient_colors = colors;
 		this.line_gradient_alphas = alphas;
@@ -256,32 +276,77 @@ class Graphics extends Object {
 	}
 	
 	public function lineTo(x:Float, y:Float) {
-		path += 'L' + x + ' ' + y;
+		this.checkPathBoundaries(x, y);
+		this.path += 'L' + x + ' ' + y;
 	}
 	
 	public function moveTo(x:Float, y:Float) {
-		path += 'M' + x + ' ' + y;
+		this.checkPathBoundaries(x, y);
+		this.path += 'M' + x + ' ' + y;
 	}
 	
 	//	OVERRIDE METHODS
 	
 	override private function initialize():Void {
 		super.initialize();
-		initializeGraphics();
+		this.initializeGraphics();
 	}
 	
 	//	INTERNAL METHODS
 	
 	private function initializeGraphics():Void {
-		this.path = '';
-		this.__rectangle__ = new Rectangle(this.__holder__.x, this.__holder__.y, this.__holder__.width, this.__holder__.height);
-		/*this.__ele__ = Lib.document.createElement('div');
-		this.__ele__.setAttribute('id', this.__holder__.__originalName__ + '-graphics');
-		this.__ele__.style.cssText = 'overflow:hidden; position:absolute; visibility:visible; width:100%; height:100%; background-color:transparent;';
-		this.__holder__.__ele__.appendChild(this.__ele__);*/
-		this.__raphael__ = new Raphael(this.__holder__.__ele__, '100%', '100%');
-		this.__set__ = this.__raphael__.set();
-		//untyped this.__raphael__.canvas.style.position = 'absolute';
+		this.depth = 1;
+		this.__set__ = new Array<RaphaelElement>();
+		this.pathNH = this.pathNW = this.pathPH = this.pathPW = 0;
+		this.shapeY = this.shapeX = this.shapeH = this.shapeW = 0;
+	}
+	
+	private function checkForCurrent():Void {
+		if (this.__current__ == null) {
+			//this.__current__ = new Raphael(this.__parent__.__node__, Setup.__stageWidth__*2, Setup.__stageHeight__*2);
+			this.__current__ = new Raphael(this.__parent__.__node__, this.shapeW, this.shapeH);
+			Console.log(this.shapeW);
+			Console.log(this.shapeH);
+			//new JQuery(this.__current__.canvas).css( { position:'absolute', left: -Setup.__stageWidth__, top: -Setup.__stageHeight__ } ).css('z-index', this.depth);
+			new JQuery(this.__current__.canvas).css( { position:'absolute', left:this.shapeX, top:this.shapeY } ).css('z-index', this.depth);
+			++this.depth;
+		}
+	}
+	
+	private inline function checkPathBoundaries(x:Float, y:Float):Void {
+		this.pathPW = x > this.pathPW ? x : this.pathPW;
+		this.pathPH = y > this.pathPH ? y : this.pathPH;
+		if (x < 0) {
+			this.pathNW = -x > this.pathNW ? -x : this.pathNW;
+		}
+		if (y < 0) {
+			this.pathNH = -y > this.pathNH ? -y : this.pathNH;
+		}
+	}
+	
+	private inline function checkCircleBoundaries(x:Float, y:Float, r:Float):Void {
+		this.shapeW = this.shapeH = r*2;
+		this.shapeX = x - r;
+		this.shapeY = y - r;
+	}
+	
+	private inline function checkShapeBoundaries(x:Float, y:Float, w:Float, h:Float):Void {
+		this.shapeW = w;
+		this.shapeH = h;
+		if (x < 0) {
+			this.shapeX = -x > this.shapeX ? -x : this.shapeX;
+			this.shapeW += -x;
+		} else if (x > 0) {
+			this.shapeX = x;
+			this.shapeW += x;
+		}
+		if (y < 0) {
+			this.shapeY = -y > this.shapeY ? -y : this.shapeY;
+			this.shapeH += -y;
+		} else if (y > 0) {
+			this.shapeY = y;
+			this.shapeH += y;
+		}
 	}
 	
 	private function checkFill():Void {
@@ -290,18 +355,18 @@ class Graphics extends Object {
 			case FillType.BITMAPDATA:
 				throw 'beginBitmapFill is not implemented';
 			case FillType.FLOOD:
-				__shape__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.RGB_to_String(this.fill_color))
+				__shape__.attr('fill', this.fill_color == null ? '#ffffff' : Setup.rgb(this.fill_color))
 							  .attr('opacity', this.fill_alpha == null ? 1.0 : this.fill_alpha);
 			case FillType.GRADIENT:
 				// TODO - raphael gradient incompatible with flash code & cant recreate same result
-				//	Browsers need to better support svg so raphael can advance
+				// TODO - replace all this
 				var color_alpha:String = '';
 				
 				for (i in 0...this.gradient_colors.length) {
 					if (i == 0) {
-						color_alpha += Setup.RGB_to_String(this.fill_gradient_colors[i]);
+						color_alpha += Setup.rgb(this.fill_gradient_colors[i]);
 					} else {
-						color_alpha += '-' + Setup.RGB_to_String(this.fill_gradient_colors[i]);
+						color_alpha += '-' + Setup.rgb(this.fill_gradient_colors[i]);
 					}
 					color_alpha += ':' + ((this.fill_gradient_ratios[i]/255)*100);
 				}
@@ -325,13 +390,13 @@ class Graphics extends Object {
 				
 			case LineType.PLAIN:
 				__shape__.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness)
-							  .attr('stroke', this.line_color == null ? 'none' : Setup.RGB_to_String(this.line_color))
-							  .attr('stroke-opacity', this.line_alpha == null ? 1.0 : this.line_alpha)
+							.attr('stroke', this.line_color == null ? 'none' : Setup.rgb(this.line_color))
+							.attr('stroke-opacity', this.line_alpha == null ? 1.0 : this.line_alpha)
 				// pixelhinting
 				// scalemode
-							  .attr('stroke-linecap', this.line_caps == null ? 'butt' : this.line_caps = this.line_caps == CapsStyle.NONE ? 'butt' : this.line_caps)
-							  .attr('stroke-linejoin', this.line_joints == null ? JointStyle.MITER : this.line_joints)
-							  .attr('stroke-miterlimit', this.line_limit == null ? 3.0 : this.line_limit);
+							.attr('stroke-linecap', this.line_caps == null ? 'butt' : this.line_caps = this.line_caps == CapsStyle.NONE ? 'butt' : this.line_caps)
+							.attr('stroke-linejoin', this.line_joints == null ? JointStyle.MITER : this.line_joints)
+							.attr('stroke-miterlimit', this.line_limit == null ? 3.0 : this.line_limit);
 			default:
 				
 		}

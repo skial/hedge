@@ -5,16 +5,17 @@
 
 package hedge.display;
 
+import hedge.events.Event;
 import hedge.events.EventDispatcher;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.text.TextSnapshot;
+import jQuery.JQuery;
 
 import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.Setup;
 import js.Lib;
 
-using clippings.Twig;
 using Std;
 
 class DisplayObjectContainer extends InteractiveObject {
@@ -29,14 +30,16 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function addChild(child:DisplayObject):DisplayObject {
-		__ele__.appendChild(child.__ele__);
+		this.__ele__.append(child.__ele__);
 		child.parent = this;
-		this.__triggerResize__(child.__originalRectangle__);
-		//Setup.triggerResize(this, child.__displayObjectRectangle__);
+		child.__ele__.trigger(new Event(Event.ADDED, true, false));
+		child.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 		return child;
 	}
 	
 	public function addChildAt(child:DisplayObject, index:Int):DisplayObject {
+		child.__ele__.trigger(new Event(Event.ADDED, true, false));
+		child.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 		return new DisplayObject();
 	}
 	
@@ -49,11 +52,11 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function getChildAt(index:Int):DisplayObject {
-		return new DisplayObject();
+		return cast(new JQuery(this.__ele__.children().get(index)).data('__self__'), DisplayObject);
 	}
 	
-	public function getChildByName(name:String):DisplayObject {
-		return Lib.document.getElementById(name).data('__self__');
+	public inline function getChildByName(name:String):DisplayObject {
+		return cast(new JQuery(Lib.document.getElementById(name)).data('__self__'), DisplayObject);
 	}
 	
 	public function getChildIndex(child:DisplayObject):Int {
@@ -65,12 +68,14 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	public function removeChild(child:DisplayObject):DisplayObject {
-		//Setup.__normalStorage__.appendChild(child.__ele__);
-		Setup.__storage__.appendChild(child.__ele__);
+		child.__ele__.trigger(new Event(Event.REMOVED, true, false));
+		Setup.__storage__.appendChild(child.__node__);
+		child.parent = this.stage;
 		return child;
 	}
 	
 	public function removeChildAt(index:Int):DisplayObject {
+		this.__ele__.trigger(new Event(Event.REMOVED, true, false));
 		return new DisplayObject();
 	}
 	
@@ -98,7 +103,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	}
 	
 	private function getNumChildren():Int {
-		return numChildren;
+		return this.__ele__.children().length;
 	}
 	
 	private function setNumChildren(value:Int):Int {
@@ -129,9 +134,7 @@ class DisplayObjectContainer extends InteractiveObject {
 	//	INTERNAL
 	
 	private function initializeDisplayObjectContainer():Void {
-		//this.addEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, this.__resizeDisplayObject__);
-		this.addEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
-		//this.addEventListener(DisplayEvent.RESIZE_ELEMENT, Setup.resizeDiplay);
+		
 	}
 	
 }

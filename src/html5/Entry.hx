@@ -1,5 +1,6 @@
 package html5;
 
+@:native("Entry")
 extern class Entry {
 	
 	var isFile(default,null) : Bool;

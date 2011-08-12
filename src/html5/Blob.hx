@@ -1,5 +1,6 @@
 package html5;
 
+@:native("Blob")
 extern class Blob {
 	var size(default,null) : Float;
 	var type(default,null) : String;

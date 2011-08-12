@@ -1,5 +1,6 @@
 package html5;
 
+@:native("EventSource")
 extern class EventSource {
 	static var CONNECTING : Int;
 	static var OPEN : Int;

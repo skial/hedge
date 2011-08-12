@@ -4,18 +4,22 @@
  */
 
 package hedge.display;
-import hedge.D;
+
 import hedge.events.Event;
 import hedge.events.EventDispatcher;
-import hedge.events.internal.HedgeResizeDisplayEvent;
+import hedge.geom.Point;
 import hedge.geom.Rectangle;
-import hedge.Setup;
 import hedge.events.EventPhase;
 import js.Lib;
-import hedge.events.internal.HedgeEnterFrame;
 
-using clippings.Twig;
+import jQuery.JQuery;
+
+import hedge.Setup;
+import hedge.events.internal.HedgeEnterFrame;
+import hedge.events.internal.HedgeResizeDisplayEvent;
+
 using Std;
+using clippings.Twig;
 
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
@@ -23,13 +27,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var alpha(getAlpha,setAlpha):Float;
 	public var blendMode(getBlendMode,setBlendMode):String;
 	public var cacheAsBitmap(getCache,setCache):Bool;
-	//public var loaderInfo(getLoader,null)									//read only
+	//public var loaderInfo(getLoader,null)										//read only
 	public var mask(getMask,setMask):DisplayObject;
 	public var mouseX(getMouseX,null):Float;									//read only
 	public var mouseY(getMouseY,null):Float;									//read only
 	public var name(getName,setName):String;
 	public var opaqueBackground(getOpaqueBackground,setOpaqueBackground):Dynamic;
-	public var parent(getParent,setParent):DisplayObjectContainer;		//read only | CHANGED - was read only
+	public var parent:DisplayObjectContainer;									//read only
 	public var root(getRoot,null):DisplayObject;								//read only
 	public var rotation(getRotation,setRotation):Float;
 	public var scale9Grid(getScale9,setScale9):Rectangle;
@@ -53,20 +57,17 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	#end
 	
 	public var __originalRectangle__:Rectangle;
-	
-	public var __offsetX__(default,set__OffsetX__):Float;
-	public var __offsetY__(default,set__OffsetY__):Float;
 
 	public function new() {
 		super(null);
 	}
 	
 	public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle {
-		return new Rectangle();
+		return new Rectangle(this.x - targetCoordinateSpace.x - this.x, this.y - targetCoordinateSpace.y - this.y,	this.width, this.height);
 	}
 	
-	public function getRect(targetCoordinateSpace:DisplayObject):Dynamic {
-		return 'rectangle';
+	public function getRect(targetCoordinateSpace:DisplayObject):Rectangle {
+		return new Rectangle(this.x, this.y, this.width, this.height);
 	}
 	
 	public function hitTestObject(obj:DisplayObject):Bool {
@@ -77,8 +78,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return true;
 	}
 	
-	public function localToGlobal(point:Dynamic):Dynamic {
-		return 'point';
+	public function localToGlobal(point:Point):Point {
+		return point;
 	}
 	
 	/* OVERRIDE FUNCTIONS */
@@ -97,50 +98,39 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__mouseY__ = 0;
 		#end
 		
-		this.__originalRectangle__ = new Rectangle(0, 0, 0, 0);
-		
 		this.__generateHedgeDisplayObjectElement__();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
 		
-		this.__offsetX__ = this.__offsetY__ = 0;
+		this.parent = this.stage = Setup.__stage__;
 		
-		this.stage = Setup.__stage__;
-		this.parent = Setup.__stage__;
+		this.__node__.setAttribute('id', this.name);
+		this.__node__.setAttribute('data-originalName', this.__originalName__);
 		
-		this.__ele__.setAttribute('id', this.name);
-		this.__ele__.setAttribute('data-originalName', this.__originalName__);
-		
-		this.__generateHedgeDisplayObjectCSS__();
 		this.__ele__.data('__self__', this);
 		
 		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 		this.__ele__.bind('mousemove', __hedgeOnDisplayObjectMouseMove__);
 		#end
+		this.__ele__.bind(Setup.PREFIX + HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
 		
 		this.__ancestorPath__ = Setup.createAncestorPath(this);
+		
 	}
 	
 	#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 	private function __hedgeOnDisplayObjectMouseMove__(e):Void {
 		this.__mouseX__ = e.offsetX;
-		this.__mouseY__ = e.offsety;
+		this.__mouseY__ = e.offsetY;
 	}
 	#end
 	
 	private function __generateHedgeDisplayObjectElement__():Void {
-		this.__ele__ = Lib.document.createElement('div');
-		//Setup.__normalStorage__.appendChild(__ele__);
-		Setup.__storage__.appendChild(__ele__);
-	}
-	
-	private function __generateHedgeDisplayObjectCSS__():Void {
-		this.__ele__.style.cssText = 'overflow:hidden; display:block; visibility:visible; position:absolute; width:0px; height:0px; left:0px; top:0px;';
-	}
-	
-	public function __triggerResize__(reference:Rectangle):Void {
-		var _event = new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_ELEMENT, true, true, reference);
-		_event.target = this;
-		this.dispatchEvent(_event);
+		this.__node__ = Lib.document.createElement('div');
+		
+		Setup.__storage__.appendChild(this.__node__);
+		
+		this.__ele__ = new JQuery(this.__node__);
+		this.__ele__.addClass('hDisplayObject');
 	}
 	
 	private function getMouseX():Float {
@@ -151,7 +141,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#end
 	}
 	
-	private function getMouseY():Float {
+	private inline function getMouseY():Float {
 		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 		return this.__mouseY__;
 		#else
@@ -167,21 +157,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return Setup.__stage__;
 	}
 	
-	private function getParent():DisplayObjectContainer {
-		return parent;
+	private inline function getAlpha():Float {
+		return this.__ele__.css('opacity');
 	}
 	
-	private function setParent(value:DisplayObjectContainer):DisplayObjectContainer {
-		parent = value;
-		return parent;
-	}
-	
-	private function getAlpha():Float {
-		return untyped this.__ele__.style.opacity;
-	}
-	
-	private function setAlpha(value:Float):Float {
-		untyped this.__ele__.style.opacity = value;
+	private inline function setAlpha(value:Float):Float {
+		this.__ele__.css('opacity', value);
+		this.alpha = value;
 		return value;
 	}
 	
@@ -190,7 +172,6 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setBlendMode(value:String):String {
-		blendMode = value;
 		return blendMode;
 	}
 	
@@ -199,7 +180,6 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setCache(value:Bool):Bool {
-		cacheAsBitmap = value;
 		return cacheAsBitmap;
 	}
 	
@@ -208,16 +188,16 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setMask(value:DisplayObject):DisplayObject {
-		mask = value;
 		return mask;
 	}
 	
-	private function getName():String {
-		return this.__ele__.getAttribute('id');
+	private inline function getName():String {
+		return this.__ele__.attr('id');
 	}
 	
-	private function setName(value:String):String {
-		this.__ele__.setAttribute('id', value);
+	private inline function setName(value:String):String {
+		this.__ele__.attr('id', value);
+		this.name = value;
 		return value;
 	}
 	
@@ -226,17 +206,21 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setOpaqueBackground(value:Dynamic):Dynamic {
-		opaqueBackground = value;
 		return opaqueBackground;
 	}
 	
 	private function getRotation():Float {
-		return rotation;
+		return this.rotation;
 	}
 	
 	private function setRotation(value:Float):Float {
-		rotation = value;
-		return rotation;
+		this.rotation = value;
+		this.__ele__.css('transform', 'rotate(' + value + 'deg)')
+					.css('-moz-transform', 'rotate(' + value + 'deg)')
+					.css('-o-transform', 'rotate(' + value + 'deg)')
+					.css('-webkit-transform', 'rotate(' + value + 'deg)')
+					.css('-ms-transform', 'rotate(' + value + 'deg)');
+		return value;
 	}
 	
 	private function getScale9():Rectangle {
@@ -244,7 +228,6 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setScale9(value:Rectangle):Rectangle {
-		scale9Grid = value;
 		return scale9Grid;
 	}
 	
@@ -262,7 +245,6 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setScaleY(value:Float):Float {
-		scaleY = value;
 		return scaleY;
 	}
 	
@@ -271,284 +253,54 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	}
 	
 	private function setScrollRect(value:Rectangle):Rectangle {
-		scrollRect = value;
 		return scrollRect;
 	}
 	
-	private function getVisible():Bool {
-		// TODO replace __ele__ with this displayobject
-		return this.__ele__.data('visible') == null ? true : this.__ele__.data('visible');
+	private inline function getVisible():Bool {
+		return this.__ele__.css('display') == 'none' ? false : true;
 	}
 	
-	private function setVisible(value:Bool):Bool {
-		this.__ele__.style.display = value == false ? 'none' : 'block';
-		this.__ele__.style.visibility = value == false ? 'hidden' : 'visible';
-		this.__ele__.data('visible', value);
+	private inline function setVisible(value:Bool):Bool {
+		this.__ele__.css('display', 'none');
 		return value;
 	}
 	
-	private function getHeight():Float {
-		//return this.__ele__.style.height.parseFloat();
-		return this.__originalRectangle__.height;
+	private inline function getHeight():Float {
+		return this.__ele__.height();
 	}
 	
-	private function setHeight(value:Float):Float {
-		// TODO move to seperate func H
-		var t = this.__ele__.getStyle('border-top-width').parseInt();
-		t = t == null ? 0 : t;
-		
-		this.__originalRectangle__.height = value;
-		this.__ele__.style.height = '' + (value - this.__offsetY__ - (t*2)) + 'px';
+	private inline function setHeight(value:Float):Float {
+		this.__ele__.height(value);
+		this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 		return value;
 	}
 	
-	private function getWidth():Float {
-		//return this.__ele__.style.width.parseFloat();
-		return this.__originalRectangle__.width;
+	private inline function getWidth():Float {
+		return this.__ele__.width();
 	}
 	
-	private function setWidth(value:Float):Float {
-		// TODO move to seperate func W
-		var t = this.__ele__.getStyle('border-top-width').parseInt();
-		t = t == null ? 0 : t;
-		
-		this.__originalRectangle__.width = value;
-		this.__ele__.style.width = '' + (value - this.__offsetX__ - (t*2)) + 'px';
+	private inline function setWidth(value:Float):Float {
+		this.__ele__.width(value);
+		this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 		return value;
 	}
 	
-	private function getX():Float {
-		//return this.__ele__.style.left.parseFloat();
-		return this.__originalRectangle__.x;
+	private inline function getX():Float {
+		return this.__ele__.position().left;
 	}
 	
-	private function setX(value:Float):Float {
-		this.__originalRectangle__.x = value;
-		this.__ele__.style.left = '' + (value - this.__offsetX__) + 'px';
+	private inline function setX(value:Float):Float {
+		this.__ele__.css('left', value + 'px');
 		return value;
 	}
 	
-	private function getY():Float {
-		//return this.__ele__.style.top.parseFloat();
-		return this.__originalRectangle__.y;
+	private inline function getY():Float {
+		return this.__ele__.position().top;
 	}
 	
-	private function setY(value:Float):Float {
-		this.__originalRectangle__.y = value;
-		this.__ele__.style.top = '' + (value - this.__offsetY__) + 'px';
+	private inline function setY(value:Float):Float {
+		this.__ele__.css('top', value + 'px');
 		return value;
-	}
-	
-	private function set__OffsetX__(value:Float):Float {
-		this.__offsetX__ = value;
-		this.width += value;
-		return value;
-	}
-	
-	private function set__OffsetY__(value:Float):Float {
-		this.__offsetY__ = value;
-		this.height += value;
-		return value;
-	}
-	
-	// OVERRIDE METHODS
-	
-	override public function addEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false, ?priority:Int = 0, ?useWeakReference:Bool = false):Void 	{
-		
-		//super.addEventListener(type, listener, useCapture, priority, useWeakReference);
-		if (type == Event.ENTER_FRAME) {
-			
-			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
-			HedgeEnterFrame.add(efes);
-			return;
-		}
-		
-		/*
-			
-			-----------------------------------------------------------------
-			| type | listener | ?useCapture | ?priority | ?useWeakReference |
-			-----------------------------------------------------------------
-				|			|				|				TODO				 TODO
-				V			V				V
-			---------------------------------		array ------------------------------ reverse if ?useCapture is true
-			|	event containter	|	 path	  | --->	|	this	|	this.parent	|	parent.parent	|	...  |	stage/root	|
-			---------------------------------		-------------------------------------------------------------------
-								|
-								V
-			---------------------------------
-			|				CACHE					  |
-			---------------------------------		---------------------------------------------------------------------
-			|	       eventType_c		 	  | ---> |	This depends on ?useCapture. Only one event can exist for each	  |
-			---------------------------------		|	event phase (capture or target/bubbling). Currently thinking if  |
-			|			 eventType_t			  | ---> |	I should allow you to overwrite a event or stay strict to flash. |
-			---------------------------------		---------------------------------------------------------------------
-			
-		 */
-		
-		var _event:EventStructure = {
-			listener:listener,
-			target:this
-		}
-		
-		var _temp = this;
-		
-		var _access = type + '_' + (useCapture?'c':'t');
-		var _type = this.__ele__.data(_access);
-		
-		if (_type == null) {
-			this.__ele__.data(_access, _event);
-		} else {
-			throw '_event[' + type + '] already set - you need to remove the previous event';
-		}
-		
-		#if HEDGE_EVENT_DEBUG
-		D.t(' | ADDED EVENT');
-		D.t(' | DisplayObject::addEventListener->override');
-		D.t(' | name : ' + this.name);
-		D.t(' | type : ' + type);
-		D.t('---');
-		#end
-		
-	}
-	
-	override public function removeEventListener(type:String, listener:Dynamic, ?useCapture:Bool = false):Void {
-		
-		// TODO make sure removeEventListener is working correctly
-		//super.removeEventListener(type, listener, useCapture);
-		
-		if (type == Event.ENTER_FRAME) {
-			
-			var efes:EnterFrameEventStructure = { target:cast(this, DisplayObject), listener:listener };
-			HedgeEnterFrame.remove(efes);
-			return;
-			
-		}
-		
-		var _access = type + '_' + (useCapture?'c':'t');
-		var _type = this.__ele__.data(_access);
-		
-		if (_type == null) {
-			return;
-		} else {
-			this.__ele__.removeData(_access);
-		}
-		
-	}
-	
-	override public function dispatchEvent(event:Event):Bool {
-		
-		#if HEDGE_EVENT_DEBUG
-		D.t(' | DISPATCH STARTED');
-		D.t(' | DisplayObject::dispatchEvent->override');
-		D.t('---');
-		#end
-		
-		/*
-			
-			----------------------------------------------------------------------------------------
-			|	Only Event.ACTIVATE .DEACTIVATE .ENTER_FRAME and .RENDER have a target phase only.	|
-			|	All other events targeting the display list have a capture and target phase and		|
-			|	might have a bubbling phase.														|
-			----------------------------------------------------------------------------------------
-			
-		*/
-		
-		var _data:EventStructure = null;
-		var _access = null;
-		var _temp = null;
-		
-		event.target = event.target == null ? this : event.target;
-		
-		if (__ancestorPath__ == null) {
-			return false;
-		}
-		
-		#if INCLUDE_HEDGE_EVENT_CAPTURE
-		
-		if (event.useCapture) {
-			#if HEDGE_EVENT_DEBUG
-			D.t(' | event phase : CAPTURE');
-			#end
-			
-			event.eventPhase = EventPhase.CAPTURING_PHASE;
-			
-			_access = event.type + '_c';
-			_data = untyped this.__ele__.data(_access);
-			
-			var _array:Array<DisplayObject> = __ancestorPath__;
-			_array.reverse();
-			
-			for (n in _array) {
-				
-				_temp = n.__ele__.data(_access);
-				
-				if (_temp != null) {
-					
-					event.currentTarget = n;
-					
-					_temp.listener(event);
-					
-				}
-				
-			}
-			
-		}
-		#end
-		
-		_access = event.type + '_t';
-		_data = untyped this.__ele__.data(_access);
-		
-		#if HEDGE_EVENT_DEBUG
-		D.t(' | event phase : TARGET');
-		D.t(' | event type : ' + event.type);
-		D.t(' | target name : ' + cast(event.target, DisplayObject).name);
-		D.t('---');
-		#end
-		
-		event.eventPhase = EventPhase.AT_TARGET;
-		
-		_temp = this.__ele__.data(_access);
-		
-		if (_temp != null) {
-			
-			event.currentTarget = this;
-			
-			_temp.listener(event);
-			
-		}
-		
-		#if !EXCLUDE_HEDGE_EVENT_BUBBLE
-		
-		#if HEDGE_EVENT_DEBUG
-		D.t(' | event phase : BUBBLE');
-		D.t(' | event type : ' + event.type);
-		D.t(' | target name : ' + cast(event.target, DisplayObject).name);
-		D.t('---');
-		#end
-		
-		for (n in __ancestorPath__) {
-			
-			_temp = cast(n, DisplayObject).__ele__.data(_access);
-			
-			if (_temp != null) {
-				
-				event.eventPhase = EventPhase.BUBBLING_PHASE;
-				event.currentTarget = n;
-				
-				_temp.listener(event);
-				
-			}
-			
-		}
-		
-		#end
-		
-		#if HEDGE_EVENT_DEBUG
-		D.t(' | DISPATCH FINISHED');
-		D.t('---');
-		#end
-		
-		return true;
 	}
 	
 }

@@ -10,7 +10,7 @@ import hedge.events.Event;
 import hedge.geom.Rectangle;
 import hedge.Setup;
 import hedge.text.TextSnapshot;
-import clippings.Twig;
+import jQuery.JQuery;
 import js.Lib;
 
 class Stage extends DisplayObjectContainer {
@@ -53,7 +53,9 @@ class Stage extends DisplayObjectContainer {
 	//	INTERNAL METHODS
 	
 	private function initializeStage():Void {
-		this.__ele__ = Setup.__ele__;
+		this.__node__ = Setup.__ele__;
+		this.__ele__ = new JQuery(this.__node__);
+		this.__ele__.addClass('hStage');
 		this.__originalName__ = 'Stage';
 	}
 	

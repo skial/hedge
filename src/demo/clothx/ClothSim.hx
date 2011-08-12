@@ -27,12 +27,12 @@ class ClothSim extends Sprite {
 
     static function main()
     {
-		 Firebug.redirectTraces();
         #if js
-		  Setup.init(run, 30);
-		  #else
-		  run();
-		  #end
+		Firebug.redirectTraces();
+		Setup.init(run, 30);
+		#else
+		run();
+		#end
     }
 	 
 	 public static function run():Void 
@@ -93,11 +93,12 @@ class ClothSim extends Sprite {
         handle1.graphics.beginFill(0xd9d9d9);
         handle1.graphics.drawCircle(0,0,20);
         handle1.graphics.endFill();
-        /*handle1.graphics.lineStyle(1,0x333333);
+        handle1.graphics.lineStyle(1,0x333333);
         handle1.graphics.moveTo(0,-3);
         handle1.graphics.lineTo(0,4);
         handle1.graphics.moveTo(4,0);
-        handle1.graphics.lineTo(-3,0);*/
+        handle1.graphics.lineTo( -3, 0);
+		handle1.graphics.endFill();
         
         handle1.x = particles[0][0].position.x;
         handle1.y = particles[0][0].position.y;
@@ -108,11 +109,12 @@ class ClothSim extends Sprite {
         handle2.graphics.beginFill(0xd9d9d9);
         handle2.graphics.drawCircle(0,0,20);
         handle2.graphics.endFill();
-        /*handle2.graphics.lineStyle(1,0x333333);
+        handle2.graphics.lineStyle(1,0x333333);
         handle2.graphics.moveTo(0,-3);
         handle2.graphics.lineTo(0,4);
         handle2.graphics.moveTo(4,0);
-        handle2.graphics.lineTo(-3,0);*/
+        handle2.graphics.lineTo( -3, 0);
+		handle2.graphics.endFill();
         
         handle2.x = particles[0][gridSize-1].position.x;
         handle2.y = particles[0][gridSize-1].position.y;
@@ -121,18 +123,19 @@ class ClothSim extends Sprite {
         particles[0][gridSize-1].makeFixed();
         
         handle1.buttonMode = handle2.buttonMode = true;
-        /*handle1.addEventListener(MouseEvent.MOUSE_DOWN, handleMouse);
-        handle2.addEventListener(MouseEvent.MOUSE_DOWN, handleMouse);*/
+        handle1.addEventListener(MouseEvent.MOUSE_DOWN, handleMouse);
+        handle2.addEventListener(MouseEvent.MOUSE_DOWN, handleMouse);
         
         /*overlay = new Sprite();
         overlay.graphics.beginFill(0xFFFFFF);
         overlay.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
         overlay.graphics.endFill();
         overlay.alpha = .75;
-        stage.addChild(overlay);
+        stage.addChild(overlay);*/
         for(k in 0...10) s.tick(1);
-        //onFrame(null);
-        stage.addEventListener(Event.MOUSE_LEAVE, onLeave);
+        stage.addEventListener(Event.ENTER_FRAME, onFrame);
+		//onFrame(null);
+        /*stage.addEventListener(Event.MOUSE_LEAVE, onLeave);
         stage.addEventListener(MouseEvent.MOUSE_OVER, onEnter);*/
     }
     
@@ -151,7 +154,7 @@ class ClothSim extends Sprite {
         }        
     }
     
-    function onEnter(_)
+    /*function onEnter(_)
     {
         overlay.visible = false;
         stage.addEventListener(Event.ENTER_FRAME, onFrame);
@@ -161,7 +164,7 @@ class ClothSim extends Sprite {
     {
         overlay.visible = true;
         stage.removeEventListener(Event.ENTER_FRAME, onFrame);
-    }
+    }*/
     
     function onFrame(_):Void
     {

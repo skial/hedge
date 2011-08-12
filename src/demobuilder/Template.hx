@@ -1,15 +1,22 @@
 package demo.@package;
 
+import flash.Lib;
+import flash.display.Sprite;
 import haxe.Firebug;
-import hedge.Lib;
+
+#if js
 import hedge.Setup;
-import hedge.display.Sprite;
+#end
 
 class @name extends Sprite {
 	
 	static function main() {
+		#if js
 		Firebug.redirectTraces();
-		Setup.init(run, 30);
+		Setup.init(run);
+		#else
+		run();
+		#end
 	}
 	
 	static function run():Void {

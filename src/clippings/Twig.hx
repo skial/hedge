@@ -5,14 +5,27 @@
 
 package clippings;
 
-import js.Dom;
+#if js
 import js.Lib;
+import js.Dom;
+#elseif jstm
+import HTMLElement;
+#elseif jquery
+
+#end
 
 using clippings.Twig;
 using StringTools;
 using Std;
 
-class Twig implements Dynamic {
+typedef TwigPoint = {
+	var x:Int;
+	var y:Int;
+}
+
+class Twig {
+	
+	// TODO change any methods names to match jquery method names
 	
 	/*
 	 * ELEMENT <-> DATA ASSOCIATION
@@ -27,7 +40,7 @@ class Twig implements Dynamic {
 	
 	private static inline var TWIG_ID:String = 'TWIG_ID';
 
-	public static function data(element:HtmlDom, key:String, ?value:Dynamic = null):Dynamic {
+	public static function data(#if jstm element:HTMLElement, #elseif js element:HtmlDom, #end key:String, ?value:Dynamic = null):Dynamic {
 		
 		// check element for TWIG_ID
 		if (!Reflect.hasField(element, TWIG_ID)) {
@@ -60,7 +73,7 @@ class Twig implements Dynamic {
 		
 	}
 	
-	public static function removeData(element:HtmlDom, ?key:String = null):Void {
+	public static function removeData(#if jstm element:HTMLElement, #elseif js element:HtmlDom, #end ?key:String = null):Void {
 		
 		// assumes element has TWIG_ID already - this might change.
 		CACHE_ID = Reflect.field(element, TWIG_ID);
@@ -79,7 +92,7 @@ class Twig implements Dynamic {
 		
 	}
 	
-	public static function bind(element:HtmlDom, event:String, handler:Dynamic):Void {
+	public static inline function bind(element:HtmlDom, event:String, handler:Dynamic):Void {
 		
 		if (Lib.isIE) {
 			
@@ -93,7 +106,7 @@ class Twig implements Dynamic {
 		
 	}
 	
-	public static function unbind(element:HtmlDom, event:String, handler:Dynamic):Void {
+	public static inline function unbind(element:HtmlDom, event:String, handler:Dynamic):Void {
 		
 		if (Lib.isIE) {
 			
@@ -107,6 +120,29 @@ class Twig implements Dynamic {
 		
 	}
 	
+	// http://www.quirksmode.org/js/findpos.html
+	
+	public static function getPosition(#if jstm element:HTMLElement #elseif js element:HtmlDom #end):TwigPoint {
+		untyped {
+			var currentX = 0;
+			var currentY = 0;
+			var object = element;
+			
+			if (object.offsetParent) {
+				
+				do {
+					
+					currentX += object.offsetLeft;
+					currentY += object.offsetTop;
+					
+				} while (object = object.offsetParent);
+				
+			}
+			
+			return {x:currentX, y:currentY};
+		}
+	}
+	
 	// from prototype.js camelize https://github.com/sstephenson/prototype/blob/master/src/prototype/lang/string.js#L560
 	// useful http://stackoverflow.com/questions/1955048/get-computed-font-size-for-dom-element-in-js
 	// TODO convert to haXe
@@ -115,13 +151,14 @@ class Twig implements Dynamic {
 	}
 	
 	// smart! original source - https://gist.github.com/369133
-	public static function getStyle(element:HtmlDom, style:String):String {
-		var value:String = 'SNAPPED TWIG';
+	public static function getStyle(#if jstm element:HTMLElement, #elseif js element:HtmlDom, #end style:String):String {
+		var value:String = 'TWIG SNAPPED';
 		var search:String = style;
 		var defaultView = untyped element.ownerDocument.defaultView;
 		
 		// W3C standard way
 		if (untyped defaultView && defaultView.getComputedStyle) {
+			
 			// sanitize property name to css notation (hypen separated words eg. font-Size)
 			
 			search = ~/([A-Z])/g.replace(search, '$1').toLowerCase();

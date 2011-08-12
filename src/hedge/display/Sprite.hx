@@ -6,8 +6,9 @@
 package hedge.display;
 import hedge.display.DisplayObject;
 import hedge.display.DisplayObjectContainer;
-import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.geom.Rectangle;
+
+import hedge.events.internal.HedgeResizeDisplayEvent;
 import hedge.Setup;
 import js.Lib;
 
@@ -20,12 +21,10 @@ class Sprite extends DisplayObjectContainer {
 	//public var soundTransform:SoundTransform;
 	public var useHandCursor(getHandCursor, setHandCursor):Bool;
 	
+	private var __graphic__:Graphics;
+	
 	/* INTERNAL VARIABLES */
 	
-	private var __graphics__:Graphics;
-	
-	//public var __graphicRectangle__:Rectangle;
-
 	public function new() {
 		super();
 	}
@@ -40,23 +39,6 @@ class Sprite extends DisplayObjectContainer {
 	
 	/* OVERRIDE FUNCTIONS */
 	
-	override private function __generateHedgeDisplayObjectElement__():Void {
-		this.__ele__ = Lib.document.createElement('div');
-		//Setup.__graphicStorage__.appendChild(__ele__);
-		Setup.__storage__.appendChild(__ele__);
-	}
-	
-	override public function removeChild(child:DisplayObject):DisplayObject {
-		//Setup.__graphicStorage__.appendChild(child.__ele__);
-		Setup.__storage__.appendChild(child.__ele__);
-		return child;
-	}
-	
-	override private function initializeDisplayObjectContainer():Void {
-		//super.initializeDisplayObjectContainer();
-		this.addEventListener(HedgeResizeDisplayEvent.RESIZE_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
-	}
-	
 	/* INTERNAL FUNCTIONS */
 	
 	override private function initialize():Void {
@@ -65,9 +47,7 @@ class Sprite extends DisplayObjectContainer {
 	}
 	
 	private function initializeSprite():Void {
-		this.__graphics__ = new Graphics(this);
-		this.__graphics__.__raphael__.setSize(this.width, this.height);
-		//this.__graphicRectangle__ = new Rectangle(this.x, this.y, this.width, this.height);
+		this.__graphic__ = new Graphics(this);
 	}
 	
 	private function getButtonMode():Bool {
@@ -88,8 +68,8 @@ class Sprite extends DisplayObjectContainer {
 		return dropTarget;
 	}
 	
-	private function getGraphics():Graphics {
-		return this.__graphics__;
+	private inline function getGraphics():Graphics {
+		return this.__graphic__;
 	}
 	
 	private function getHitArea():Sprite {
@@ -102,12 +82,11 @@ class Sprite extends DisplayObjectContainer {
 	}
 	
 	private function getHandCursor():Bool {
-		return useHandCursor;
+		return true;
 	}
 	
 	private function setHandCursor(value:Bool):Bool {
-		useHandCursor = value;
-		return useHandCursor;
+		return value;
 	}
 	
 }

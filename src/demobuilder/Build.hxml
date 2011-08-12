@@ -1,11 +1,15 @@
--js ../../../bin/@package/@name.js
+-swf ../../../bin/@package/@name.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
 -cp ../../
--lib raphaelExtern
 -main demo.@package.@name
---dead-code-elimination
+#--dead-code-elimination
 
 --next
 
--swf ../../../bin/@package/@name.swf
+-js ../../../bin/@package/@name.js
+--remap flash:hedge
 -cp ../../
+-lib raphaelExtern
 -main demo.@package.@name
+#--dead-code-elimination

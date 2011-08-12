@@ -1,5 +1,6 @@
 package html5;
 
+@:native("Image")
 extern class Image {
 	var alt : String;
 	var src : String;

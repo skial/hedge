@@ -1,5 +1,6 @@
 package html5;
 
+@:native("FileError")
 extern class FileError {
 	static var NOT_FOUND_ERR : Int; //1
     static var SECURITY_ERR : Int; //2

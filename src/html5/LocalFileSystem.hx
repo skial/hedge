@@ -1,5 +1,6 @@
 package html5;
 
+@:native("LocalFileSystem")
 extern class LocalFileSystem {
 	static var TEMPORARY : Int;
 	static var PERSISTENT : Int;

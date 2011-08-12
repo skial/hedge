@@ -7,36 +7,36 @@ package hedge.events;
 
 class KeyboardEvent extends Event {
 	
-	public var altKey:Bool;
-	public var charCode:Int;
-	public var ctrlKey:Bool;
-	public var keyCode:Int;
+	//public var altKey:Bool;	// already in jQuery.Event
+	//public var charCode:Int;	// already in jQuery.Event
+	//public var ctrlKey:Bool;	// already in jQuery.Event
+	//public var keyCode:Int;	// already in jQuery.Event
 	public var keyLocation:Int;
-	public var shiftKey:Bool;
+	//public var shiftKey:Bool;	// already in jQuery.Event
 	
 	public static inline var KEY_DOWN:String = 'keyDown';
 	public static inline var KEY_UP:String = 'keyUp';
 
-	public function new(	type:String,
-								?bubbles:Bool = true,
-								?cancelable:Bool = false,
-								?charCodeValue:Int = 0,
-								?keyCodeValue:Int = 0,
-								?keyLocationValue:Int = 0,
-								?ctrlKeyValue:Bool = false,
-								?altKeyValue:Bool = false,
-								?shiftKeyValue:Bool = false/*,
-								?controlKeyValue:Bool = false,
-								?commandKeyValue:Bool = false*/) {
+	public function new(type:String,
+							?bubbles:Bool = true,
+							?cancelable:Bool = false,
+							?charCode:Int = 0,
+							?keyCode:Int = 0,
+							?keyLocation:Int = 0,
+							?ctrlKey:Bool = false,
+							?altKey:Bool = false,
+							?shiftKey:Bool = false/*,
+							?controlKey:Bool = false,
+							?commandKey:Bool = false*/) {
 		this.type = type;
 		this.bubbles = bubbles;
 		this.cancelable = cancelable;
-		this.charCode = charCodeValue;
-		this.keyCode = keyCodeValue;
-		this.keyLocation = keyLocationValue;
-		this.ctrlKey = ctrlKeyValue;
-		this.altKey = altKeyValue;
-		this.shiftKey = shiftKeyValue;
+		this.charCode = charCode;
+		this.keyCode = keyCode;
+		this.keyLocation = keyLocation;
+		this.ctrlKey = ctrlKey;
+		this.altKey = altKey;
+		this.shiftKey = shiftKey;
 		super(this.type, this.bubbles, this.cancelable);
 	}
 	

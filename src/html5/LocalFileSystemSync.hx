@@ -1,5 +1,6 @@
 package html5;
 
+@:native("LocalFileSystemSync")
 extern LocalFileSystemSync {
 	static var TEMPORARY : Int;
 	static var PERSISTENT : Int;

@@ -8,30 +8,30 @@ import hedge.display.InteractiveObject;
 
 class MouseEvent extends Event {
 	
-	public var altKey:Bool;
+	//public var altKey:Bool;	// already in jQuery.Event
 	public var buttonDown:Bool;
-	public var ctrlKey:Bool;
+	//public var ctrlKey:Bool;	// already in jQuery.Event
 	public var delta:Int;
 	public var localX:Float;
 	public var localY:Float;
 	public var relatedObject:InteractiveObject;
-	public var shiftKey:Bool;
+	//public var shiftKey:Bool;	// already in jQuery.Event
 	public var stageX:Float;	//	read only - todo
 	public var stageY:Float;	//	read only - todo
 
-	public function new(	type:String, 
-								?bubbles:Bool = true,
-								?cancelable:Bool = false,
-								?localX:Float = null,
-								?localY:Float = null,
-								?relatedObject:InteractiveObject = null,
-								?ctrlKey:Bool = false,
-								?altKey:Bool = false,
-								?shiftKey:Bool = false,
-								?buttonDown:Bool = false,
-								?delta:Int = 0) {
+	public function new(type:String, 
+						?bubbles:Bool = true,
+						?cancelable:Bool = false,
+						?localX:Float = null,
+						?localY:Float = null,
+						?relatedObject:InteractiveObject = null,
+						?ctrlKey:Bool = false,
+						?altKey:Bool = false,
+						?shiftKey:Bool = false,
+						?buttonDown:Bool = false,
+						?delta:Int = 0) {
 		
-		this.type = type;
+		//this._type = type;
 		this.bubbles = bubbles;
 		this.cancelable = cancelable;
 		this.localX = localX;
@@ -42,11 +42,11 @@ class MouseEvent extends Event {
 		this.shiftKey = shiftKey;
 		this.buttonDown = buttonDown;
 		this.delta = delta;
-		super(this.type, this.bubbles, this.cancelable);
+		super(type, this.bubbles, this.cancelable);
 	}
 	
 	override public function clone():Event {
-		return new MouseEvent(	this.type, this.bubbles, this.cancelable, this.localX, this.localY, this.relatedObject, this.ctrlKey, this.altKey,
+		return new MouseEvent(this.type, this.bubbles, this.cancelable, this.localX, this.localY, this.relatedObject, this.ctrlKey, this.altKey,
 										this.shiftKey, this.buttonDown, this.delta);
 	}
 	

@@ -1,6 +1,8 @@
 package html5;
 
-typedef Canvas = {/*>js.HTMLElement,*/
+import js.Dom;
+
+typedef Canvas = {>HtmlDom,
 	var width : Int;
 	var height : Int;
 	function getContext( id : String ) : CanvasRenderingContext2D;

@@ -8,9 +8,9 @@ import hedge.display.InteractiveObject;
 
 class FocusEvent extends Event {
 	
-	public var keyCode:Int;
+	//public var keyCode:Int;	// already in jQuery.Event
 	public var relatedObject:InteractiveObject;
-	public var shiftKey:Bool;
+	//public var shiftKey:Bool;	// already in jQuery.Event
 
 	public function new(	type:String,
 								?bubbles:Bool = true,

@@ -1,5 +1,6 @@
 package html5;
 
+@:native("DirectoryEntrySync")
 extern class DirectoryEntrySync extends FileEntrySync {
 	function createReader() : DirectoryReaderSync;
 	function getFile( path : String, ?options : Dynamic, ?successCallback : Entry->Void, ?errorCallback : FileError->Void ) : FileEntrySync;

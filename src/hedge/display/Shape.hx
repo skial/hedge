@@ -4,27 +4,37 @@
  */
 
 package hedge.display;
+
 import hedge.Setup;
+import hedge.events.internal.HedgeResizeDisplayEvent;
 
 class Shape extends DisplayObject {
+	
+	private var __graphic__:Graphics;
 	
 	public var graphics(getGraphics, null):Graphics;							// read only
 	
 	/* INTERNAL VARIABLES */
 	
-	private var _g:Graphics;
-
 	public function new() {
 		super();
-		
-		__jq__.bind(Setup.RESIZE_ELEMENT, { }, {});
-		_g = new Graphics(this);
 	}
 	
-	/* INTERNAL FUNCTIONS */
+	/* OVERRIDE METHODS */
 	
-	private function getGraphics():Graphics {
-		return _g;
+	override private function initialize():Void {
+		super.initialize();
+		this.initializeShape();
+	}
+	
+	/* INTERNAL METHODS */
+	
+	private function initializeShape():Void {
+		this.__graphic__ = new Graphics(this);
+	}
+	
+	private inline function getGraphics():Graphics {
+		return this.__graphic__;
 	}
 	
 }

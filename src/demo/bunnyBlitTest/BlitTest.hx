@@ -5,15 +5,20 @@
 
 package demo.bunnyBlitTest;
 
+import flash.events.MouseEvent;
 import haxe.Firebug;
-import hedge.display.Sprite;
-import hedge.display.Bitmap;
-import hedge.display.BitmapData;
-import hedge.geom.Point;
-import hedge.geom.Rectangle;
-import hedge.events.Event;
-import hedge.Lib;
+import flash.display.Sprite;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.events.Event;
+import flash.Lib;
+import haxe.io.Bytes;
+import haxe.Resource;
+#if js
 import hedge.Setup;
+#end
 
 typedef BlitBunny = {
 	var speedX:Float;
@@ -37,8 +42,12 @@ class BlitTest extends Sprite {
 	public var bitmap:Bitmap;
 	
 	public static function main() {
+		#if js
 		Firebug.redirectTraces();
 		Setup.init(run, 30);
+		#else
+		run();
+		#end
 	}
 	
 	public static function run():Void {
@@ -49,7 +58,6 @@ class BlitTest extends Sprite {
 		super();
 		bunnies = new Array<BlitBunny>();
 		var bunnyAsset:BitmapData;
-		//bunnyAsset = new BitmapData(26, 37, true, null, 'img#wabbit_alpha');
 		bunnyAsset = new BitmapData(26, 37, true, null, 'wabbit_alpha');
 		
 		for (i in 0...numBunnies) {
@@ -64,6 +72,7 @@ class BlitTest extends Sprite {
 		}
 		bitmap = new Bitmap(new BitmapData(maxX, maxY, true));
 		this.addChild(bitmap);
+		this.addEventListener(MouseEvent.CLICK, function(e:MouseEvent) { Console.log('EVENT HANDLER'); Console.log(e); } );
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 	

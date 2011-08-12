@@ -21,6 +21,7 @@ private typedef PositionOptions = {
 	var maximumAge : Float;
 }
 
+@:native("PositionError")
 private extern class PositionError {
 	static var UNKNOWN_ERROR(default,null) : Int;
     static var PERMISSION_DENIED(default,null) : Int;
@@ -30,7 +31,8 @@ private extern class PositionError {
 	var message(default,null) : String;
 }
 
-@:native("navigator.geolocation") extern class Geolocation {
+@:native("navigator.geolocation")
+extern class Geolocation {
 	static function getCurrentPosition( successCallback : Position->Void, ?error : PositionError->Void, ?options : PositionOptions ) : Void;
 	static function watchPosition( successCallback : Position->Void, ?error : PositionError->Void, ?options : PositionOptions ) : Float;
 	static function clearWatch( watchId : Int ) : Float;

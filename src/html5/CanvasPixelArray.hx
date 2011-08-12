@@ -7,6 +7,7 @@ typedef CanvasPixelArray = {
 	function setter( index : Int, value : Dynamic ) : Void;
 }
 */
+@:native("CanvasPixelArray")
 extern class CanvasPixelArray implements ArrayAccess<Dynamic> {
 	var length : Int;
 	function new() : Void {}
