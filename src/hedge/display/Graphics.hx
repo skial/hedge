@@ -17,6 +17,8 @@ import js.Lib;
 import Raphael;
 import jQuery.JQuery;
 
+using Std;
+
 // TODO http://caniuse.com/#cats=SVG
 // TODO http://www.w3.org/Graphics/SVG/ first edition
 // TODO http://www.w3.org/TR/2010/WD-SVG11-20100622/ second edition
@@ -188,7 +190,11 @@ class Graphics extends Object {
 		width -= this.line_thickness;
 		height -= this.line_thickness;
 		
-		this.checkShapeBoundaries(x, y, width, height);
+		//this.checkShapeBoundaries(x, y, width, height);
+		this.shapeW = width;
+		this.shapeH = height;
+		this.shapeX = x;
+		this.shapeY = y;
 		this.checkForCurrent();
 		
 		//this.__shape__ = this.__current__.rect((Setup.__stageWidth__ + x), (Setup.__stageHeight__ + y), width, height);
@@ -305,10 +311,8 @@ class Graphics extends Object {
 		if (this.__current__ == null) {
 			//this.__current__ = new Raphael(this.__parent__.__node__, Setup.__stageWidth__*2, Setup.__stageHeight__*2);
 			this.__current__ = new Raphael(this.__parent__.__node__, this.shapeW, this.shapeH);
-			Console.log(this.shapeW);
-			Console.log(this.shapeH);
 			//new JQuery(this.__current__.canvas).css( { position:'absolute', left: -Setup.__stageWidth__, top: -Setup.__stageHeight__ } ).css('z-index', this.depth);
-			new JQuery(this.__current__.canvas).css( { position:'absolute', left:this.shapeX, top:this.shapeY } ).css('z-index', this.depth);
+			new JQuery(this.__current__.canvas).css( { position:'relative', left:this.shapeX, top:this.shapeY } ).css('z-index', this.depth);
 			++this.depth;
 		}
 	}
