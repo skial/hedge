@@ -41,8 +41,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var rotationY(default,setRotationY):Float;
 	public var rotationZ(default,setRotationZ):Float;
 	public var scale9Grid(getScale9,setScale9):Rectangle;
-	public var scaleX(getScaleX,setScaleX):Float;
-	public var scaleY(getScaleY,setScaleY):Float;
+	public var scaleX(default,setScaleX):Float;
+	public var scaleY(default, setScaleY):Float;
+	public var scaleZ(default, setScaleZ):Float;
 	public var scrollRect(getScrollRect,setScrollRect):Rectangle;
 	public var stage(getStage,null):Stage;										//read only
 	//public var transform
@@ -117,9 +118,16 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#end
 		this.__ele__.bind(Setup.PREFIX + HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
 		
+		this.scaleX = this.scaleY = this.scaleZ = 1;
+		this.rotation = this.rotationX = this.rotationY = this.rotationZ = 0;
+		
 		var s:Dynamic = {};
 		s.setField('transform-origin', '0 0');
-		this.__ele__.css(Setup.addCSSBrowserPrefix(s));
+		s.setField('transform-style', 'preserves-3d');
+		s.setField('perspective-origin', '0 0');
+		s.setField('perspective', '0');
+		s.setField('backface-visibility', 'visible');
+		this.__ele__.css(Setup.cssPrefix(s));
 		
 		this.__ancestorPath__ = Setup.createAncestorPath(this);
 		
@@ -219,37 +227,25 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function setRotation(value:Float):Float {
 		this.rotation = value;
-		this.__ele__.css(Setup.addCSSBrowserPrefix({ transform:'rotate(' + value + 'deg)' }));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
 		return value;
 	}
 	
 	private function setRotationX(value:Float):Float {
 		this.rotationX = value;
-		this.__ele__.css(
-			Setup.addCSSBrowserPrefix( 
-				untyped { transform:'rotateX(' + value + 'deg) rotateY(' + (this.rotationY||0) + 'deg) rotateZ(' + (this.rotationZ||0) +'deg)' }
-			)
-		);
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
 		return value;
 	}
 	
 	private function setRotationY(value:Float):Float {
 		this.rotationY = value;
-		this.__ele__.css(
-			Setup.addCSSBrowserPrefix( 
-				untyped { transform:'rotateX(' + (this.rotationX||0) + 'deg) rotateY(' + value + 'deg) rotateZ(' + (this.rotationZ||0) +'deg)' }
-			)
-		);
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
 		return value;
 	}
 	
 	private function setRotationZ(value:Float):Float {
 		this.rotationZ = value;
-		this.__ele__.css(
-			Setup.addCSSBrowserPrefix( 
-				untyped { transform:'rotateX(' + (this.rotationX||0) + 'deg) rotateY(' + (this.rotationY||0) + 'deg) rotateZ(' + value +'deg)' }
-			)
-		);
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
 		return value;
 	}
 	
@@ -261,21 +257,22 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return scale9Grid;
 	}
 	
-	private function getScaleX():Float {
-		return scaleX;
-	}
-	
 	private function setScaleX(value:Float):Float {
-		scaleX = value;
-		return scaleX;
-	}
-	
-	private function getScaleY():Float {
-		return scaleY;
+		this.scaleX = value;
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		return value;
 	}
 	
 	private function setScaleY(value:Float):Float {
-		return scaleY;
+		this.scaleY = value;
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		return value;
+	}
+	
+	private function setScaleZ(value:Float):Float {
+		this.scaleZ = value;
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		return value;
 	}
 	
 	private function getScrollRect():Rectangle {

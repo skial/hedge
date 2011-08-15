@@ -157,7 +157,9 @@ class Setup {
 	
 	//	JAVASCRIPT HELPERS 
 	
-	public static function addCSSBrowserPrefix(v:Dynamic):Dynamic {
+	//	CSS HELPERS
+	
+	public static function cssPrefix(v:Dynamic):Dynamic {
 		var s;
 		for (n in Reflect.fields(v)) {
 			s = Reflect.field(v, n);
@@ -166,6 +168,10 @@ class Setup {
 			}
 		}
 		return v;
+	}
+	
+	public static inline function cssTransform(r:Float, rx:Float, ry:Float, rz:Float, sx:Float, sy:Float, sz:Float):String {
+		return 'rotate(' + r + 'deg) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz +'deg) scaleX(' + sx + ') scaleY(' + sy + ') scaleZ(' + sz + ')';
 	}
 	
 	//	COLOR HELPERS
