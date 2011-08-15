@@ -59,6 +59,8 @@ class Setup {
 	private static var __counter__:Int = 0;
 	private static var __HEFUID__:Int = 0;
 	
+	private static var __BROWSERS__:Array<String> = ['-webkit', '-moz', '-ms', '-o'];
+	
 	// PUBLIC METHODS
 	
 	public static function __init__():Void {
@@ -149,6 +151,17 @@ class Setup {
 	public static inline var PREFIX:String = 'h';
 	
 	//	JAVASCRIPT HELPERS 
+	
+	public static function addCSSBrowserPrefix(v:Dynamic):Dynamic {
+		var s;
+		for (n in Reflect.fields(v)) {
+			s = Reflect.field(v, n);
+			for (m in __BROWSERS__) {
+				Reflect.setField(v, m + '-' + n, s);
+			}
+		}
+		return v;
+	}
 	
 	//	COLOR HELPERS
 	

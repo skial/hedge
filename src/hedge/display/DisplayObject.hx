@@ -19,6 +19,7 @@ import hedge.events.internal.HedgeEnterFrame;
 import hedge.events.internal.HedgeResizeDisplayEvent;
 
 using Std;
+using Reflect;
 using clippings.Twig;
 
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
@@ -215,11 +216,9 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	private function setRotation(value:Float):Float {
 		this.rotation = value;
-		this.__ele__.css('transform', 'rotate(' + value + 'deg)')
-					.css('-moz-transform', 'rotate(' + value + 'deg)')
-					.css('-o-transform', 'rotate(' + value + 'deg)')
-					.css('-webkit-transform', 'rotate(' + value + 'deg)')
-					.css('-ms-transform', 'rotate(' + value + 'deg)');
+		var s:Dynamic = { transform:'rotate(' + value + 'deg)' };
+		s.setField('transform-origin', '0 0');
+		this.__ele__.css(Setup.addCSSBrowserPrefix(s));
 		return value;
 	}
 	
