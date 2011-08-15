@@ -26,8 +26,8 @@ class Stage extends DisplayObjectContainer {
 	public var scaleMode:String;
 	public var showDefaultContextMenu:Bool;
 	public var stageFocusRect:Bool;
-	public var stageHeight:Int;
-	public var stageWidth:Int;
+	public var stageHeight(getStageHeight, null):Int;
+	public var stageWidth(getStageWidth, null):Int;
 
 	public function new() {
 		super();
@@ -41,7 +41,7 @@ class Stage extends DisplayObjectContainer {
 		return true;
 	}
 	
-	/* OVERRIDE METHODS */
+	// OVERRIDE METHODS
 	
 	override private function initialize():Void {
 		this.initializeStage();
@@ -57,6 +57,16 @@ class Stage extends DisplayObjectContainer {
 		this.__ele__ = new JQuery(this.__node__);
 		this.__ele__.addClass('hStage');
 		this.__originalName__ = 'Stage';
+	}
+	
+	private function getStageWidth():Int {
+		this.stageWidth = this.__ele__.width();
+		return this.stageWidth;
+	}
+	
+	private function getStageHeight():Int {
+		this.stageHeight = this.__ele__.height();
+		return this.stageHeight;
 	}
 	
 }

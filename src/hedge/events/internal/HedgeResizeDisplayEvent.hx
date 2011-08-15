@@ -41,7 +41,7 @@ class HedgeResizeDisplayEvent extends Event {
 		var _j:JQuery;
 		var _c:JQuery = _t.__ele__.children();
 		_c.each(function() {
-			untyped _j = new JQuery(this);
+			_j = new JQuery(untyped __js__('this'));
 			_w = _j.width() > _w ? _j.width() : _w;
 			_h = _j.height() > _h ? _j.height() : _h;
 		} );

@@ -36,7 +36,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var opaqueBackground(getOpaqueBackground,setOpaqueBackground):Dynamic;
 	public var parent:DisplayObjectContainer;									//read only
 	public var root(getRoot,null):DisplayObject;								//read only
-	public var rotation(getRotation,setRotation):Float;
+	public var rotation(default,setRotation):Float;
+	public var rotationX(default,setRotationX):Float;
+	public var rotationY(default,setRotationY):Float;
+	public var rotationZ(default,setRotationZ):Float;
 	public var scale9Grid(getScale9,setScale9):Rectangle;
 	public var scaleX(getScaleX,setScaleX):Float;
 	public var scaleY(getScaleY,setScaleY):Float;
@@ -113,6 +116,10 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__ele__.bind('mousemove', __hedgeOnDisplayObjectMouseMove__);
 		#end
 		this.__ele__.bind(Setup.PREFIX + HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
+		
+		var s:Dynamic = {};
+		s.setField('transform-origin', '0 0');
+		this.__ele__.css(Setup.addCSSBrowserPrefix(s));
 		
 		this.__ancestorPath__ = Setup.createAncestorPath(this);
 		
@@ -210,15 +217,39 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return opaqueBackground;
 	}
 	
-	private function getRotation():Float {
-		return this.rotation;
-	}
-	
 	private function setRotation(value:Float):Float {
 		this.rotation = value;
-		var s:Dynamic = { transform:'rotate(' + value + 'deg)' };
-		s.setField('transform-origin', '0 0');
-		this.__ele__.css(Setup.addCSSBrowserPrefix(s));
+		this.__ele__.css(Setup.addCSSBrowserPrefix({ transform:'rotate(' + value + 'deg)' }));
+		return value;
+	}
+	
+	private function setRotationX(value:Float):Float {
+		this.rotationX = value;
+		this.__ele__.css(
+			Setup.addCSSBrowserPrefix( 
+				untyped { transform:'rotateX(' + value + 'deg) rotateY(' + (this.rotationY||0) + 'deg) rotateZ(' + (this.rotationZ||0) +'deg)' }
+			)
+		);
+		return value;
+	}
+	
+	private function setRotationY(value:Float):Float {
+		this.rotationY = value;
+		this.__ele__.css(
+			Setup.addCSSBrowserPrefix( 
+				untyped { transform:'rotateX(' + (this.rotationX||0) + 'deg) rotateY(' + value + 'deg) rotateZ(' + (this.rotationZ||0) +'deg)' }
+			)
+		);
+		return value;
+	}
+	
+	private function setRotationZ(value:Float):Float {
+		this.rotationZ = value;
+		this.__ele__.css(
+			Setup.addCSSBrowserPrefix( 
+				untyped { transform:'rotateX(' + (this.rotationX||0) + 'deg) rotateY(' + (this.rotationY||0) + 'deg) rotateZ(' + value +'deg)' }
+			)
+		);
 		return value;
 	}
 	

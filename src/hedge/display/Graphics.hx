@@ -18,6 +18,8 @@ import Raphael;
 import jQuery.JQuery;
 
 using Std;
+using Math;
+using StringTools;
 
 // TODO http://caniuse.com/#cats=SVG
 // TODO http://www.w3.org/Graphics/SVG/ first edition
@@ -166,22 +168,33 @@ class Graphics extends Object {
 		
 		this.checkFill();
 		this.checkLineStyle();
+		
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
-		x += this.line_thickness;
-		y += this.line_thickness;
-		width = (width/2) - this.line_thickness;
-		height = (height / 2) - this.line_thickness;
+		/*x += this.line_thickness;
+		y += this.line_thickness;*/
 		
-		this.checkShapeBoundaries(x, y, width, height);
+		//this.checkShapeBoundaries(x, y, width, height);
+		this.shapeW = width;
+		this.shapeH = height;
+		this.shapeX = x;
+		this.shapeY = y;
 		this.checkForCurrent();
 		
+		// TODO move to raphaeljs ellipse method
+		var lt = this.line_thickness / 2;
+		width = (width / 2) - lt;
+		height = (height / 2) - lt;
+		
 		//this.__shape__ = this.__current__.ellipse((Setup.__stageWidth__ + x) + width, (Setup.__stageHeight__ + y) + height, width, height);
-		this.__shape__ = this.__current__.ellipse(x + width, y + height, width, height);
+		this.__shape__ = this.__current__.ellipse(width + lt, height + lt, width, height);
 		
 		this.checkFill();
 		this.checkLineStyle();
+		
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
@@ -220,6 +233,8 @@ class Graphics extends Object {
 		
 		this.checkFill();
 		this.checkLineStyle();
+		
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 	}
 	
 	public function endFill() {
@@ -269,7 +284,7 @@ class Graphics extends Object {
 		this.line_gradient_focus = focusPointRatio;
 	}
 	
-	public function lineStyle(thickness:Float = null, color:Int = 0xFFFFFF, alpha:Float = 1.0, pixelHinting:Bool = false, scaleMode:String = 'normal', caps:String = 'none', joints:String = 'miter', miterLimit:Float = 3) {
+	public function lineStyle(thickness:Float = null, color:Int = 0x000000, alpha:Float = 1.0, pixelHinting:Bool = false, scaleMode:String = 'normal', caps:String = 'none', joints:String = 'miter', miterLimit:Float = 3) {
 		this.lineType = LineType.PLAIN;
 		this.line_thickness = thickness;
 		this.line_color = color;
@@ -393,8 +408,8 @@ class Graphics extends Object {
 			case LineType.GRADIENT:
 				
 			case LineType.PLAIN:
-				__shape__.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness)
-							.attr('stroke', this.line_color == null ? 'none' : Setup.rgb(this.line_color))
+				__shape__	.attr('stroke-width', this.line_thickness == null ? 1.0 : this.line_thickness)
+							.attr('stroke', this.line_color == null ? 'none' : Setup.toHexString(this.line_color))
 							.attr('stroke-opacity', this.line_alpha == null ? 1.0 : this.line_alpha)
 				// pixelhinting
 				// scalemode

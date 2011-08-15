@@ -59,7 +59,12 @@ class Setup {
 	private static var __counter__:Int = 0;
 	private static var __HEFUID__:Int = 0;
 	
-	private static var __BROWSERS__:Array<String> = ['-webkit', '-moz', '-ms', '-o'];
+	private static var __BROWSERS__:Array<String> = ['-webkit', '-moz', '-ms', '-o', '-khtml'
+													#if HEDGE_ALT_BROWSER_PREFIXES
+													// http://stackoverflow.com/questions/5411026/list-of-css-vendor-prefixes
+													, '-xv', '-atsc', '-wap', '-apple', '-rim', '-hp'
+													#end
+													];
 	
 	// PUBLIC METHODS
 	
@@ -167,6 +172,11 @@ class Setup {
 	
 	public static inline function rgb(v:Int):String {
 		return 'rgb(' + ((v >> 16) & 0xFF) + ',' + ((v >> 8) & 0xFF) + ',' + ((v >> 0 ) & 0xFF) + ')';
+	}
+	
+	public static inline function toHexString(v:Int, ?prefix:String = '#'):String {
+		Console.log(prefix + ((v >> 16) & 0xFF).hex(2) + ((v >> 8) & 0xFF).hex(2) + ((v >> 0) & 0xFF).hex(2));
+		return prefix + ((v >> 16) & 0xFF).hex(2) + ((v >> 8) & 0xFF).hex(2) + ((v >> 0) & 0xFF).hex(2);
 	}
 	
 	public static inline function rgba(v:Int):String {
