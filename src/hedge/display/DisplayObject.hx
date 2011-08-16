@@ -288,26 +288,36 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return scrollRect;
 	}
 	
-	private inline function setVisible(value:Bool):Bool {
+	private function setVisible(value:Bool):Bool {
 		this.visible = value;
 		this.__ele__.css('visibility', value == true ? 'visible' : 'hidden');
 		return value;
 	}
 	
-	private inline function setHeight(value:Float):Float {
-		this.height = value;
-		this.__ele__.height(value);
-		this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
-		return value;
+	private function setHeight(value:Float):Float {
+		if (this.__ele__.children().length == 0) {
+			return 0;
+		} else {
+			if (this.__ele__.children().length == 1 && this.__originalHeight__ == 0) {
+				this.__originalHeight__ = value;
+			}
+			this.scaleY = (value / this.__originalHeight__);
+			this.height = value;
+			this.__ele__.height(value);
+			this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+			
+			return value;
+		}
 	}
 	
-	private inline function setWidth(value:Float):Float {
+	private function setWidth(value:Float):Float {
 		if (this.__ele__.children().length == 0) {
 			return 0;
 		} else {
 			if (this.__ele__.children().length == 1 && this.__originalWidth__ == 0) {
 				this.__originalWidth__ = value;
 			}
+			Console.log(value / this.__originalWidth__);
 			this.scaleX = (value / this.__originalWidth__);
 			this.width = value;
 			this.__ele__.width(value);
@@ -317,20 +327,20 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		}
 	}
 	
-	private inline function getX():Float {
+	private function getX():Float {
 		return this.__ele__.position().left;
 	}
 	
-	private inline function setX(value:Float):Float {
+	private function setX(value:Float):Float {
 		this.__ele__.css('left', value + 'px');
 		return value;
 	}
 	
-	private inline function getY():Float {
+	private function getY():Float {
 		return this.__ele__.position().top;
 	}
 	
-	private inline function setY(value:Float):Float {
+	private function setY(value:Float):Float {
 		this.__ele__.css('top', value + 'px');
 		return value;
 	}
