@@ -47,14 +47,17 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	public var scrollRect(getScrollRect,setScrollRect):Rectangle;
 	public var stage(getStage,null):Stage;										//read only
 	//public var transform
-	public var visible(getVisible,setVisible):Bool;
-	public var height(getHeight,setHeight):Float;
-	public var width(getWidth,setWidth):Float;
+	public var visible(default,setVisible):Bool;
+	public var height(default,setHeight):Float;
+	public var width(default,setWidth):Float;
 	public var x(getX,setX):Float;
 	public var y(getY, setY):Float;
 	
 	public var __originalName__:String;
 	public var __ancestorPath__:Array<DisplayObject>;
+	
+	private var __originalWidth__:Float;
+	private var __originalHeight__:Float;
 	
 	#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 	private var __mouseX__:Float;
@@ -128,6 +131,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		s.setField('perspective', '0');
 		s.setField('backface-visibility', 'visible');
 		this.__ele__.css(Setup.cssPrefix(s));
+		
+		this.__originalWidth__ = this.__originalHeight__ = 0;
 		
 		this.__ancestorPath__ = Setup.createAncestorPath(this);
 		
@@ -283,33 +288,33 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		return scrollRect;
 	}
 	
-	private inline function getVisible():Bool {
-		return this.__ele__.css('display') == 'none' ? false : true;
-	}
-	
 	private inline function setVisible(value:Bool):Bool {
-		this.__ele__.css('display', 'none');
+		this.visible = value;
+		this.__ele__.css('visibility', value == true ? 'visible' : 'hidden');
 		return value;
 	}
 	
-	private inline function getHeight():Float {
-		return this.__ele__.height();
-	}
-	
 	private inline function setHeight(value:Float):Float {
+		this.height = value;
 		this.__ele__.height(value);
 		this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 		return value;
 	}
 	
-	private inline function getWidth():Float {
-		return this.__ele__.width();
-	}
-	
 	private inline function setWidth(value:Float):Float {
-		this.__ele__.width(value);
-		this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
-		return value;
+		if (this.__ele__.children().length == 0) {
+			return 0;
+		} else {
+			if (this.__ele__.children().length == 1 && this.__originalWidth__ == 0) {
+				this.__originalWidth__ = value;
+			}
+			this.scaleX = (value / this.__originalWidth__);
+			this.width = value;
+			this.__ele__.width(value);
+			this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+			
+			return value;
+		}
 	}
 	
 	private inline function getX():Float {

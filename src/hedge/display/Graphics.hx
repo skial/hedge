@@ -327,7 +327,7 @@ class Graphics extends Object {
 			//this.__current__ = new Raphael(this.__parent__.__node__, Setup.__stageWidth__*2, Setup.__stageHeight__*2);
 			this.__current__ = new Raphael(this.__parent__.__node__, this.shapeW, this.shapeH);
 			//new JQuery(this.__current__.canvas).css( { position:'absolute', left: -Setup.__stageWidth__, top: -Setup.__stageHeight__ } ).css('z-index', this.depth);
-			new JQuery(this.__current__.canvas).css( { position:'relative', left:this.shapeX, top:this.shapeY } ).css('z-index', this.depth);
+			new JQuery(this.__current__.canvas).css( { position:this.depth == 1?'absolute' :'relative', left:this.shapeX, top:this.shapeY } ).css('z-index', this.depth);
 			++this.depth;
 		}
 	}
