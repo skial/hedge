@@ -7,6 +7,7 @@ package hedge.events.internal;
 
 import hedge.events.Event;
 import hedge.events.EventPhase;
+import hedge.display.DisplayObject;
 import hedge.Setup;
 import js.Lib;
 
@@ -16,7 +17,7 @@ class HedgeEnterFrame {
 	public static var length:Int = 0;
 	public static var timer:Dynamic;
 	public static var interval:Float;
-	public static var event:Event = new Event(Event.ENTER_FRAME, false, false);
+	public static var event:Event<DisplayObject> = new Event<DisplayObject>(Event.ENTER_FRAME, false, false);
 	
 	public static function add(efes:EnterFrameEventStructure):Void {
 		if (!Reflect.hasField(efes.listener, '__HEFUID__')) {

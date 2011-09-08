@@ -136,9 +136,14 @@ class Setup {
 		}
 		
 		while (true) {
+			
 			_temp = _temp.parent;
 			
-			if (_temp.__originalName__ == 'Stage') {
+			if (_temp.__originalName__ != 'Stage') {
+				
+				_array.push(_temp);
+				
+			} else if (_temp.__originalName__ == 'Stage') {
 				
 				_array.push(_temp);
 				break;
@@ -146,7 +151,6 @@ class Setup {
 			}
 			
 		}
-		
 		return _array;
 		
 	}
@@ -170,8 +174,22 @@ class Setup {
 		return v;
 	}
 	
-	public static inline function cssTransform(r:Float, rx:Float, ry:Float, rz:Float, sx:Float, sy:Float, sz:Float):String {
-		return 'rotate(' + r + 'deg) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz +'deg) scaleX(' + sx + ') scaleY(' + sy + ') scaleZ(' + sz + ')';
+	public static inline function cssTransform(r:Float, rx:Float, ry:Float, rz:Float, sx:Float, sy:Float, sz:Float, tx:Float, ty:Float, tz:Float, e:JQuery):String {
+		return 'rotate(' + r + 'deg) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz +'deg) scaleX(' + sx + ') scaleY(' + sy + ') scaleZ(' + sz + ')'
+		+ 
+		if (Modernizr.csstransforms3d) {
+			/*trace('3d');
+			trace(' translate3d(' + tx + 'px,' + ty + 'px,' + tz + 'px)');*/
+			' translate3d(' + tx + 'px,' + ty + 'px,' + tz + 'px)';
+		} else if (Modernizr.csstransforms) {
+			/*trace('2d');
+			trace(' translate(' + tx + 'px, ' + ty + 'px)');*/
+			' translate(' + tx + 'px, ' + ty + 'px)';
+		} else {
+			//trace('normal');
+			e.css( { left:tx.string() + 'px', top:ty.string() + 'px' } );
+			'';
+		}
 	}
 	
 	//	COLOR HELPERS
@@ -181,7 +199,7 @@ class Setup {
 	}
 	
 	public static inline function toHexString(v:Int, ?prefix:String = '#'):String {
-		Console.log(prefix + ((v >> 16) & 0xFF).hex(2) + ((v >> 8) & 0xFF).hex(2) + ((v >> 0) & 0xFF).hex(2));
+		// from franco's thx library - cheers!
 		return prefix + ((v >> 16) & 0xFF).hex(2) + ((v >> 8) & 0xFF).hex(2) + ((v >> 0) & 0xFF).hex(2);
 	}
 	

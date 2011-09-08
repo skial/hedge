@@ -169,7 +169,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 	}
 	
 	public function drawEllipse(x:Float, y:Float, width:Float, height:Float) {
@@ -194,7 +194,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 	}
 	
 	public function drawRect(x:Float, y:Float, width:Float, height:Float) {
@@ -216,7 +216,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 	}
 	
 	public function drawRoundRect(x:Float, y:Float, width:Float, height:Float, radius:Float) {
@@ -234,7 +234,7 @@ class Graphics extends Object {
 		this.checkFill();
 		this.checkLineStyle();
 		
-		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+		this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 	}
 	
 	public function endFill() {
@@ -253,7 +253,7 @@ class Graphics extends Object {
 			this.checkFill();
 			this.checkLineStyle();
 			
-			this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
+			this.__parent__.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 		}
 		
 		this.__current__ = null;

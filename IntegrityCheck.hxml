@@ -1,4 +1,0 @@
--neko check.n
--lib mlib
--cp ./src
--main integritycheck.Check

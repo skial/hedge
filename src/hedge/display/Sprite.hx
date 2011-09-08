@@ -14,12 +14,12 @@ import js.Lib;
 
 class Sprite extends DisplayObjectContainer {
 	
-	public var buttonMode(getButtonMode,setButtonMode):Bool;
-	public var dropTarget(getDropTarget,setDropTarget):DisplayObject;
-	public var graphics(getGraphics,null):Graphics;							// read only
-	public var hitArea(getHitArea,setHitArea):Sprite;
+	public var buttonMode(dynamic,dynamic):Bool;
+	public var dropTarget(dynamic,dynamic):DisplayObject;
+	public var graphics(dynamic,null):Graphics;							// read only
+	public var hitArea(dynamic,dynamic):Sprite;
 	//public var soundTransform:SoundTransform;
-	public var useHandCursor(getHandCursor, setHandCursor):Bool;
+	public var useHandCursor(dynamic, dynamic):Bool;
 	
 	private var __graphic__:Graphics;
 	
@@ -39,7 +39,7 @@ class Sprite extends DisplayObjectContainer {
 	
 	/* OVERRIDE FUNCTIONS */
 	
-	/* INTERNAL FUNCTIONS */
+	// INTERNAL FUNCTIONS
 	
 	override private function initialize():Void {
 		super.initialize();
@@ -50,42 +50,42 @@ class Sprite extends DisplayObjectContainer {
 		this.__graphic__ = new Graphics(this);
 	}
 	
-	private function getButtonMode():Bool {
+	private function get_buttonMode():Bool {
 		return buttonMode;
 	}
 	
-	private function setButtonMode(value:Bool):Bool {
+	private function set_buttonMode(value:Bool):Bool {
 		buttonMode = value;
 		return buttonMode;
 	}
 	
-	private function getDropTarget():DisplayObject {
+	private function get_dropTarget():DisplayObject {
 		return dropTarget;
 	}
 	
-	private function setDropTarget(value:DisplayObject):DisplayObject {
+	private function set_dropTarget(value:DisplayObject):DisplayObject {
 		dropTarget = value;
 		return dropTarget;
 	}
 	
-	private inline function getGraphics():Graphics {
+	private function get_graphics():Graphics {
 		return this.__graphic__;
 	}
 	
-	private function getHitArea():Sprite {
+	private function get_hitArea():Sprite {
 		return hitArea;
 	}
 	
-	private function setHitArea(value:Sprite):Sprite {
+	private function set_hitArea(value:Sprite):Sprite {
 		hitArea = value;
 		return hitArea;
 	}
 	
-	private function getHandCursor():Bool {
+	private function get_handCursor():Bool {
 		return true;
 	}
 	
-	private function setHandCursor(value:Bool):Bool {
+	private function set_handCursor(value:Bool):Bool {
 		return value;
 	}
 	

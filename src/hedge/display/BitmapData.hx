@@ -54,7 +54,6 @@ class BitmapData implements IBitmapDrawable, implements ArrayAccess<Dynamic> {
 		this.__ele__ = new JQuery(this.__node__);
 		this.__ele__.attr( { id:Setup.generateInstanceName(), width:this.width, height:this.height } );
 		this.__ele__.addClass('hBitmapData');
-		
 		this.__ctx__ = this.__node__.getContext('2d');
 		
 		if (elementId == null) {

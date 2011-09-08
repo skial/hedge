@@ -11,5 +11,7 @@
 -cp ../../
 -lib clothx
 -lib raphaelExtern
+-lib html5
+-lib modernizr
 -main demo.clothx.ClothSim
 --remap flash:hedge

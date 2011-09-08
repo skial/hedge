@@ -9,9 +9,9 @@ import hedge.display.Sprite;
 import hedge.events.Event;
 import jQuery.JQuery;
 
-class HedgeResizeDisplayEvent extends Event {
+class HedgeResizeDisplayEvent extends Event<DisplayObject> {
 	
-	public function new(type:String, ?bubbles:Bool = false, ?cancelable:Bool = false) {
+	public function new(type:String, ?bubbles:Bool = true, ?cancelable:Bool = false) {
 		super(type, this.bubbles, this.cancelable);
 		this.bubbles = bubbles;
 		this.cancelable = cancelable;
@@ -19,8 +19,9 @@ class HedgeResizeDisplayEvent extends Event {
 	
 	public static inline var RESIZE_DOM_ELEMENT:String = 'resizeDomElement';
 	
-	public static function resizeDisplayObject(e:Event):Void {
-		var _t:DisplayObject = cast e.target;
+	public static function resizeDisplayObject(e:Event<DisplayObject>):Void {
+		var _t = e.target;
+		
 		/*var _x:Float = _t.x;
 		var _y:Float = _t.y;
 		var _w:Float = _t.width;
@@ -45,6 +46,7 @@ class HedgeResizeDisplayEvent extends Event {
 			_w = _j.width() > _w ? _j.width() : _w;
 			_h = _j.height() > _h ? _j.height() : _h;
 		} );
+		_t.__skipResizeEvent__ = true;
 		_w > _t.width ? _t.width = _c.last().position().left + _w : return;
 		_h > _t.height ? _t.height = _c.last().position().top + _h : return;
 	}

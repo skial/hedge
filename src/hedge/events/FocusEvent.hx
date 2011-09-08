@@ -5,8 +5,9 @@
 
 package hedge.events;
 import hedge.display.InteractiveObject;
+import hedge.display.DisplayObject;
 
-class FocusEvent extends Event {
+class FocusEvent extends Event<DisplayObject> {
 	
 	//public var keyCode:Int;	// already in jQuery.Event
 	public var relatedObject:InteractiveObject;

@@ -12,7 +12,7 @@ class Shape extends DisplayObject {
 	
 	private var __graphic__:Graphics;
 	
-	public var graphics(getGraphics, null):Graphics;							// read only
+	public var graphics(dynamic, null):Graphics;							// read only
 	
 	/* INTERNAL VARIABLES */
 	
@@ -33,7 +33,7 @@ class Shape extends DisplayObject {
 		this.__graphic__ = new Graphics(this);
 	}
 	
-	private inline function getGraphics():Graphics {
+	private inline function get_graphics():Graphics {
 		return this.__graphic__;
 	}
 	

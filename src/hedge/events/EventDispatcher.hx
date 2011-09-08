@@ -38,7 +38,7 @@ class EventDispatcher extends Object, implements IEventDispatcher {
 		}
 	}
 	
-	public function dispatchEvent(event:Event):Bool {
+	public function dispatchEvent(event:Event<Dynamic>):Bool {
 		try {
 			this.__ele__.trigger(event);
 			return true;

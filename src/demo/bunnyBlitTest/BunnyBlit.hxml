@@ -2,6 +2,8 @@
 -js ../../../bin/BunnyBlitTest/BunnyBlit.js
 -cp ../../
 -lib raphaelExtern
+-lib html5
+-lib modernizr
 -main demo.bunnyBlitTest.BlitTest
 #--dead-code-elimination
 

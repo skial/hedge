@@ -9,7 +9,7 @@ class Bitmap extends DisplayObject {
 	
 	private var __bmd__:BitmapData;
 	
-	public var bitmapData(getBitmapData, setBitmapData):BitmapData;
+	public var bitmapData(dynamic, dynamic):BitmapData;
 	public var pixelSnapping:String;
 	public var smoothing:Bool;
 
@@ -33,11 +33,11 @@ class Bitmap extends DisplayObject {
 		this.__ele__.addClass('hBitmap');
 	}
 	
-	private inline function getBitmapData():BitmapData {
+	private inline function get_bitmapData():BitmapData {
 		return this.__bmd__;
 	}
 	
-	private function setBitmapData(value:BitmapData):BitmapData {
+	private function set_bitmapData(value:BitmapData):BitmapData {
 		this.width = value.width;
 		this.height = value.height;
 		this.__node__.appendChild(value.__node__);

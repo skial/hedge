@@ -9,15 +9,15 @@ import jQuery.JQuery;
 import hedge.Setup;
 import js.Dom;
 
-class Event extends jQuery.Event {
+class Event<T> extends jQuery.Event {
 	
 	// TODO properties all read only
 	public var bubbles:Bool;
 	public var cancelable:Bool;
 	public var eventPhase:Dynamic;
 	
-	public var target(getTarget, setTarget):Dynamic;	// already in jQuery.Event
-	public var currentTarget(getCurrentTarget, setCurrentTarget):Dynamic;	// already in jQuery.Event
+	public var target(get_target, set_target):T;	// already in jQuery.Event
+	public var currentTarget(get_currentTarget, set_currentTarget):T;	// already in jQuery.Event
 	//public var type:String;	// already in jQuery.Event
 	
 	private var _type:String;
@@ -32,8 +32,8 @@ class Event extends jQuery.Event {
 		this.cancelable = cancelable;
 	}
 	
-	public function clone():Event {
-		return new Event(this.type, this.bubbles, this.cancelable);
+	public function clone():Event<T> {
+		return new Event<T>(this.type, this.bubbles, this.cancelable);
 	}
 	
 	public function formatToString(className:String, arguments):String {
@@ -89,22 +89,22 @@ class Event extends jQuery.Event {
 	
 	//	INTERNAL METHODS
 	
-	public function getTarget():Dynamic {
+	public function get_target():T {
 		this._target = new JQuery(this.target).data('__self__');
 		return this._target;
 	}
 	
-	public function setTarget(value:Dynamic):Dynamic {
+	public function set_target(value:T):T {
 		this._target = value;
 		return value;
 	}
 	
-	public function getCurrentTarget():Dynamic {
+	public function get_currentTarget():T {
 		this._currentTarget = new JQuery(this.currentTarget).data('__self__');
 		return this._currentTarget;
 	}
 	
-	public function setCurrentTarget(value:Dynamic):Dynamic {
+	public function set_currentTarget(value:T):T {
 		this._currentTarget = value;
 		return value;
 	}

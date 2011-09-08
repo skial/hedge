@@ -1,5 +1,5 @@
 -swf ../../../bin/@package/@name.swf
--swf-version 9
+-swf-version 10
 -swf-header 640:480:30:FFFFFF
 -cp ../../
 -main demo.@package.@name
@@ -11,5 +11,7 @@
 --remap flash:hedge
 -cp ../../
 -lib raphaelExtern
+-lib html5
+-lib modernizr
 -main demo.@package.@name
 #--dead-code-elimination

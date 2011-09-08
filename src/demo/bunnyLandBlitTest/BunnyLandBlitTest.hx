@@ -13,6 +13,7 @@ import hedge.display.Sprite;
 import hedge.events.Event;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
+import hedge.display.DisplayObject;
 import hedge.Lib;
 import hedge.Setup;
 
@@ -142,7 +143,7 @@ class BunnyLandBlitTest extends Sprite {
 		this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 	
-	public function onEnterFrame(e:Event):Void {
+	public function onEnterFrame(e:Event<DisplayObject>):Void {
 		//bitmap.bitmapData.lock();
 		
 		//	CAMERA MOVEMENT

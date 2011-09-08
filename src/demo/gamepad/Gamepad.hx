@@ -9,6 +9,7 @@ import hedge.events.Event;
 import hedge.events.KeyboardEvent;
 import hedge.ui.Keyboard;
 import hedge.display.Stage;
+import hedge.display.DisplayObject;
 
 class Gamepad {
 	
@@ -256,7 +257,7 @@ class Gamepad {
 	
 	// PROTECTED METHODS:
 	
-	private function onEnterFrame(event:Event):Void {
+	private function onEnterFrame(event:Event<DisplayObject>):Void {
 		step();
 	}
 	

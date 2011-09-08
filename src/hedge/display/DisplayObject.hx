@@ -10,7 +10,9 @@ import hedge.events.EventDispatcher;
 import hedge.geom.Point;
 import hedge.geom.Rectangle;
 import hedge.events.EventPhase;
+
 import js.Lib;
+import js.Dom;
 
 import jQuery.JQuery;
 
@@ -25,33 +27,34 @@ using clippings.Twig;
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	//public var accessibilityProperties
-	public var alpha(getAlpha,setAlpha):Float;
-	public var blendMode(getBlendMode,setBlendMode):String;
-	public var cacheAsBitmap(getCache,setCache):Bool;
+	public var alpha(get_alpha,set_alpha):Float;
+	public var blendMode(get_blendMode,set_blendMode):String;
+	public var cacheAsBitmap(get_cache,set_cache):Bool;
 	//public var loaderInfo(getLoader,null)										//read only
-	public var mask(getMask,setMask):DisplayObject;
-	public var mouseX(getMouseX,null):Float;									//read only
-	public var mouseY(getMouseY,null):Float;									//read only
-	public var name(getName,setName):String;
-	public var opaqueBackground(getOpaqueBackground,setOpaqueBackground):Dynamic;
+	public var mask(get_mask,set_mask):DisplayObject;
+	public var mouseX(get_mouseX,null):Float;									//read only
+	public var mouseY(get_mouseY,null):Float;									//read only
+	public var name(default,set_name):String;
+	public var opaqueBackground(get_opaqueBackground,set_opaqueBackground):Dynamic;
 	public var parent:DisplayObjectContainer;									//read only
-	public var root(getRoot,null):DisplayObject;								//read only
-	public var rotation(default,setRotation):Float;
-	public var rotationX(default,setRotationX):Float;
-	public var rotationY(default,setRotationY):Float;
-	public var rotationZ(default,setRotationZ):Float;
-	public var scale9Grid(getScale9,setScale9):Rectangle;
-	public var scaleX(default,setScaleX):Float;
-	public var scaleY(default, setScaleY):Float;
-	public var scaleZ(default, setScaleZ):Float;
-	public var scrollRect(getScrollRect,setScrollRect):Rectangle;
-	public var stage(getStage,null):Stage;										//read only
+	public var root(get_root,null):DisplayObject;								//read only
+	public var rotation(default,set_rotation):Float;
+	public var rotationX(default,set_rotationX):Float;
+	public var rotationY(default,set_rotationY):Float;
+	public var rotationZ(default,set_rotationZ):Float;
+	public var scale9Grid(get_scale9,set_scale9):Rectangle;
+	public var scaleX(default, set_scaleX):Float;
+	public var scaleY(default, set_scaleY):Float;
+	public var scaleZ(default, set_scaleZ):Float;
+	public var scrollRect(get_scrollRect,set_scrollRect):Rectangle;
+	public var stage(get_stage,null):Stage;										//read only
 	//public var transform
-	public var visible(default,setVisible):Bool;
-	public var height(default,setHeight):Float;
-	public var width(default,setWidth):Float;
-	public var x(getX,setX):Float;
-	public var y(getY, setY):Float;
+	public var visible(default, set_visible):Bool;
+	public var height(default, set_height):Float;
+	public var width(default, set_width):Float;
+	public var x(default, set_x):Float;
+	public var y(default, set_y):Float;
+	public var z(default, set_z):Float;
 	
 	public var __originalName__:String;
 	public var __ancestorPath__:Array<DisplayObject>;
@@ -64,6 +67,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	private var __mouseY__:Float;
 	#end
 	
+	public var __skipResizeEvent__:Bool;
 	public var __originalRectangle__:Rectangle;
 
 	public function new() {
@@ -106,6 +110,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__mouseY__ = 0;
 		#end
 		
+		this.__skipResizeEvent__ = false;
+		
 		this.__generateHedgeDisplayObjectElement__();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
 		
@@ -122,7 +128,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__ele__.bind(Setup.PREFIX + HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
 		
 		this.scaleX = this.scaleY = this.scaleZ = 1;
-		this.rotation = this.rotationX = this.rotationY = this.rotationZ = 0;
+		this.rotation = this.rotationX = this.rotationY = this.rotationZ = this.x = this.y = this.z = 0;
 		
 		var s:Dynamic = {};
 		s.setField('transform-origin', '0 0');
@@ -134,7 +140,8 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		this.__originalWidth__ = this.__originalHeight__ = 0;
 		
-		this.__ancestorPath__ = Setup.createAncestorPath(this);
+		// dont see why this needs creating from the get go...
+		//this.__ancestorPath__ = Setup.createAncestorPath(this);
 		
 	}
 	
@@ -154,7 +161,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.__ele__.addClass('hDisplayObject');
 	}
 	
-	private function getMouseX():Float {
+	private function get_mouseX():Float {
 		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 		return this.__mouseX__;
 		#else
@@ -162,7 +169,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#end
 	}
 	
-	private inline function getMouseY():Float {
+	private function get_mouseY():Float {
 		#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 		return this.__mouseY__;
 		#else
@@ -170,178 +177,181 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		#end
 	}
 	
-	private function getRoot():DisplayObject {
+	private function get_root():DisplayObject {
 		return root;
 	}
 	
-	private function getStage():Stage {
+	private function get_stage():Stage {
 		return Setup.__stage__;
 	}
 	
-	private inline function getAlpha():Float {
+	private function get_alpha():Float {
 		return this.__ele__.css('opacity');
 	}
 	
-	private inline function setAlpha(value:Float):Float {
+	private function set_alpha(value:Float):Float {
 		this.__ele__.css('opacity', value);
 		this.alpha = value;
 		return value;
 	}
 	
-	private function getBlendMode():String {
+	private function get_blendMode():String {
 		return blendMode;
 	}
 	
-	private function setBlendMode(value:String):String {
+	private function set_blendMode(value:String):String {
 		return blendMode;
 	}
 	
-	private function getCache():Bool {
+	private function get_cache():Bool {
 		return cacheAsBitmap;
 	}
 	
-	private function setCache(value:Bool):Bool {
+	private function set_cache(value:Bool):Bool {
 		return cacheAsBitmap;
 	}
 	
-	private function getMask():DisplayObject {
+	private function get_mask():DisplayObject {
 		return mask;
 	}
 	
-	private function setMask(value:DisplayObject):DisplayObject {
+	private function set_mask(value:DisplayObject):DisplayObject {
 		return mask;
 	}
 	
-	private inline function getName():String {
-		return this.__ele__.attr('id');
-	}
-	
-	private inline function setName(value:String):String {
-		this.__ele__.attr('id', value);
+	private function set_name(value:String):String {
 		this.name = value;
+		this.__ele__.attr('id', value);
 		return value;
 	}
 	
-	private function getOpaqueBackground():Dynamic {
+	private function get_opaqueBackground():Dynamic {
 		return opaqueBackground;
 	}
 	
-	private function setOpaqueBackground(value:Dynamic):Dynamic {
+	private function set_opaqueBackground(value:Dynamic):Dynamic {
 		return opaqueBackground;
 	}
 	
-	private function setRotation(value:Float):Float {
+	private function set_rotation(value:Float):Float {
 		this.rotation = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function setRotationX(value:Float):Float {
+	private function set_rotationX(value:Float):Float {
 		this.rotationX = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function setRotationY(value:Float):Float {
+	private function set_rotationY(value:Float):Float {
 		this.rotationY = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function setRotationZ(value:Float):Float {
+	private function set_rotationZ(value:Float):Float {
 		this.rotationZ = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function getScale9():Rectangle {
+	private function get_scale9():Rectangle {
 		return scale9Grid;
 	}
 	
-	private function setScale9(value:Rectangle):Rectangle {
+	private function set_scale9(value:Rectangle):Rectangle {
 		return scale9Grid;
 	}
 	
-	private function setScaleX(value:Float):Float {
+	private function set_scaleX(value:Float):Float {
 		this.scaleX = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function setScaleY(value:Float):Float {
+	private function set_scaleY(value:Float):Float {
 		this.scaleY = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function setScaleZ(value:Float):Float {
+	private function set_scaleZ(value:Float):Float {
 		this.scaleZ = value;
-		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ) } ));
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function getScrollRect():Rectangle {
+	private function get_scrollRect():Rectangle {
 		return scrollRect;
 	}
 	
-	private function setScrollRect(value:Rectangle):Rectangle {
+	private function set_scrollRect(value:Rectangle):Rectangle {
 		return scrollRect;
 	}
 	
-	private function setVisible(value:Bool):Bool {
+	private function set_visible(value:Bool):Bool {
 		this.visible = value;
 		this.__ele__.css('visibility', value == true ? 'visible' : 'hidden');
 		return value;
 	}
 	
-	private function setHeight(value:Float):Float {
+	private function set_height(value:Float):Float {
 		if (this.__ele__.children().length == 0) {
 			return 0;
 		} else {
 			if (this.__ele__.children().length == 1 && this.__originalHeight__ == 0) {
 				this.__originalHeight__ = value;
 			}
-			this.scaleY = (value / this.__originalHeight__);
+			
+			var _v = (value / this.__originalHeight__);
+			_v != 1 ? this.scaleY = _v : '';
+			
 			this.height = value;
 			this.__ele__.height(value);
-			this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 			
+			//this.__skipResizeEvent__ ? this.__skipResizeEvent__ = false : this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 			return value;
 		}
 	}
 	
-	private function setWidth(value:Float):Float {
+	private function set_width(value:Float):Float {
 		if (this.__ele__.children().length == 0) {
 			return 0;
 		} else {
 			if (this.__ele__.children().length == 1 && this.__originalWidth__ == 0) {
 				this.__originalWidth__ = value;
 			}
-			Console.log(value / this.__originalWidth__);
-			this.scaleX = (value / this.__originalWidth__);
+			
+			var _v = (value / this.__originalWidth__);
+			_v != 1 ? this.scaleX = _v : '';
+			
 			this.width = value;
 			this.__ele__.width(value);
-			this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, false, false));
 			
+			//this.__skipResizeEvent__ ? this.__skipResizeEvent__ = false : this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 			return value;
 		}
 	}
 	
-	private function getX():Float {
-		return this.__ele__.position().left;
-	}
-	
-	private function setX(value:Float):Float {
-		this.__ele__.css('left', value + 'px');
+	private function set_x(value:Float):Float {
+		this.x = value;
+		//this.__ele__.css('left', value + 'px');
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	
-	private function getY():Float {
-		return this.__ele__.position().top;
+	private function set_y(value:Float):Float {
+		this.y = value;
+		//this.__ele__.css('top', value + 'px');
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
+		return value;
 	}
 	
-	private function setY(value:Float):Float {
-		this.__ele__.css('top', value + 'px');
+	private function set_z(value:Float):Float {
+		this.z = value;
+		this.__ele__.css(Setup.cssPrefix( { transform:Setup.cssTransform(rotation, rotationX, rotationY, rotationZ, scaleX, scaleY, scaleZ, x, y, z, __ele__) } ));
 		return value;
 	}
 	

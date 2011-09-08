@@ -5,8 +5,9 @@
 
 package hedge.events;
 import hedge.display.InteractiveObject;
+import hedge.display.DisplayObject;
 
-class MouseEvent extends Event {
+class MouseEvent extends Event<DisplayObject> {
 	
 	//public var altKey:Bool;	// already in jQuery.Event
 	public var buttonDown:Bool;
@@ -45,7 +46,7 @@ class MouseEvent extends Event {
 		super(type, this.bubbles, this.cancelable);
 	}
 	
-	override public function clone():Event {
+	override public function clone():Event<DisplayObject> {
 		return new MouseEvent(this.type, this.bubbles, this.cancelable, this.localX, this.localY, this.relatedObject, this.ctrlKey, this.altKey,
 										this.shiftKey, this.buttonDown, this.delta);
 	}

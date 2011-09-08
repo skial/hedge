@@ -1,6 +1,8 @@
 -js ../../../bin/BunnyLandBlitTest/BunnyLand.js
 -cp ../../
 -lib raphaelExtern
+-lib html5
+-lib modernizr
 -main demo.bunnyLandBlitTest.BunnyLandBlitTest
 #--dead-code-elimination
 

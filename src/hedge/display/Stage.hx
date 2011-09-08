@@ -26,8 +26,8 @@ class Stage extends DisplayObjectContainer {
 	public var scaleMode:String;
 	public var showDefaultContextMenu:Bool;
 	public var stageFocusRect:Bool;
-	public var stageHeight(getStageHeight, null):Int;
-	public var stageWidth(getStageWidth, null):Int;
+	public var stageHeight(dynamic, null):Int;
+	public var stageWidth(dynamic, null):Int;
 
 	public function new() {
 		super();
@@ -59,12 +59,12 @@ class Stage extends DisplayObjectContainer {
 		this.__originalName__ = 'Stage';
 	}
 	
-	private function getStageWidth():Int {
+	private function get_stageWidth():Int {
 		this.stageWidth = this.__ele__.width();
 		return this.stageWidth;
 	}
 	
-	private function getStageHeight():Int {
+	private function get_stageHeight():Int {
 		this.stageHeight = this.__ele__.height();
 		return this.stageHeight;
 	}

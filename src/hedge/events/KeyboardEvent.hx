@@ -4,8 +4,9 @@
  */
 
 package hedge.events;
+import hedge.display.DisplayObject;
 
-class KeyboardEvent extends Event {
+class KeyboardEvent extends Event<DisplayObject> {
 	
 	//public var altKey:Bool;	// already in jQuery.Event
 	//public var charCode:Int;	// already in jQuery.Event
@@ -40,9 +41,9 @@ class KeyboardEvent extends Event {
 		super(this.type, this.bubbles, this.cancelable);
 	}
 	
-	override public function clone():Event {
+	override public function clone():Event<DisplayObject> {
 		return new KeyboardEvent(	this.type, this.bubbles, this.cancelable, this.charCode, this.keyCode, this.keyLocation, this.ctrlKey, this.altKey,
-											this.shiftKey); //TODO need to add controlKeyValue and commandKeyValue from constructor
+									this.shiftKey); //TODO need to add controlKeyValue and commandKeyValue from constructor
 	}
 	
 	/*override public function toString():String {
