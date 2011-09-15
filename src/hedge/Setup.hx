@@ -53,6 +53,7 @@ class Setup {
 	public static var __stageY__:Int = 0;
 	
 	public static var __fps__:Int = 30;
+	public static var __background__:Int = 0xFFFFFF;
 	
 	// INTERNAL PROPERTIES
 	
@@ -75,8 +76,11 @@ class Setup {
 		//untyped jQuery.Event.currentTarget
 	}
 	
-	public static function init(_callback:Dynamic, ?fps:Int = 30, ?stageName:String = 'Stage') {
+	public static function init(_callback:Dynamic, ?fps:Int = 30, ?background:Int = 0xFFFFFF, ?stageWidth:Int = 800, ?stageHeight:Int = 600, ?stageName:String = 'Stage') {
 		__fps__ = fps;
+		__background__ = background;
+		__stageWidth__ = stageWidth;
+		__stageHeight__ = stageHeight;
 		
 		__storage__ = js.Lib.document.createElement('div');
 		__storage__.setAttribute('id', 'hInternalStorage');
