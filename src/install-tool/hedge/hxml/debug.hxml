@@ -1,0 +1,8 @@
+-main ApplicationMain ::HAXE_FLAGS::
+-js ::BUILD_DIR::/hedge/bin/::APP_FILE::.js
+-cp ::BUILD_DIR::/hedge/haxe
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-debug
+

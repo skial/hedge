@@ -86,6 +86,7 @@ class Setup {
 		__storage__.setAttribute('id', 'hInternalStorage');
 		
 		__ele__ = js.Lib.document.getElementById(stageName);
+		__ele__.style.backgroundColor = Setup.rgb(__background__);
 		__ele__.setAttribute('data-version', __version__.string());
 		__ele__.setAttribute('data-project', __project__);
 		__ele__.setAttribute('data-haXe', __haxe__);

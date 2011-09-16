@@ -26,8 +26,8 @@ class Stage extends DisplayObjectContainer {
 	public var scaleMode:String;
 	public var showDefaultContextMenu:Bool;
 	public var stageFocusRect:Bool;
-	public var stageHeight(dynamic, null):Int;
-	public var stageWidth(dynamic, null):Int;
+	public var stageHeight(get_stageHeight, null):Int;
+	public var stageWidth(get_stageWidth, null):Int;
 
 	public function new() {
 		super();
