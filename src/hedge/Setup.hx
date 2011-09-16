@@ -54,6 +54,9 @@ class Setup {
 	public static var __fps__:Int = 30;
 	public static var __background__:Int = 0xFFFFFF;
 	
+	public static var __creationQueue__:Array<DisplayObject> = new Array<DisplayObject>();
+	public static var __initialized__:Bool = false;
+	
 	// INTERNAL PROPERTIES
 	
 	private static var __counter__:Int = 0;
@@ -86,6 +89,12 @@ class Setup {
 		__storage__ = js.Lib.document.createElement('div');
 		__storage__.setAttribute('id', 'hInternalStorage');
 		
+		if (__creationQueue__.length != 0) {
+			for (n in __creationQueue__) {
+				__storage__.appendChild(n.__node__);
+			}
+		}
+		
 		// get the root dom object being used as the Stage object and set basic values
 		__ele__ = js.Lib.document.getElementById(stageName);
 		__ele__.style.backgroundColor = Setup.rgb(__background__);
@@ -116,6 +125,8 @@ class Setup {
 		Lib.current = __stage__;
 		
 		primaryMouseButtonDown();
+		
+		__initialized__ = true;
 		
 		_callback();
 	}

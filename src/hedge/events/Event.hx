@@ -56,7 +56,7 @@ class Event<T> extends jQuery.Event {
 	}*/
 	
 	public function toString():String {
-		return '[Event type="'+this._type+'" bubbles='+this.bubbles+' cancelable='+this.cancelable+' eventPhase=?]';
+		return '[Event type="' + this._type + '" bubbles=' + this.bubbles + ' cancelable=' + this.cancelable + ' eventPhase=?]';
 	}
 	
 	public static var ACTIVATE:String = 'activate';

@@ -158,7 +158,11 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	private function __generateHedgeDisplayObjectElement__():Void {
 		this.__node__ = Lib.document.createElement('div');
 		
-		Setup.__storage__.appendChild(this.__node__);
+		if (Setup.__initialized__ == true) {
+			Setup.__storage__.appendChild(this.__node__);
+		} else {
+			Setup.__creationQueue__.push(this);
+		}
 		
 		this.__ele__ = new JQuery(this.__node__);
 		this.__ele__.addClass('hDisplayObject');

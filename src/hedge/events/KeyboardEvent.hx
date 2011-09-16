@@ -46,9 +46,9 @@ class KeyboardEvent extends Event<DisplayObject> {
 									this.shiftKey); //TODO need to add controlKeyValue and commandKeyValue from constructor
 	}
 	
-	/*override public function toString():String {
-		return '';
-	}*/
+	override public function toString():String {
+		return '[KeyboardEvent type="' + this._type + '" bubbles=' + this.bubbles + ' cancelable=' + this.cancelable + ' eventPhase=?]';
+	}
 	
 	public function updateAfterEvent():Void {
 		

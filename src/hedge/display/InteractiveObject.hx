@@ -135,6 +135,7 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeKeyDown(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
+		Console.log(e);
 		this.__ele__.trigger(
 							new KeyboardEvent(
 												KeyboardEvent.KEY_DOWN,
