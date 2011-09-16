@@ -1,40 +1,17 @@
-# hedge - *a javascript implementation of the Flash9 haXe api.*
+# hedge - *a javascript implementation of the Flash9+ haXe api.*
 
 For an alternative, more **finished flash to javascript / html(5) library**, take a look at [jeash](https://launchpad.net/jeash).
 
-## contribute
+## Contribute
 This project **encourages** contributions.
 
-## required javascript & haXe libraries
+## Required JavaScript & haXe Libraries
 + [jQuery](http://jquery.com)
-+ [raphaeljs](http://raphaeljs.com/)
-+ [jQueryExtern](https://github.com/andyli/jQueryExternForHaxe)
-+ [raphaelExtern](https://github.com/andyli/raphaelExternForHaxe)
++ [RaphaelJS](http://raphaeljs.com/)
++ [RaphaelExtern on Github](https://github.com/andyli/raphaelExternForHaxe) or [RaphaelExtern on HaxeLib](http://lib.haxe.org/p/raphaelExtern)
 
-jQuery is used extensively through out the library. Raphaeljs is used only for the vector graphics. This could change.
-
-## examples
-I recommend using Chrome to view the examples. Chrome runs the quickest for me, then Safari, Opera, Firefox 4.0 *(beta)*.
-
-Both examples are set to run at 30fps.
-
+## Examples
 + [1] [BunnyMark BlitTest](http://skial.github.com/hedge/BunnyBlitTest.html) | Runs at 45fps(chrome) about, with 3000 max bunnies. Canvas at 640x480.
 + [2] [BunnyLand BlitTest](http://skial.github.com/hedge/BunnyLandBlitTest.html) | Runs at 50fps(chrome) about, with 3000 max bunnies. Canvas at 4046x4046.
 
 You can compare demo **[1]** with the pure javascript version by [iain lobb](http://iainlobb.com/bunnies/bunnies.html).
-
-Examples [1] and [2]  also show a textfield and sprite button which are usable. Example [2] textfield and sprite button occasionally break and will stop rendering bunnies.
-
-## notes
-possible js libraries to use in place of certain flash9 areas.
-
-+ [1] - [http://blog.iainlobb.com/2010/11/display-list-vs-blitting-results.html](http://blog.iainlobb.com/2010/11/display-list-vs-blitting-results.html)
-+ [2] - [http://iainlobb.com/bunnies/bunnies.html](http://iainlobb.com/bunnies/bunnies.html)
-+ [3] - [https://github.com/pnitsch/BitmapData.js](https://github.com/pnitsch/BitmapData.js)
-+ [4] - [http://attacklab.net/showdown/](http://attacklab.net/showdown/)
-+ [5] - [http://markitup.jaysalvat.com/home/](http://markitup.jaysalvat.com/home/)
-+ [6] - [http://www.ben-daglish.net/textile.shtml](http://www.ben-daglish.net/textile.shtml)
-
-Code from [1] was used for **example [1]**. [2] is for comparison to **example [1]**.
-[3] could possibly be used as a replacement to my bitmapData implementation.
-[4] [5] and [6] might be used for textFields html methods as I'm using a html textarea as a textField.
