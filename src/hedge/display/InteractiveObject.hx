@@ -285,6 +285,9 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeRollOut(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
+		
+		this.__ele__.removeAttr('tabIndex').blur();
+		
 		this.__ele__.trigger(
 							new MouseEvent(
 											MouseEvent.ROLL_OUT,
@@ -308,6 +311,9 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeRollOver(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
+		
+		this.__ele__.attr('tabIndex', '-1').focus();
+		
 		this.__ele__.trigger(
 							new MouseEvent(
 											MouseEvent.ROLL_OVER,

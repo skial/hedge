@@ -146,8 +146,12 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
 	#if !DISABLE_HEDGE_DISPLAYOBJECT_MOUSEXY
 	private function __hedgeOnDisplayObjectMouseMove__(e):Void {
-		this.__mouseX__ = e.offsetX;
-		this.__mouseY__ = e.offsetY;
+		/*this.__mouseX__ = e.offsetX;
+		this.__mouseY__ = e.offsetY;*/
+		
+		// jquery normalizes pageX across platform. Sub Stage x and y values.
+		this.__mouseX__ = e.pageX - Setup.__stageX__;
+		this.__mouseY__ = e.pageY - Setup.__stageY__;
 	}
 	#end
 	

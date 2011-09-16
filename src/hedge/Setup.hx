@@ -76,14 +76,17 @@ class Setup {
 	}
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?background:Int = 0xFFFFFF, ?stageWidth:Int = 800, ?stageHeight:Int = 600, ?stageName:String = 'Stage') {
+		// store values for later use
 		__fps__ = fps;
 		__background__ = background;
 		__stageWidth__ = stageWidth;
 		__stageHeight__ = stageHeight;
 		
+		// create off screen element, where every displaylist object will be placed when they are created eg 'new Sprite()'
 		__storage__ = js.Lib.document.createElement('div');
 		__storage__.setAttribute('id', 'hInternalStorage');
 		
+		// get the root dom object being used as the Stage object and set basic values
 		__ele__ = js.Lib.document.getElementById(stageName);
 		__ele__.style.backgroundColor = Setup.rgb(__background__);
 		__ele__.setAttribute('data-version', __version__.string());
@@ -103,10 +106,12 @@ class Setup {
 		__stageX__ = new JQuery(__ele__).position().left.int();
 		__stageY__ = new JQuery(__ele__).position().top.int();
 		
+		// create the one and only Stage object
 		__stage__ = new Stage();
 		__stage__.name = stageName;
 		__stage__.parent = null;
 		__stage__.__ele__.unbind(Setup.PREFIX + HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
+		__stage__.__ele__.bind('keydown', function(e) { Console.log(e);} );
 		
 		Lib.current = __stage__;
 		

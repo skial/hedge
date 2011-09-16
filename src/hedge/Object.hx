@@ -18,6 +18,9 @@ class Object implements Dynamic {
 	
 	public function new() {
 		this.initialize();
+		if (this.__ele__ != null) {
+			this.__ele__.addClass('hObject');
+		}
 	}
 	
 	public function hasOwnProperty(name:String):Bool {
