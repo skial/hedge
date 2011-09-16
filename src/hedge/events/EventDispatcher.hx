@@ -14,8 +14,6 @@ import js.Lib;
 import hedge.Object;
 import hedge.Setup;
 
-using clippings.Twig;
-
 class EventDispatcher extends Object, implements IEventDispatcher {
 	
 	private var _:Dynamic;

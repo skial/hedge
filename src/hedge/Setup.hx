@@ -21,7 +21,6 @@ import jQuery.JQuery;
 
 using Std;
 using StringTools;
-using clippings.Twig;
 
 typedef EnterFrameEventStructure = {
 	var listener:Dynamic;

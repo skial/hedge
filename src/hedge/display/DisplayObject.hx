@@ -22,7 +22,6 @@ import hedge.events.internal.HedgeResizeDisplayEvent;
 
 using Std;
 using Reflect;
-using clippings.Twig;
 
 class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 	
