@@ -15,8 +15,8 @@ class KeyboardEvent extends Event<DisplayObject> {
 	public var keyLocation:Int;
 	//public var shiftKey:Bool;	// already in jQuery.Event
 	
-	public static inline var KEY_DOWN:String = 'keyDown';
-	public static inline var KEY_UP:String = 'keyUp';
+	public static var KEY_DOWN:String = 'keyDown';
+	public static var KEY_UP:String = 'keyUp';
 
 	public function new(type:String,
 							?bubbles:Bool = true,

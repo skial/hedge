@@ -1,0 +1,2 @@
+Graphics::moveTo::lineTo - you need to finish with Graphics::endFill() - its good practise.
+DisplayObject::getBounds() - doesnt take into account strokes etc from displayObject.graphics. TODO

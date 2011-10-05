@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+	
+<head>
+	<meta charset="utf-8">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>hedge unit tests</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<style>
+		body {
+			min-width:600px;
+			min-height:800px;
+			max-width:100%;
+			max-height:100%;
+		}
+	
+		#header {
+			background:red;
+			width:100%;
+			height:100px;
+		}
+		
+		.result_holder {
+			float:left;
+			width:50%;
+			height:500px;
+		}
+		
+		#js {
+			background:pink;
+		}
+		
+		#fl {
+			background:orange;
+		}
+		
+		#js_stage {
+			background:orange;
+		}
+		
+		#fl_stage {
+			background:pink;
+		}
+		
+		.stage {
+			width:100%;
+			height:200px;
+		}
+		
+		.results {
+			
+		}
+		
+	</style>
+	
+	<link rel="stylesheet" href="../../bin/css/style.css?v=1">
+	
+	<script type="text/javascript" src="../../bin/lib/swfobject.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js?v=1"></script>	
+	
+</head>
+
+<body>
+	
+	<div id="header"></div>
+	
+	<div class="result_holder" id="js">
+		<div class="stage" id="js_stage"></div>
+		<ul class="results"></ul>
+	</div>
+	
+	<div class="result_holder" id="fl">
+		<div class="stage" id="fl_stage"></div>
+		<ul class="results"></ul>
+	</div>
+	
+	<script src="http://www.browserscope.org/ua?o=js"></script>
+	
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+# Flash 9+
+-main TestMain
+-cp src
+-cp tests/test
+#-D testDebug
+-lib munit
+-lib mlib
+-swf-version 9
+-swf tests/bin/as3_test.swf
+
+--next
+
+#Flash 8
+-main TestMain
+-cp src
+-cp tests/test
+-lib munit
+-lib mlib
+-swf-version 8
+-swf tests/bin/as2_test.swf
+
+--next
+
+# JavaScript
+-main TestMain
+-cp src
+-cp tests/test
+-lib munit
+-lib mlib
+-js tests/bin/js_test.js
+
+--next
+
+# Neko
+-main TestMain
+-cp src
+-cp tests/test
+-lib munit
+-lib mlib
+-neko tests/bin/neko_test.n

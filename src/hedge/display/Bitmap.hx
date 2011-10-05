@@ -9,7 +9,7 @@ class Bitmap extends DisplayObject {
 	
 	private var __bmd__:BitmapData;
 	
-	public var bitmapData(dynamic, dynamic):BitmapData;
+	public var bitmapData(get_bitmapData, set_bitmapData):BitmapData;
 	public var pixelSnapping:String;
 	public var smoothing:Bool;
 

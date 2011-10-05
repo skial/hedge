@@ -1,0 +1,57 @@
+mousewheel functionality/plugin by https://github.com/brandonaaron/jquery-mousewheel
+
+hedge parameters (haxe -D option)
+	WEBGL_2D - 	Allows you to render to webgl canvas for all bitmapdata operations, if webgl is missing then falls back to canvas. 
+				You will need webgl-2d.js for this to work.
+	
+	HEDGE_ALT_BROWSER_PREFIXES - !UNTESTED! - Allows you to add '-xv', '-atsc', '-wap', '-apple', '-rim', '-hp' browser prefixes.
+				
+haxe threejs
+	three.Sprite
+		-	removed rotation, already in super class
+		-	removed	updateMatrix, already in super class
+	
+	three.WebGLRenderer
+		-	made renderTarget optional
+
+haxe jQuery
+	jQuery.Event
+		-	removed currentTarget
+		-	removed target
+		-	added layerX
+		-	added layerY
+		-	changed which type to Dynamic
+		-	added charCode
+		
+MISSING OR ACTS DIFFERENT
+
+	renaming all getter and setters from getSomething -> get_something, feel its easier to read. Taste change :)
+
+	hedge.display.DisplayObject
+		-	cacheAsBitmap
+		-	opaqueBackground
+		-	scaleX/Y - in test DisplayObject_WidthExample at large value changes object starts to get blured. Test uses svg element. Might have to use native svg scale instead of css scale.
+	
+	hedge.display.InteractiveObject
+		-	keyFocusChange event
+		-	mouseFocusChange event
+		-	tabChildrenChange event
+		-	tabEnabledChange event
+		-	tabIndexChange event
+		
+	hedge.text.TextField
+		-	setDefaultTextFormat - need to implement bullet - each paragraph <p> into unordered list <ul> ?
+		-	autosize - flash version seems to be 4px more on both width and height.
+	
+	hedge.text.TextFormat
+		-	kerning	- doesnt apply
+		-	tabStops- dont know what it is
+		-	url		- dont think I will implement it
+		-	autoSize- LEFT, CENTER, RIGHT dont do anything but allow the textfield to resize on its own. NONE works as normal.
+		
+	hedge.events.Event
+		-	Event now takes a type param T. Allows you to use e.target.alpha = 0.5 without having to cast e.target to displayObject to access alpha's getter and setter functions.
+		
+DIRET JS __PROTO__ EDITING
+	hedge.events.internal.HedgeEnterFrame
+		-	adding __HEFUID__ property to passed function, so we can track it.

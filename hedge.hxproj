@@ -29,6 +29,7 @@
   <haxelib>
     <library name="clothx" />
     <library name="mlib" />
+    <library name="munit" />
     <library name="raphaelExtern" />
     <library name="hxColorToolkit" />
     <library name="modernizr" />

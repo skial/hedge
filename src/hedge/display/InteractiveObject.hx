@@ -107,6 +107,7 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeFocusIn(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
+		trace('focusin');
 		this.__ele__.trigger(
 							new FocusEvent(
 											FocusEvent.FOCUS_IN,
@@ -121,6 +122,8 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeFocusOut(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
+		new JQuery(untyped e.target).removeAttr('tabindex').blur();
+		trace('focusout');
 		this.__ele__.trigger(
 							new FocusEvent(
 											FocusEvent.FOCUS_OUT,
@@ -135,7 +138,6 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeKeyDown(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
-		Console.log(e);
 		this.__ele__.trigger(
 							new KeyboardEvent(
 												KeyboardEvent.KEY_DOWN,
@@ -226,7 +228,7 @@ class InteractiveObject extends DisplayObject {
 	}
 	
 	private function onHedgeMouseOver(e:jQuery.Event):Void {
-		//this.__ele__.attr('tabindex', 0).focus();
+		//this.__ele__.attr('tabindex', '-1').focus();
 		e.stopImmediatePropagation();
 		e.preventDefault();
 		this.__ele__.trigger(
@@ -312,7 +314,7 @@ class InteractiveObject extends DisplayObject {
 	private function onHedgeRollOver(e:jQuery.Event):Void {
 		e.stopImmediatePropagation();
 		e.preventDefault();
-		
+		Console.log(e.relatedTarget);
 		this.__ele__.attr('tabIndex', '-1').focus();
 		
 		this.__ele__.trigger(
