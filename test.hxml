@@ -5,36 +5,41 @@
 #-D testDebug
 -lib munit
 -lib mlib
--swf-version 9
+-swf-version 10
+-swf-header 500:250:30:FFFFFF
 -swf tests/bin/as3_test.swf
 
---next
+#--next
 
-#Flash 8
--main TestMain
--cp src
--cp tests/test
--lib munit
--lib mlib
--swf-version 8
--swf tests/bin/as2_test.swf
+# Flash 8
+#-main TestMain
+#-cp src
+#-cp tests/test
+#-lib munit
+#-lib mlib
+#-swf-version 8
+#-swf tests/bin/as2_test.swf
 
 --next
 
 # JavaScript
 -main TestMain
+--remap flash:hedge
 -cp src
 -cp tests/test
 -lib munit
 -lib mlib
+-lib raphaelExtern
+-lib html5
+-lib modernizr
 -js tests/bin/js_test.js
 
---next
+#--next
 
 # Neko
--main TestMain
--cp src
--cp tests/test
--lib munit
--lib mlib
--neko tests/bin/neko_test.n
+#-main TestMain
+#-cp src
+#-cp tests/test
+#-lib munit
+#-lib mlib
+#-neko tests/bin/neko_test.n

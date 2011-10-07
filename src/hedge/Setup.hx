@@ -78,9 +78,9 @@ class Setup {
 		//untyped jQuery.Event.currentTarget
 	}
 	
-	public static function init(_callback:Dynamic, ?fps:Int = 30, ?background:Int = 0xFFFFFF, ?stageWidth:Int = 800, ?stageHeight:Int = 600, ?stageName:String = 'Stage') {
+	public static function init(_callback:Dynamic, ?fps:Int = 30, ?background:Int = null, ?stageWidth:Int = 0, ?stageHeight:Int = 0, ?stageName:String = 'Stage') {
 		// store values for later use
-		__fps__ = fps;
+		__fps__ = fps > 60 ? 60 : fps;
 		__background__ = background;
 		__stageWidth__ = stageWidth;
 		__stageHeight__ = stageHeight;
@@ -97,21 +97,29 @@ class Setup {
 		
 		// get the root dom object being used as the Stage object and set basic values
 		__ele__ = js.Lib.document.getElementById(stageName);
-		__ele__.style.backgroundColor = Setup.rgb(__background__);
+		if (__background__ != null) {
+			__ele__.style.backgroundColor = Setup.rgb(__background__);
+		}
 		__ele__.setAttribute('data-version', __version__.string());
 		__ele__.setAttribute('data-project', __project__);
 		__ele__.setAttribute('data-haXe', __haxe__);
 		__ele__.appendChild(__storage__);
 		
-		__stageWidth__ = new JQuery(__ele__).innerWidth();
-		__stageHeight__ = new JQuery(__ele__).innerHeight();
+		// check and set stage width / height values
+		
 		if (__stageWidth__ == 0) {
 			__stageWidth__ = new JQuery(__ele__).parent().innerWidth();
-		}
-		if (__stageHeight__ == 0) {
-			__stageHeight__ = new JQuery(__ele__).parent().innerHeight();
+		} else {
+			__ele__.style.width = __stageWidth__.string() + 'px';
 		}
 		
+		if (__stageHeight__ == 0) {
+			__stageHeight__ = new JQuery(__ele__).parent().innerHeight();
+		} else {
+			__ele__.style.height = __stageHeight__.string() + 'px';
+		}
+		
+		// set stage x / y values
 		__stageX__ = new JQuery(__ele__).position().left.int();
 		__stageY__ = new JQuery(__ele__).position().top.int();
 		

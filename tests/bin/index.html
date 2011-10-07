@@ -11,10 +11,14 @@
 	
 	<style>
 		body {
-			min-width:600px;
-			min-height:800px;
-			max-width:100%;
-			max-height:100%;
+			width:100%;
+			height:100%;
+		}
+		
+		#holder {
+			width:1000px;
+			height:100%;
+			margin:auto;
 		}
 	
 		#header {
@@ -26,7 +30,7 @@
 		.result_holder {
 			float:left;
 			width:50%;
-			height:500px;
+			min-height:500px;
 		}
 		
 		#js {
@@ -47,37 +51,90 @@
 		
 		.stage {
 			width:100%;
-			height:200px;
+			height:250px;
+			margin:0px;
 		}
 		
 		.results {
 			
 		}
 		
+		.pass {
+			
+		}
+		
+		.pass:before {
+			content:url(img/accept.png);
+		}
+		
+		.fail {
+			
+		}
+		
+		.fail:before {
+			content:url(img/exclamation.png);
+		}
+		
+		.error {
+			
+		}
+		
+		.error:before {
+			content:url(img/error.png);
+		}
+		
+		.ignore {
+			text-decoration:line-through;
+			opacity:0.5;
+		}
+		
+		.ignore:before {
+			content:url(img/picture_empty.png);
+		}
+		
 	</style>
 	
 	<link rel="stylesheet" href="../../bin/css/style.css?v=1">
+	<link rel="stylesheet" href="../../bin/css/hedge.css?v=1">
 	
-	<script type="text/javascript" src="../../bin/lib/swfobject.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js?v=1"></script>	
+	
+	
 	
 </head>
 
 <body>
 	
-	<div id="header"></div>
-	
-	<div class="result_holder" id="js">
-		<div class="stage" id="js_stage"></div>
-		<ul class="results"></ul>
+	<div id="holder">
+		<div id="header"></div>
+		
+		<div class="result_holder" id="js">
+			<div class="stage" id="js_stage"></div>
+			<ul class="results"></ul>
+		</div>
+		
+		<div class="result_holder" id="fl">
+			<div class="stage" id="fl_stage"></div>
+			<ul class="results"></ul>
+		</div>
+		<script src="http://www.browserscope.org/ua?o=js"></script>
 	</div>
 	
-	<div class="result_holder" id="fl">
-		<div class="stage" id="fl_stage"></div>
-		<ul class="results"></ul>
-	</div>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/1.5.2/raphael-min.js"></script>	
+	<script src="../../bin/lib/modernizr-2.0.min.js"></script>
+	<script src="js_test.js"></script>
 	
-	<script src="http://www.browserscope.org/ua?o=js"></script>
+	<script type="text/javascript">
+		var flashvars = {};
+		var params = {};
+		params.scale = "noscale";
+		params.allowscriptaccess = "always";
+		params.allownetworking = "all";
+		var attributes = {};
+		attributes.id = "fl_stage";
+		swfobject.embedSWF("as3_test.swf", "fl_stage", "500", "250", "10.0.0", false, flashvars, params, attributes);
+	</script>
 	
 </body>
 

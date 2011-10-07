@@ -77,7 +77,10 @@ class DisplayObjectContainer extends InteractiveObject {
 	
 	public function removeChildAt(index:Int):DisplayObject {
 		this.__ele__.trigger(new Event(Event.REMOVED, true, false));
-		return new DisplayObject();
+		var child:DisplayObject = cast(new JQuery(this.__ele__.children('.hObject').get(index)).data('__self__'), DisplayObject);
+		Setup.__storage__.appendChild(child.__node__);
+		child.parent = this.stage;
+		return child;
 	}
 	
 	public function setChildIndex(child:DisplayObject, index:Int) {
