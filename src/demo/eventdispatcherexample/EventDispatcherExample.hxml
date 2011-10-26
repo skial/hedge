@@ -1,0 +1,17 @@
+-swf ../../../bin/eventdispatcherexample/EventDispatcherExample.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.eventdispatcherexample.EventDispatcherExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/eventdispatcherexample/EventDispatcherExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.eventdispatcherexample.EventDispatcherExample
+#--dead-code-elimination

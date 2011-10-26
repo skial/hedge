@@ -1,6 +1,7 @@
 package ;
 
 import haxe.Firebug;
+import haxe.Http;
 import haxe.remoting.Connection;
 import haxe.remoting.Context;
 import haxe.remoting.ExternalConnection;
@@ -10,10 +11,11 @@ import massive.munit.TestRunner;
 import unitTest.munit.client.GoogleFormClient;
 
 #if js
-import hedge.display.Stage;
 import jQuery.JQuery;
 import js.Lib;
 import hedge.Setup;
+#elseif flash9
+import flash.system.Capabilities;
 #end
 
 /**
@@ -21,15 +23,21 @@ import hedge.Setup;
  * @author Skial Bainn
  */
 
+typedef CompareResultObject = {
+	var js:TestResult;
+	var fl:TestResult;
+}
+
 class TestMain {
 	
-	#if js
-	private static var passedHash:Hash<CompareResultObject> = new Hash<CompareResultObject>();
-	private static var failedHash:Hash<CompareResultObject> = new Hash<CompareResultObject>();
-	private static var errorHash:Hash<CompareResultObject> = new Hash<CompareResultObject>();
-	private static var ignoredHash:Hash<CompareResultObject> = new Hash<CompareResultObject>();
+	public static var TARGET:String = #if js 'js'; #elseif flash9 'fl'; #end
 	
-	public static var js_stage:Stage = null;
+	#if js
+	public static var resultHash:Hash<CompareResultObject> = new Hash<CompareResultObject>();
+	
+	public static var browser:String;
+	public static var flash:String;
+	public static var os:String;
 	#end
 	
 	public static var context:Context;
@@ -42,7 +50,12 @@ class TestMain {
 		context = new Context();
 		
 		#if js
-		Setup.init(function() {}, 30, 0xFFFFFF, 0, 250, 'js_stage');
+		var cl = Type.resolveClass('hedge.display.Sprite');
+		Console.log(cl);
+		
+		Setup.init(function() { }, 30, 0xFFFFFF, 0, 250, 'js_stage');
+		
+		browser = new JQuery('#bs-ua').children('strong').text();
 		
 		context.addObject('testMain_js', TestMain);
 		connection = ExternalConnection.flashConnect('default', 'fl_stage', context);
@@ -54,6 +67,8 @@ class TestMain {
 		connection = ExternalConnection.jsConnect('default', null);
 		
 		new TestMain();
+		sendFlashPlayerVersion();
+		sendOperatingSystem();
 		#end
 		
 	}
@@ -71,19 +86,24 @@ class TestMain {
 	
 	private function completeHandler(successful:Bool):Void {
 		#if js
-		Console.log('js : unit test complete - result is (' + successful + ')');
-		Console.log(passedHash);
-		Console.log(failedHash);
-		Console.log(errorHash);
-		Console.log(ignoredHash);
-		#else
-		trace('js : unit test complete - result is (' + successful + ')');
+		
+		#elseif flash9
+		
 		#end
+		//trace(TARGET + ' : unit test complete - result is (' + successful + ')');
 	}
 	
 	#if flash9
-	public static function sendTestResult(result:TestResult, type:String, source:String):Void {
-		connection.testMain_js.printTestResult.call([result, type, source]);
+	public static function sendTestResult(result:TestResult, type:String):Void {
+		connection.testMain_js.printTestResult.call([result, type, 'fl']);
+	}
+	
+	public static function sendOperatingSystem():Void {
+		connection.testMain_js.saveOperatingSystem.call([Capabilities.os]);
+	}
+	
+	public static function sendFlashPlayerVersion():Void {
+		connection.testMain_js.saveFlashPlayerVersion.call([Capabilities.version.split(' ')[1]]);
 	}
 	#end
 	
@@ -98,29 +118,69 @@ class TestMain {
 		}
 	}
 	
-	public static function printTestResult(result:TestResult, type:String, source:String):Void {
+	public static function saveFlashPlayerVersion(value:String):Void {
+		flash = value;
+	}
+	
+	public static function saveOperatingSystem(value:String):Void {
+		os = value;
+	}
+	
+	public static function printTestResult(result:TestResult, type:String, ?source:String = 'js'):Void {
 		
 		var compareObject:CompareResultObject = { js:null, fl:null };
-		assignResult(compareObject, 
-		switch(type) {
-			case 'pass':
-				passedHash;
-			case 'fail':
-				failedHash;
-			case 'error':
-				errorHash;
-			case 'ignore':
-				ignoredHash;
-		}, result, source);
+		assignResult(compareObject, resultHash, result, source);
 		
 		var results:JQuery = source == 'js' ? new JQuery('#js').children('.results') : new JQuery('#fl').children('.results');
 		var jq:JQuery = new JQuery('<div></div>');
 		
-		jq.text('Class : ' + result.location);
+		jq.text(result.className + '::' + result.name);
 		jq.addClass(type).addClass(result.passed).attr('data-time', result.executionTime);
 		
 		results.append(jq);
 		
+	}
+	
+	public static function submitDataToGoogleForm(cls:IFormData, className:String):Void {
+		var http:Http = new Http(cls.formUrl);
+		var postData:String = '';
+		var form_id:String = '';
+		
+		// temp objects
+		var _tmp:Array<String> = [];
+		var _test:CompareResultObject = { js:null, fl:null };
+		var _result:TestResult = null;
+		
+		for (n in cls.formIDs.keys()) {
+			form_id = cls.formIDs.get(n);
+			
+			if (n == 'Browser') {
+				http.setParameter('entry.' + form_id + '.single', browser);
+			} else if (n == 'FlashPlayer') {
+				http.setParameter('entry.' + form_id + '.single', flash);
+			} else if (n == 'OS') {
+				http.setParameter('entry.' + form_id + '.single', os);
+			} else {
+				
+				_tmp = n.split('_');
+				_test = resultHash.get(className + '#test' + _tmp[1]);
+				if (_tmp[0] == 'js') {
+					
+					_result = _test.js;
+					
+				} else if (_tmp[0] == 'fl') {
+					
+					_result = _test.fl;
+					
+				}
+				http.setParameter('entry.' + form_id + '.single', _result.passed ? ''+1 : _result.ignore ? ''+0 : _result.failure.message);
+				
+			}
+			
+		}
+		http.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+		http.setParameter('submit', 'Submit');
+		http.request(true);
 	}
 	#end
 	

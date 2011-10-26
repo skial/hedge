@@ -1,0 +1,17 @@
+-swf ../../../bin/shapeexample/ShapeExample.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.shapeexample.ShapeExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/shapeexample/ShapeExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.shapeexample.ShapeExample
+#--dead-code-elimination

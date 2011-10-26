@@ -1,0 +1,17 @@
+-swf ../../../bin/displayobject_widthexample/DisplayObject_WidthExample.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.displayobject_widthexample.DisplayObject_WidthExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/displayobject_widthexample/DisplayObject_WidthExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.displayobject_widthexample.DisplayObject_WidthExample
+#--dead-code-elimination

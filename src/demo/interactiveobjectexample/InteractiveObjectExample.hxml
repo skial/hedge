@@ -1,0 +1,17 @@
+-swf ../../../bin/interactiveobjectexample/InteractiveObjectExample.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.interactiveobjectexample.InteractiveObjectExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/interactiveobjectexample/InteractiveObjectExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.interactiveobjectexample.InteractiveObjectExample
+#--dead-code-elimination

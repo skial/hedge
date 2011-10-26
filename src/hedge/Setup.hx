@@ -37,11 +37,11 @@ class Setup {
 	
 	public inline static var __version__:Float = 0.1;
 	public inline static var __project__:String = 'hedge | http://github.com/skial/hedge';
-	public inline static var __haxe__:String = ' haXe | http://haxe.org';
+	public inline static var __haxe__:String = 'haXe | http://haxe.org';
 	
 	// INTERNAL PROPERTIES / ADVANCED PUBLIC PROPERTIES
 	
-	public static var __ele__:HtmlDom;
+	public static var __node__:HtmlDom;
 	public static var __storage__:HtmlDom;
 	public static var __stage__:Stage;
 	
@@ -72,10 +72,9 @@ class Setup {
 	// PUBLIC METHODS
 	
 	public static function __init__():Void {
-		requestAnimFrame();
-		requestInterval();
-		requestTimeout();
-		//untyped jQuery.Event.currentTarget
+		setupRequestAnimFrame();
+		setupRequestInterval();
+		setupRequestTimeout();
 	}
 	
 	public static function init(_callback:Dynamic, ?fps:Int = 30, ?background:Int = null, ?stageWidth:Int = 0, ?stageHeight:Int = 0, ?stageName:String = 'Stage') {
@@ -85,9 +84,15 @@ class Setup {
 		__stageWidth__ = stageWidth;
 		__stageHeight__ = stageHeight;
 		
+		// get the root dom object being used as the Stage object
+		__node__ = js.Lib.document.getElementById(stageName);
+		
 		// create off screen element, where every displaylist object will be placed when they are created eg 'new Sprite()'
 		__storage__ = js.Lib.document.createElement('div');
 		__storage__.setAttribute('id', 'hInternalStorage');
+		
+		// add __storage to stage element
+		__node__.appendChild(__storage__);
 		
 		if (__creationQueue__.length != 0) {
 			for (n in __creationQueue__) {
@@ -95,40 +100,36 @@ class Setup {
 			}
 		}
 		
-		// get the root dom object being used as the Stage object and set basic values
-		__ele__ = js.Lib.document.getElementById(stageName);
 		if (__background__ != null) {
-			__ele__.style.backgroundColor = Setup.rgb(__background__);
+			__node__.style.backgroundColor = Setup.rgb(__background__);
 		}
-		__ele__.setAttribute('data-version', __version__.string());
-		__ele__.setAttribute('data-project', __project__);
-		__ele__.setAttribute('data-haXe', __haxe__);
-		__ele__.appendChild(__storage__);
+		__node__.setAttribute('data-version', __version__.string());
+		__node__.setAttribute('data-project', __project__);
+		__node__.setAttribute('data-haXe', __haxe__);
 		
 		// check and set stage width / height values
 		
 		if (__stageWidth__ == 0) {
-			__stageWidth__ = new JQuery(__ele__).parent().innerWidth();
+			__stageWidth__ = new JQuery(__node__).parent().innerWidth();
 		} else {
-			__ele__.style.width = __stageWidth__.string() + 'px';
+			__node__.style.width = __stageWidth__ + 'px';
 		}
 		
 		if (__stageHeight__ == 0) {
-			__stageHeight__ = new JQuery(__ele__).parent().innerHeight();
+			__stageHeight__ = new JQuery(__node__).parent().innerHeight();
 		} else {
-			__ele__.style.height = __stageHeight__.string() + 'px';
+			__node__.style.height = __stageHeight__ + 'px';
 		}
 		
 		// set stage x / y values
-		__stageX__ = new JQuery(__ele__).position().left.int();
-		__stageY__ = new JQuery(__ele__).position().top.int();
+		__stageX__ = new JQuery(__node__).position().left.int();
+		__stageY__ = new JQuery(__node__).position().top.int();
 		
 		// create the one and only Stage object
 		__stage__ = new Stage();
 		__stage__.name = stageName;
 		__stage__.parent = null;
 		__stage__.__ele__.unbind(Setup.PREFIX + HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT, HedgeResizeDisplayEvent.resizeDisplayObject);
-		__stage__.__ele__.bind('keydown', function(e) { Console.log(e);} );
 		
 		Lib.current = __stage__;
 		
@@ -136,7 +137,7 @@ class Setup {
 		
 		__initialized__ = true;
 		
-		_callback();
+		new JQuery(js.Lib.window).load(_callback);
 	}
 	
 	// INTERNAL METHODS / ADVANCED PUBLIC METHODS
@@ -259,7 +260,7 @@ class Setup {
 	//	http://blog.joelambert.co.uk/2011/06/01/a-better-settimeoutsetinterval/
 	//	https://gist.github.com/1002116
 	
-	public static function requestAnimFrame():Void {
+	public static function setupRequestAnimFrame():Void {
 		// requestAnimationFrame() shim by Paul Irish
 		// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 		untyped __js__('
@@ -276,7 +277,7 @@ class Setup {
 		');
 	}
 	
-	public static function requestInterval():Void {
+	public static function setupRequestInterval():Void {
 		/**
 		 * Behaves the same as setInterval except uses requestAnimationFrame() where possible for better performance
 		 * @param {function} fn The callback function
@@ -325,7 +326,7 @@ class Setup {
 		');
 	}
 	
-	public static function requestTimeout():Void {
+	public static function setupRequestTimeout():Void {
 		/**
 		 * Behaves the same as setTimeout except uses requestAnimationFrame() where possible for better performance
 		 * @param {function} fn The callback function

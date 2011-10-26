@@ -1,0 +1,17 @@
+-swf ../../../bin/displayobject_xexample/DisplayObject_XExample.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.displayobject_xexample.DisplayObject_XExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/displayobject_xexample/DisplayObject_XExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.displayobject_xexample.DisplayObject_XExample
+#--dead-code-elimination

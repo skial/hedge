@@ -46,9 +46,11 @@ class HedgeResizeDisplayEvent extends Event<DisplayObject> {
 			_w = _j.width() > _w ? _j.width() : _w;
 			_h = _j.height() > _h ? _j.height() : _h;
 		} );
-		_t.__skipResizeEvent__ = true;
-		_w > _t.width ? _t.width = _c.last().position().left + _w : return;
-		_h > _t.height ? _t.height = _c.last().position().top + _h : return;
+		//_t.__skipResizeEvent__ = true;
+		/*_w > _t.width ? _t.width = _c.last().position().left + _w : return;
+		_h > _t.height ? _t.height = _c.last().position().top + _h : return;*/
+		_t.width = _w;
+		_t.height = _h;
 	}
 	
 }

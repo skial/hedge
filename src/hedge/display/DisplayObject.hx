@@ -111,13 +111,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		
 		this.__skipResizeEvent__ = false;
 		
-		this.__generateHedgeDisplayObjectElement__();
 		this.__originalName__ = this.name = Setup.generateInstanceName();
+		this.__generateHedgeDisplayObjectElement__();
 		
 		this.parent = this.stage = Setup.__stage__;
 		
 		this.__node__.setAttribute('id', this.name);
-		this.__node__.setAttribute('data-originalName', this.__originalName__);
+		//this.__node__.setAttribute('data-originalName', this.__originalName__); // maybe for debugging...
 		
 		this.__ele__.data('__self__', this);
 		
@@ -129,13 +129,13 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 		this.scaleX = this.scaleY = this.scaleZ = 1;
 		this.rotation = this.rotationX = this.rotationY = this.rotationZ = this.x = this.y = this.z = 0;
 		
-		var s:Dynamic = {};
+		/*var s:Dynamic = {};
 		s.setField('transform-origin', '0 0');
 		s.setField('transform-style', 'preserves-3d');
 		s.setField('perspective-origin', '0 0');
 		s.setField('perspective', '0');
 		s.setField('backface-visibility', 'visible');
-		this.__ele__.css(Setup.cssPrefix(s));
+		this.__ele__.css(Setup.cssPrefix(s));*/
 		
 		this.__originalWidth__ = this.__originalHeight__ = 0;
 		
@@ -316,7 +316,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			_v != 1 ? this.scaleY = _v : '';
 			
 			this.height = value;
-			this.__ele__.height(value);
+			this.__ele__.height(value + 'px');
 			
 			//this.__skipResizeEvent__ ? this.__skipResizeEvent__ = false : this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 			return value;
@@ -335,7 +335,7 @@ class DisplayObject extends EventDispatcher, implements IBitmapDrawable {
 			_v != 1 ? this.scaleX = _v : '';
 			
 			this.width = value;
-			this.__ele__.width(value);
+			this.__ele__.width(value + 'px');
 			
 			//this.__skipResizeEvent__ ? this.__skipResizeEvent__ = false : this.__ele__.trigger(new HedgeResizeDisplayEvent(HedgeResizeDisplayEvent.RESIZE_DOM_ELEMENT));
 			return value;

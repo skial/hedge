@@ -33,7 +33,7 @@ class InteractiveObject extends DisplayObject {
 	
 	//	OVERRIDE METHODS
 	
-	override private function initialize():Void 	{
+	override private function initialize():Void {
 		super.initialize();
 		this.initializeInterativeObject();
 	}

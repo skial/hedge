@@ -1,13 +1,13 @@
 # Flash 9+
--main TestMain
--cp src
--cp tests/test
+#-main TestMain
+#-cp src
+#-cp tests/test
 #-D testDebug
--lib munit
--lib mlib
--swf-version 10
--swf-header 500:250:30:FFFFFF
--swf tests/bin/as3_test.swf
+#-lib munit
+#-lib mlib
+#-swf-version 10
+#-swf-header 500:250:30:FFFFFF
+#-swf tests/bin/as3_test.swf
 
 #--next
 
@@ -23,7 +23,6 @@
 --next
 
 # JavaScript
--main TestMain
 --remap flash:hedge
 -cp src
 -cp tests/test
@@ -33,6 +32,7 @@
 -lib html5
 -lib modernizr
 -js tests/bin/js_test.js
+-main TestMain
 
 #--next
 

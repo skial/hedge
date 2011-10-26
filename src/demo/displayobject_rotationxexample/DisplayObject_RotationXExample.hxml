@@ -1,0 +1,17 @@
+-swf ../../../bin/displayobject_rotationxexample/DisplayObject_RotationXExample.swf
+-swf-version 11
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.displayobject_rotationxexample.DisplayObject_RotationXExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/displayobject_rotationxexample/DisplayObject_RotationXExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.displayobject_rotationxexample.DisplayObject_RotationXExample
+#--dead-code-elimination

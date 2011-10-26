@@ -36,7 +36,7 @@ class Event<T> extends jQuery.Event {
 		return new Event<T>(this.type, this.bubbles, this.cancelable);
 	}
 	
-	public function formatToString(className:String, arguments):String {
+	public function formatToString(className:String, args):String {
 		return '';
 	}
 	

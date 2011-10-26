@@ -15,36 +15,22 @@ import jQuery.JQuery;
  * @author Skial Bainn
  */
 
-typedef CompareResultObject = {
-	var js:TestResult;
-	var fl:TestResult;
-}
-
 class GoogleFormClient implements ITestResultClient {
 	
-	public static var TARGET:String = #if js 'js'; #elseif flash9 'fl'; #end
 	public static inline var DEFAULT_ID:String = 'GoogleFormClient';
 	
 	public var completionHandler(get_completeHandler, set_completeHandler):ITestResultClient->Void;
 	public var id(default, null):String;
 	
-	#if js
-	private var browser:String;
-	#end
-	
-	private var printer:TestResult->String->String->Void;
+	private var printer:Dynamic;
 
-	public function new(output_printer:TestResult->String->String->Void) {
+	public function new(output_printer:Dynamic) {
 		this.id = DEFAULT_ID;
 		this.printer = output_printer;
 		this.init();
 	}
 	
 	public function init():Void {
-		
-		#if js
-		this.browser = new JQuery('#bs-ua').children('strong').text();
-		#end
 		
 	}
 	
@@ -59,19 +45,19 @@ class GoogleFormClient implements ITestResultClient {
 	}
 	
 	public function addPass(result:TestResult):Void {
-		printer(result, 'pass', TARGET);
+		printer(result, 'pass');
 	}
 	
 	public function addFail(result:TestResult):Void {
-		printer(result, 'fail', TARGET);
+		printer(result, 'fail');
 	}
 	
 	public function addError(result:TestResult):Void {
-		printer(result, 'error', TARGET);
+		printer(result, 'error');
 	}
 	
 	public function addIgnore(result:TestResult):Void {
-		printer(result, 'ignore', TARGET);
+		printer(result, 'ignore');
 	}
 	
 	public function reportFinalStatistics(testCount:Int, passCount:Int, failCount:Int, errorCount:Int, ignore:Int, time:Float):Dynamic {

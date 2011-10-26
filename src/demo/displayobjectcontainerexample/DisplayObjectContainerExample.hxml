@@ -1,0 +1,17 @@
+-swf ../../../bin/displayobjectcontainerexample/DisplayObjectContainerExample.swf
+-swf-version 9
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.displayobjectcontainerexample.DisplayObjectContainerExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/displayobjectcontainerexample/DisplayObjectContainerExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.displayobjectcontainerexample.DisplayObjectContainerExample
+#--dead-code-elimination

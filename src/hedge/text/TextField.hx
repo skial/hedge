@@ -267,8 +267,8 @@ class TextField extends InteractiveObject {
 		this.autoSize = value;
 		switch(value) {
 			case TextFieldAutoSize.NONE:
-				this.__ele__.width(this.width);
-				this.__ele__.height(this.height);
+				this.__ele__.width(this.width+'px');
+				this.__ele__.height(this.height+'px');
 			default:
 				this.__ele__.css('width', '')
 							.css('height', '');

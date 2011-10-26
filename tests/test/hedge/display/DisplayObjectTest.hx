@@ -1,8 +1,6 @@
 package hedge.display;
 
-import flash.text.TextField;
 import massive.munit.Assert;
-import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.Lib;
 import haxe.Firebug;
@@ -17,10 +15,14 @@ import jQuery.JQuery;
  * @author Skial Bainn
  */
 
-class DisplayObjectTest implements IMUnitBase, extends Sprite {
+class DisplayObjectTest implements IMUnitBase, implements IFormData, extends Sprite {
 	
-	// INTERFACE
 
+	#if js
+	public var formUrl:String;
+	public var formIDs:Hash<String>;
+	#end
+	
 	private static var sprite:Sprite = new Sprite();
 	
 	public function new() {
@@ -44,12 +46,32 @@ class DisplayObjectTest implements IMUnitBase, extends Sprite {
 	
 	@AfterClass
 	public function afterClass():Void {
+		//Lib.current.removeChildAt(0);
 		#if js
-		//new JQuery('.hDisplayObject').remove();
-		#elseif flash9
+		this.formUrl = 'https://docs.google.com/spreadsheet/formResponse?formkey=dGtfTXg0czhYX2VVcV9XMU5kbHMzdlE6MQ&ifq';
+		this.formIDs = new Hash<String>();
+		formIDs.set('Browser', '0');
+		formIDs.set('FlashPlayer', '1');
+		formIDs.set('OS', '2');
+		formIDs.set('js_Height', '3');
+		formIDs.set('fl_Height', '4');
+		formIDs.set('js_Width', '6');
+		formIDs.set('fl_Width', '8');
+		formIDs.set('js_Alpha', '10');
+		formIDs.set('fl_Alpha', '12');
+		formIDs.set('js_Name', '14');
+		formIDs.set('fl_Name', '16');
+		formIDs.set('js_Stage', '18');
+		formIDs.set('fl_Stage', '20');
+		formIDs.set('js_Visible', '22');
+		formIDs.set('fl_Visible', '32');
+		formIDs.set('js_XPosition', '24');
+		formIDs.set('fl_XPosition', '26');
+		formIDs.set('js_YPosition', '28');
+		formIDs.set('fl_YPosition', '30');
 		
+		TestMain.submitDataToGoogleForm(this, Type.getClassName(DisplayObjectTest));
 		#end
-		Lib.current.removeChildAt(0);
 	}
 	
 	@Before
@@ -66,12 +88,12 @@ class DisplayObjectTest implements IMUnitBase, extends Sprite {
 	
 	@Test
 	public function testHeight():Void {
-		Assert.areEqual(100, sprite.height);
+		Assert.areEqual(50, sprite.height);
 	}
 	
 	@Test
 	public function testWidth():Void {
-		Assert.areEqual(100, sprite.width);
+		Assert.areEqual(50, sprite.width);
 	}
 	
 	@Test
@@ -82,8 +104,8 @@ class DisplayObjectTest implements IMUnitBase, extends Sprite {
 	
 	@Test
 	public function testName():Void {
-		sprite.name = 'displayObjectTest';
-		Assert.areEqual('displayObjectTest', sprite.name);
+		sprite.name = 'testName';
+		Assert.areEqual('testName', sprite.name);
 	}
 	
 	@Test

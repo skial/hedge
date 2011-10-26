@@ -1,0 +1,17 @@
+-swf ../../../bin/keyboardeventexample/KeyboardEventExample.swf
+-swf-version 10
+-swf-header 640:480:30:FFFFFF
+-cp ../../
+-main demo.keyboardeventexample.KeyboardEventExample
+#--dead-code-elimination
+
+--next
+
+-js ../../../bin/keyboardeventexample/KeyboardEventExample.js
+--remap flash:hedge
+-cp ../../
+-lib raphaelExtern
+-lib html5
+-lib modernizr
+-main demo.keyboardeventexample.KeyboardEventExample
+#--dead-code-elimination
